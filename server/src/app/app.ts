@@ -5,6 +5,8 @@ import cors from "cors";
 import { toNodeHandler } from "better-auth/node";
 
 import cookieParser from "cookie-parser";
+import { AppRoutes } from "./routes/routes";
+import { auth } from "./lib/auth";
 
 const app = express();
 
@@ -25,13 +27,13 @@ app.use(
   }),
 );
 
-// app.use("/api/auth", toNodeHandler(auth));
+app.use("/api/auth", toNodeHandler(auth));
 app.use(express.json());
 app.use(cookieParser());
-// Enable URL-encoded from data parsing
+
 app.use(express.urlencoded({ extended: true }));
 
-// app.use("/api/v1", indexRoutes);
+app.use("/api/v1", AppRoutes);
 
 app.get("/", async (req: Request, res: Response) => {
   res.status(200).json({

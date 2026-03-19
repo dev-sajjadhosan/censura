@@ -16,8 +16,10 @@ model Media {
 
   reviews    Review[]
   watchlists Watchlist[]
+  bookmarks  Bookmark[]
+  favorites  Favorite[]
 
-  @@map("media")
+  @@unique([title, releaseYear])
   @@index([title])
   @@index([type])
   @@index([genre])
@@ -28,5 +30,5 @@ model Media {
   @@index([pricing])
   @@index([isEditorsPick])
   @@index([createdAt])
-  @@unique([title, releaseYear])
+  @@map("media")
 }

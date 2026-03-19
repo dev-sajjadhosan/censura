@@ -4,6 +4,7 @@ import { prisma } from "./prisma";
 import { Role, UserStatus } from "../../generated/prisma/enums";
 import { envVars } from "../config/env";
 import { bearer, emailOTP } from "better-auth/plugins";
+import { sendEmail } from "../utils/email";
 // import { sendEmail } from "../utils/email";
 
 export const auth = betterAuth({
@@ -71,63 +72,63 @@ export const auth = betterAuth({
 
   plugins: [
     bearer(), 
-    // emailOTP({
-    //   overrideDefaultEmailVerification: true,
-    //   async sendVerificationOTP({ email, otp, type }) {
-    //     if (type === "email-verification") {
-    //       const user = await prisma.user.findUnique({
-    //         where: {
-    //           email,
-    //         },
-    //       });
+    emailOTP({
+      overrideDefaultEmailVerification: true,
+      async sendVerificationOTP({ email, otp, type }) {
+        if (type === "email-verification") {
+          const user = await prisma.user.findUnique({
+            where: {
+              email,
+            },
+          });
 
-    //       if (!user) {
-    //         console.error(
-    //           `User with email ${email} not found. Cannot send verification OTP.`,
-    //         );
-    //         return;
-    //       }
+          if (!user) {
+            console.error(
+              `User with email ${email} not found. Cannot send verification OTP.`,
+            );
+            return;
+          }
 
-    //       if (user && user.role === Roles.SUPER_ADMIN) {
-    //         console.error(
-    //           `User with email ${email} is a Super Admin. Skipping sending verification OTP.`,
-    //         );
-    //         return;
-    //       }
+          if (user && user.role === Role.ADMIN) {
+            console.error(
+              `User with email ${email} is an Admin. Skipping sending verification OTP.`,
+            );
+            return;
+          }
 
-    //       if (user && !user.emailVerified) {
-    //         sendEmail({
-    //           to: email,
-    //           subject: "Email Verification",
-    //           templateName: "otp",
-    //           templateData: {
-    //             name: user.name,
-    //             otp,
-    //           },
-    //         });
-    //       }
-    //     } else if (type === "forget-password") {
-    //       const user = await prisma.user.findUnique({
-    //         where: {
-    //           email,
-    //         },
-    //       });
-    //       if (user) {
-    //         sendEmail({
-    //           to: email,
-    //           subject: "Forget Password",
-    //           templateName: "otp",
-    //           templateData: {
-    //             name: user.name,
-    //             otp,
-    //           },
-    //         });
-    //       }
-    //     }
-    //   },
-    //   expiresIn: 5 * 60,
-    //   otpLength: 6,
-    // }),
+          if (user && !user.emailVerified) {
+            sendEmail({
+              to: email,
+              subject: "Email Verification",
+              templateName: "otp",
+              templateData: {
+                name: user.name,
+                otp,
+              },
+            });
+          }
+        } else if (type === "forget-password") {
+          const user = await prisma.user.findUnique({
+            where: {
+              email,
+            },
+          });
+          if (user) {
+            sendEmail({
+              to: email,
+              subject: "Forget Password",
+              templateName: "otp",
+              templateData: {
+                name: user.name,
+                otp,
+              },
+            });
+          }
+        }
+      },
+      expiresIn: 5 * 60,
+      otpLength: 6,
+    }),
   ],
   trustedOrigins: [
     envVars.BETTER_AUTH_URL || "http://localhost:5000",

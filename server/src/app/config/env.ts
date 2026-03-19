@@ -34,8 +34,8 @@ interface ENVVARDPROPS {
     STRIPE_SECRET_KEY: string;
     STRIPE_WEBHOOK_SECRET: string;
   };
-  SUPER_ADMIN_GMAIL: string;
-  SUPER_ADMIN_PASSWORD: string;
+  DEFAULT_ADMIN_GMAIL: string;
+  DEFAULT_ADMIN_PASSWORD: string;
 }
 
 const loadEnvVariables = (): ENVVARDPROPS => {
@@ -66,8 +66,8 @@ const loadEnvVariables = (): ENVVARDPROPS => {
     "CLOUDINARY_API_SECRET",
     "STRIPE_SECRET_KEY",
     "STRIPE_WEBHOOK_SECRET",
-    "SUPER_ADMIN_GMAIL",
-    "SUPER_ADMIN_PASSWORD",
+    "DEFAULT_ADMIN_GMAIL",
+    "DEFAULT_ADMIN_PASSWORD",
   ];
 
   requiredEnvVars.forEach((envVar) => {
@@ -109,8 +109,8 @@ const loadEnvVariables = (): ENVVARDPROPS => {
       STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY as string,
       STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET as string,
     },
-    SUPER_ADMIN_GMAIL: process.env.SUPER_ADMIN_GMAIL as string,
-    SUPER_ADMIN_PASSWORD: process.env.SUPER_ADMIN_PASSWORD as string,
+    DEFAULT_ADMIN_GMAIL: process.env.DEFAULT_ADMIN_GMAIL as string,
+    DEFAULT_ADMIN_PASSWORD: process.env.DEFAULT_ADMIN_PASSWORD as string,
   };
 };
 

@@ -619,10 +619,6 @@ export type EnumPricingFieldUpdateOperationsInput = {
   set?: $Enums.Pricing
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type MediaCreateNestedOneWithoutBookmarksInput = {
   create?: Prisma.XOR<Prisma.MediaCreateWithoutBookmarksInput, Prisma.MediaUncheckedCreateWithoutBookmarksInput>
   connectOrCreate?: Prisma.MediaCreateOrConnectWithoutBookmarksInput

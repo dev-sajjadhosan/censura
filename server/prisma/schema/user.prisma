@@ -23,6 +23,7 @@ model User {
   profile      Profile?
   bookmarks    Bookmark[]
   favorites    Favorite[]
+  admin        Admin?
 
   @@unique([email])
   @@map("user")

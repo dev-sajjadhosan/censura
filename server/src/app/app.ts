@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import { AppRoutes } from "./routes/routes";
 import { auth } from "./lib/auth";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
+import { notFound } from "./middleware/notFound";
 
 const app = express();
 
@@ -49,7 +50,7 @@ app.get("/", async (req: Request, res: Response) => {
   });
 });
 
-// Global Error Handler
 app.use(globalErrorHandler);
+app.use(notFound);
 
 export default app;

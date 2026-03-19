@@ -1,5 +1,4 @@
-import { IRequestUser } from "../modules/admin/admin.interface";
-
+import { Roles, UserStatus } from "../generated/prisma/enums";
 
 declare global {
     namespace Express {
@@ -7,4 +6,15 @@ declare global {
             user?: IRequestUser;
         }
     }
+}
+
+
+export interface IRequestUser {
+    userId: string;
+    role: Roles;
+    name: string;
+    email: string;
+    status: UserStatus;
+    isDeleted: boolean;
+    emailVerified: boolean;
 }

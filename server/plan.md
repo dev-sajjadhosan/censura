@@ -110,6 +110,10 @@ backend/
 | POST   | `/reset-password`  | Public  | Reset with token         |
 | GET    | `/me`              | Private | Get current user profile |
 | POST   | `/logout`          | Private | Invalidate token         |
+| POST   | `/refresh-token`   | Private | Refresh token            |
+| GET    | `/google`          | Public  | Google login             |
+| GET    | `/google/success`  | Public  | Google login success     |
+| GET    | `/google/error`    | Public  | Google login error       |
 
 ---
 

@@ -1,0 +1,110 @@
+import dotenv from "dotenv";
+dotenv.config();
+
+interface ENVVARDPROPS {
+  PORT: string;
+  SERVER_URL: string;
+  BETTER_AUTH_SECRET: string;
+  BETTER_AUTH_URL: string;
+  DATABASE_URL: string;
+  NODE_ENV: string;
+  ACCESS_TOKEN_SECRET: string;
+  REFRESH_TOKEN_SECRET: string;
+  ACCESS_TOKEN_EXPIRES_IN: string;
+  REFRESH_TOKEN_EXPIRES_IN: string;
+  BETTER_AUTH_SESSION_TOKEN_EXPIRES_IN: string;
+  BETTER_AUTH_SESSION_TOKEN_UPDATE_AGE: string;
+  FRONTEND_URL: string;
+  EMAIL_SENDER: {
+    SMTP_USER: string;
+    SMTP_PASS: string;
+    SMTP_HOST: string;
+    SMTP_PORT: string;
+    SMTP_FROM: string;
+  };
+  GOOGLE_CLIENT_ID: string;
+  GOOGLE_CLIENT_SECRET: string;
+  GOOGLE_CALLBACK_URL: string;
+  CLOUDINARY: {
+    CLOUD_NAME: string;
+    API_KEY: string;
+    API_SECRET: string;
+  };
+  STRIPE: {
+    STRIPE_SECRET_KEY: string;
+    STRIPE_WEBHOOK_SECRET: string;
+  };
+  SUPER_ADMIN_GMAIL: string;
+  SUPER_ADMIN_PASSWORD: string;
+}
+
+const loadEnvVariables = (): ENVVARDPROPS => {
+  const requiredEnvVars = [
+    "PORT",
+    "NODE_ENV",
+    "FRONTEND_URL",
+    "BETTER_AUTH_URL",
+    "SERVER_URL",
+    "BETTER_AUTH_SECRET",
+    "DATABASE_URL",
+    "ACCESS_TOKEN_SECRET",
+    "REFRESH_TOKEN_SECRET",
+    "ACCESS_TOKEN_EXPIRES_IN",
+    "REFRESH_TOKEN_EXPIRES_IN",
+    "BETTER_AUTH_SESSION_TOKEN_EXPIRES_IN",
+    "BETTER_AUTH_SESSION_TOKEN_UPDATE_AGE",
+    "EMAIL_SENDER",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "GOOGLE_CALLBACK_URL",
+    "CLOUDINARY",
+    "STRIPE",
+    "SUPER_ADMIN_GMAIL",
+    "SUPER_ADMIN_PASSWORD",
+  ];
+
+  requiredEnvVars.forEach((envVar) => {
+    if (!process.env[envVar]) {
+      throw new Error(`Missing required environment variable: ${envVar}`);
+    }
+  });
+
+  return {
+    PORT: process.env.PORT as string,
+    NODE_ENV: process.env.NODE_ENV as string,
+    FRONTEND_URL: process.env.FRONTEND_URL as string,
+    BETTER_AUTH_URL: process.env.BETTER_AUTH_URL as string,
+    SERVER_URL: process.env.SERVER_URL as string,
+    BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET as string,
+    DATABASE_URL: process.env.DATABASE_URL as string,
+    ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET as string,
+    REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET as string,
+    ACCESS_TOKEN_EXPIRES_IN: process.env.ACCESS_TOKEN_EXPIRES_IN as string,
+    REFRESH_TOKEN_EXPIRES_IN: process.env.REFRESH_TOKEN_EXPIRES_IN as string,
+    BETTER_AUTH_SESSION_TOKEN_EXPIRES_IN: process.env.BETTER_AUTH_SESSION_TOKEN_EXPIRES_IN as string,
+    BETTER_AUTH_SESSION_TOKEN_UPDATE_AGE: process.env.BETTER_AUTH_SESSION_TOKEN_UPDATE_AGE as string,
+    EMAIL_SENDER: {
+      SMTP_USER: process.env.SMTP_USER as string,
+      SMTP_PASS: process.env.SMTP_PASS as string,
+      SMTP_HOST: process.env.SMTP_HOST as string,
+      SMTP_PORT: process.env.SMTP_PORT as string,
+      SMTP_FROM: process.env.SMTP_FROM as string,
+    },
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID as string,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET as string,
+    GOOGLE_CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL as string,
+    CLOUDINARY: {
+      CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME as string,
+      API_KEY: process.env.CLOUDINARY_API_KEY as string,
+      API_SECRET: process.env.CLOUDINARY_API_SECRET as string,
+    },
+    STRIPE: {
+      STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY as string,
+      STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET as string,
+    },
+    SUPER_ADMIN_GMAIL: process.env.SUPER_ADMIN_GMAIL as string,
+    SUPER_ADMIN_PASSWORD: process.env.SUPER_ADMIN_PASSWORD as string,
+  };
+};
+
+export const envVars = loadEnvVariables();

@@ -25,3 +25,11 @@ enum SubStatus      {
     CANCELLED 
     EXPIRED 
 }
+
+enum UserStatus {
+    ACTIVE // default
+    BLOCKED // suspended indefinitely
+    PENDING // if new admin or moderator not approved by admin
+    UNVERIFIED // if email not verified
+    DELETED // soft delete
+}

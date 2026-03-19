@@ -58,3 +58,14 @@ export const SubStatus = {
 } as const
 
 export type SubStatus = (typeof SubStatus)[keyof typeof SubStatus]
+
+
+export const UserStatus = {
+  ACTIVE: 'ACTIVE',
+  BLOCKED: 'BLOCKED',
+  PENDING: 'PENDING',
+  UNVERIFIED: 'UNVERIFIED',
+  DELETED: 'DELETED'
+} as const
+
+export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]

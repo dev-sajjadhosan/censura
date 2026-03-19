@@ -1,0 +1,19 @@
+model Media {
+  id              String      @id @default(uuid())
+  title           String
+  synopsis        String
+  type            MediaType   // MOVIE | SERIES
+  genre           String[]
+  releaseYear     Int
+  director        String
+  cast            String[]
+  platforms       String[]
+  posterUrl       String?
+  streamingLink   String?
+  pricing         Pricing     @default(FREE) // FREE | PREMIUM
+  isEditorsPick   Boolean     @default(false)
+  createdAt       DateTime    @default(now())
+
+  // reviews         Review[]
+  // watchlists      Watchlist[]
+}

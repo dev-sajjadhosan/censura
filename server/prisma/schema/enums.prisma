@@ -1,0 +1,27 @@
+enum Role           { 
+    USER 
+    ADMIN 
+}
+enum MediaType      { 
+    MOVIE 
+    SERIES 
+}
+enum Pricing        { 
+    FREE 
+    PREMIUM 
+}
+enum ReviewStatus   { 
+    PENDING 
+    APPROVED 
+    UNPUBLISHED 
+}
+enum SubscriptionPlan { 
+    FREE 
+    MONTHLY 
+    YEARLY 
+}
+enum SubStatus      { 
+    ACTIVE 
+    CANCELLED 
+    EXPIRED 
+}

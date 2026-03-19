@@ -2,11 +2,12 @@ import { Request, Response } from "express";
 import catchAsync from "../../shared/catchAsync";
 import sendResponse from "../../shared/sendRes";
 import { AuthService } from "./auth.service";
+import status from "http-status";
 
 const register = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.register(req.body);
   sendResponse(res, {
-    statusCode: 200,
+    statusCode: status.OK,
     success: true,
     message: "User registered successfully",
     data: result,
@@ -19,7 +20,7 @@ const login = catchAsync(async (req: Request, res: Response) => {
   console.log("Login Result", result);
 
   sendResponse(res, {
-    statusCode: 200,
+    statusCode: status.OK,
     success: true,
     message: "User logged in successfully",
     data: result,

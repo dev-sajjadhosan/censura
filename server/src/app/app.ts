@@ -7,6 +7,7 @@ import { toNodeHandler } from "better-auth/node";
 import cookieParser from "cookie-parser";
 import { AppRoutes } from "./routes/routes";
 import { auth } from "./lib/auth";
+import { globalErrorHandler } from "./middleware/globalErrorHandler";
 
 const app = express();
 
@@ -47,5 +48,8 @@ app.get("/", async (req: Request, res: Response) => {
     node_env: envVars.NODE_ENV,
   });
 });
+
+// Global Error Handler
+app.use(globalErrorHandler);
 
 export default app;

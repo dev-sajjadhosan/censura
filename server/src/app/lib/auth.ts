@@ -57,7 +57,7 @@ export const auth = betterAuth({
         defaultValue: false,
       },
       isDeleted: {
-        type: "string",
+        type: "boolean",
         required: true,
         defaultValue: false,
       },
@@ -154,7 +154,7 @@ export const auth = betterAuth({
           httpOnly: true,
           path: "/",
         },
-      },
+      },    
     },
   },
   redirect: {

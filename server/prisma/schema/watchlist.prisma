@@ -1,0 +1,16 @@
+model Watchlist {
+  id        String   @id @default(uuid())
+  userId    String
+  mediaId   String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  media     Media    @relation(fields: [mediaId], references: [id])
+
+
+  @@map("watchlist")
+  @@index([userId])
+  @@index([mediaId])
+  @@unique([userId, mediaId])
+  
+}

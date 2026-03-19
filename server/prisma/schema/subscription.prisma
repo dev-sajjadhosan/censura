@@ -1,0 +1,14 @@
+model Subscription {
+  id              String           @id @default(uuid())
+  userId          String           @unique
+  plan            SubscriptionPlan // MONTHLY | YEARLY | FREE
+  status          SubStatus        @default(ACTIVE) // ACTIVE | CANCELLED | EXPIRED
+  stripeSessionId String?
+  startDate       DateTime
+  endDate         DateTime?
+  createdAt       DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("subscription")
+}

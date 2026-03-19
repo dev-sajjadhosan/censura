@@ -1,19 +1,32 @@
 model Media {
-  id              String      @id @default(uuid())
-  title           String
-  synopsis        String
-  type            MediaType   // MOVIE | SERIES
-  genre           String[]
-  releaseYear     Int
-  director        String
-  cast            String[]
-  platforms       String[]
-  posterUrl       String?
-  streamingLink   String?
-  pricing         Pricing     @default(FREE) // FREE | PREMIUM
-  isEditorsPick   Boolean     @default(false)
-  createdAt       DateTime    @default(now())
+  id            String    @id @default(uuid())
+  title         String
+  synopsis      String
+  type          MediaType // MOVIE | SERIES
+  genre         String[]
+  releaseYear   Int
+  director      String
+  cast          String[]
+  platforms     String[]
+  posterUrl     String?
+  streamingLink String?
+  pricing       Pricing   @default(FREE) // FREE | PREMIUM
+  isEditorsPick Boolean   @default(false)
+  createdAt     DateTime  @default(now())
 
-  // reviews         Review[]
-  // watchlists      Watchlist[]
+  reviews    Review[]
+  watchlists Watchlist[]
+
+  @@map("media")
+  @@index([title])
+  @@index([type])
+  @@index([genre])
+  @@index([releaseYear])
+  @@index([director])
+  @@index([cast])
+  @@index([platforms])
+  @@index([pricing])
+  @@index([isEditorsPick])
+  @@index([createdAt])
+  @@unique([title, releaseYear])
 }

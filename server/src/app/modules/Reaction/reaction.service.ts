@@ -87,7 +87,50 @@ const createCommentReply = async (
   return result;
 };
 
-const deleteReviewComment = async (id: string) => {
+const updateReviewComment = async (user: IRequestUser, id: string, data: any) => {
+  const comment = await prisma.comment.findUnique({
+    where: {
+      id,
+    },
+  });
+  if (!comment) {
+    throw new AppError(404, "Comment not found");
+  }
+  if (comment.userId !== user.userId) {
+    throw new AppError(403, "You are not authorized to update this comment");
+  }
+  const result = await prisma.comment.update({
+    where: {
+      id,
+    },
+    data: {
+      content: data.content,
+    },
+  });
+  return result;
+};
+
+const deleteReviewComment = async (user: IRequestUser, id: string) => {
+  const comment = await prisma.comment.findUnique({
+    where: {
+      id,
+    },
+  });
+  if (!comment) {
+    throw new AppError(404, "Comment not found");
+  }
+  if (comment.userId !== user.userId) {
+    throw new AppError(403, "You are not authorized to delete this comment");
+  }
+  const result = await prisma.comment.delete({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
+const adminDeleteReviewComment = async (id: string) => {
   const comment = await prisma.comment.findUnique({
     where: {
       id,
@@ -110,4 +153,6 @@ export const LikesService = {
   createReviewComment,
   deleteReviewComment,
   createCommentReply,
+  updateReviewComment,
+  adminDeleteReviewComment,
 };

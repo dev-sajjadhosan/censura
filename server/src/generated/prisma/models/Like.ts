@@ -29,6 +29,8 @@ export type LikeMinAggregateOutputType = {
   userId: string | null
   reviewId: string | null
   createdAt: Date | null
+  mediaId: string | null
+  commentId: string | null
 }
 
 export type LikeMaxAggregateOutputType = {
@@ -36,6 +38,8 @@ export type LikeMaxAggregateOutputType = {
   userId: string | null
   reviewId: string | null
   createdAt: Date | null
+  mediaId: string | null
+  commentId: string | null
 }
 
 export type LikeCountAggregateOutputType = {
@@ -43,6 +47,8 @@ export type LikeCountAggregateOutputType = {
   userId: number
   reviewId: number
   createdAt: number
+  mediaId: number
+  commentId: number
   _all: number
 }
 
@@ -52,6 +58,8 @@ export type LikeMinAggregateInputType = {
   userId?: true
   reviewId?: true
   createdAt?: true
+  mediaId?: true
+  commentId?: true
 }
 
 export type LikeMaxAggregateInputType = {
@@ -59,6 +67,8 @@ export type LikeMaxAggregateInputType = {
   userId?: true
   reviewId?: true
   createdAt?: true
+  mediaId?: true
+  commentId?: true
 }
 
 export type LikeCountAggregateInputType = {
@@ -66,6 +76,8 @@ export type LikeCountAggregateInputType = {
   userId?: true
   reviewId?: true
   createdAt?: true
+  mediaId?: true
+  commentId?: true
   _all?: true
 }
 
@@ -144,8 +156,10 @@ export type LikeGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type LikeGroupByOutputType = {
   id: string
   userId: string
-  reviewId: string
+  reviewId: string | null
   createdAt: Date
+  mediaId: string
+  commentId: string | null
   _count: LikeCountAggregateOutputType | null
   _min: LikeMinAggregateOutputType | null
   _max: LikeMaxAggregateOutputType | null
@@ -172,39 +186,53 @@ export type LikeWhereInput = {
   NOT?: Prisma.LikeWhereInput | Prisma.LikeWhereInput[]
   id?: Prisma.StringFilter<"Like"> | string
   userId?: Prisma.StringFilter<"Like"> | string
-  reviewId?: Prisma.StringFilter<"Like"> | string
+  reviewId?: Prisma.StringNullableFilter<"Like"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Like"> | Date | string
+  mediaId?: Prisma.StringFilter<"Like"> | string
+  commentId?: Prisma.StringNullableFilter<"Like"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  review?: Prisma.XOR<Prisma.ReviewScalarRelationFilter, Prisma.ReviewWhereInput>
+  review?: Prisma.XOR<Prisma.ReviewNullableScalarRelationFilter, Prisma.ReviewWhereInput> | null
+  media?: Prisma.XOR<Prisma.MediaScalarRelationFilter, Prisma.MediaWhereInput>
+  comment?: Prisma.XOR<Prisma.CommentNullableScalarRelationFilter, Prisma.CommentWhereInput> | null
 }
 
 export type LikeOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  reviewId?: Prisma.SortOrder
+  reviewId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  mediaId?: Prisma.SortOrder
+  commentId?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   review?: Prisma.ReviewOrderByWithRelationInput
+  media?: Prisma.MediaOrderByWithRelationInput
+  comment?: Prisma.CommentOrderByWithRelationInput
 }
 
 export type LikeWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  userId_reviewId?: Prisma.LikeUserIdReviewIdCompoundUniqueInput
+  userId_reviewId_commentId?: Prisma.LikeUserIdReviewIdCommentIdCompoundUniqueInput
   AND?: Prisma.LikeWhereInput | Prisma.LikeWhereInput[]
   OR?: Prisma.LikeWhereInput[]
   NOT?: Prisma.LikeWhereInput | Prisma.LikeWhereInput[]
   userId?: Prisma.StringFilter<"Like"> | string
-  reviewId?: Prisma.StringFilter<"Like"> | string
+  reviewId?: Prisma.StringNullableFilter<"Like"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Like"> | Date | string
+  mediaId?: Prisma.StringFilter<"Like"> | string
+  commentId?: Prisma.StringNullableFilter<"Like"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  review?: Prisma.XOR<Prisma.ReviewScalarRelationFilter, Prisma.ReviewWhereInput>
-}, "id" | "userId_reviewId">
+  review?: Prisma.XOR<Prisma.ReviewNullableScalarRelationFilter, Prisma.ReviewWhereInput> | null
+  media?: Prisma.XOR<Prisma.MediaScalarRelationFilter, Prisma.MediaWhereInput>
+  comment?: Prisma.XOR<Prisma.CommentNullableScalarRelationFilter, Prisma.CommentWhereInput> | null
+}, "id" | "userId_reviewId_commentId">
 
 export type LikeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  reviewId?: Prisma.SortOrder
+  reviewId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  mediaId?: Prisma.SortOrder
+  commentId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.LikeCountOrderByAggregateInput
   _max?: Prisma.LikeMaxOrderByAggregateInput
   _min?: Prisma.LikeMinOrderByAggregateInput
@@ -216,43 +244,55 @@ export type LikeScalarWhereWithAggregatesInput = {
   NOT?: Prisma.LikeScalarWhereWithAggregatesInput | Prisma.LikeScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Like"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Like"> | string
-  reviewId?: Prisma.StringWithAggregatesFilter<"Like"> | string
+  reviewId?: Prisma.StringNullableWithAggregatesFilter<"Like"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Like"> | Date | string
+  mediaId?: Prisma.StringWithAggregatesFilter<"Like"> | string
+  commentId?: Prisma.StringNullableWithAggregatesFilter<"Like"> | string | null
 }
 
 export type LikeCreateInput = {
   id?: string
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutLikesInput
-  review: Prisma.ReviewCreateNestedOneWithoutLikesInput
+  review?: Prisma.ReviewCreateNestedOneWithoutLikesInput
+  media: Prisma.MediaCreateNestedOneWithoutLikesInput
+  comment?: Prisma.CommentCreateNestedOneWithoutLikesInput
 }
 
 export type LikeUncheckedCreateInput = {
   id?: string
   userId: string
-  reviewId: string
+  reviewId?: string | null
   createdAt?: Date | string
+  mediaId: string
+  commentId?: string | null
 }
 
 export type LikeUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutLikesNestedInput
-  review?: Prisma.ReviewUpdateOneRequiredWithoutLikesNestedInput
+  review?: Prisma.ReviewUpdateOneWithoutLikesNestedInput
+  media?: Prisma.MediaUpdateOneRequiredWithoutLikesNestedInput
+  comment?: Prisma.CommentUpdateOneWithoutLikesNestedInput
 }
 
 export type LikeUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mediaId?: Prisma.StringFieldUpdateOperationsInput | string
+  commentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LikeCreateManyInput = {
   id?: string
   userId: string
-  reviewId: string
+  reviewId?: string | null
   createdAt?: Date | string
+  mediaId: string
+  commentId?: string | null
 }
 
 export type LikeUpdateManyMutationInput = {
@@ -263,34 +303,10 @@ export type LikeUpdateManyMutationInput = {
 export type LikeUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type LikeUserIdReviewIdCompoundUniqueInput = {
-  userId: string
-  reviewId: string
-}
-
-export type LikeCountOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  reviewId?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-}
-
-export type LikeMaxOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  reviewId?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-}
-
-export type LikeMinOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  reviewId?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
+  mediaId?: Prisma.StringFieldUpdateOperationsInput | string
+  commentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LikeListRelationFilter = {
@@ -301,6 +317,123 @@ export type LikeListRelationFilter = {
 
 export type LikeOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type LikeUserIdReviewIdCommentIdCompoundUniqueInput = {
+  userId: string
+  reviewId: string
+  commentId: string
+}
+
+export type LikeCountOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  reviewId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  mediaId?: Prisma.SortOrder
+  commentId?: Prisma.SortOrder
+}
+
+export type LikeMaxOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  reviewId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  mediaId?: Prisma.SortOrder
+  commentId?: Prisma.SortOrder
+}
+
+export type LikeMinOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  reviewId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  mediaId?: Prisma.SortOrder
+  commentId?: Prisma.SortOrder
+}
+
+export type LikeCreateNestedManyWithoutCommentInput = {
+  create?: Prisma.XOR<Prisma.LikeCreateWithoutCommentInput, Prisma.LikeUncheckedCreateWithoutCommentInput> | Prisma.LikeCreateWithoutCommentInput[] | Prisma.LikeUncheckedCreateWithoutCommentInput[]
+  connectOrCreate?: Prisma.LikeCreateOrConnectWithoutCommentInput | Prisma.LikeCreateOrConnectWithoutCommentInput[]
+  createMany?: Prisma.LikeCreateManyCommentInputEnvelope
+  connect?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+}
+
+export type LikeUncheckedCreateNestedManyWithoutCommentInput = {
+  create?: Prisma.XOR<Prisma.LikeCreateWithoutCommentInput, Prisma.LikeUncheckedCreateWithoutCommentInput> | Prisma.LikeCreateWithoutCommentInput[] | Prisma.LikeUncheckedCreateWithoutCommentInput[]
+  connectOrCreate?: Prisma.LikeCreateOrConnectWithoutCommentInput | Prisma.LikeCreateOrConnectWithoutCommentInput[]
+  createMany?: Prisma.LikeCreateManyCommentInputEnvelope
+  connect?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+}
+
+export type LikeUpdateManyWithoutCommentNestedInput = {
+  create?: Prisma.XOR<Prisma.LikeCreateWithoutCommentInput, Prisma.LikeUncheckedCreateWithoutCommentInput> | Prisma.LikeCreateWithoutCommentInput[] | Prisma.LikeUncheckedCreateWithoutCommentInput[]
+  connectOrCreate?: Prisma.LikeCreateOrConnectWithoutCommentInput | Prisma.LikeCreateOrConnectWithoutCommentInput[]
+  upsert?: Prisma.LikeUpsertWithWhereUniqueWithoutCommentInput | Prisma.LikeUpsertWithWhereUniqueWithoutCommentInput[]
+  createMany?: Prisma.LikeCreateManyCommentInputEnvelope
+  set?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+  disconnect?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+  delete?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+  connect?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+  update?: Prisma.LikeUpdateWithWhereUniqueWithoutCommentInput | Prisma.LikeUpdateWithWhereUniqueWithoutCommentInput[]
+  updateMany?: Prisma.LikeUpdateManyWithWhereWithoutCommentInput | Prisma.LikeUpdateManyWithWhereWithoutCommentInput[]
+  deleteMany?: Prisma.LikeScalarWhereInput | Prisma.LikeScalarWhereInput[]
+}
+
+export type LikeUncheckedUpdateManyWithoutCommentNestedInput = {
+  create?: Prisma.XOR<Prisma.LikeCreateWithoutCommentInput, Prisma.LikeUncheckedCreateWithoutCommentInput> | Prisma.LikeCreateWithoutCommentInput[] | Prisma.LikeUncheckedCreateWithoutCommentInput[]
+  connectOrCreate?: Prisma.LikeCreateOrConnectWithoutCommentInput | Prisma.LikeCreateOrConnectWithoutCommentInput[]
+  upsert?: Prisma.LikeUpsertWithWhereUniqueWithoutCommentInput | Prisma.LikeUpsertWithWhereUniqueWithoutCommentInput[]
+  createMany?: Prisma.LikeCreateManyCommentInputEnvelope
+  set?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+  disconnect?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+  delete?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+  connect?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+  update?: Prisma.LikeUpdateWithWhereUniqueWithoutCommentInput | Prisma.LikeUpdateWithWhereUniqueWithoutCommentInput[]
+  updateMany?: Prisma.LikeUpdateManyWithWhereWithoutCommentInput | Prisma.LikeUpdateManyWithWhereWithoutCommentInput[]
+  deleteMany?: Prisma.LikeScalarWhereInput | Prisma.LikeScalarWhereInput[]
+}
+
+export type LikeCreateNestedManyWithoutMediaInput = {
+  create?: Prisma.XOR<Prisma.LikeCreateWithoutMediaInput, Prisma.LikeUncheckedCreateWithoutMediaInput> | Prisma.LikeCreateWithoutMediaInput[] | Prisma.LikeUncheckedCreateWithoutMediaInput[]
+  connectOrCreate?: Prisma.LikeCreateOrConnectWithoutMediaInput | Prisma.LikeCreateOrConnectWithoutMediaInput[]
+  createMany?: Prisma.LikeCreateManyMediaInputEnvelope
+  connect?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+}
+
+export type LikeUncheckedCreateNestedManyWithoutMediaInput = {
+  create?: Prisma.XOR<Prisma.LikeCreateWithoutMediaInput, Prisma.LikeUncheckedCreateWithoutMediaInput> | Prisma.LikeCreateWithoutMediaInput[] | Prisma.LikeUncheckedCreateWithoutMediaInput[]
+  connectOrCreate?: Prisma.LikeCreateOrConnectWithoutMediaInput | Prisma.LikeCreateOrConnectWithoutMediaInput[]
+  createMany?: Prisma.LikeCreateManyMediaInputEnvelope
+  connect?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+}
+
+export type LikeUpdateManyWithoutMediaNestedInput = {
+  create?: Prisma.XOR<Prisma.LikeCreateWithoutMediaInput, Prisma.LikeUncheckedCreateWithoutMediaInput> | Prisma.LikeCreateWithoutMediaInput[] | Prisma.LikeUncheckedCreateWithoutMediaInput[]
+  connectOrCreate?: Prisma.LikeCreateOrConnectWithoutMediaInput | Prisma.LikeCreateOrConnectWithoutMediaInput[]
+  upsert?: Prisma.LikeUpsertWithWhereUniqueWithoutMediaInput | Prisma.LikeUpsertWithWhereUniqueWithoutMediaInput[]
+  createMany?: Prisma.LikeCreateManyMediaInputEnvelope
+  set?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+  disconnect?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+  delete?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+  connect?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+  update?: Prisma.LikeUpdateWithWhereUniqueWithoutMediaInput | Prisma.LikeUpdateWithWhereUniqueWithoutMediaInput[]
+  updateMany?: Prisma.LikeUpdateManyWithWhereWithoutMediaInput | Prisma.LikeUpdateManyWithWhereWithoutMediaInput[]
+  deleteMany?: Prisma.LikeScalarWhereInput | Prisma.LikeScalarWhereInput[]
+}
+
+export type LikeUncheckedUpdateManyWithoutMediaNestedInput = {
+  create?: Prisma.XOR<Prisma.LikeCreateWithoutMediaInput, Prisma.LikeUncheckedCreateWithoutMediaInput> | Prisma.LikeCreateWithoutMediaInput[] | Prisma.LikeUncheckedCreateWithoutMediaInput[]
+  connectOrCreate?: Prisma.LikeCreateOrConnectWithoutMediaInput | Prisma.LikeCreateOrConnectWithoutMediaInput[]
+  upsert?: Prisma.LikeUpsertWithWhereUniqueWithoutMediaInput | Prisma.LikeUpsertWithWhereUniqueWithoutMediaInput[]
+  createMany?: Prisma.LikeCreateManyMediaInputEnvelope
+  set?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+  disconnect?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+  delete?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+  connect?: Prisma.LikeWhereUniqueInput | Prisma.LikeWhereUniqueInput[]
+  update?: Prisma.LikeUpdateWithWhereUniqueWithoutMediaInput | Prisma.LikeUpdateWithWhereUniqueWithoutMediaInput[]
+  updateMany?: Prisma.LikeUpdateManyWithWhereWithoutMediaInput | Prisma.LikeUpdateManyWithWhereWithoutMediaInput[]
+  deleteMany?: Prisma.LikeScalarWhereInput | Prisma.LikeScalarWhereInput[]
 }
 
 export type LikeCreateNestedManyWithoutReviewInput = {
@@ -387,16 +520,116 @@ export type LikeUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.LikeScalarWhereInput | Prisma.LikeScalarWhereInput[]
 }
 
+export type LikeCreateWithoutCommentInput = {
+  id?: string
+  createdAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutLikesInput
+  review?: Prisma.ReviewCreateNestedOneWithoutLikesInput
+  media: Prisma.MediaCreateNestedOneWithoutLikesInput
+}
+
+export type LikeUncheckedCreateWithoutCommentInput = {
+  id?: string
+  userId: string
+  reviewId?: string | null
+  createdAt?: Date | string
+  mediaId: string
+}
+
+export type LikeCreateOrConnectWithoutCommentInput = {
+  where: Prisma.LikeWhereUniqueInput
+  create: Prisma.XOR<Prisma.LikeCreateWithoutCommentInput, Prisma.LikeUncheckedCreateWithoutCommentInput>
+}
+
+export type LikeCreateManyCommentInputEnvelope = {
+  data: Prisma.LikeCreateManyCommentInput | Prisma.LikeCreateManyCommentInput[]
+  skipDuplicates?: boolean
+}
+
+export type LikeUpsertWithWhereUniqueWithoutCommentInput = {
+  where: Prisma.LikeWhereUniqueInput
+  update: Prisma.XOR<Prisma.LikeUpdateWithoutCommentInput, Prisma.LikeUncheckedUpdateWithoutCommentInput>
+  create: Prisma.XOR<Prisma.LikeCreateWithoutCommentInput, Prisma.LikeUncheckedCreateWithoutCommentInput>
+}
+
+export type LikeUpdateWithWhereUniqueWithoutCommentInput = {
+  where: Prisma.LikeWhereUniqueInput
+  data: Prisma.XOR<Prisma.LikeUpdateWithoutCommentInput, Prisma.LikeUncheckedUpdateWithoutCommentInput>
+}
+
+export type LikeUpdateManyWithWhereWithoutCommentInput = {
+  where: Prisma.LikeScalarWhereInput
+  data: Prisma.XOR<Prisma.LikeUpdateManyMutationInput, Prisma.LikeUncheckedUpdateManyWithoutCommentInput>
+}
+
+export type LikeScalarWhereInput = {
+  AND?: Prisma.LikeScalarWhereInput | Prisma.LikeScalarWhereInput[]
+  OR?: Prisma.LikeScalarWhereInput[]
+  NOT?: Prisma.LikeScalarWhereInput | Prisma.LikeScalarWhereInput[]
+  id?: Prisma.StringFilter<"Like"> | string
+  userId?: Prisma.StringFilter<"Like"> | string
+  reviewId?: Prisma.StringNullableFilter<"Like"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Like"> | Date | string
+  mediaId?: Prisma.StringFilter<"Like"> | string
+  commentId?: Prisma.StringNullableFilter<"Like"> | string | null
+}
+
+export type LikeCreateWithoutMediaInput = {
+  id?: string
+  createdAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutLikesInput
+  review?: Prisma.ReviewCreateNestedOneWithoutLikesInput
+  comment?: Prisma.CommentCreateNestedOneWithoutLikesInput
+}
+
+export type LikeUncheckedCreateWithoutMediaInput = {
+  id?: string
+  userId: string
+  reviewId?: string | null
+  createdAt?: Date | string
+  commentId?: string | null
+}
+
+export type LikeCreateOrConnectWithoutMediaInput = {
+  where: Prisma.LikeWhereUniqueInput
+  create: Prisma.XOR<Prisma.LikeCreateWithoutMediaInput, Prisma.LikeUncheckedCreateWithoutMediaInput>
+}
+
+export type LikeCreateManyMediaInputEnvelope = {
+  data: Prisma.LikeCreateManyMediaInput | Prisma.LikeCreateManyMediaInput[]
+  skipDuplicates?: boolean
+}
+
+export type LikeUpsertWithWhereUniqueWithoutMediaInput = {
+  where: Prisma.LikeWhereUniqueInput
+  update: Prisma.XOR<Prisma.LikeUpdateWithoutMediaInput, Prisma.LikeUncheckedUpdateWithoutMediaInput>
+  create: Prisma.XOR<Prisma.LikeCreateWithoutMediaInput, Prisma.LikeUncheckedCreateWithoutMediaInput>
+}
+
+export type LikeUpdateWithWhereUniqueWithoutMediaInput = {
+  where: Prisma.LikeWhereUniqueInput
+  data: Prisma.XOR<Prisma.LikeUpdateWithoutMediaInput, Prisma.LikeUncheckedUpdateWithoutMediaInput>
+}
+
+export type LikeUpdateManyWithWhereWithoutMediaInput = {
+  where: Prisma.LikeScalarWhereInput
+  data: Prisma.XOR<Prisma.LikeUpdateManyMutationInput, Prisma.LikeUncheckedUpdateManyWithoutMediaInput>
+}
+
 export type LikeCreateWithoutReviewInput = {
   id?: string
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutLikesInput
+  media: Prisma.MediaCreateNestedOneWithoutLikesInput
+  comment?: Prisma.CommentCreateNestedOneWithoutLikesInput
 }
 
 export type LikeUncheckedCreateWithoutReviewInput = {
   id?: string
   userId: string
   createdAt?: Date | string
+  mediaId: string
+  commentId?: string | null
 }
 
 export type LikeCreateOrConnectWithoutReviewInput = {
@@ -425,26 +658,20 @@ export type LikeUpdateManyWithWhereWithoutReviewInput = {
   data: Prisma.XOR<Prisma.LikeUpdateManyMutationInput, Prisma.LikeUncheckedUpdateManyWithoutReviewInput>
 }
 
-export type LikeScalarWhereInput = {
-  AND?: Prisma.LikeScalarWhereInput | Prisma.LikeScalarWhereInput[]
-  OR?: Prisma.LikeScalarWhereInput[]
-  NOT?: Prisma.LikeScalarWhereInput | Prisma.LikeScalarWhereInput[]
-  id?: Prisma.StringFilter<"Like"> | string
-  userId?: Prisma.StringFilter<"Like"> | string
-  reviewId?: Prisma.StringFilter<"Like"> | string
-  createdAt?: Prisma.DateTimeFilter<"Like"> | Date | string
-}
-
 export type LikeCreateWithoutUserInput = {
   id?: string
   createdAt?: Date | string
-  review: Prisma.ReviewCreateNestedOneWithoutLikesInput
+  review?: Prisma.ReviewCreateNestedOneWithoutLikesInput
+  media: Prisma.MediaCreateNestedOneWithoutLikesInput
+  comment?: Prisma.CommentCreateNestedOneWithoutLikesInput
 }
 
 export type LikeUncheckedCreateWithoutUserInput = {
   id?: string
-  reviewId: string
+  reviewId?: string | null
   createdAt?: Date | string
+  mediaId: string
+  commentId?: string | null
 }
 
 export type LikeCreateOrConnectWithoutUserInput = {
@@ -473,52 +700,132 @@ export type LikeUpdateManyWithWhereWithoutUserInput = {
   data: Prisma.XOR<Prisma.LikeUpdateManyMutationInput, Prisma.LikeUncheckedUpdateManyWithoutUserInput>
 }
 
+export type LikeCreateManyCommentInput = {
+  id?: string
+  userId: string
+  reviewId?: string | null
+  createdAt?: Date | string
+  mediaId: string
+}
+
+export type LikeUpdateWithoutCommentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutLikesNestedInput
+  review?: Prisma.ReviewUpdateOneWithoutLikesNestedInput
+  media?: Prisma.MediaUpdateOneRequiredWithoutLikesNestedInput
+}
+
+export type LikeUncheckedUpdateWithoutCommentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mediaId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type LikeUncheckedUpdateManyWithoutCommentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mediaId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type LikeCreateManyMediaInput = {
+  id?: string
+  userId: string
+  reviewId?: string | null
+  createdAt?: Date | string
+  commentId?: string | null
+}
+
+export type LikeUpdateWithoutMediaInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutLikesNestedInput
+  review?: Prisma.ReviewUpdateOneWithoutLikesNestedInput
+  comment?: Prisma.CommentUpdateOneWithoutLikesNestedInput
+}
+
+export type LikeUncheckedUpdateWithoutMediaInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  commentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type LikeUncheckedUpdateManyWithoutMediaInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  commentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
 export type LikeCreateManyReviewInput = {
   id?: string
   userId: string
   createdAt?: Date | string
+  mediaId: string
+  commentId?: string | null
 }
 
 export type LikeUpdateWithoutReviewInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutLikesNestedInput
+  media?: Prisma.MediaUpdateOneRequiredWithoutLikesNestedInput
+  comment?: Prisma.CommentUpdateOneWithoutLikesNestedInput
 }
 
 export type LikeUncheckedUpdateWithoutReviewInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mediaId?: Prisma.StringFieldUpdateOperationsInput | string
+  commentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LikeUncheckedUpdateManyWithoutReviewInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mediaId?: Prisma.StringFieldUpdateOperationsInput | string
+  commentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LikeCreateManyUserInput = {
   id?: string
-  reviewId: string
+  reviewId?: string | null
   createdAt?: Date | string
+  mediaId: string
+  commentId?: string | null
 }
 
 export type LikeUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  review?: Prisma.ReviewUpdateOneRequiredWithoutLikesNestedInput
+  review?: Prisma.ReviewUpdateOneWithoutLikesNestedInput
+  media?: Prisma.MediaUpdateOneRequiredWithoutLikesNestedInput
+  comment?: Prisma.CommentUpdateOneWithoutLikesNestedInput
 }
 
 export type LikeUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mediaId?: Prisma.StringFieldUpdateOperationsInput | string
+  commentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LikeUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mediaId?: Prisma.StringFieldUpdateOperationsInput | string
+  commentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -528,8 +835,12 @@ export type LikeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   userId?: boolean
   reviewId?: boolean
   createdAt?: boolean
+  mediaId?: boolean
+  commentId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  review?: boolean | Prisma.ReviewDefaultArgs<ExtArgs>
+  review?: boolean | Prisma.Like$reviewArgs<ExtArgs>
+  media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
+  comment?: boolean | Prisma.Like$commentArgs<ExtArgs>
 }, ExtArgs["result"]["like"]>
 
 export type LikeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -537,8 +848,12 @@ export type LikeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   userId?: boolean
   reviewId?: boolean
   createdAt?: boolean
+  mediaId?: boolean
+  commentId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  review?: boolean | Prisma.ReviewDefaultArgs<ExtArgs>
+  review?: boolean | Prisma.Like$reviewArgs<ExtArgs>
+  media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
+  comment?: boolean | Prisma.Like$commentArgs<ExtArgs>
 }, ExtArgs["result"]["like"]>
 
 export type LikeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -546,8 +861,12 @@ export type LikeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   userId?: boolean
   reviewId?: boolean
   createdAt?: boolean
+  mediaId?: boolean
+  commentId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  review?: boolean | Prisma.ReviewDefaultArgs<ExtArgs>
+  review?: boolean | Prisma.Like$reviewArgs<ExtArgs>
+  media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
+  comment?: boolean | Prisma.Like$commentArgs<ExtArgs>
 }, ExtArgs["result"]["like"]>
 
 export type LikeSelectScalar = {
@@ -555,33 +874,45 @@ export type LikeSelectScalar = {
   userId?: boolean
   reviewId?: boolean
   createdAt?: boolean
+  mediaId?: boolean
+  commentId?: boolean
 }
 
-export type LikeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "reviewId" | "createdAt", ExtArgs["result"]["like"]>
+export type LikeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "reviewId" | "createdAt" | "mediaId" | "commentId", ExtArgs["result"]["like"]>
 export type LikeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  review?: boolean | Prisma.ReviewDefaultArgs<ExtArgs>
+  review?: boolean | Prisma.Like$reviewArgs<ExtArgs>
+  media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
+  comment?: boolean | Prisma.Like$commentArgs<ExtArgs>
 }
 export type LikeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  review?: boolean | Prisma.ReviewDefaultArgs<ExtArgs>
+  review?: boolean | Prisma.Like$reviewArgs<ExtArgs>
+  media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
+  comment?: boolean | Prisma.Like$commentArgs<ExtArgs>
 }
 export type LikeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  review?: boolean | Prisma.ReviewDefaultArgs<ExtArgs>
+  review?: boolean | Prisma.Like$reviewArgs<ExtArgs>
+  media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
+  comment?: boolean | Prisma.Like$commentArgs<ExtArgs>
 }
 
 export type $LikePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Like"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
-    review: Prisma.$ReviewPayload<ExtArgs>
+    review: Prisma.$ReviewPayload<ExtArgs> | null
+    media: Prisma.$MediaPayload<ExtArgs>
+    comment: Prisma.$CommentPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
-    reviewId: string
+    reviewId: string | null
     createdAt: Date
+    mediaId: string
+    commentId: string | null
   }, ExtArgs["result"]["like"]>
   composites: {}
 }
@@ -977,7 +1308,9 @@ readonly fields: LikeFieldRefs;
 export interface Prisma__LikeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  review<T extends Prisma.ReviewDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ReviewDefaultArgs<ExtArgs>>): Prisma.Prisma__ReviewClient<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  review<T extends Prisma.Like$reviewArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Like$reviewArgs<ExtArgs>>): Prisma.Prisma__ReviewClient<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  media<T extends Prisma.MediaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MediaDefaultArgs<ExtArgs>>): Prisma.Prisma__MediaClient<runtime.Types.Result.GetResult<Prisma.$MediaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  comment<T extends Prisma.Like$commentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Like$commentArgs<ExtArgs>>): Prisma.Prisma__CommentClient<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1011,6 +1344,8 @@ export interface LikeFieldRefs {
   readonly userId: Prisma.FieldRef<"Like", 'String'>
   readonly reviewId: Prisma.FieldRef<"Like", 'String'>
   readonly createdAt: Prisma.FieldRef<"Like", 'DateTime'>
+  readonly mediaId: Prisma.FieldRef<"Like", 'String'>
+  readonly commentId: Prisma.FieldRef<"Like", 'String'>
 }
     
 
@@ -1409,6 +1744,44 @@ export type LikeDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Likes to delete.
    */
   limit?: number
+}
+
+/**
+ * Like.review
+ */
+export type Like$reviewArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Review
+   */
+  select?: Prisma.ReviewSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Review
+   */
+  omit?: Prisma.ReviewOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReviewInclude<ExtArgs> | null
+  where?: Prisma.ReviewWhereInput
+}
+
+/**
+ * Like.comment
+ */
+export type Like$commentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Comment
+   */
+  select?: Prisma.CommentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Comment
+   */
+  omit?: Prisma.CommentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommentInclude<ExtArgs> | null
+  where?: Prisma.CommentWhereInput
 }
 
 /**

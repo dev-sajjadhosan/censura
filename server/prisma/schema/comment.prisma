@@ -11,25 +11,32 @@ model Comment {
   parent  Comment?  @relation("replies", fields: [parentId], references: [id])
   replies Comment[] @relation("replies")
 
-  @@map("comment")
+  mediaId String
+  media   Media  @relation(fields: [mediaId], references: [id])
+  likes   Like[]
+
+  @@unique([userId, reviewId])
   @@index([userId])
   @@index([reviewId])
   @@index([parentId])
-  @@unique([userId, reviewId])
+  @@map("comment")
 }
 
 model Like {
   id        String   @id @default(uuid())
   userId    String
-  reviewId  String
+  reviewId  String?
   createdAt DateTime @default(now())
 
-  user   User   @relation(fields: [userId], references: [id])
-  review Review @relation(fields: [reviewId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
+  review    Review? @relation(fields: [reviewId], references: [id])
+  mediaId   String
+  media     Media   @relation(fields: [mediaId], references: [id])
+  commentId String?
+  comment   Comment? @relation(fields: [commentId], references: [id])
 
-  @@map("like")
-  @@unique([userId, reviewId]) // one like per user per review
+  @@unique([userId, reviewId, commentId]) // one like per user per review
   @@index([userId])
   @@index([reviewId])
-  
+  @@map("like")
 }

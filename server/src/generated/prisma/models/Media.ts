@@ -28,10 +28,12 @@ export type AggregateMedia = {
 
 export type MediaAvgAggregateOutputType = {
   releaseYear: number | null
+  viewCount: number | null
 }
 
 export type MediaSumAggregateOutputType = {
   releaseYear: number | null
+  viewCount: number | null
 }
 
 export type MediaMinAggregateOutputType = {
@@ -47,6 +49,7 @@ export type MediaMinAggregateOutputType = {
   isEditorsPick: boolean | null
   isPublished: boolean | null
   createdAt: Date | null
+  viewCount: number | null
 }
 
 export type MediaMaxAggregateOutputType = {
@@ -62,6 +65,7 @@ export type MediaMaxAggregateOutputType = {
   isEditorsPick: boolean | null
   isPublished: boolean | null
   createdAt: Date | null
+  viewCount: number | null
 }
 
 export type MediaCountAggregateOutputType = {
@@ -80,16 +84,19 @@ export type MediaCountAggregateOutputType = {
   isEditorsPick: number
   isPublished: number
   createdAt: number
+  viewCount: number
   _all: number
 }
 
 
 export type MediaAvgAggregateInputType = {
   releaseYear?: true
+  viewCount?: true
 }
 
 export type MediaSumAggregateInputType = {
   releaseYear?: true
+  viewCount?: true
 }
 
 export type MediaMinAggregateInputType = {
@@ -105,6 +112,7 @@ export type MediaMinAggregateInputType = {
   isEditorsPick?: true
   isPublished?: true
   createdAt?: true
+  viewCount?: true
 }
 
 export type MediaMaxAggregateInputType = {
@@ -120,6 +128,7 @@ export type MediaMaxAggregateInputType = {
   isEditorsPick?: true
   isPublished?: true
   createdAt?: true
+  viewCount?: true
 }
 
 export type MediaCountAggregateInputType = {
@@ -138,6 +147,7 @@ export type MediaCountAggregateInputType = {
   isEditorsPick?: true
   isPublished?: true
   createdAt?: true
+  viewCount?: true
   _all?: true
 }
 
@@ -243,6 +253,7 @@ export type MediaGroupByOutputType = {
   isEditorsPick: boolean
   isPublished: boolean
   createdAt: Date
+  viewCount: number
   _count: MediaCountAggregateOutputType | null
   _avg: MediaAvgAggregateOutputType | null
   _sum: MediaSumAggregateOutputType | null
@@ -284,6 +295,9 @@ export type MediaWhereInput = {
   isEditorsPick?: Prisma.BoolFilter<"Media"> | boolean
   isPublished?: Prisma.BoolFilter<"Media"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Media"> | Date | string
+  viewCount?: Prisma.IntFilter<"Media"> | number
+  likes?: Prisma.LikeListRelationFilter
+  comments?: Prisma.CommentListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
   watchlists?: Prisma.WatchlistListRelationFilter
   bookmarks?: Prisma.BookmarkListRelationFilter
@@ -306,6 +320,9 @@ export type MediaOrderByWithRelationInput = {
   isEditorsPick?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
+  likes?: Prisma.LikeOrderByRelationAggregateInput
+  comments?: Prisma.CommentOrderByRelationAggregateInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
   watchlists?: Prisma.WatchlistOrderByRelationAggregateInput
   bookmarks?: Prisma.BookmarkOrderByRelationAggregateInput
@@ -332,6 +349,9 @@ export type MediaWhereUniqueInput = Prisma.AtLeast<{
   isEditorsPick?: Prisma.BoolFilter<"Media"> | boolean
   isPublished?: Prisma.BoolFilter<"Media"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Media"> | Date | string
+  viewCount?: Prisma.IntFilter<"Media"> | number
+  likes?: Prisma.LikeListRelationFilter
+  comments?: Prisma.CommentListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
   watchlists?: Prisma.WatchlistListRelationFilter
   bookmarks?: Prisma.BookmarkListRelationFilter
@@ -354,6 +374,7 @@ export type MediaOrderByWithAggregationInput = {
   isEditorsPick?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
   _count?: Prisma.MediaCountOrderByAggregateInput
   _avg?: Prisma.MediaAvgOrderByAggregateInput
   _max?: Prisma.MediaMaxOrderByAggregateInput
@@ -380,6 +401,7 @@ export type MediaScalarWhereWithAggregatesInput = {
   isEditorsPick?: Prisma.BoolWithAggregatesFilter<"Media"> | boolean
   isPublished?: Prisma.BoolWithAggregatesFilter<"Media"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Media"> | Date | string
+  viewCount?: Prisma.IntWithAggregatesFilter<"Media"> | number
 }
 
 export type MediaCreateInput = {
@@ -398,6 +420,9 @@ export type MediaCreateInput = {
   isEditorsPick?: boolean
   isPublished?: boolean
   createdAt?: Date | string
+  viewCount?: number
+  likes?: Prisma.LikeCreateNestedManyWithoutMediaInput
+  comments?: Prisma.CommentCreateNestedManyWithoutMediaInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
   watchlists?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutMediaInput
@@ -420,6 +445,9 @@ export type MediaUncheckedCreateInput = {
   isEditorsPick?: boolean
   isPublished?: boolean
   createdAt?: Date | string
+  viewCount?: number
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutMediaInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutMediaInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
   watchlists?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutMediaInput
@@ -442,6 +470,9 @@ export type MediaUpdateInput = {
   isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  likes?: Prisma.LikeUpdateManyWithoutMediaNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutMediaNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
   watchlists?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUpdateManyWithoutMediaNestedInput
@@ -464,6 +495,9 @@ export type MediaUncheckedUpdateInput = {
   isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutMediaNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutMediaNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
   watchlists?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutMediaNestedInput
@@ -486,6 +520,7 @@ export type MediaCreateManyInput = {
   isEditorsPick?: boolean
   isPublished?: boolean
   createdAt?: Date | string
+  viewCount?: number
 }
 
 export type MediaUpdateManyMutationInput = {
@@ -504,6 +539,7 @@ export type MediaUpdateManyMutationInput = {
   isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type MediaUncheckedUpdateManyInput = {
@@ -522,6 +558,12 @@ export type MediaUncheckedUpdateManyInput = {
   isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type MediaScalarRelationFilter = {
+  is?: Prisma.MediaWhereInput
+  isNot?: Prisma.MediaWhereInput
 }
 
 export type StringNullableListFilter<$PrismaModel = never> = {
@@ -553,10 +595,12 @@ export type MediaCountOrderByAggregateInput = {
   isEditorsPick?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
 }
 
 export type MediaAvgOrderByAggregateInput = {
   releaseYear?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
 }
 
 export type MediaMaxOrderByAggregateInput = {
@@ -572,6 +616,7 @@ export type MediaMaxOrderByAggregateInput = {
   isEditorsPick?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
 }
 
 export type MediaMinOrderByAggregateInput = {
@@ -587,15 +632,40 @@ export type MediaMinOrderByAggregateInput = {
   isEditorsPick?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
 }
 
 export type MediaSumOrderByAggregateInput = {
   releaseYear?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
 }
 
-export type MediaScalarRelationFilter = {
-  is?: Prisma.MediaWhereInput
-  isNot?: Prisma.MediaWhereInput
+export type MediaCreateNestedOneWithoutCommentsInput = {
+  create?: Prisma.XOR<Prisma.MediaCreateWithoutCommentsInput, Prisma.MediaUncheckedCreateWithoutCommentsInput>
+  connectOrCreate?: Prisma.MediaCreateOrConnectWithoutCommentsInput
+  connect?: Prisma.MediaWhereUniqueInput
+}
+
+export type MediaUpdateOneRequiredWithoutCommentsNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaCreateWithoutCommentsInput, Prisma.MediaUncheckedCreateWithoutCommentsInput>
+  connectOrCreate?: Prisma.MediaCreateOrConnectWithoutCommentsInput
+  upsert?: Prisma.MediaUpsertWithoutCommentsInput
+  connect?: Prisma.MediaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaUpdateToOneWithWhereWithoutCommentsInput, Prisma.MediaUpdateWithoutCommentsInput>, Prisma.MediaUncheckedUpdateWithoutCommentsInput>
+}
+
+export type MediaCreateNestedOneWithoutLikesInput = {
+  create?: Prisma.XOR<Prisma.MediaCreateWithoutLikesInput, Prisma.MediaUncheckedCreateWithoutLikesInput>
+  connectOrCreate?: Prisma.MediaCreateOrConnectWithoutLikesInput
+  connect?: Prisma.MediaWhereUniqueInput
+}
+
+export type MediaUpdateOneRequiredWithoutLikesNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaCreateWithoutLikesInput, Prisma.MediaUncheckedCreateWithoutLikesInput>
+  connectOrCreate?: Prisma.MediaCreateOrConnectWithoutLikesInput
+  upsert?: Prisma.MediaUpsertWithoutLikesInput
+  connect?: Prisma.MediaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaUpdateToOneWithWhereWithoutLikesInput, Prisma.MediaUpdateWithoutLikesInput>, Prisma.MediaUncheckedUpdateWithoutLikesInput>
 }
 
 export type MediaCreategenreInput = {
@@ -697,6 +767,230 @@ export type MediaUpdateOneRequiredWithoutWatchlistsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MediaUpdateToOneWithWhereWithoutWatchlistsInput, Prisma.MediaUpdateWithoutWatchlistsInput>, Prisma.MediaUncheckedUpdateWithoutWatchlistsInput>
 }
 
+export type MediaCreateWithoutCommentsInput = {
+  id?: string
+  title: string
+  synopsis: string
+  type: $Enums.MediaType
+  genre?: Prisma.MediaCreategenreInput | string[]
+  releaseYear: number
+  director: string
+  cast?: Prisma.MediaCreatecastInput | string[]
+  platforms?: Prisma.MediaCreateplatformsInput | string[]
+  posterUrl?: string | null
+  streamingLink?: string | null
+  pricing?: $Enums.Pricing
+  isEditorsPick?: boolean
+  isPublished?: boolean
+  createdAt?: Date | string
+  viewCount?: number
+  likes?: Prisma.LikeCreateNestedManyWithoutMediaInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
+  watchlists?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
+  bookmarks?: Prisma.BookmarkCreateNestedManyWithoutMediaInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
+}
+
+export type MediaUncheckedCreateWithoutCommentsInput = {
+  id?: string
+  title: string
+  synopsis: string
+  type: $Enums.MediaType
+  genre?: Prisma.MediaCreategenreInput | string[]
+  releaseYear: number
+  director: string
+  cast?: Prisma.MediaCreatecastInput | string[]
+  platforms?: Prisma.MediaCreateplatformsInput | string[]
+  posterUrl?: string | null
+  streamingLink?: string | null
+  pricing?: $Enums.Pricing
+  isEditorsPick?: boolean
+  isPublished?: boolean
+  createdAt?: Date | string
+  viewCount?: number
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutMediaInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
+  watchlists?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
+  bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutMediaInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
+}
+
+export type MediaCreateOrConnectWithoutCommentsInput = {
+  where: Prisma.MediaWhereUniqueInput
+  create: Prisma.XOR<Prisma.MediaCreateWithoutCommentsInput, Prisma.MediaUncheckedCreateWithoutCommentsInput>
+}
+
+export type MediaUpsertWithoutCommentsInput = {
+  update: Prisma.XOR<Prisma.MediaUpdateWithoutCommentsInput, Prisma.MediaUncheckedUpdateWithoutCommentsInput>
+  create: Prisma.XOR<Prisma.MediaCreateWithoutCommentsInput, Prisma.MediaUncheckedCreateWithoutCommentsInput>
+  where?: Prisma.MediaWhereInput
+}
+
+export type MediaUpdateToOneWithWhereWithoutCommentsInput = {
+  where?: Prisma.MediaWhereInput
+  data: Prisma.XOR<Prisma.MediaUpdateWithoutCommentsInput, Prisma.MediaUncheckedUpdateWithoutCommentsInput>
+}
+
+export type MediaUpdateWithoutCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  genre?: Prisma.MediaUpdategenreInput | string[]
+  releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
+  director?: Prisma.StringFieldUpdateOperationsInput | string
+  cast?: Prisma.MediaUpdatecastInput | string[]
+  platforms?: Prisma.MediaUpdateplatformsInput | string[]
+  posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
+  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  likes?: Prisma.LikeUpdateManyWithoutMediaNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
+  watchlists?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
+  bookmarks?: Prisma.BookmarkUpdateManyWithoutMediaNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
+}
+
+export type MediaUncheckedUpdateWithoutCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  genre?: Prisma.MediaUpdategenreInput | string[]
+  releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
+  director?: Prisma.StringFieldUpdateOperationsInput | string
+  cast?: Prisma.MediaUpdatecastInput | string[]
+  platforms?: Prisma.MediaUpdateplatformsInput | string[]
+  posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
+  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutMediaNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
+  watchlists?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
+  bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutMediaNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
+}
+
+export type MediaCreateWithoutLikesInput = {
+  id?: string
+  title: string
+  synopsis: string
+  type: $Enums.MediaType
+  genre?: Prisma.MediaCreategenreInput | string[]
+  releaseYear: number
+  director: string
+  cast?: Prisma.MediaCreatecastInput | string[]
+  platforms?: Prisma.MediaCreateplatformsInput | string[]
+  posterUrl?: string | null
+  streamingLink?: string | null
+  pricing?: $Enums.Pricing
+  isEditorsPick?: boolean
+  isPublished?: boolean
+  createdAt?: Date | string
+  viewCount?: number
+  comments?: Prisma.CommentCreateNestedManyWithoutMediaInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
+  watchlists?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
+  bookmarks?: Prisma.BookmarkCreateNestedManyWithoutMediaInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
+}
+
+export type MediaUncheckedCreateWithoutLikesInput = {
+  id?: string
+  title: string
+  synopsis: string
+  type: $Enums.MediaType
+  genre?: Prisma.MediaCreategenreInput | string[]
+  releaseYear: number
+  director: string
+  cast?: Prisma.MediaCreatecastInput | string[]
+  platforms?: Prisma.MediaCreateplatformsInput | string[]
+  posterUrl?: string | null
+  streamingLink?: string | null
+  pricing?: $Enums.Pricing
+  isEditorsPick?: boolean
+  isPublished?: boolean
+  createdAt?: Date | string
+  viewCount?: number
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutMediaInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
+  watchlists?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
+  bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutMediaInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
+}
+
+export type MediaCreateOrConnectWithoutLikesInput = {
+  where: Prisma.MediaWhereUniqueInput
+  create: Prisma.XOR<Prisma.MediaCreateWithoutLikesInput, Prisma.MediaUncheckedCreateWithoutLikesInput>
+}
+
+export type MediaUpsertWithoutLikesInput = {
+  update: Prisma.XOR<Prisma.MediaUpdateWithoutLikesInput, Prisma.MediaUncheckedUpdateWithoutLikesInput>
+  create: Prisma.XOR<Prisma.MediaCreateWithoutLikesInput, Prisma.MediaUncheckedCreateWithoutLikesInput>
+  where?: Prisma.MediaWhereInput
+}
+
+export type MediaUpdateToOneWithWhereWithoutLikesInput = {
+  where?: Prisma.MediaWhereInput
+  data: Prisma.XOR<Prisma.MediaUpdateWithoutLikesInput, Prisma.MediaUncheckedUpdateWithoutLikesInput>
+}
+
+export type MediaUpdateWithoutLikesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  genre?: Prisma.MediaUpdategenreInput | string[]
+  releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
+  director?: Prisma.StringFieldUpdateOperationsInput | string
+  cast?: Prisma.MediaUpdatecastInput | string[]
+  platforms?: Prisma.MediaUpdateplatformsInput | string[]
+  posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
+  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  comments?: Prisma.CommentUpdateManyWithoutMediaNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
+  watchlists?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
+  bookmarks?: Prisma.BookmarkUpdateManyWithoutMediaNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
+}
+
+export type MediaUncheckedUpdateWithoutLikesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  genre?: Prisma.MediaUpdategenreInput | string[]
+  releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
+  director?: Prisma.StringFieldUpdateOperationsInput | string
+  cast?: Prisma.MediaUpdatecastInput | string[]
+  platforms?: Prisma.MediaUpdateplatformsInput | string[]
+  posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
+  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutMediaNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
+  watchlists?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
+  bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutMediaNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
+}
+
 export type MediaCreateWithoutBookmarksInput = {
   id?: string
   title: string
@@ -713,6 +1007,9 @@ export type MediaCreateWithoutBookmarksInput = {
   isEditorsPick?: boolean
   isPublished?: boolean
   createdAt?: Date | string
+  viewCount?: number
+  likes?: Prisma.LikeCreateNestedManyWithoutMediaInput
+  comments?: Prisma.CommentCreateNestedManyWithoutMediaInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
   watchlists?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
@@ -734,6 +1031,9 @@ export type MediaUncheckedCreateWithoutBookmarksInput = {
   isEditorsPick?: boolean
   isPublished?: boolean
   createdAt?: Date | string
+  viewCount?: number
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutMediaInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutMediaInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
   watchlists?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
@@ -771,6 +1071,9 @@ export type MediaUpdateWithoutBookmarksInput = {
   isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  likes?: Prisma.LikeUpdateManyWithoutMediaNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutMediaNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
   watchlists?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
@@ -792,6 +1095,9 @@ export type MediaUncheckedUpdateWithoutBookmarksInput = {
   isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutMediaNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutMediaNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
   watchlists?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
@@ -813,6 +1119,9 @@ export type MediaCreateWithoutFavoritesInput = {
   isEditorsPick?: boolean
   isPublished?: boolean
   createdAt?: Date | string
+  viewCount?: number
+  likes?: Prisma.LikeCreateNestedManyWithoutMediaInput
+  comments?: Prisma.CommentCreateNestedManyWithoutMediaInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
   watchlists?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutMediaInput
@@ -834,6 +1143,9 @@ export type MediaUncheckedCreateWithoutFavoritesInput = {
   isEditorsPick?: boolean
   isPublished?: boolean
   createdAt?: Date | string
+  viewCount?: number
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutMediaInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutMediaInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
   watchlists?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutMediaInput
@@ -871,6 +1183,9 @@ export type MediaUpdateWithoutFavoritesInput = {
   isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  likes?: Prisma.LikeUpdateManyWithoutMediaNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutMediaNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
   watchlists?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUpdateManyWithoutMediaNestedInput
@@ -892,6 +1207,9 @@ export type MediaUncheckedUpdateWithoutFavoritesInput = {
   isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutMediaNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutMediaNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
   watchlists?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutMediaNestedInput
@@ -913,6 +1231,9 @@ export type MediaCreateWithoutReviewsInput = {
   isEditorsPick?: boolean
   isPublished?: boolean
   createdAt?: Date | string
+  viewCount?: number
+  likes?: Prisma.LikeCreateNestedManyWithoutMediaInput
+  comments?: Prisma.CommentCreateNestedManyWithoutMediaInput
   watchlists?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
@@ -934,6 +1255,9 @@ export type MediaUncheckedCreateWithoutReviewsInput = {
   isEditorsPick?: boolean
   isPublished?: boolean
   createdAt?: Date | string
+  viewCount?: number
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutMediaInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutMediaInput
   watchlists?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
@@ -971,6 +1295,9 @@ export type MediaUpdateWithoutReviewsInput = {
   isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  likes?: Prisma.LikeUpdateManyWithoutMediaNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutMediaNestedInput
   watchlists?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
@@ -992,6 +1319,9 @@ export type MediaUncheckedUpdateWithoutReviewsInput = {
   isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutMediaNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutMediaNestedInput
   watchlists?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
@@ -1013,6 +1343,9 @@ export type MediaCreateWithoutWatchlistsInput = {
   isEditorsPick?: boolean
   isPublished?: boolean
   createdAt?: Date | string
+  viewCount?: number
+  likes?: Prisma.LikeCreateNestedManyWithoutMediaInput
+  comments?: Prisma.CommentCreateNestedManyWithoutMediaInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
@@ -1034,6 +1367,9 @@ export type MediaUncheckedCreateWithoutWatchlistsInput = {
   isEditorsPick?: boolean
   isPublished?: boolean
   createdAt?: Date | string
+  viewCount?: number
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutMediaInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutMediaInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
@@ -1071,6 +1407,9 @@ export type MediaUpdateWithoutWatchlistsInput = {
   isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  likes?: Prisma.LikeUpdateManyWithoutMediaNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutMediaNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
@@ -1092,6 +1431,9 @@ export type MediaUncheckedUpdateWithoutWatchlistsInput = {
   isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutMediaNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutMediaNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
@@ -1103,6 +1445,8 @@ export type MediaUncheckedUpdateWithoutWatchlistsInput = {
  */
 
 export type MediaCountOutputType = {
+  likes: number
+  comments: number
   reviews: number
   watchlists: number
   bookmarks: number
@@ -1110,6 +1454,8 @@ export type MediaCountOutputType = {
 }
 
 export type MediaCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  likes?: boolean | MediaCountOutputTypeCountLikesArgs
+  comments?: boolean | MediaCountOutputTypeCountCommentsArgs
   reviews?: boolean | MediaCountOutputTypeCountReviewsArgs
   watchlists?: boolean | MediaCountOutputTypeCountWatchlistsArgs
   bookmarks?: boolean | MediaCountOutputTypeCountBookmarksArgs
@@ -1124,6 +1470,20 @@ export type MediaCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
    * Select specific fields to fetch from the MediaCountOutputType
    */
   select?: Prisma.MediaCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * MediaCountOutputType without action
+ */
+export type MediaCountOutputTypeCountLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LikeWhereInput
+}
+
+/**
+ * MediaCountOutputType without action
+ */
+export type MediaCountOutputTypeCountCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommentWhereInput
 }
 
 /**
@@ -1171,6 +1531,9 @@ export type MediaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   isEditorsPick?: boolean
   isPublished?: boolean
   createdAt?: boolean
+  viewCount?: boolean
+  likes?: boolean | Prisma.Media$likesArgs<ExtArgs>
+  comments?: boolean | Prisma.Media$commentsArgs<ExtArgs>
   reviews?: boolean | Prisma.Media$reviewsArgs<ExtArgs>
   watchlists?: boolean | Prisma.Media$watchlistsArgs<ExtArgs>
   bookmarks?: boolean | Prisma.Media$bookmarksArgs<ExtArgs>
@@ -1194,6 +1557,7 @@ export type MediaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   isEditorsPick?: boolean
   isPublished?: boolean
   createdAt?: boolean
+  viewCount?: boolean
 }, ExtArgs["result"]["media"]>
 
 export type MediaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1212,6 +1576,7 @@ export type MediaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   isEditorsPick?: boolean
   isPublished?: boolean
   createdAt?: boolean
+  viewCount?: boolean
 }, ExtArgs["result"]["media"]>
 
 export type MediaSelectScalar = {
@@ -1230,10 +1595,13 @@ export type MediaSelectScalar = {
   isEditorsPick?: boolean
   isPublished?: boolean
   createdAt?: boolean
+  viewCount?: boolean
 }
 
-export type MediaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "synopsis" | "type" | "genre" | "releaseYear" | "director" | "cast" | "platforms" | "posterUrl" | "streamingLink" | "pricing" | "isEditorsPick" | "isPublished" | "createdAt", ExtArgs["result"]["media"]>
+export type MediaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "synopsis" | "type" | "genre" | "releaseYear" | "director" | "cast" | "platforms" | "posterUrl" | "streamingLink" | "pricing" | "isEditorsPick" | "isPublished" | "createdAt" | "viewCount", ExtArgs["result"]["media"]>
 export type MediaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  likes?: boolean | Prisma.Media$likesArgs<ExtArgs>
+  comments?: boolean | Prisma.Media$commentsArgs<ExtArgs>
   reviews?: boolean | Prisma.Media$reviewsArgs<ExtArgs>
   watchlists?: boolean | Prisma.Media$watchlistsArgs<ExtArgs>
   bookmarks?: boolean | Prisma.Media$bookmarksArgs<ExtArgs>
@@ -1246,6 +1614,8 @@ export type MediaIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type $MediaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Media"
   objects: {
+    likes: Prisma.$LikePayload<ExtArgs>[]
+    comments: Prisma.$CommentPayload<ExtArgs>[]
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
     watchlists: Prisma.$WatchlistPayload<ExtArgs>[]
     bookmarks: Prisma.$BookmarkPayload<ExtArgs>[]
@@ -1267,6 +1637,7 @@ export type $MediaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     isEditorsPick: boolean
     isPublished: boolean
     createdAt: Date
+    viewCount: number
   }, ExtArgs["result"]["media"]>
   composites: {}
 }
@@ -1661,6 +2032,8 @@ readonly fields: MediaFieldRefs;
  */
 export interface Prisma__MediaClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  likes<T extends Prisma.Media$likesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$likesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  comments<T extends Prisma.Media$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviews<T extends Prisma.Media$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   watchlists<T extends Prisma.Media$watchlistsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$watchlistsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WatchlistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bookmarks<T extends Prisma.Media$bookmarksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$bookmarksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookmarkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1709,6 +2082,7 @@ export interface MediaFieldRefs {
   readonly isEditorsPick: Prisma.FieldRef<"Media", 'Boolean'>
   readonly isPublished: Prisma.FieldRef<"Media", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Media", 'DateTime'>
+  readonly viewCount: Prisma.FieldRef<"Media", 'Int'>
 }
     
 
@@ -2099,6 +2473,54 @@ export type MediaDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Media to delete.
    */
   limit?: number
+}
+
+/**
+ * Media.likes
+ */
+export type Media$likesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Like
+   */
+  select?: Prisma.LikeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Like
+   */
+  omit?: Prisma.LikeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LikeInclude<ExtArgs> | null
+  where?: Prisma.LikeWhereInput
+  orderBy?: Prisma.LikeOrderByWithRelationInput | Prisma.LikeOrderByWithRelationInput[]
+  cursor?: Prisma.LikeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LikeScalarFieldEnum | Prisma.LikeScalarFieldEnum[]
+}
+
+/**
+ * Media.comments
+ */
+export type Media$commentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Comment
+   */
+  select?: Prisma.CommentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Comment
+   */
+  omit?: Prisma.CommentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommentInclude<ExtArgs> | null
+  where?: Prisma.CommentWhereInput
+  orderBy?: Prisma.CommentOrderByWithRelationInput | Prisma.CommentOrderByWithRelationInput[]
+  cursor?: Prisma.CommentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommentScalarFieldEnum | Prisma.CommentScalarFieldEnum[]
 }
 
 /**

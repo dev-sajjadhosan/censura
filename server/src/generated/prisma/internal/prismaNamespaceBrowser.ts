@@ -105,7 +105,8 @@ export const CommentScalarFieldEnum = {
   reviewId: 'reviewId',
   parentId: 'parentId',
   content: 'content',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  mediaId: 'mediaId'
 } as const
 
 export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
@@ -115,7 +116,9 @@ export const LikeScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   reviewId: 'reviewId',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  mediaId: 'mediaId',
+  commentId: 'commentId'
 } as const
 
 export type LikeScalarFieldEnum = (typeof LikeScalarFieldEnum)[keyof typeof LikeScalarFieldEnum]
@@ -136,7 +139,8 @@ export const MediaScalarFieldEnum = {
   pricing: 'pricing',
   isEditorsPick: 'isEditorsPick',
   isPublished: 'isPublished',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  viewCount: 'viewCount'
 } as const
 
 export type MediaScalarFieldEnum = (typeof MediaScalarFieldEnum)[keyof typeof MediaScalarFieldEnum]

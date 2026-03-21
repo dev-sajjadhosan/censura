@@ -432,6 +432,11 @@ export type ReviewScalarRelationFilter = {
   isNot?: Prisma.ReviewWhereInput
 }
 
+export type ReviewNullableScalarRelationFilter = {
+  is?: Prisma.ReviewWhereInput | null
+  isNot?: Prisma.ReviewWhereInput | null
+}
+
 export type ReviewListRelationFilter = {
   every?: Prisma.ReviewWhereInput
   some?: Prisma.ReviewWhereInput
@@ -512,10 +517,12 @@ export type ReviewCreateNestedOneWithoutLikesInput = {
   connect?: Prisma.ReviewWhereUniqueInput
 }
 
-export type ReviewUpdateOneRequiredWithoutLikesNestedInput = {
+export type ReviewUpdateOneWithoutLikesNestedInput = {
   create?: Prisma.XOR<Prisma.ReviewCreateWithoutLikesInput, Prisma.ReviewUncheckedCreateWithoutLikesInput>
   connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutLikesInput
   upsert?: Prisma.ReviewUpsertWithoutLikesInput
+  disconnect?: Prisma.ReviewWhereInput | boolean
+  delete?: Prisma.ReviewWhereInput | boolean
   connect?: Prisma.ReviewWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ReviewUpdateToOneWithWhereWithoutLikesInput, Prisma.ReviewUpdateWithoutLikesInput>, Prisma.ReviewUncheckedUpdateWithoutLikesInput>
 }

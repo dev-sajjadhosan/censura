@@ -125,7 +125,7 @@ backend/
 | GET    | `/:id`         | Admin  | Get single user           |
 | PATCH  | `/profile`     | User   | Update own profile        |
 | DELETE | `/:id`         | Admin  | Delete user account       |
-| PATCH  | `/:id/role`    | Admin  | Change user role          |
+| PATCH  | `/:id/status`  | Admin  | Change user status        |
 
 ---
 
@@ -156,7 +156,7 @@ backend/
 
 ---
 
-### ⭐ Reviews  `/api/v1/reviews`
+### ⭐ Reviews  `/api/v1/reviews` 
 
 | Method | Endpoint              | Access  | Description                    |
 |--------|-----------------------|---------|--------------------------------|
@@ -166,9 +166,8 @@ backend/
 | POST   | `/`                   | User    | Submit a review                |
 | PATCH  | `/:id`                | User    | Edit own unpublished review    |
 | DELETE | `/:id`                | User    | Delete own unpublished review  |
-| PATCH  | `/:id/approve`        | Admin   | Approve review                 |
-| PATCH  | `/:id/unpublish`      | Admin   | Unpublish review               |
-| DELETE | `/:id/admin`          | Admin   | Force delete any review        |
+| PATCH  | `/:id/status`         | Admin   | Approve/Unpublish review       |
+| DELETE | `/:id/admin`          | Admin   | Delete any review              |
 
 **POST /reviews body:**
 ```json

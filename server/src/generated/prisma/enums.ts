@@ -19,7 +19,24 @@ export type Role = (typeof Role)[keyof typeof Role]
 
 export const MediaType = {
   MOVIE: 'MOVIE',
-  SERIES: 'SERIES'
+  SERIES: 'SERIES',
+  DRAMA: 'DRAMA',
+  ANIME: 'ANIME',
+  CARTOON: 'CARTOON',
+  SHORT_FILM: 'SHORT_FILM',
+  DOCUMENTARY: 'DOCUMENTARY',
+  TV_SHOW: 'TV_SHOW',
+  WEB_SERIES: 'WEB_SERIES',
+  REALITY_SHOW: 'REALITY_SHOW',
+  TALK_SHOW: 'TALK_SHOW',
+  GAME_SHOW: 'GAME_SHOW',
+  NEWS_CHANNEL: 'NEWS_CHANNEL',
+  SPORTS_CHANNEL: 'SPORTS_CHANNEL',
+  MUSIC_CHANNEL: 'MUSIC_CHANNEL',
+  KIDS_CHANNEL: 'KIDS_CHANNEL',
+  LIFESTYLE_CHANNEL: 'LIFESTYLE_CHANNEL',
+  TRAVEL_CHANNEL: 'TRAVEL_CHANNEL',
+  FOOD_CHANNEL: 'FOOD_CHANNEL'
 } as const
 
 export type MediaType = (typeof MediaType)[keyof typeof MediaType]
@@ -27,7 +44,8 @@ export type MediaType = (typeof MediaType)[keyof typeof MediaType]
 
 export const Pricing = {
   FREE: 'FREE',
-  PREMIUM: 'PREMIUM'
+  PREMIUM: 'PREMIUM',
+  RENTAL: 'RENTAL'
 } as const
 
 export type Pricing = (typeof Pricing)[keyof typeof Pricing]

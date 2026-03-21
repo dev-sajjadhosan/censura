@@ -1544,6 +1544,7 @@ export const MediaScalarFieldEnum = {
   streamingLink: 'streamingLink',
   pricing: 'pricing',
   isEditorsPick: 'isEditorsPick',
+  isPublished: 'isPublished',
   createdAt: 'createdAt'
 } as const
 

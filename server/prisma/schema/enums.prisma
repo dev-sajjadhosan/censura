@@ -6,11 +6,29 @@ enum Role {
 enum MediaType {
     MOVIE
     SERIES
+    DRAMA
+    ANIME
+    CARTOON
+    SHORT_FILM
+    DOCUMENTARY
+    TV_SHOW
+    WEB_SERIES
+    REALITY_SHOW
+    TALK_SHOW
+    GAME_SHOW
+    NEWS_CHANNEL
+    SPORTS_CHANNEL
+    MUSIC_CHANNEL
+    KIDS_CHANNEL
+    LIFESTYLE_CHANNEL
+    TRAVEL_CHANNEL
+    FOOD_CHANNEL
 }
 
 enum Pricing {
     FREE
     PREMIUM
+    RENTAL
 }
 
 enum ReviewStatus {

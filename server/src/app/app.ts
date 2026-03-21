@@ -9,8 +9,12 @@ import { AppRoutes } from "./routes/routes";
 import { auth } from "./lib/auth";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
 import { notFound } from "./middleware/notFound";
+import { startSubscriptionCronJobs } from "./cron/subscription.cron";
 
 const app = express();
+
+// Initialize cron jobs
+startSubscriptionCronJobs();
 
 app.set("view engine", "ejs"); // for email templates
 app.set("views", path.resolve(process.cwd(), "src/app/templates")); // email templates location

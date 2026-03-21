@@ -5,6 +5,7 @@ import AppError from "../../error-helpers/AppError";
 import httpStatus from "http-status";
 import { envVars } from "../../config/env";
 import { SubscriptionPlan, SubStatus } from "../../../generated/prisma/enums";
+import { sendEmail } from "../../utils/email";
 
 const getPlans = async () => {
   return [
@@ -129,6 +130,28 @@ const handleWebhook = async (body: Buffer, signature: string) => {
         endDate,
       },
     });
+
+    // Fetch user details for the email
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (user) {
+      try {
+        await sendEmail({
+          to: user.email,
+          subject: "Your Censura Subscription is Active!",
+          templateName: "subscription-success",
+          templateData: {
+            userName: user.name,
+            plan,
+            startDate: startDate.toLocaleDateString(),
+            endDate: endDate.toLocaleDateString(),
+            loginUrl: `${envVars.FRONTEND_URL}/login`,
+          },
+        });
+        console.log(`Success email sent to ${user.email}`);
+      } catch (emailError) {
+        console.error("Failed to send subscription success email", emailError);
+      }
+    }
   }
 
   return { received: true };

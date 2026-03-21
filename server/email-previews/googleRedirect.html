@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Login Redirect</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background-color: #212121;
+            padding: 48px;
+            border-radius: 16px;
+            border: 1px solid #333333;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 90%;
+        }
+        h2 {
+            margin: 0 0 16px 0;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        .loader {
+            border: 4px solid #333;
+            border-top: 4px solid #6366f1;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 24px auto;
+        }
+        @keyframes spin { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
+        p { 
+            color: #b3b3b3; 
+            font-size: 16px; 
+            margin: 0; 
+            line-height: 1.5;
+        }
+        .error {
+            color: #ef4444;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="message-container">
+        <div class="loader" id="loader"></div>
+        <h2 id="title">Authenticating</h2>
+        <p id="message">Securely redirecting to Google...</p>
+    </div>
+</body>
+<script>
+    (
+        async () => {
+            const container = document.getElementById("message-container");
+            const title = document.getElementById("title");
+            const message = document.getElementById("message");
+            const loader = document.getElementById("loader");
+
+            try {
+                const response = await fetch("http://localhost:3000/api/auth/sign-in/social", {
+                    method : "POST",
+                    headers : {
+                        "Content-Type" : "application/json"
+                    },
+                    credentials : "include",
+                    body: JSON.stringify({
+                        provider : "google",
+                        callbackURL: "http://localhost:3000/callback"
+                    })
+                })
+
+                const data = await response.json();
+
+                if(data.url){
+                    window.location.href = data.url
+                }else{
+                    loader.style.display = "none";
+                    title.innerText = "Error";
+                    title.style.color = "#ef4444";
+                    message.innerHTML = "An error occurred while redirecting. Please try again later.";
+                }
+            } catch (error) {
+                loader.style.display = "none";
+                title.innerText = "Error";
+                title.style.color = "#ef4444";
+                message.innerHTML = "An error occurred while redirecting. Please try again later.<br/><br/><span style='font-size:14px;color:#888;'>" + error.message + "</span>";
+            }
+        }
+    )()
+</script>
+</html>

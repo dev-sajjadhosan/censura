@@ -5,6 +5,18 @@ import sendResponse from "../../shared/sendRes";
 import { LikesService } from "./reaction.service";
 import status from "http-status";
 
+const getAllComments = catchAsync(async (req: Request, res: Response) => {
+    const query = req.query;
+    const user = req.user as IRequestUser;
+    const result = await LikesService.getAllComments(query, user);
+
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: "Comments fetched successfully",
+        data: result,
+    });
+});
 
 const createLike = catchAsync(async (req: Request, res: Response) => {
     const result = await LikesService.createReviewLike(req.user as IRequestUser, req.body);
@@ -84,6 +96,7 @@ const adminDeleteComment = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const ReactionController = {
+    getAllComments,
     createLike,
     deleteLike,
     createComment,

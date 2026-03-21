@@ -56,3 +56,19 @@ enum UserStatus {
     UNVERIFIED // if email not verified
     DELETED // soft delete
 }
+
+enum CommentStatus {
+    PENDING
+    APPROVED
+    UNPUBLISHED
+    REJECTED
+    BLOCKED
+}
+
+enum LikeType {
+    LIKE
+    HEART
+    CRY
+    LAUGH
+    DISLIKE
+}

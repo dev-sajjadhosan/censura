@@ -1,10 +1,11 @@
 model Comment {
-  id        String   @id @default(uuid())
+  id        String        @id @default(uuid())
   userId    String
   reviewId  String
   parentId  String? // for nested replies
   content   String
-  createdAt DateTime @default(now())
+  createdAt DateTime      @default(now())
+  status    CommentStatus @default(APPROVED)
 
   user    User      @relation(fields: [userId], references: [id])
   review  Review    @relation(fields: [reviewId], references: [id])
@@ -24,14 +25,15 @@ model Comment {
 
 model Like {
   id        String   @id @default(uuid())
+  type      LikeType
   userId    String
   reviewId  String?
   createdAt DateTime @default(now())
 
-  user      User    @relation(fields: [userId], references: [id])
-  review    Review? @relation(fields: [reviewId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  review    Review?  @relation(fields: [reviewId], references: [id])
   mediaId   String
-  media     Media   @relation(fields: [mediaId], references: [id])
+  media     Media    @relation(fields: [mediaId], references: [id])
   commentId String?
   comment   Comment? @relation(fields: [commentId], references: [id])
 

@@ -3,6 +3,16 @@ import { IRequestUser } from "../../../interfaces";
 import AppError from "../../error-helpers/AppError";
 import { prisma } from "../../lib/prisma";
 
+const getAllComments = async (query: any, user: IRequestUser) => {
+  const result = await prisma.comment.findMany({
+    include: {
+      user: true,
+      replies: true,
+    },
+  });
+  return result;
+};
+
 const createReviewLike = async (
   user: IRequestUser,
   data: Prisma.LikeCreateInput,
@@ -87,7 +97,11 @@ const createCommentReply = async (
   return result;
 };
 
-const updateReviewComment = async (user: IRequestUser, id: string, data: any) => {
+const updateReviewComment = async (
+  user: IRequestUser,
+  id: string,
+  data: any,
+) => {
   const comment = await prisma.comment.findUnique({
     where: {
       id,
@@ -148,6 +162,7 @@ const adminDeleteReviewComment = async (id: string) => {
 };
 
 export const LikesService = {
+  getAllComments,
   createReviewLike,
   deleteReviewLike,
   createReviewComment,

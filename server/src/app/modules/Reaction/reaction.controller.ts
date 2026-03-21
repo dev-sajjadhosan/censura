@@ -28,7 +28,67 @@ const deleteLike = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const createComment = catchAsync(async (req: Request, res: Response) => {
+    const result = await LikesService.createReviewComment(req.user as IRequestUser, req.body);
+
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: "Comment created successfully",
+        data: result,
+    });
+});
+
+const deleteComment = catchAsync(async (req: Request, res: Response) => {
+    const result = await LikesService.deleteReviewComment(req.user as IRequestUser, req.params.id as string);
+
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: "Comment deleted successfully",
+        data: result,
+    });
+});
+
+const createCommentReply = catchAsync(async (req: Request, res: Response) => {
+    const result = await LikesService.createCommentReply(req.user as IRequestUser, req.body);
+
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: "Comment reply created successfully",
+        data: result,
+    });
+});
+
+const updateComment = catchAsync(async (req: Request, res: Response) => {
+    const result = await LikesService.updateReviewComment(req.user as IRequestUser, req.params.id as string, req.body);
+
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: "Comment updated successfully",
+        data: result,
+    });
+});
+
+const adminDeleteComment = catchAsync(async (req: Request, res: Response) => {
+    const result = await LikesService.adminDeleteReviewComment(req.params.id as string);
+
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: "Comment deleted successfully",
+        data: result,
+    });
+});
+
 export const ReactionController = {
     createLike,
     deleteLike,
+    createComment,
+    deleteComment,
+    createCommentReply,
+    updateComment,
+    adminDeleteComment,
 };

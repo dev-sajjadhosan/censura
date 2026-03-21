@@ -204,6 +204,7 @@ backend/
 | DELETE | `/:id`                      | User   | Delete own comment        |
 | DELETE | `/:id/admin`                | Admin  | Admin force delete        |
 
+
 ---
 
 ### 📋 Watchlist  `/api/v1/watchlist`

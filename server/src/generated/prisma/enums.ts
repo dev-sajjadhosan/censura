@@ -69,6 +69,30 @@ export const SubscriptionPlan = {
 export type SubscriptionPlan = (typeof SubscriptionPlan)[keyof typeof SubscriptionPlan]
 
 
+export const SubscriptionStatus = {
+  ACTIVE: 'ACTIVE',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED',
+  PAST_DUE: 'PAST_DUE'
+} as const
+
+export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
+
+
+export const Platform = {
+  NETFLIX: 'NETFLIX',
+  DISNEY_PLUS: 'DISNEY_PLUS',
+  HBO: 'HBO',
+  AMAZON_PRIME: 'AMAZON_PRIME',
+  APPLE_TV_PLUS: 'APPLE_TV_PLUS',
+  HULU: 'HULU',
+  PARAMOUNT_PLUS: 'PARAMOUNT_PLUS',
+  OTHER: 'OTHER'
+} as const
+
+export type Platform = (typeof Platform)[keyof typeof Platform]
+
+
 export const SubStatus = {
   ACTIVE: 'ACTIVE',
   CANCELLED: 'CANCELLED',
@@ -87,3 +111,25 @@ export const UserStatus = {
 } as const
 
 export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]
+
+
+export const CommentStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  UNPUBLISHED: 'UNPUBLISHED',
+  REJECTED: 'REJECTED',
+  BLOCKED: 'BLOCKED'
+} as const
+
+export type CommentStatus = (typeof CommentStatus)[keyof typeof CommentStatus]
+
+
+export const LikeType = {
+  LIKE: 'LIKE',
+  HEART: 'HEART',
+  CRY: 'CRY',
+  LAUGH: 'LAUGH',
+  DISLIKE: 'DISLIKE'
+} as const
+
+export type LikeType = (typeof LikeType)[keyof typeof LikeType]

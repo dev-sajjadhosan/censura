@@ -2,11 +2,21 @@ import status from "http-status";
 import { UserStatus } from "../../../generated/prisma/enums";
 import AppError from "../../error-helpers/AppError";
 import { prisma } from "../../lib/prisma";
+import { QueryBuilder } from "../../utils/QueryBuilder";
 
-const getAllUsers = async (query?: Record<string, any>) => {
-  //query-builder implement
+const getAllUsers = async (query: Record<string, unknown> = {}) => {
+  const userQuery = new QueryBuilder(prisma.user, query as any, {
+    searchableFields: ["name", "email"],
+    filterableFields: ["role", "status", "emailVerified"],
+  })
+    .search()
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
 
-  return await prisma.user.findMany();
+  const result = await userQuery.execute();
+  return result;
 };
 
 const getUserById = async (id: string) => {

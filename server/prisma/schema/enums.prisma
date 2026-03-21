@@ -1,74 +1,92 @@
 enum Role {
-    USER
-    ADMIN
+  USER
+  ADMIN
 }
 
 enum MediaType {
-    MOVIE
-    SERIES
-    DRAMA
-    ANIME
-    CARTOON
-    SHORT_FILM
-    DOCUMENTARY
-    TV_SHOW
-    WEB_SERIES
-    REALITY_SHOW
-    TALK_SHOW
-    GAME_SHOW
-    NEWS_CHANNEL
-    SPORTS_CHANNEL
-    MUSIC_CHANNEL
-    KIDS_CHANNEL
-    LIFESTYLE_CHANNEL
-    TRAVEL_CHANNEL
-    FOOD_CHANNEL
+  MOVIE
+  SERIES
+  DRAMA
+  ANIME
+  CARTOON
+  SHORT_FILM
+  DOCUMENTARY
+  TV_SHOW
+  WEB_SERIES
+  REALITY_SHOW
+  TALK_SHOW
+  GAME_SHOW
+  NEWS_CHANNEL
+  SPORTS_CHANNEL
+  MUSIC_CHANNEL
+  KIDS_CHANNEL
+  LIFESTYLE_CHANNEL
+  TRAVEL_CHANNEL
+  FOOD_CHANNEL
 }
 
 enum Pricing {
-    FREE
-    PREMIUM
-    RENTAL
+  FREE
+  PREMIUM
+  RENTAL
 }
 
 enum ReviewStatus {
-    PENDING
-    APPROVED
-    UNPUBLISHED
+  PENDING
+  APPROVED
+  UNPUBLISHED
 }
 
 enum SubscriptionPlan {
-    FREE
-    MONTHLY
-    YEARLY
+  FREE
+  MONTHLY
+  YEARLY
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PAST_DUE
+}
+
+enum Platform {
+  NETFLIX
+  DISNEY_PLUS
+  HBO
+  AMAZON_PRIME
+  APPLE_TV_PLUS
+  HULU
+  PARAMOUNT_PLUS
+  OTHER
 }
 
 enum SubStatus {
-    ACTIVE
-    CANCELLED
-    EXPIRED
+  ACTIVE
+  CANCELLED
+  EXPIRED
 }
 
 enum UserStatus {
-    ACTIVE // default
-    BLOCKED // suspended indefinitely
-    PENDING // if new admin or moderator not approved by admin
-    UNVERIFIED // if email not verified
-    DELETED // soft delete
+  ACTIVE // default
+  BLOCKED // suspended indefinitely
+  PENDING // if new admin or moderator not approved by admin
+  UNVERIFIED // if email not verified
+  DELETED // soft delete
 }
 
 enum CommentStatus {
-    PENDING
-    APPROVED
-    UNPUBLISHED
-    REJECTED
-    BLOCKED
+  PENDING
+  APPROVED
+  UNPUBLISHED
+  REJECTED
+  BLOCKED
 }
 
 enum LikeType {
-    LIKE
-    HEART
-    CRY
-    LAUGH
-    DISLIKE
+  LIKE
+  HEART
+  CRY
+  LAUGH
+  DISLIKE
 }

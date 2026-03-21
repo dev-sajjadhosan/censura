@@ -33,10 +33,25 @@ export type Comment = Prisma.CommentModel
  */
 export type Like = Prisma.LikeModel
 /**
+ * Model Genre
+ * 
+ */
+export type Genre = Prisma.GenreModel
+/**
  * Model Media
  * 
  */
 export type Media = Prisma.MediaModel
+/**
+ * Model MediaPlatform
+ * 
+ */
+export type MediaPlatform = Prisma.MediaPlatformModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
 /**
  * Model Profile
  * 

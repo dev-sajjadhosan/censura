@@ -3,9 +3,20 @@ import { ReviewStatus } from "../../../generated/prisma/enums";
 import { IRequestUser } from "../../interfaces";
 import AppError from "../../error-helpers/AppError";
 import { prisma } from "../../lib/prisma";
+import { QueryBuilder } from "../../utils/QueryBuilder";
 
-const getAllReview = async (user: IRequestUser, query: any) => {
-  const result = await prisma.review.findMany();
+const getAllReview = async (user: IRequestUser, query: Record<string, unknown>) => {
+  const reviewQuery = new QueryBuilder(prisma.review, query as any, {
+    searchableFields: ["content", "rating"],
+    filterableFields: ["status", "mediaId", "userId", "rating"],
+  })
+    .search()
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await reviewQuery.execute();
   return result;
 };
 

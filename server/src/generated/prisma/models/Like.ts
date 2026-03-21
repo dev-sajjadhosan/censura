@@ -26,6 +26,7 @@ export type AggregateLike = {
 
 export type LikeMinAggregateOutputType = {
   id: string | null
+  type: $Enums.LikeType | null
   userId: string | null
   reviewId: string | null
   createdAt: Date | null
@@ -35,6 +36,7 @@ export type LikeMinAggregateOutputType = {
 
 export type LikeMaxAggregateOutputType = {
   id: string | null
+  type: $Enums.LikeType | null
   userId: string | null
   reviewId: string | null
   createdAt: Date | null
@@ -44,6 +46,7 @@ export type LikeMaxAggregateOutputType = {
 
 export type LikeCountAggregateOutputType = {
   id: number
+  type: number
   userId: number
   reviewId: number
   createdAt: number
@@ -55,6 +58,7 @@ export type LikeCountAggregateOutputType = {
 
 export type LikeMinAggregateInputType = {
   id?: true
+  type?: true
   userId?: true
   reviewId?: true
   createdAt?: true
@@ -64,6 +68,7 @@ export type LikeMinAggregateInputType = {
 
 export type LikeMaxAggregateInputType = {
   id?: true
+  type?: true
   userId?: true
   reviewId?: true
   createdAt?: true
@@ -73,6 +78,7 @@ export type LikeMaxAggregateInputType = {
 
 export type LikeCountAggregateInputType = {
   id?: true
+  type?: true
   userId?: true
   reviewId?: true
   createdAt?: true
@@ -155,6 +161,7 @@ export type LikeGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 
 export type LikeGroupByOutputType = {
   id: string
+  type: $Enums.LikeType
   userId: string
   reviewId: string | null
   createdAt: Date
@@ -185,6 +192,7 @@ export type LikeWhereInput = {
   OR?: Prisma.LikeWhereInput[]
   NOT?: Prisma.LikeWhereInput | Prisma.LikeWhereInput[]
   id?: Prisma.StringFilter<"Like"> | string
+  type?: Prisma.EnumLikeTypeFilter<"Like"> | $Enums.LikeType
   userId?: Prisma.StringFilter<"Like"> | string
   reviewId?: Prisma.StringNullableFilter<"Like"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Like"> | Date | string
@@ -198,6 +206,7 @@ export type LikeWhereInput = {
 
 export type LikeOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   reviewId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -215,6 +224,7 @@ export type LikeWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.LikeWhereInput | Prisma.LikeWhereInput[]
   OR?: Prisma.LikeWhereInput[]
   NOT?: Prisma.LikeWhereInput | Prisma.LikeWhereInput[]
+  type?: Prisma.EnumLikeTypeFilter<"Like"> | $Enums.LikeType
   userId?: Prisma.StringFilter<"Like"> | string
   reviewId?: Prisma.StringNullableFilter<"Like"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Like"> | Date | string
@@ -228,6 +238,7 @@ export type LikeWhereUniqueInput = Prisma.AtLeast<{
 
 export type LikeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   reviewId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -243,6 +254,7 @@ export type LikeScalarWhereWithAggregatesInput = {
   OR?: Prisma.LikeScalarWhereWithAggregatesInput[]
   NOT?: Prisma.LikeScalarWhereWithAggregatesInput | Prisma.LikeScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Like"> | string
+  type?: Prisma.EnumLikeTypeWithAggregatesFilter<"Like"> | $Enums.LikeType
   userId?: Prisma.StringWithAggregatesFilter<"Like"> | string
   reviewId?: Prisma.StringNullableWithAggregatesFilter<"Like"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Like"> | Date | string
@@ -252,6 +264,7 @@ export type LikeScalarWhereWithAggregatesInput = {
 
 export type LikeCreateInput = {
   id?: string
+  type: $Enums.LikeType
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutLikesInput
   review?: Prisma.ReviewCreateNestedOneWithoutLikesInput
@@ -261,6 +274,7 @@ export type LikeCreateInput = {
 
 export type LikeUncheckedCreateInput = {
   id?: string
+  type: $Enums.LikeType
   userId: string
   reviewId?: string | null
   createdAt?: Date | string
@@ -270,6 +284,7 @@ export type LikeUncheckedCreateInput = {
 
 export type LikeUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLikeTypeFieldUpdateOperationsInput | $Enums.LikeType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutLikesNestedInput
   review?: Prisma.ReviewUpdateOneWithoutLikesNestedInput
@@ -279,6 +294,7 @@ export type LikeUpdateInput = {
 
 export type LikeUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLikeTypeFieldUpdateOperationsInput | $Enums.LikeType
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   reviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -288,6 +304,7 @@ export type LikeUncheckedUpdateInput = {
 
 export type LikeCreateManyInput = {
   id?: string
+  type: $Enums.LikeType
   userId: string
   reviewId?: string | null
   createdAt?: Date | string
@@ -297,11 +314,13 @@ export type LikeCreateManyInput = {
 
 export type LikeUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLikeTypeFieldUpdateOperationsInput | $Enums.LikeType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type LikeUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLikeTypeFieldUpdateOperationsInput | $Enums.LikeType
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   reviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -327,6 +346,7 @@ export type LikeUserIdReviewIdCommentIdCompoundUniqueInput = {
 
 export type LikeCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   reviewId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -336,6 +356,7 @@ export type LikeCountOrderByAggregateInput = {
 
 export type LikeMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   reviewId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -345,6 +366,7 @@ export type LikeMaxOrderByAggregateInput = {
 
 export type LikeMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   reviewId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -392,6 +414,10 @@ export type LikeUncheckedUpdateManyWithoutCommentNestedInput = {
   update?: Prisma.LikeUpdateWithWhereUniqueWithoutCommentInput | Prisma.LikeUpdateWithWhereUniqueWithoutCommentInput[]
   updateMany?: Prisma.LikeUpdateManyWithWhereWithoutCommentInput | Prisma.LikeUpdateManyWithWhereWithoutCommentInput[]
   deleteMany?: Prisma.LikeScalarWhereInput | Prisma.LikeScalarWhereInput[]
+}
+
+export type EnumLikeTypeFieldUpdateOperationsInput = {
+  set?: $Enums.LikeType
 }
 
 export type LikeCreateNestedManyWithoutMediaInput = {
@@ -522,6 +548,7 @@ export type LikeUncheckedUpdateManyWithoutUserNestedInput = {
 
 export type LikeCreateWithoutCommentInput = {
   id?: string
+  type: $Enums.LikeType
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutLikesInput
   review?: Prisma.ReviewCreateNestedOneWithoutLikesInput
@@ -530,6 +557,7 @@ export type LikeCreateWithoutCommentInput = {
 
 export type LikeUncheckedCreateWithoutCommentInput = {
   id?: string
+  type: $Enums.LikeType
   userId: string
   reviewId?: string | null
   createdAt?: Date | string
@@ -567,6 +595,7 @@ export type LikeScalarWhereInput = {
   OR?: Prisma.LikeScalarWhereInput[]
   NOT?: Prisma.LikeScalarWhereInput | Prisma.LikeScalarWhereInput[]
   id?: Prisma.StringFilter<"Like"> | string
+  type?: Prisma.EnumLikeTypeFilter<"Like"> | $Enums.LikeType
   userId?: Prisma.StringFilter<"Like"> | string
   reviewId?: Prisma.StringNullableFilter<"Like"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Like"> | Date | string
@@ -576,6 +605,7 @@ export type LikeScalarWhereInput = {
 
 export type LikeCreateWithoutMediaInput = {
   id?: string
+  type: $Enums.LikeType
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutLikesInput
   review?: Prisma.ReviewCreateNestedOneWithoutLikesInput
@@ -584,6 +614,7 @@ export type LikeCreateWithoutMediaInput = {
 
 export type LikeUncheckedCreateWithoutMediaInput = {
   id?: string
+  type: $Enums.LikeType
   userId: string
   reviewId?: string | null
   createdAt?: Date | string
@@ -618,6 +649,7 @@ export type LikeUpdateManyWithWhereWithoutMediaInput = {
 
 export type LikeCreateWithoutReviewInput = {
   id?: string
+  type: $Enums.LikeType
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutLikesInput
   media: Prisma.MediaCreateNestedOneWithoutLikesInput
@@ -626,6 +658,7 @@ export type LikeCreateWithoutReviewInput = {
 
 export type LikeUncheckedCreateWithoutReviewInput = {
   id?: string
+  type: $Enums.LikeType
   userId: string
   createdAt?: Date | string
   mediaId: string
@@ -660,6 +693,7 @@ export type LikeUpdateManyWithWhereWithoutReviewInput = {
 
 export type LikeCreateWithoutUserInput = {
   id?: string
+  type: $Enums.LikeType
   createdAt?: Date | string
   review?: Prisma.ReviewCreateNestedOneWithoutLikesInput
   media: Prisma.MediaCreateNestedOneWithoutLikesInput
@@ -668,6 +702,7 @@ export type LikeCreateWithoutUserInput = {
 
 export type LikeUncheckedCreateWithoutUserInput = {
   id?: string
+  type: $Enums.LikeType
   reviewId?: string | null
   createdAt?: Date | string
   mediaId: string
@@ -702,6 +737,7 @@ export type LikeUpdateManyWithWhereWithoutUserInput = {
 
 export type LikeCreateManyCommentInput = {
   id?: string
+  type: $Enums.LikeType
   userId: string
   reviewId?: string | null
   createdAt?: Date | string
@@ -710,6 +746,7 @@ export type LikeCreateManyCommentInput = {
 
 export type LikeUpdateWithoutCommentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLikeTypeFieldUpdateOperationsInput | $Enums.LikeType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutLikesNestedInput
   review?: Prisma.ReviewUpdateOneWithoutLikesNestedInput
@@ -718,6 +755,7 @@ export type LikeUpdateWithoutCommentInput = {
 
 export type LikeUncheckedUpdateWithoutCommentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLikeTypeFieldUpdateOperationsInput | $Enums.LikeType
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   reviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -726,6 +764,7 @@ export type LikeUncheckedUpdateWithoutCommentInput = {
 
 export type LikeUncheckedUpdateManyWithoutCommentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLikeTypeFieldUpdateOperationsInput | $Enums.LikeType
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   reviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -734,6 +773,7 @@ export type LikeUncheckedUpdateManyWithoutCommentInput = {
 
 export type LikeCreateManyMediaInput = {
   id?: string
+  type: $Enums.LikeType
   userId: string
   reviewId?: string | null
   createdAt?: Date | string
@@ -742,6 +782,7 @@ export type LikeCreateManyMediaInput = {
 
 export type LikeUpdateWithoutMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLikeTypeFieldUpdateOperationsInput | $Enums.LikeType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutLikesNestedInput
   review?: Prisma.ReviewUpdateOneWithoutLikesNestedInput
@@ -750,6 +791,7 @@ export type LikeUpdateWithoutMediaInput = {
 
 export type LikeUncheckedUpdateWithoutMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLikeTypeFieldUpdateOperationsInput | $Enums.LikeType
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   reviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -758,6 +800,7 @@ export type LikeUncheckedUpdateWithoutMediaInput = {
 
 export type LikeUncheckedUpdateManyWithoutMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLikeTypeFieldUpdateOperationsInput | $Enums.LikeType
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   reviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -766,6 +809,7 @@ export type LikeUncheckedUpdateManyWithoutMediaInput = {
 
 export type LikeCreateManyReviewInput = {
   id?: string
+  type: $Enums.LikeType
   userId: string
   createdAt?: Date | string
   mediaId: string
@@ -774,6 +818,7 @@ export type LikeCreateManyReviewInput = {
 
 export type LikeUpdateWithoutReviewInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLikeTypeFieldUpdateOperationsInput | $Enums.LikeType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutLikesNestedInput
   media?: Prisma.MediaUpdateOneRequiredWithoutLikesNestedInput
@@ -782,6 +827,7 @@ export type LikeUpdateWithoutReviewInput = {
 
 export type LikeUncheckedUpdateWithoutReviewInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLikeTypeFieldUpdateOperationsInput | $Enums.LikeType
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mediaId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -790,6 +836,7 @@ export type LikeUncheckedUpdateWithoutReviewInput = {
 
 export type LikeUncheckedUpdateManyWithoutReviewInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLikeTypeFieldUpdateOperationsInput | $Enums.LikeType
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mediaId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -798,6 +845,7 @@ export type LikeUncheckedUpdateManyWithoutReviewInput = {
 
 export type LikeCreateManyUserInput = {
   id?: string
+  type: $Enums.LikeType
   reviewId?: string | null
   createdAt?: Date | string
   mediaId: string
@@ -806,6 +854,7 @@ export type LikeCreateManyUserInput = {
 
 export type LikeUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLikeTypeFieldUpdateOperationsInput | $Enums.LikeType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   review?: Prisma.ReviewUpdateOneWithoutLikesNestedInput
   media?: Prisma.MediaUpdateOneRequiredWithoutLikesNestedInput
@@ -814,6 +863,7 @@ export type LikeUpdateWithoutUserInput = {
 
 export type LikeUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLikeTypeFieldUpdateOperationsInput | $Enums.LikeType
   reviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mediaId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -822,6 +872,7 @@ export type LikeUncheckedUpdateWithoutUserInput = {
 
 export type LikeUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLikeTypeFieldUpdateOperationsInput | $Enums.LikeType
   reviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mediaId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -832,6 +883,7 @@ export type LikeUncheckedUpdateManyWithoutUserInput = {
 
 export type LikeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  type?: boolean
   userId?: boolean
   reviewId?: boolean
   createdAt?: boolean
@@ -845,6 +897,7 @@ export type LikeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 
 export type LikeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  type?: boolean
   userId?: boolean
   reviewId?: boolean
   createdAt?: boolean
@@ -858,6 +911,7 @@ export type LikeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 
 export type LikeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  type?: boolean
   userId?: boolean
   reviewId?: boolean
   createdAt?: boolean
@@ -871,6 +925,7 @@ export type LikeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 
 export type LikeSelectScalar = {
   id?: boolean
+  type?: boolean
   userId?: boolean
   reviewId?: boolean
   createdAt?: boolean
@@ -878,7 +933,7 @@ export type LikeSelectScalar = {
   commentId?: boolean
 }
 
-export type LikeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "reviewId" | "createdAt" | "mediaId" | "commentId", ExtArgs["result"]["like"]>
+export type LikeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "userId" | "reviewId" | "createdAt" | "mediaId" | "commentId", ExtArgs["result"]["like"]>
 export type LikeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   review?: boolean | Prisma.Like$reviewArgs<ExtArgs>
@@ -908,6 +963,7 @@ export type $LikePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    type: $Enums.LikeType
     userId: string
     reviewId: string | null
     createdAt: Date
@@ -1341,6 +1397,7 @@ export interface Prisma__LikeClient<T, Null = never, ExtArgs extends runtime.Typ
  */
 export interface LikeFieldRefs {
   readonly id: Prisma.FieldRef<"Like", 'String'>
+  readonly type: Prisma.FieldRef<"Like", 'LikeType'>
   readonly userId: Prisma.FieldRef<"Like", 'String'>
   readonly reviewId: Prisma.FieldRef<"Like", 'String'>
   readonly createdAt: Prisma.FieldRef<"Like", 'DateTime'>

@@ -1,0 +1,10 @@
+model MediaPlatform {
+  id       String   @id @default(uuid())
+  mediaId  String
+  media    Media    @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  platform Platform
+  url      String?
+
+  @@unique([mediaId, platform])
+  @@map("media_platforms")
+}

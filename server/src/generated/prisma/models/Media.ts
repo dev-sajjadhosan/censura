@@ -28,62 +28,92 @@ export type AggregateMedia = {
 
 export type MediaAvgAggregateOutputType = {
   releaseYear: number | null
+  runtimeMinutes: number | null
+  seasons: number | null
+  avgRating: number | null
+  reviewCount: number | null
   viewCount: number | null
 }
 
 export type MediaSumAggregateOutputType = {
   releaseYear: number | null
+  runtimeMinutes: number | null
+  seasons: number | null
+  avgRating: number | null
+  reviewCount: number | null
   viewCount: number | null
 }
 
 export type MediaMinAggregateOutputType = {
   id: string | null
   title: string | null
-  synopsis: string | null
+  slug: string | null
   type: $Enums.MediaType | null
+  synopsis: string | null
   releaseYear: number | null
   director: string | null
   posterUrl: string | null
-  streamingLink: string | null
+  backdropUrl: string | null
+  trailerUrl: string | null
+  streamingUrl: string | null
+  runtimeMinutes: number | null
+  seasons: number | null
   pricing: $Enums.Pricing | null
-  isEditorsPick: boolean | null
   isPublished: boolean | null
+  isFeatured: boolean | null
+  avgRating: number | null
+  reviewCount: number | null
   createdAt: Date | null
+  updatedAt: Date | null
   viewCount: number | null
 }
 
 export type MediaMaxAggregateOutputType = {
   id: string | null
   title: string | null
-  synopsis: string | null
+  slug: string | null
   type: $Enums.MediaType | null
+  synopsis: string | null
   releaseYear: number | null
   director: string | null
   posterUrl: string | null
-  streamingLink: string | null
+  backdropUrl: string | null
+  trailerUrl: string | null
+  streamingUrl: string | null
+  runtimeMinutes: number | null
+  seasons: number | null
   pricing: $Enums.Pricing | null
-  isEditorsPick: boolean | null
   isPublished: boolean | null
+  isFeatured: boolean | null
+  avgRating: number | null
+  reviewCount: number | null
   createdAt: Date | null
+  updatedAt: Date | null
   viewCount: number | null
 }
 
 export type MediaCountAggregateOutputType = {
   id: number
   title: number
-  synopsis: number
+  slug: number
   type: number
-  genre: number
+  synopsis: number
   releaseYear: number
   director: number
   cast: number
-  platforms: number
   posterUrl: number
-  streamingLink: number
+  backdropUrl: number
+  trailerUrl: number
+  streamingUrl: number
+  runtimeMinutes: number
+  seasons: number
   pricing: number
-  isEditorsPick: number
   isPublished: number
+  isFeatured: number
+  avgRating: number
+  reviewCount: number
   createdAt: number
+  updatedAt: number
   viewCount: number
   _all: number
 }
@@ -91,62 +121,92 @@ export type MediaCountAggregateOutputType = {
 
 export type MediaAvgAggregateInputType = {
   releaseYear?: true
+  runtimeMinutes?: true
+  seasons?: true
+  avgRating?: true
+  reviewCount?: true
   viewCount?: true
 }
 
 export type MediaSumAggregateInputType = {
   releaseYear?: true
+  runtimeMinutes?: true
+  seasons?: true
+  avgRating?: true
+  reviewCount?: true
   viewCount?: true
 }
 
 export type MediaMinAggregateInputType = {
   id?: true
   title?: true
-  synopsis?: true
+  slug?: true
   type?: true
+  synopsis?: true
   releaseYear?: true
   director?: true
   posterUrl?: true
-  streamingLink?: true
+  backdropUrl?: true
+  trailerUrl?: true
+  streamingUrl?: true
+  runtimeMinutes?: true
+  seasons?: true
   pricing?: true
-  isEditorsPick?: true
   isPublished?: true
+  isFeatured?: true
+  avgRating?: true
+  reviewCount?: true
   createdAt?: true
+  updatedAt?: true
   viewCount?: true
 }
 
 export type MediaMaxAggregateInputType = {
   id?: true
   title?: true
-  synopsis?: true
+  slug?: true
   type?: true
+  synopsis?: true
   releaseYear?: true
   director?: true
   posterUrl?: true
-  streamingLink?: true
+  backdropUrl?: true
+  trailerUrl?: true
+  streamingUrl?: true
+  runtimeMinutes?: true
+  seasons?: true
   pricing?: true
-  isEditorsPick?: true
   isPublished?: true
+  isFeatured?: true
+  avgRating?: true
+  reviewCount?: true
   createdAt?: true
+  updatedAt?: true
   viewCount?: true
 }
 
 export type MediaCountAggregateInputType = {
   id?: true
   title?: true
-  synopsis?: true
+  slug?: true
   type?: true
-  genre?: true
+  synopsis?: true
   releaseYear?: true
   director?: true
   cast?: true
-  platforms?: true
   posterUrl?: true
-  streamingLink?: true
+  backdropUrl?: true
+  trailerUrl?: true
+  streamingUrl?: true
+  runtimeMinutes?: true
+  seasons?: true
   pricing?: true
-  isEditorsPick?: true
   isPublished?: true
+  isFeatured?: true
+  avgRating?: true
+  reviewCount?: true
   createdAt?: true
+  updatedAt?: true
   viewCount?: true
   _all?: true
 }
@@ -240,19 +300,25 @@ export type MediaGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type MediaGroupByOutputType = {
   id: string
   title: string
-  synopsis: string
+  slug: string
   type: $Enums.MediaType
-  genre: string[]
+  synopsis: string
   releaseYear: number
   director: string
   cast: string[]
-  platforms: string[]
   posterUrl: string | null
-  streamingLink: string | null
+  backdropUrl: string | null
+  trailerUrl: string | null
+  streamingUrl: string | null
+  runtimeMinutes: number | null
+  seasons: number | null
   pricing: $Enums.Pricing
-  isEditorsPick: boolean
   isPublished: boolean
+  isFeatured: boolean
+  avgRating: number | null
+  reviewCount: number
   createdAt: Date
+  updatedAt: Date
   viewCount: number
   _count: MediaCountAggregateOutputType | null
   _avg: MediaAvgAggregateOutputType | null
@@ -282,24 +348,32 @@ export type MediaWhereInput = {
   NOT?: Prisma.MediaWhereInput | Prisma.MediaWhereInput[]
   id?: Prisma.StringFilter<"Media"> | string
   title?: Prisma.StringFilter<"Media"> | string
-  synopsis?: Prisma.StringFilter<"Media"> | string
+  slug?: Prisma.StringFilter<"Media"> | string
   type?: Prisma.EnumMediaTypeFilter<"Media"> | $Enums.MediaType
-  genre?: Prisma.StringNullableListFilter<"Media">
+  synopsis?: Prisma.StringFilter<"Media"> | string
   releaseYear?: Prisma.IntFilter<"Media"> | number
   director?: Prisma.StringFilter<"Media"> | string
   cast?: Prisma.StringNullableListFilter<"Media">
-  platforms?: Prisma.StringNullableListFilter<"Media">
   posterUrl?: Prisma.StringNullableFilter<"Media"> | string | null
-  streamingLink?: Prisma.StringNullableFilter<"Media"> | string | null
+  backdropUrl?: Prisma.StringNullableFilter<"Media"> | string | null
+  trailerUrl?: Prisma.StringNullableFilter<"Media"> | string | null
+  streamingUrl?: Prisma.StringNullableFilter<"Media"> | string | null
+  runtimeMinutes?: Prisma.IntNullableFilter<"Media"> | number | null
+  seasons?: Prisma.IntNullableFilter<"Media"> | number | null
   pricing?: Prisma.EnumPricingFilter<"Media"> | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolFilter<"Media"> | boolean
   isPublished?: Prisma.BoolFilter<"Media"> | boolean
+  isFeatured?: Prisma.BoolFilter<"Media"> | boolean
+  avgRating?: Prisma.FloatNullableFilter<"Media"> | number | null
+  reviewCount?: Prisma.IntFilter<"Media"> | number
   createdAt?: Prisma.DateTimeFilter<"Media"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Media"> | Date | string
   viewCount?: Prisma.IntFilter<"Media"> | number
+  genres?: Prisma.GenreListRelationFilter
+  platforms?: Prisma.MediaPlatformListRelationFilter
+  reviews?: Prisma.ReviewListRelationFilter
+  watchlistItems?: Prisma.WatchlistListRelationFilter
   likes?: Prisma.LikeListRelationFilter
   comments?: Prisma.CommentListRelationFilter
-  reviews?: Prisma.ReviewListRelationFilter
-  watchlists?: Prisma.WatchlistListRelationFilter
   bookmarks?: Prisma.BookmarkListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
 }
@@ -307,73 +381,95 @@ export type MediaWhereInput = {
 export type MediaOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  synopsis?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   type?: Prisma.SortOrder
-  genre?: Prisma.SortOrder
+  synopsis?: Prisma.SortOrder
   releaseYear?: Prisma.SortOrder
   director?: Prisma.SortOrder
   cast?: Prisma.SortOrder
-  platforms?: Prisma.SortOrder
   posterUrl?: Prisma.SortOrderInput | Prisma.SortOrder
-  streamingLink?: Prisma.SortOrderInput | Prisma.SortOrder
+  backdropUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  trailerUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  streamingUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  runtimeMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
+  seasons?: Prisma.SortOrderInput | Prisma.SortOrder
   pricing?: Prisma.SortOrder
-  isEditorsPick?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
+  avgRating?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
+  genres?: Prisma.GenreOrderByRelationAggregateInput
+  platforms?: Prisma.MediaPlatformOrderByRelationAggregateInput
+  reviews?: Prisma.ReviewOrderByRelationAggregateInput
+  watchlistItems?: Prisma.WatchlistOrderByRelationAggregateInput
   likes?: Prisma.LikeOrderByRelationAggregateInput
   comments?: Prisma.CommentOrderByRelationAggregateInput
-  reviews?: Prisma.ReviewOrderByRelationAggregateInput
-  watchlists?: Prisma.WatchlistOrderByRelationAggregateInput
   bookmarks?: Prisma.BookmarkOrderByRelationAggregateInput
   favorites?: Prisma.FavoriteOrderByRelationAggregateInput
 }
 
 export type MediaWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  slug?: string
   title_releaseYear?: Prisma.MediaTitleReleaseYearCompoundUniqueInput
   AND?: Prisma.MediaWhereInput | Prisma.MediaWhereInput[]
   OR?: Prisma.MediaWhereInput[]
   NOT?: Prisma.MediaWhereInput | Prisma.MediaWhereInput[]
   title?: Prisma.StringFilter<"Media"> | string
-  synopsis?: Prisma.StringFilter<"Media"> | string
   type?: Prisma.EnumMediaTypeFilter<"Media"> | $Enums.MediaType
-  genre?: Prisma.StringNullableListFilter<"Media">
+  synopsis?: Prisma.StringFilter<"Media"> | string
   releaseYear?: Prisma.IntFilter<"Media"> | number
   director?: Prisma.StringFilter<"Media"> | string
   cast?: Prisma.StringNullableListFilter<"Media">
-  platforms?: Prisma.StringNullableListFilter<"Media">
   posterUrl?: Prisma.StringNullableFilter<"Media"> | string | null
-  streamingLink?: Prisma.StringNullableFilter<"Media"> | string | null
+  backdropUrl?: Prisma.StringNullableFilter<"Media"> | string | null
+  trailerUrl?: Prisma.StringNullableFilter<"Media"> | string | null
+  streamingUrl?: Prisma.StringNullableFilter<"Media"> | string | null
+  runtimeMinutes?: Prisma.IntNullableFilter<"Media"> | number | null
+  seasons?: Prisma.IntNullableFilter<"Media"> | number | null
   pricing?: Prisma.EnumPricingFilter<"Media"> | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolFilter<"Media"> | boolean
   isPublished?: Prisma.BoolFilter<"Media"> | boolean
+  isFeatured?: Prisma.BoolFilter<"Media"> | boolean
+  avgRating?: Prisma.FloatNullableFilter<"Media"> | number | null
+  reviewCount?: Prisma.IntFilter<"Media"> | number
   createdAt?: Prisma.DateTimeFilter<"Media"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Media"> | Date | string
   viewCount?: Prisma.IntFilter<"Media"> | number
+  genres?: Prisma.GenreListRelationFilter
+  platforms?: Prisma.MediaPlatformListRelationFilter
+  reviews?: Prisma.ReviewListRelationFilter
+  watchlistItems?: Prisma.WatchlistListRelationFilter
   likes?: Prisma.LikeListRelationFilter
   comments?: Prisma.CommentListRelationFilter
-  reviews?: Prisma.ReviewListRelationFilter
-  watchlists?: Prisma.WatchlistListRelationFilter
   bookmarks?: Prisma.BookmarkListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
-}, "id" | "title_releaseYear">
+}, "id" | "slug" | "title_releaseYear">
 
 export type MediaOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  synopsis?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   type?: Prisma.SortOrder
-  genre?: Prisma.SortOrder
+  synopsis?: Prisma.SortOrder
   releaseYear?: Prisma.SortOrder
   director?: Prisma.SortOrder
   cast?: Prisma.SortOrder
-  platforms?: Prisma.SortOrder
   posterUrl?: Prisma.SortOrderInput | Prisma.SortOrder
-  streamingLink?: Prisma.SortOrderInput | Prisma.SortOrder
+  backdropUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  trailerUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  streamingUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  runtimeMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
+  seasons?: Prisma.SortOrderInput | Prisma.SortOrder
   pricing?: Prisma.SortOrder
-  isEditorsPick?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
+  avgRating?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
   _count?: Prisma.MediaCountOrderByAggregateInput
   _avg?: Prisma.MediaAvgOrderByAggregateInput
@@ -388,43 +484,57 @@ export type MediaScalarWhereWithAggregatesInput = {
   NOT?: Prisma.MediaScalarWhereWithAggregatesInput | Prisma.MediaScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Media"> | string
   title?: Prisma.StringWithAggregatesFilter<"Media"> | string
-  synopsis?: Prisma.StringWithAggregatesFilter<"Media"> | string
+  slug?: Prisma.StringWithAggregatesFilter<"Media"> | string
   type?: Prisma.EnumMediaTypeWithAggregatesFilter<"Media"> | $Enums.MediaType
-  genre?: Prisma.StringNullableListFilter<"Media">
+  synopsis?: Prisma.StringWithAggregatesFilter<"Media"> | string
   releaseYear?: Prisma.IntWithAggregatesFilter<"Media"> | number
   director?: Prisma.StringWithAggregatesFilter<"Media"> | string
   cast?: Prisma.StringNullableListFilter<"Media">
-  platforms?: Prisma.StringNullableListFilter<"Media">
   posterUrl?: Prisma.StringNullableWithAggregatesFilter<"Media"> | string | null
-  streamingLink?: Prisma.StringNullableWithAggregatesFilter<"Media"> | string | null
+  backdropUrl?: Prisma.StringNullableWithAggregatesFilter<"Media"> | string | null
+  trailerUrl?: Prisma.StringNullableWithAggregatesFilter<"Media"> | string | null
+  streamingUrl?: Prisma.StringNullableWithAggregatesFilter<"Media"> | string | null
+  runtimeMinutes?: Prisma.IntNullableWithAggregatesFilter<"Media"> | number | null
+  seasons?: Prisma.IntNullableWithAggregatesFilter<"Media"> | number | null
   pricing?: Prisma.EnumPricingWithAggregatesFilter<"Media"> | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolWithAggregatesFilter<"Media"> | boolean
   isPublished?: Prisma.BoolWithAggregatesFilter<"Media"> | boolean
+  isFeatured?: Prisma.BoolWithAggregatesFilter<"Media"> | boolean
+  avgRating?: Prisma.FloatNullableWithAggregatesFilter<"Media"> | number | null
+  reviewCount?: Prisma.IntWithAggregatesFilter<"Media"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Media"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Media"> | Date | string
   viewCount?: Prisma.IntWithAggregatesFilter<"Media"> | number
 }
 
 export type MediaCreateInput = {
   id?: string
   title: string
-  synopsis: string
+  slug: string
   type: $Enums.MediaType
-  genre?: Prisma.MediaCreategenreInput | string[]
+  synopsis: string
   releaseYear: number
   director: string
   cast?: Prisma.MediaCreatecastInput | string[]
-  platforms?: Prisma.MediaCreateplatformsInput | string[]
   posterUrl?: string | null
-  streamingLink?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
   pricing?: $Enums.Pricing
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   viewCount?: number
+  genres?: Prisma.GenreCreateNestedManyWithoutMediaInput
+  platforms?: Prisma.MediaPlatformCreateNestedManyWithoutMediaInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
+  watchlistItems?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
   likes?: Prisma.LikeCreateNestedManyWithoutMediaInput
   comments?: Prisma.CommentCreateNestedManyWithoutMediaInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
-  watchlists?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
 }
@@ -432,24 +542,32 @@ export type MediaCreateInput = {
 export type MediaUncheckedCreateInput = {
   id?: string
   title: string
-  synopsis: string
+  slug: string
   type: $Enums.MediaType
-  genre?: Prisma.MediaCreategenreInput | string[]
+  synopsis: string
   releaseYear: number
   director: string
   cast?: Prisma.MediaCreatecastInput | string[]
-  platforms?: Prisma.MediaCreateplatformsInput | string[]
   posterUrl?: string | null
-  streamingLink?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
   pricing?: $Enums.Pricing
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   viewCount?: number
+  genres?: Prisma.GenreUncheckedCreateNestedManyWithoutMediaInput
+  platforms?: Prisma.MediaPlatformUncheckedCreateNestedManyWithoutMediaInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
+  watchlistItems?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutMediaInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutMediaInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
-  watchlists?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
 }
@@ -457,24 +575,32 @@ export type MediaUncheckedCreateInput = {
 export type MediaUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
-  genre?: Prisma.MediaUpdategenreInput | string[]
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
   cast?: Prisma.MediaUpdatecastInput | string[]
-  platforms?: Prisma.MediaUpdateplatformsInput | string[]
   posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  genres?: Prisma.GenreUpdateManyWithoutMediaNestedInput
+  platforms?: Prisma.MediaPlatformUpdateManyWithoutMediaNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
+  watchlistItems?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
   likes?: Prisma.LikeUpdateManyWithoutMediaNestedInput
   comments?: Prisma.CommentUpdateManyWithoutMediaNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
-  watchlists?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
 }
@@ -482,24 +608,32 @@ export type MediaUpdateInput = {
 export type MediaUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
-  genre?: Prisma.MediaUpdategenreInput | string[]
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
   cast?: Prisma.MediaUpdatecastInput | string[]
-  platforms?: Prisma.MediaUpdateplatformsInput | string[]
   posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  genres?: Prisma.GenreUncheckedUpdateManyWithoutMediaNestedInput
+  platforms?: Prisma.MediaPlatformUncheckedUpdateManyWithoutMediaNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
+  watchlistItems?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutMediaNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutMediaNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
-  watchlists?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
 }
@@ -507,63 +641,91 @@ export type MediaUncheckedUpdateInput = {
 export type MediaCreateManyInput = {
   id?: string
   title: string
-  synopsis: string
+  slug: string
   type: $Enums.MediaType
-  genre?: Prisma.MediaCreategenreInput | string[]
+  synopsis: string
   releaseYear: number
   director: string
   cast?: Prisma.MediaCreatecastInput | string[]
-  platforms?: Prisma.MediaCreateplatformsInput | string[]
   posterUrl?: string | null
-  streamingLink?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
   pricing?: $Enums.Pricing
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   viewCount?: number
 }
 
 export type MediaUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
-  genre?: Prisma.MediaUpdategenreInput | string[]
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
   cast?: Prisma.MediaUpdatecastInput | string[]
-  platforms?: Prisma.MediaUpdateplatformsInput | string[]
   posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type MediaUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
-  genre?: Prisma.MediaUpdategenreInput | string[]
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
   cast?: Prisma.MediaUpdatecastInput | string[]
-  platforms?: Prisma.MediaUpdateplatformsInput | string[]
   posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type MediaScalarRelationFilter = {
   is?: Prisma.MediaWhereInput
   isNot?: Prisma.MediaWhereInput
+}
+
+export type MediaListRelationFilter = {
+  every?: Prisma.MediaWhereInput
+  some?: Prisma.MediaWhereInput
+  none?: Prisma.MediaWhereInput
+}
+
+export type MediaOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type StringNullableListFilter<$PrismaModel = never> = {
@@ -582,61 +744,91 @@ export type MediaTitleReleaseYearCompoundUniqueInput = {
 export type MediaCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  synopsis?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   type?: Prisma.SortOrder
-  genre?: Prisma.SortOrder
+  synopsis?: Prisma.SortOrder
   releaseYear?: Prisma.SortOrder
   director?: Prisma.SortOrder
   cast?: Prisma.SortOrder
-  platforms?: Prisma.SortOrder
   posterUrl?: Prisma.SortOrder
-  streamingLink?: Prisma.SortOrder
+  backdropUrl?: Prisma.SortOrder
+  trailerUrl?: Prisma.SortOrder
+  streamingUrl?: Prisma.SortOrder
+  runtimeMinutes?: Prisma.SortOrder
+  seasons?: Prisma.SortOrder
   pricing?: Prisma.SortOrder
-  isEditorsPick?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
+  avgRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
 }
 
 export type MediaAvgOrderByAggregateInput = {
   releaseYear?: Prisma.SortOrder
+  runtimeMinutes?: Prisma.SortOrder
+  seasons?: Prisma.SortOrder
+  avgRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
 }
 
 export type MediaMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  synopsis?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  synopsis?: Prisma.SortOrder
   releaseYear?: Prisma.SortOrder
   director?: Prisma.SortOrder
   posterUrl?: Prisma.SortOrder
-  streamingLink?: Prisma.SortOrder
+  backdropUrl?: Prisma.SortOrder
+  trailerUrl?: Prisma.SortOrder
+  streamingUrl?: Prisma.SortOrder
+  runtimeMinutes?: Prisma.SortOrder
+  seasons?: Prisma.SortOrder
   pricing?: Prisma.SortOrder
-  isEditorsPick?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
+  avgRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
 }
 
 export type MediaMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  synopsis?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  synopsis?: Prisma.SortOrder
   releaseYear?: Prisma.SortOrder
   director?: Prisma.SortOrder
   posterUrl?: Prisma.SortOrder
-  streamingLink?: Prisma.SortOrder
+  backdropUrl?: Prisma.SortOrder
+  trailerUrl?: Prisma.SortOrder
+  streamingUrl?: Prisma.SortOrder
+  runtimeMinutes?: Prisma.SortOrder
+  seasons?: Prisma.SortOrder
   pricing?: Prisma.SortOrder
-  isEditorsPick?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
+  avgRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
 }
 
 export type MediaSumOrderByAggregateInput = {
   releaseYear?: Prisma.SortOrder
+  runtimeMinutes?: Prisma.SortOrder
+  seasons?: Prisma.SortOrder
+  avgRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
 }
 
@@ -668,25 +860,50 @@ export type MediaUpdateOneRequiredWithoutLikesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MediaUpdateToOneWithWhereWithoutLikesInput, Prisma.MediaUpdateWithoutLikesInput>, Prisma.MediaUncheckedUpdateWithoutLikesInput>
 }
 
-export type MediaCreategenreInput = {
-  set: string[]
+export type MediaCreateNestedManyWithoutGenresInput = {
+  create?: Prisma.XOR<Prisma.MediaCreateWithoutGenresInput, Prisma.MediaUncheckedCreateWithoutGenresInput> | Prisma.MediaCreateWithoutGenresInput[] | Prisma.MediaUncheckedCreateWithoutGenresInput[]
+  connectOrCreate?: Prisma.MediaCreateOrConnectWithoutGenresInput | Prisma.MediaCreateOrConnectWithoutGenresInput[]
+  connect?: Prisma.MediaWhereUniqueInput | Prisma.MediaWhereUniqueInput[]
+}
+
+export type MediaUncheckedCreateNestedManyWithoutGenresInput = {
+  create?: Prisma.XOR<Prisma.MediaCreateWithoutGenresInput, Prisma.MediaUncheckedCreateWithoutGenresInput> | Prisma.MediaCreateWithoutGenresInput[] | Prisma.MediaUncheckedCreateWithoutGenresInput[]
+  connectOrCreate?: Prisma.MediaCreateOrConnectWithoutGenresInput | Prisma.MediaCreateOrConnectWithoutGenresInput[]
+  connect?: Prisma.MediaWhereUniqueInput | Prisma.MediaWhereUniqueInput[]
+}
+
+export type MediaUpdateManyWithoutGenresNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaCreateWithoutGenresInput, Prisma.MediaUncheckedCreateWithoutGenresInput> | Prisma.MediaCreateWithoutGenresInput[] | Prisma.MediaUncheckedCreateWithoutGenresInput[]
+  connectOrCreate?: Prisma.MediaCreateOrConnectWithoutGenresInput | Prisma.MediaCreateOrConnectWithoutGenresInput[]
+  upsert?: Prisma.MediaUpsertWithWhereUniqueWithoutGenresInput | Prisma.MediaUpsertWithWhereUniqueWithoutGenresInput[]
+  set?: Prisma.MediaWhereUniqueInput | Prisma.MediaWhereUniqueInput[]
+  disconnect?: Prisma.MediaWhereUniqueInput | Prisma.MediaWhereUniqueInput[]
+  delete?: Prisma.MediaWhereUniqueInput | Prisma.MediaWhereUniqueInput[]
+  connect?: Prisma.MediaWhereUniqueInput | Prisma.MediaWhereUniqueInput[]
+  update?: Prisma.MediaUpdateWithWhereUniqueWithoutGenresInput | Prisma.MediaUpdateWithWhereUniqueWithoutGenresInput[]
+  updateMany?: Prisma.MediaUpdateManyWithWhereWithoutGenresInput | Prisma.MediaUpdateManyWithWhereWithoutGenresInput[]
+  deleteMany?: Prisma.MediaScalarWhereInput | Prisma.MediaScalarWhereInput[]
+}
+
+export type MediaUncheckedUpdateManyWithoutGenresNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaCreateWithoutGenresInput, Prisma.MediaUncheckedCreateWithoutGenresInput> | Prisma.MediaCreateWithoutGenresInput[] | Prisma.MediaUncheckedCreateWithoutGenresInput[]
+  connectOrCreate?: Prisma.MediaCreateOrConnectWithoutGenresInput | Prisma.MediaCreateOrConnectWithoutGenresInput[]
+  upsert?: Prisma.MediaUpsertWithWhereUniqueWithoutGenresInput | Prisma.MediaUpsertWithWhereUniqueWithoutGenresInput[]
+  set?: Prisma.MediaWhereUniqueInput | Prisma.MediaWhereUniqueInput[]
+  disconnect?: Prisma.MediaWhereUniqueInput | Prisma.MediaWhereUniqueInput[]
+  delete?: Prisma.MediaWhereUniqueInput | Prisma.MediaWhereUniqueInput[]
+  connect?: Prisma.MediaWhereUniqueInput | Prisma.MediaWhereUniqueInput[]
+  update?: Prisma.MediaUpdateWithWhereUniqueWithoutGenresInput | Prisma.MediaUpdateWithWhereUniqueWithoutGenresInput[]
+  updateMany?: Prisma.MediaUpdateManyWithWhereWithoutGenresInput | Prisma.MediaUpdateManyWithWhereWithoutGenresInput[]
+  deleteMany?: Prisma.MediaScalarWhereInput | Prisma.MediaScalarWhereInput[]
 }
 
 export type MediaCreatecastInput = {
   set: string[]
 }
 
-export type MediaCreateplatformsInput = {
-  set: string[]
-}
-
 export type EnumMediaTypeFieldUpdateOperationsInput = {
   set?: $Enums.MediaType
-}
-
-export type MediaUpdategenreInput = {
-  set?: string[]
-  push?: string | string[]
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -702,13 +919,38 @@ export type MediaUpdatecastInput = {
   push?: string | string[]
 }
 
-export type MediaUpdateplatformsInput = {
-  set?: string[]
-  push?: string | string[]
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type EnumPricingFieldUpdateOperationsInput = {
   set?: $Enums.Pricing
+}
+
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type MediaCreateNestedOneWithoutPlatformsInput = {
+  create?: Prisma.XOR<Prisma.MediaCreateWithoutPlatformsInput, Prisma.MediaUncheckedCreateWithoutPlatformsInput>
+  connectOrCreate?: Prisma.MediaCreateOrConnectWithoutPlatformsInput
+  connect?: Prisma.MediaWhereUniqueInput
+}
+
+export type MediaUpdateOneRequiredWithoutPlatformsNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaCreateWithoutPlatformsInput, Prisma.MediaUncheckedCreateWithoutPlatformsInput>
+  connectOrCreate?: Prisma.MediaCreateOrConnectWithoutPlatformsInput
+  upsert?: Prisma.MediaUpsertWithoutPlatformsInput
+  connect?: Prisma.MediaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaUpdateToOneWithWhereWithoutPlatformsInput, Prisma.MediaUpdateWithoutPlatformsInput>, Prisma.MediaUncheckedUpdateWithoutPlatformsInput>
 }
 
 export type MediaCreateNestedOneWithoutBookmarksInput = {
@@ -753,40 +995,48 @@ export type MediaUpdateOneRequiredWithoutReviewsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MediaUpdateToOneWithWhereWithoutReviewsInput, Prisma.MediaUpdateWithoutReviewsInput>, Prisma.MediaUncheckedUpdateWithoutReviewsInput>
 }
 
-export type MediaCreateNestedOneWithoutWatchlistsInput = {
-  create?: Prisma.XOR<Prisma.MediaCreateWithoutWatchlistsInput, Prisma.MediaUncheckedCreateWithoutWatchlistsInput>
-  connectOrCreate?: Prisma.MediaCreateOrConnectWithoutWatchlistsInput
+export type MediaCreateNestedOneWithoutWatchlistItemsInput = {
+  create?: Prisma.XOR<Prisma.MediaCreateWithoutWatchlistItemsInput, Prisma.MediaUncheckedCreateWithoutWatchlistItemsInput>
+  connectOrCreate?: Prisma.MediaCreateOrConnectWithoutWatchlistItemsInput
   connect?: Prisma.MediaWhereUniqueInput
 }
 
-export type MediaUpdateOneRequiredWithoutWatchlistsNestedInput = {
-  create?: Prisma.XOR<Prisma.MediaCreateWithoutWatchlistsInput, Prisma.MediaUncheckedCreateWithoutWatchlistsInput>
-  connectOrCreate?: Prisma.MediaCreateOrConnectWithoutWatchlistsInput
-  upsert?: Prisma.MediaUpsertWithoutWatchlistsInput
+export type MediaUpdateOneRequiredWithoutWatchlistItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaCreateWithoutWatchlistItemsInput, Prisma.MediaUncheckedCreateWithoutWatchlistItemsInput>
+  connectOrCreate?: Prisma.MediaCreateOrConnectWithoutWatchlistItemsInput
+  upsert?: Prisma.MediaUpsertWithoutWatchlistItemsInput
   connect?: Prisma.MediaWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaUpdateToOneWithWhereWithoutWatchlistsInput, Prisma.MediaUpdateWithoutWatchlistsInput>, Prisma.MediaUncheckedUpdateWithoutWatchlistsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaUpdateToOneWithWhereWithoutWatchlistItemsInput, Prisma.MediaUpdateWithoutWatchlistItemsInput>, Prisma.MediaUncheckedUpdateWithoutWatchlistItemsInput>
 }
 
 export type MediaCreateWithoutCommentsInput = {
   id?: string
   title: string
-  synopsis: string
+  slug: string
   type: $Enums.MediaType
-  genre?: Prisma.MediaCreategenreInput | string[]
+  synopsis: string
   releaseYear: number
   director: string
   cast?: Prisma.MediaCreatecastInput | string[]
-  platforms?: Prisma.MediaCreateplatformsInput | string[]
   posterUrl?: string | null
-  streamingLink?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
   pricing?: $Enums.Pricing
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   viewCount?: number
-  likes?: Prisma.LikeCreateNestedManyWithoutMediaInput
+  genres?: Prisma.GenreCreateNestedManyWithoutMediaInput
+  platforms?: Prisma.MediaPlatformCreateNestedManyWithoutMediaInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
-  watchlists?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
+  watchlistItems?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
+  likes?: Prisma.LikeCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
 }
@@ -794,23 +1044,31 @@ export type MediaCreateWithoutCommentsInput = {
 export type MediaUncheckedCreateWithoutCommentsInput = {
   id?: string
   title: string
-  synopsis: string
+  slug: string
   type: $Enums.MediaType
-  genre?: Prisma.MediaCreategenreInput | string[]
+  synopsis: string
   releaseYear: number
   director: string
   cast?: Prisma.MediaCreatecastInput | string[]
-  platforms?: Prisma.MediaCreateplatformsInput | string[]
   posterUrl?: string | null
-  streamingLink?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
   pricing?: $Enums.Pricing
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   viewCount?: number
-  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutMediaInput
+  genres?: Prisma.GenreUncheckedCreateNestedManyWithoutMediaInput
+  platforms?: Prisma.MediaPlatformUncheckedCreateNestedManyWithoutMediaInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
-  watchlists?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
+  watchlistItems?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
 }
@@ -834,23 +1092,31 @@ export type MediaUpdateToOneWithWhereWithoutCommentsInput = {
 export type MediaUpdateWithoutCommentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
-  genre?: Prisma.MediaUpdategenreInput | string[]
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
   cast?: Prisma.MediaUpdatecastInput | string[]
-  platforms?: Prisma.MediaUpdateplatformsInput | string[]
   posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
-  likes?: Prisma.LikeUpdateManyWithoutMediaNestedInput
+  genres?: Prisma.GenreUpdateManyWithoutMediaNestedInput
+  platforms?: Prisma.MediaPlatformUpdateManyWithoutMediaNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
-  watchlists?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
+  watchlistItems?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
+  likes?: Prisma.LikeUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
 }
@@ -858,23 +1124,31 @@ export type MediaUpdateWithoutCommentsInput = {
 export type MediaUncheckedUpdateWithoutCommentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
-  genre?: Prisma.MediaUpdategenreInput | string[]
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
   cast?: Prisma.MediaUpdatecastInput | string[]
-  platforms?: Prisma.MediaUpdateplatformsInput | string[]
   posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
-  likes?: Prisma.LikeUncheckedUpdateManyWithoutMediaNestedInput
+  genres?: Prisma.GenreUncheckedUpdateManyWithoutMediaNestedInput
+  platforms?: Prisma.MediaPlatformUncheckedUpdateManyWithoutMediaNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
-  watchlists?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
+  watchlistItems?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
 }
@@ -882,23 +1156,31 @@ export type MediaUncheckedUpdateWithoutCommentsInput = {
 export type MediaCreateWithoutLikesInput = {
   id?: string
   title: string
-  synopsis: string
+  slug: string
   type: $Enums.MediaType
-  genre?: Prisma.MediaCreategenreInput | string[]
+  synopsis: string
   releaseYear: number
   director: string
   cast?: Prisma.MediaCreatecastInput | string[]
-  platforms?: Prisma.MediaCreateplatformsInput | string[]
   posterUrl?: string | null
-  streamingLink?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
   pricing?: $Enums.Pricing
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   viewCount?: number
-  comments?: Prisma.CommentCreateNestedManyWithoutMediaInput
+  genres?: Prisma.GenreCreateNestedManyWithoutMediaInput
+  platforms?: Prisma.MediaPlatformCreateNestedManyWithoutMediaInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
-  watchlists?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
+  watchlistItems?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
+  comments?: Prisma.CommentCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
 }
@@ -906,23 +1188,31 @@ export type MediaCreateWithoutLikesInput = {
 export type MediaUncheckedCreateWithoutLikesInput = {
   id?: string
   title: string
-  synopsis: string
+  slug: string
   type: $Enums.MediaType
-  genre?: Prisma.MediaCreategenreInput | string[]
+  synopsis: string
   releaseYear: number
   director: string
   cast?: Prisma.MediaCreatecastInput | string[]
-  platforms?: Prisma.MediaCreateplatformsInput | string[]
   posterUrl?: string | null
-  streamingLink?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
   pricing?: $Enums.Pricing
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   viewCount?: number
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutMediaInput
+  genres?: Prisma.GenreUncheckedCreateNestedManyWithoutMediaInput
+  platforms?: Prisma.MediaPlatformUncheckedCreateNestedManyWithoutMediaInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
-  watchlists?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
+  watchlistItems?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
 }
@@ -946,23 +1236,31 @@ export type MediaUpdateToOneWithWhereWithoutLikesInput = {
 export type MediaUpdateWithoutLikesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
-  genre?: Prisma.MediaUpdategenreInput | string[]
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
   cast?: Prisma.MediaUpdatecastInput | string[]
-  platforms?: Prisma.MediaUpdateplatformsInput | string[]
   posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
-  comments?: Prisma.CommentUpdateManyWithoutMediaNestedInput
+  genres?: Prisma.GenreUpdateManyWithoutMediaNestedInput
+  platforms?: Prisma.MediaPlatformUpdateManyWithoutMediaNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
-  watchlists?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
+  watchlistItems?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
 }
@@ -970,23 +1268,288 @@ export type MediaUpdateWithoutLikesInput = {
 export type MediaUncheckedUpdateWithoutLikesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
-  genre?: Prisma.MediaUpdategenreInput | string[]
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
   cast?: Prisma.MediaUpdatecastInput | string[]
-  platforms?: Prisma.MediaUpdateplatformsInput | string[]
   posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutMediaNestedInput
+  genres?: Prisma.GenreUncheckedUpdateManyWithoutMediaNestedInput
+  platforms?: Prisma.MediaPlatformUncheckedUpdateManyWithoutMediaNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
-  watchlists?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
+  watchlistItems?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutMediaNestedInput
+  bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutMediaNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
+}
+
+export type MediaCreateWithoutGenresInput = {
+  id?: string
+  title: string
+  slug: string
+  type: $Enums.MediaType
+  synopsis: string
+  releaseYear: number
+  director: string
+  cast?: Prisma.MediaCreatecastInput | string[]
+  posterUrl?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
+  pricing?: $Enums.Pricing
+  isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  viewCount?: number
+  platforms?: Prisma.MediaPlatformCreateNestedManyWithoutMediaInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
+  watchlistItems?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
+  likes?: Prisma.LikeCreateNestedManyWithoutMediaInput
+  comments?: Prisma.CommentCreateNestedManyWithoutMediaInput
+  bookmarks?: Prisma.BookmarkCreateNestedManyWithoutMediaInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
+}
+
+export type MediaUncheckedCreateWithoutGenresInput = {
+  id?: string
+  title: string
+  slug: string
+  type: $Enums.MediaType
+  synopsis: string
+  releaseYear: number
+  director: string
+  cast?: Prisma.MediaCreatecastInput | string[]
+  posterUrl?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
+  pricing?: $Enums.Pricing
+  isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  viewCount?: number
+  platforms?: Prisma.MediaPlatformUncheckedCreateNestedManyWithoutMediaInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
+  watchlistItems?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutMediaInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutMediaInput
+  bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutMediaInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
+}
+
+export type MediaCreateOrConnectWithoutGenresInput = {
+  where: Prisma.MediaWhereUniqueInput
+  create: Prisma.XOR<Prisma.MediaCreateWithoutGenresInput, Prisma.MediaUncheckedCreateWithoutGenresInput>
+}
+
+export type MediaUpsertWithWhereUniqueWithoutGenresInput = {
+  where: Prisma.MediaWhereUniqueInput
+  update: Prisma.XOR<Prisma.MediaUpdateWithoutGenresInput, Prisma.MediaUncheckedUpdateWithoutGenresInput>
+  create: Prisma.XOR<Prisma.MediaCreateWithoutGenresInput, Prisma.MediaUncheckedCreateWithoutGenresInput>
+}
+
+export type MediaUpdateWithWhereUniqueWithoutGenresInput = {
+  where: Prisma.MediaWhereUniqueInput
+  data: Prisma.XOR<Prisma.MediaUpdateWithoutGenresInput, Prisma.MediaUncheckedUpdateWithoutGenresInput>
+}
+
+export type MediaUpdateManyWithWhereWithoutGenresInput = {
+  where: Prisma.MediaScalarWhereInput
+  data: Prisma.XOR<Prisma.MediaUpdateManyMutationInput, Prisma.MediaUncheckedUpdateManyWithoutGenresInput>
+}
+
+export type MediaScalarWhereInput = {
+  AND?: Prisma.MediaScalarWhereInput | Prisma.MediaScalarWhereInput[]
+  OR?: Prisma.MediaScalarWhereInput[]
+  NOT?: Prisma.MediaScalarWhereInput | Prisma.MediaScalarWhereInput[]
+  id?: Prisma.StringFilter<"Media"> | string
+  title?: Prisma.StringFilter<"Media"> | string
+  slug?: Prisma.StringFilter<"Media"> | string
+  type?: Prisma.EnumMediaTypeFilter<"Media"> | $Enums.MediaType
+  synopsis?: Prisma.StringFilter<"Media"> | string
+  releaseYear?: Prisma.IntFilter<"Media"> | number
+  director?: Prisma.StringFilter<"Media"> | string
+  cast?: Prisma.StringNullableListFilter<"Media">
+  posterUrl?: Prisma.StringNullableFilter<"Media"> | string | null
+  backdropUrl?: Prisma.StringNullableFilter<"Media"> | string | null
+  trailerUrl?: Prisma.StringNullableFilter<"Media"> | string | null
+  streamingUrl?: Prisma.StringNullableFilter<"Media"> | string | null
+  runtimeMinutes?: Prisma.IntNullableFilter<"Media"> | number | null
+  seasons?: Prisma.IntNullableFilter<"Media"> | number | null
+  pricing?: Prisma.EnumPricingFilter<"Media"> | $Enums.Pricing
+  isPublished?: Prisma.BoolFilter<"Media"> | boolean
+  isFeatured?: Prisma.BoolFilter<"Media"> | boolean
+  avgRating?: Prisma.FloatNullableFilter<"Media"> | number | null
+  reviewCount?: Prisma.IntFilter<"Media"> | number
+  createdAt?: Prisma.DateTimeFilter<"Media"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Media"> | Date | string
+  viewCount?: Prisma.IntFilter<"Media"> | number
+}
+
+export type MediaCreateWithoutPlatformsInput = {
+  id?: string
+  title: string
+  slug: string
+  type: $Enums.MediaType
+  synopsis: string
+  releaseYear: number
+  director: string
+  cast?: Prisma.MediaCreatecastInput | string[]
+  posterUrl?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
+  pricing?: $Enums.Pricing
+  isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  viewCount?: number
+  genres?: Prisma.GenreCreateNestedManyWithoutMediaInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
+  watchlistItems?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
+  likes?: Prisma.LikeCreateNestedManyWithoutMediaInput
+  comments?: Prisma.CommentCreateNestedManyWithoutMediaInput
+  bookmarks?: Prisma.BookmarkCreateNestedManyWithoutMediaInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
+}
+
+export type MediaUncheckedCreateWithoutPlatformsInput = {
+  id?: string
+  title: string
+  slug: string
+  type: $Enums.MediaType
+  synopsis: string
+  releaseYear: number
+  director: string
+  cast?: Prisma.MediaCreatecastInput | string[]
+  posterUrl?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
+  pricing?: $Enums.Pricing
+  isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  viewCount?: number
+  genres?: Prisma.GenreUncheckedCreateNestedManyWithoutMediaInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
+  watchlistItems?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutMediaInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutMediaInput
+  bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutMediaInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
+}
+
+export type MediaCreateOrConnectWithoutPlatformsInput = {
+  where: Prisma.MediaWhereUniqueInput
+  create: Prisma.XOR<Prisma.MediaCreateWithoutPlatformsInput, Prisma.MediaUncheckedCreateWithoutPlatformsInput>
+}
+
+export type MediaUpsertWithoutPlatformsInput = {
+  update: Prisma.XOR<Prisma.MediaUpdateWithoutPlatformsInput, Prisma.MediaUncheckedUpdateWithoutPlatformsInput>
+  create: Prisma.XOR<Prisma.MediaCreateWithoutPlatformsInput, Prisma.MediaUncheckedCreateWithoutPlatformsInput>
+  where?: Prisma.MediaWhereInput
+}
+
+export type MediaUpdateToOneWithWhereWithoutPlatformsInput = {
+  where?: Prisma.MediaWhereInput
+  data: Prisma.XOR<Prisma.MediaUpdateWithoutPlatformsInput, Prisma.MediaUncheckedUpdateWithoutPlatformsInput>
+}
+
+export type MediaUpdateWithoutPlatformsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
+  director?: Prisma.StringFieldUpdateOperationsInput | string
+  cast?: Prisma.MediaUpdatecastInput | string[]
+  posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  genres?: Prisma.GenreUpdateManyWithoutMediaNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
+  watchlistItems?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
+  likes?: Prisma.LikeUpdateManyWithoutMediaNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutMediaNestedInput
+  bookmarks?: Prisma.BookmarkUpdateManyWithoutMediaNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
+}
+
+export type MediaUncheckedUpdateWithoutPlatformsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
+  director?: Prisma.StringFieldUpdateOperationsInput | string
+  cast?: Prisma.MediaUpdatecastInput | string[]
+  posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  genres?: Prisma.GenreUncheckedUpdateManyWithoutMediaNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
+  watchlistItems?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutMediaNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
 }
@@ -994,48 +1557,64 @@ export type MediaUncheckedUpdateWithoutLikesInput = {
 export type MediaCreateWithoutBookmarksInput = {
   id?: string
   title: string
-  synopsis: string
+  slug: string
   type: $Enums.MediaType
-  genre?: Prisma.MediaCreategenreInput | string[]
+  synopsis: string
   releaseYear: number
   director: string
   cast?: Prisma.MediaCreatecastInput | string[]
-  platforms?: Prisma.MediaCreateplatformsInput | string[]
   posterUrl?: string | null
-  streamingLink?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
   pricing?: $Enums.Pricing
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   viewCount?: number
+  genres?: Prisma.GenreCreateNestedManyWithoutMediaInput
+  platforms?: Prisma.MediaPlatformCreateNestedManyWithoutMediaInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
+  watchlistItems?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
   likes?: Prisma.LikeCreateNestedManyWithoutMediaInput
   comments?: Prisma.CommentCreateNestedManyWithoutMediaInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
-  watchlists?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
 }
 
 export type MediaUncheckedCreateWithoutBookmarksInput = {
   id?: string
   title: string
-  synopsis: string
+  slug: string
   type: $Enums.MediaType
-  genre?: Prisma.MediaCreategenreInput | string[]
+  synopsis: string
   releaseYear: number
   director: string
   cast?: Prisma.MediaCreatecastInput | string[]
-  platforms?: Prisma.MediaCreateplatformsInput | string[]
   posterUrl?: string | null
-  streamingLink?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
   pricing?: $Enums.Pricing
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   viewCount?: number
+  genres?: Prisma.GenreUncheckedCreateNestedManyWithoutMediaInput
+  platforms?: Prisma.MediaPlatformUncheckedCreateNestedManyWithoutMediaInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
+  watchlistItems?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutMediaInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutMediaInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
-  watchlists?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
 }
 
@@ -1058,96 +1637,128 @@ export type MediaUpdateToOneWithWhereWithoutBookmarksInput = {
 export type MediaUpdateWithoutBookmarksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
-  genre?: Prisma.MediaUpdategenreInput | string[]
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
   cast?: Prisma.MediaUpdatecastInput | string[]
-  platforms?: Prisma.MediaUpdateplatformsInput | string[]
   posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  genres?: Prisma.GenreUpdateManyWithoutMediaNestedInput
+  platforms?: Prisma.MediaPlatformUpdateManyWithoutMediaNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
+  watchlistItems?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
   likes?: Prisma.LikeUpdateManyWithoutMediaNestedInput
   comments?: Prisma.CommentUpdateManyWithoutMediaNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
-  watchlists?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaUncheckedUpdateWithoutBookmarksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
-  genre?: Prisma.MediaUpdategenreInput | string[]
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
   cast?: Prisma.MediaUpdatecastInput | string[]
-  platforms?: Prisma.MediaUpdateplatformsInput | string[]
   posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  genres?: Prisma.GenreUncheckedUpdateManyWithoutMediaNestedInput
+  platforms?: Prisma.MediaPlatformUncheckedUpdateManyWithoutMediaNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
+  watchlistItems?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutMediaNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutMediaNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
-  watchlists?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaCreateWithoutFavoritesInput = {
   id?: string
   title: string
-  synopsis: string
+  slug: string
   type: $Enums.MediaType
-  genre?: Prisma.MediaCreategenreInput | string[]
+  synopsis: string
   releaseYear: number
   director: string
   cast?: Prisma.MediaCreatecastInput | string[]
-  platforms?: Prisma.MediaCreateplatformsInput | string[]
   posterUrl?: string | null
-  streamingLink?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
   pricing?: $Enums.Pricing
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   viewCount?: number
+  genres?: Prisma.GenreCreateNestedManyWithoutMediaInput
+  platforms?: Prisma.MediaPlatformCreateNestedManyWithoutMediaInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
+  watchlistItems?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
   likes?: Prisma.LikeCreateNestedManyWithoutMediaInput
   comments?: Prisma.CommentCreateNestedManyWithoutMediaInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
-  watchlists?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutMediaInput
 }
 
 export type MediaUncheckedCreateWithoutFavoritesInput = {
   id?: string
   title: string
-  synopsis: string
+  slug: string
   type: $Enums.MediaType
-  genre?: Prisma.MediaCreategenreInput | string[]
+  synopsis: string
   releaseYear: number
   director: string
   cast?: Prisma.MediaCreatecastInput | string[]
-  platforms?: Prisma.MediaCreateplatformsInput | string[]
   posterUrl?: string | null
-  streamingLink?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
   pricing?: $Enums.Pricing
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   viewCount?: number
+  genres?: Prisma.GenreUncheckedCreateNestedManyWithoutMediaInput
+  platforms?: Prisma.MediaPlatformUncheckedCreateNestedManyWithoutMediaInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
+  watchlistItems?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutMediaInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutMediaInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
-  watchlists?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutMediaInput
 }
 
@@ -1170,71 +1781,95 @@ export type MediaUpdateToOneWithWhereWithoutFavoritesInput = {
 export type MediaUpdateWithoutFavoritesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
-  genre?: Prisma.MediaUpdategenreInput | string[]
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
   cast?: Prisma.MediaUpdatecastInput | string[]
-  platforms?: Prisma.MediaUpdateplatformsInput | string[]
   posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  genres?: Prisma.GenreUpdateManyWithoutMediaNestedInput
+  platforms?: Prisma.MediaPlatformUpdateManyWithoutMediaNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
+  watchlistItems?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
   likes?: Prisma.LikeUpdateManyWithoutMediaNestedInput
   comments?: Prisma.CommentUpdateManyWithoutMediaNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
-  watchlists?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaUncheckedUpdateWithoutFavoritesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
-  genre?: Prisma.MediaUpdategenreInput | string[]
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
   cast?: Prisma.MediaUpdatecastInput | string[]
-  platforms?: Prisma.MediaUpdateplatformsInput | string[]
   posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  genres?: Prisma.GenreUncheckedUpdateManyWithoutMediaNestedInput
+  platforms?: Prisma.MediaPlatformUncheckedUpdateManyWithoutMediaNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
+  watchlistItems?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutMediaNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutMediaNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
-  watchlists?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaCreateWithoutReviewsInput = {
   id?: string
   title: string
-  synopsis: string
+  slug: string
   type: $Enums.MediaType
-  genre?: Prisma.MediaCreategenreInput | string[]
+  synopsis: string
   releaseYear: number
   director: string
   cast?: Prisma.MediaCreatecastInput | string[]
-  platforms?: Prisma.MediaCreateplatformsInput | string[]
   posterUrl?: string | null
-  streamingLink?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
   pricing?: $Enums.Pricing
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   viewCount?: number
+  genres?: Prisma.GenreCreateNestedManyWithoutMediaInput
+  platforms?: Prisma.MediaPlatformCreateNestedManyWithoutMediaInput
+  watchlistItems?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
   likes?: Prisma.LikeCreateNestedManyWithoutMediaInput
   comments?: Prisma.CommentCreateNestedManyWithoutMediaInput
-  watchlists?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
 }
@@ -1242,23 +1877,31 @@ export type MediaCreateWithoutReviewsInput = {
 export type MediaUncheckedCreateWithoutReviewsInput = {
   id?: string
   title: string
-  synopsis: string
+  slug: string
   type: $Enums.MediaType
-  genre?: Prisma.MediaCreategenreInput | string[]
+  synopsis: string
   releaseYear: number
   director: string
   cast?: Prisma.MediaCreatecastInput | string[]
-  platforms?: Prisma.MediaCreateplatformsInput | string[]
   posterUrl?: string | null
-  streamingLink?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
   pricing?: $Enums.Pricing
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   viewCount?: number
+  genres?: Prisma.GenreUncheckedCreateNestedManyWithoutMediaInput
+  platforms?: Prisma.MediaPlatformUncheckedCreateNestedManyWithoutMediaInput
+  watchlistItems?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutMediaInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutMediaInput
-  watchlists?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
 }
@@ -1282,23 +1925,31 @@ export type MediaUpdateToOneWithWhereWithoutReviewsInput = {
 export type MediaUpdateWithoutReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
-  genre?: Prisma.MediaUpdategenreInput | string[]
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
   cast?: Prisma.MediaUpdatecastInput | string[]
-  platforms?: Prisma.MediaUpdateplatformsInput | string[]
   posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  genres?: Prisma.GenreUpdateManyWithoutMediaNestedInput
+  platforms?: Prisma.MediaPlatformUpdateManyWithoutMediaNestedInput
+  watchlistItems?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
   likes?: Prisma.LikeUpdateManyWithoutMediaNestedInput
   comments?: Prisma.CommentUpdateManyWithoutMediaNestedInput
-  watchlists?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
 }
@@ -1306,137 +1957,266 @@ export type MediaUpdateWithoutReviewsInput = {
 export type MediaUncheckedUpdateWithoutReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
-  genre?: Prisma.MediaUpdategenreInput | string[]
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
   cast?: Prisma.MediaUpdatecastInput | string[]
-  platforms?: Prisma.MediaUpdateplatformsInput | string[]
   posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  genres?: Prisma.GenreUncheckedUpdateManyWithoutMediaNestedInput
+  platforms?: Prisma.MediaPlatformUncheckedUpdateManyWithoutMediaNestedInput
+  watchlistItems?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutMediaNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutMediaNestedInput
-  watchlists?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
 }
 
-export type MediaCreateWithoutWatchlistsInput = {
+export type MediaCreateWithoutWatchlistItemsInput = {
   id?: string
   title: string
-  synopsis: string
+  slug: string
   type: $Enums.MediaType
-  genre?: Prisma.MediaCreategenreInput | string[]
+  synopsis: string
   releaseYear: number
   director: string
   cast?: Prisma.MediaCreatecastInput | string[]
-  platforms?: Prisma.MediaCreateplatformsInput | string[]
   posterUrl?: string | null
-  streamingLink?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
   pricing?: $Enums.Pricing
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   viewCount?: number
+  genres?: Prisma.GenreCreateNestedManyWithoutMediaInput
+  platforms?: Prisma.MediaPlatformCreateNestedManyWithoutMediaInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
   likes?: Prisma.LikeCreateNestedManyWithoutMediaInput
   comments?: Prisma.CommentCreateNestedManyWithoutMediaInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
 }
 
-export type MediaUncheckedCreateWithoutWatchlistsInput = {
+export type MediaUncheckedCreateWithoutWatchlistItemsInput = {
   id?: string
   title: string
-  synopsis: string
+  slug: string
   type: $Enums.MediaType
-  genre?: Prisma.MediaCreategenreInput | string[]
+  synopsis: string
   releaseYear: number
   director: string
   cast?: Prisma.MediaCreatecastInput | string[]
-  platforms?: Prisma.MediaCreateplatformsInput | string[]
   posterUrl?: string | null
-  streamingLink?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
   pricing?: $Enums.Pricing
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   viewCount?: number
+  genres?: Prisma.GenreUncheckedCreateNestedManyWithoutMediaInput
+  platforms?: Prisma.MediaPlatformUncheckedCreateNestedManyWithoutMediaInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutMediaInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutMediaInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
 }
 
-export type MediaCreateOrConnectWithoutWatchlistsInput = {
+export type MediaCreateOrConnectWithoutWatchlistItemsInput = {
   where: Prisma.MediaWhereUniqueInput
-  create: Prisma.XOR<Prisma.MediaCreateWithoutWatchlistsInput, Prisma.MediaUncheckedCreateWithoutWatchlistsInput>
+  create: Prisma.XOR<Prisma.MediaCreateWithoutWatchlistItemsInput, Prisma.MediaUncheckedCreateWithoutWatchlistItemsInput>
 }
 
-export type MediaUpsertWithoutWatchlistsInput = {
-  update: Prisma.XOR<Prisma.MediaUpdateWithoutWatchlistsInput, Prisma.MediaUncheckedUpdateWithoutWatchlistsInput>
-  create: Prisma.XOR<Prisma.MediaCreateWithoutWatchlistsInput, Prisma.MediaUncheckedCreateWithoutWatchlistsInput>
+export type MediaUpsertWithoutWatchlistItemsInput = {
+  update: Prisma.XOR<Prisma.MediaUpdateWithoutWatchlistItemsInput, Prisma.MediaUncheckedUpdateWithoutWatchlistItemsInput>
+  create: Prisma.XOR<Prisma.MediaCreateWithoutWatchlistItemsInput, Prisma.MediaUncheckedCreateWithoutWatchlistItemsInput>
   where?: Prisma.MediaWhereInput
 }
 
-export type MediaUpdateToOneWithWhereWithoutWatchlistsInput = {
+export type MediaUpdateToOneWithWhereWithoutWatchlistItemsInput = {
   where?: Prisma.MediaWhereInput
-  data: Prisma.XOR<Prisma.MediaUpdateWithoutWatchlistsInput, Prisma.MediaUncheckedUpdateWithoutWatchlistsInput>
+  data: Prisma.XOR<Prisma.MediaUpdateWithoutWatchlistItemsInput, Prisma.MediaUncheckedUpdateWithoutWatchlistItemsInput>
 }
 
-export type MediaUpdateWithoutWatchlistsInput = {
+export type MediaUpdateWithoutWatchlistItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
-  genre?: Prisma.MediaUpdategenreInput | string[]
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
   cast?: Prisma.MediaUpdatecastInput | string[]
-  platforms?: Prisma.MediaUpdateplatformsInput | string[]
   posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  genres?: Prisma.GenreUpdateManyWithoutMediaNestedInput
+  platforms?: Prisma.MediaPlatformUpdateManyWithoutMediaNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
   likes?: Prisma.LikeUpdateManyWithoutMediaNestedInput
   comments?: Prisma.CommentUpdateManyWithoutMediaNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
 }
 
-export type MediaUncheckedUpdateWithoutWatchlistsInput = {
+export type MediaUncheckedUpdateWithoutWatchlistItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
-  genre?: Prisma.MediaUpdategenreInput | string[]
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
   cast?: Prisma.MediaUpdatecastInput | string[]
-  platforms?: Prisma.MediaUpdateplatformsInput | string[]
   posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  streamingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
-  isEditorsPick?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  genres?: Prisma.GenreUncheckedUpdateManyWithoutMediaNestedInput
+  platforms?: Prisma.MediaPlatformUncheckedUpdateManyWithoutMediaNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutMediaNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutMediaNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
+}
+
+export type MediaUpdateWithoutGenresInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
+  director?: Prisma.StringFieldUpdateOperationsInput | string
+  cast?: Prisma.MediaUpdatecastInput | string[]
+  posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  platforms?: Prisma.MediaPlatformUpdateManyWithoutMediaNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
+  watchlistItems?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
+  likes?: Prisma.LikeUpdateManyWithoutMediaNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutMediaNestedInput
+  bookmarks?: Prisma.BookmarkUpdateManyWithoutMediaNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
+}
+
+export type MediaUncheckedUpdateWithoutGenresInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
+  director?: Prisma.StringFieldUpdateOperationsInput | string
+  cast?: Prisma.MediaUpdatecastInput | string[]
+  posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  platforms?: Prisma.MediaPlatformUncheckedUpdateManyWithoutMediaNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
+  watchlistItems?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutMediaNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutMediaNestedInput
+  bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutMediaNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
+}
+
+export type MediaUncheckedUpdateManyWithoutGenresInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
+  director?: Prisma.StringFieldUpdateOperationsInput | string
+  cast?: Prisma.MediaUpdatecastInput | string[]
+  posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -1445,19 +2225,23 @@ export type MediaUncheckedUpdateWithoutWatchlistsInput = {
  */
 
 export type MediaCountOutputType = {
+  genres: number
+  platforms: number
+  reviews: number
+  watchlistItems: number
   likes: number
   comments: number
-  reviews: number
-  watchlists: number
   bookmarks: number
   favorites: number
 }
 
 export type MediaCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  genres?: boolean | MediaCountOutputTypeCountGenresArgs
+  platforms?: boolean | MediaCountOutputTypeCountPlatformsArgs
+  reviews?: boolean | MediaCountOutputTypeCountReviewsArgs
+  watchlistItems?: boolean | MediaCountOutputTypeCountWatchlistItemsArgs
   likes?: boolean | MediaCountOutputTypeCountLikesArgs
   comments?: boolean | MediaCountOutputTypeCountCommentsArgs
-  reviews?: boolean | MediaCountOutputTypeCountReviewsArgs
-  watchlists?: boolean | MediaCountOutputTypeCountWatchlistsArgs
   bookmarks?: boolean | MediaCountOutputTypeCountBookmarksArgs
   favorites?: boolean | MediaCountOutputTypeCountFavoritesArgs
 }
@@ -1475,15 +2259,15 @@ export type MediaCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
 /**
  * MediaCountOutputType without action
  */
-export type MediaCountOutputTypeCountLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.LikeWhereInput
+export type MediaCountOutputTypeCountGenresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GenreWhereInput
 }
 
 /**
  * MediaCountOutputType without action
  */
-export type MediaCountOutputTypeCountCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.CommentWhereInput
+export type MediaCountOutputTypeCountPlatformsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MediaPlatformWhereInput
 }
 
 /**
@@ -1496,8 +2280,22 @@ export type MediaCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.E
 /**
  * MediaCountOutputType without action
  */
-export type MediaCountOutputTypeCountWatchlistsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type MediaCountOutputTypeCountWatchlistItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.WatchlistWhereInput
+}
+
+/**
+ * MediaCountOutputType without action
+ */
+export type MediaCountOutputTypeCountLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LikeWhereInput
+}
+
+/**
+ * MediaCountOutputType without action
+ */
+export type MediaCountOutputTypeCountCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommentWhereInput
 }
 
 /**
@@ -1518,24 +2316,32 @@ export type MediaCountOutputTypeCountFavoritesArgs<ExtArgs extends runtime.Types
 export type MediaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
-  synopsis?: boolean
+  slug?: boolean
   type?: boolean
-  genre?: boolean
+  synopsis?: boolean
   releaseYear?: boolean
   director?: boolean
   cast?: boolean
-  platforms?: boolean
   posterUrl?: boolean
-  streamingLink?: boolean
+  backdropUrl?: boolean
+  trailerUrl?: boolean
+  streamingUrl?: boolean
+  runtimeMinutes?: boolean
+  seasons?: boolean
   pricing?: boolean
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: boolean
+  reviewCount?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   viewCount?: boolean
+  genres?: boolean | Prisma.Media$genresArgs<ExtArgs>
+  platforms?: boolean | Prisma.Media$platformsArgs<ExtArgs>
+  reviews?: boolean | Prisma.Media$reviewsArgs<ExtArgs>
+  watchlistItems?: boolean | Prisma.Media$watchlistItemsArgs<ExtArgs>
   likes?: boolean | Prisma.Media$likesArgs<ExtArgs>
   comments?: boolean | Prisma.Media$commentsArgs<ExtArgs>
-  reviews?: boolean | Prisma.Media$reviewsArgs<ExtArgs>
-  watchlists?: boolean | Prisma.Media$watchlistsArgs<ExtArgs>
   bookmarks?: boolean | Prisma.Media$bookmarksArgs<ExtArgs>
   favorites?: boolean | Prisma.Media$favoritesArgs<ExtArgs>
   _count?: boolean | Prisma.MediaCountOutputTypeDefaultArgs<ExtArgs>
@@ -1544,66 +2350,86 @@ export type MediaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type MediaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
-  synopsis?: boolean
+  slug?: boolean
   type?: boolean
-  genre?: boolean
+  synopsis?: boolean
   releaseYear?: boolean
   director?: boolean
   cast?: boolean
-  platforms?: boolean
   posterUrl?: boolean
-  streamingLink?: boolean
+  backdropUrl?: boolean
+  trailerUrl?: boolean
+  streamingUrl?: boolean
+  runtimeMinutes?: boolean
+  seasons?: boolean
   pricing?: boolean
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: boolean
+  reviewCount?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   viewCount?: boolean
 }, ExtArgs["result"]["media"]>
 
 export type MediaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
-  synopsis?: boolean
+  slug?: boolean
   type?: boolean
-  genre?: boolean
+  synopsis?: boolean
   releaseYear?: boolean
   director?: boolean
   cast?: boolean
-  platforms?: boolean
   posterUrl?: boolean
-  streamingLink?: boolean
+  backdropUrl?: boolean
+  trailerUrl?: boolean
+  streamingUrl?: boolean
+  runtimeMinutes?: boolean
+  seasons?: boolean
   pricing?: boolean
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: boolean
+  reviewCount?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   viewCount?: boolean
 }, ExtArgs["result"]["media"]>
 
 export type MediaSelectScalar = {
   id?: boolean
   title?: boolean
-  synopsis?: boolean
+  slug?: boolean
   type?: boolean
-  genre?: boolean
+  synopsis?: boolean
   releaseYear?: boolean
   director?: boolean
   cast?: boolean
-  platforms?: boolean
   posterUrl?: boolean
-  streamingLink?: boolean
+  backdropUrl?: boolean
+  trailerUrl?: boolean
+  streamingUrl?: boolean
+  runtimeMinutes?: boolean
+  seasons?: boolean
   pricing?: boolean
-  isEditorsPick?: boolean
   isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: boolean
+  reviewCount?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   viewCount?: boolean
 }
 
-export type MediaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "synopsis" | "type" | "genre" | "releaseYear" | "director" | "cast" | "platforms" | "posterUrl" | "streamingLink" | "pricing" | "isEditorsPick" | "isPublished" | "createdAt" | "viewCount", ExtArgs["result"]["media"]>
+export type MediaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "type" | "synopsis" | "releaseYear" | "director" | "cast" | "posterUrl" | "backdropUrl" | "trailerUrl" | "streamingUrl" | "runtimeMinutes" | "seasons" | "pricing" | "isPublished" | "isFeatured" | "avgRating" | "reviewCount" | "createdAt" | "updatedAt" | "viewCount", ExtArgs["result"]["media"]>
 export type MediaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  genres?: boolean | Prisma.Media$genresArgs<ExtArgs>
+  platforms?: boolean | Prisma.Media$platformsArgs<ExtArgs>
+  reviews?: boolean | Prisma.Media$reviewsArgs<ExtArgs>
+  watchlistItems?: boolean | Prisma.Media$watchlistItemsArgs<ExtArgs>
   likes?: boolean | Prisma.Media$likesArgs<ExtArgs>
   comments?: boolean | Prisma.Media$commentsArgs<ExtArgs>
-  reviews?: boolean | Prisma.Media$reviewsArgs<ExtArgs>
-  watchlists?: boolean | Prisma.Media$watchlistsArgs<ExtArgs>
   bookmarks?: boolean | Prisma.Media$bookmarksArgs<ExtArgs>
   favorites?: boolean | Prisma.Media$favoritesArgs<ExtArgs>
   _count?: boolean | Prisma.MediaCountOutputTypeDefaultArgs<ExtArgs>
@@ -1614,29 +2440,37 @@ export type MediaIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type $MediaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Media"
   objects: {
+    genres: Prisma.$GenrePayload<ExtArgs>[]
+    platforms: Prisma.$MediaPlatformPayload<ExtArgs>[]
+    reviews: Prisma.$ReviewPayload<ExtArgs>[]
+    watchlistItems: Prisma.$WatchlistPayload<ExtArgs>[]
     likes: Prisma.$LikePayload<ExtArgs>[]
     comments: Prisma.$CommentPayload<ExtArgs>[]
-    reviews: Prisma.$ReviewPayload<ExtArgs>[]
-    watchlists: Prisma.$WatchlistPayload<ExtArgs>[]
     bookmarks: Prisma.$BookmarkPayload<ExtArgs>[]
     favorites: Prisma.$FavoritePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     title: string
-    synopsis: string
+    slug: string
     type: $Enums.MediaType
-    genre: string[]
+    synopsis: string
     releaseYear: number
     director: string
     cast: string[]
-    platforms: string[]
     posterUrl: string | null
-    streamingLink: string | null
+    backdropUrl: string | null
+    trailerUrl: string | null
+    streamingUrl: string | null
+    runtimeMinutes: number | null
+    seasons: number | null
     pricing: $Enums.Pricing
-    isEditorsPick: boolean
     isPublished: boolean
+    isFeatured: boolean
+    avgRating: number | null
+    reviewCount: number
     createdAt: Date
+    updatedAt: Date
     viewCount: number
   }, ExtArgs["result"]["media"]>
   composites: {}
@@ -2032,10 +2866,12 @@ readonly fields: MediaFieldRefs;
  */
 export interface Prisma__MediaClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  genres<T extends Prisma.Media$genresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$genresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GenrePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  platforms<T extends Prisma.Media$platformsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$platformsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MediaPlatformPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reviews<T extends Prisma.Media$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  watchlistItems<T extends Prisma.Media$watchlistItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$watchlistItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WatchlistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   likes<T extends Prisma.Media$likesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$likesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   comments<T extends Prisma.Media$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  reviews<T extends Prisma.Media$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  watchlists<T extends Prisma.Media$watchlistsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$watchlistsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WatchlistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bookmarks<T extends Prisma.Media$bookmarksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$bookmarksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookmarkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   favorites<T extends Prisma.Media$favoritesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -2069,19 +2905,25 @@ export interface Prisma__MediaClient<T, Null = never, ExtArgs extends runtime.Ty
 export interface MediaFieldRefs {
   readonly id: Prisma.FieldRef<"Media", 'String'>
   readonly title: Prisma.FieldRef<"Media", 'String'>
-  readonly synopsis: Prisma.FieldRef<"Media", 'String'>
+  readonly slug: Prisma.FieldRef<"Media", 'String'>
   readonly type: Prisma.FieldRef<"Media", 'MediaType'>
-  readonly genre: Prisma.FieldRef<"Media", 'String[]'>
+  readonly synopsis: Prisma.FieldRef<"Media", 'String'>
   readonly releaseYear: Prisma.FieldRef<"Media", 'Int'>
   readonly director: Prisma.FieldRef<"Media", 'String'>
   readonly cast: Prisma.FieldRef<"Media", 'String[]'>
-  readonly platforms: Prisma.FieldRef<"Media", 'String[]'>
   readonly posterUrl: Prisma.FieldRef<"Media", 'String'>
-  readonly streamingLink: Prisma.FieldRef<"Media", 'String'>
+  readonly backdropUrl: Prisma.FieldRef<"Media", 'String'>
+  readonly trailerUrl: Prisma.FieldRef<"Media", 'String'>
+  readonly streamingUrl: Prisma.FieldRef<"Media", 'String'>
+  readonly runtimeMinutes: Prisma.FieldRef<"Media", 'Int'>
+  readonly seasons: Prisma.FieldRef<"Media", 'Int'>
   readonly pricing: Prisma.FieldRef<"Media", 'Pricing'>
-  readonly isEditorsPick: Prisma.FieldRef<"Media", 'Boolean'>
   readonly isPublished: Prisma.FieldRef<"Media", 'Boolean'>
+  readonly isFeatured: Prisma.FieldRef<"Media", 'Boolean'>
+  readonly avgRating: Prisma.FieldRef<"Media", 'Float'>
+  readonly reviewCount: Prisma.FieldRef<"Media", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Media", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Media", 'DateTime'>
   readonly viewCount: Prisma.FieldRef<"Media", 'Int'>
 }
     
@@ -2476,6 +3318,102 @@ export type MediaDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
+ * Media.genres
+ */
+export type Media$genresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Genre
+   */
+  select?: Prisma.GenreSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Genre
+   */
+  omit?: Prisma.GenreOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GenreInclude<ExtArgs> | null
+  where?: Prisma.GenreWhereInput
+  orderBy?: Prisma.GenreOrderByWithRelationInput | Prisma.GenreOrderByWithRelationInput[]
+  cursor?: Prisma.GenreWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GenreScalarFieldEnum | Prisma.GenreScalarFieldEnum[]
+}
+
+/**
+ * Media.platforms
+ */
+export type Media$platformsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MediaPlatform
+   */
+  select?: Prisma.MediaPlatformSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MediaPlatform
+   */
+  omit?: Prisma.MediaPlatformOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MediaPlatformInclude<ExtArgs> | null
+  where?: Prisma.MediaPlatformWhereInput
+  orderBy?: Prisma.MediaPlatformOrderByWithRelationInput | Prisma.MediaPlatformOrderByWithRelationInput[]
+  cursor?: Prisma.MediaPlatformWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MediaPlatformScalarFieldEnum | Prisma.MediaPlatformScalarFieldEnum[]
+}
+
+/**
+ * Media.reviews
+ */
+export type Media$reviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Review
+   */
+  select?: Prisma.ReviewSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Review
+   */
+  omit?: Prisma.ReviewOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReviewInclude<ExtArgs> | null
+  where?: Prisma.ReviewWhereInput
+  orderBy?: Prisma.ReviewOrderByWithRelationInput | Prisma.ReviewOrderByWithRelationInput[]
+  cursor?: Prisma.ReviewWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
+}
+
+/**
+ * Media.watchlistItems
+ */
+export type Media$watchlistItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Watchlist
+   */
+  select?: Prisma.WatchlistSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Watchlist
+   */
+  omit?: Prisma.WatchlistOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WatchlistInclude<ExtArgs> | null
+  where?: Prisma.WatchlistWhereInput
+  orderBy?: Prisma.WatchlistOrderByWithRelationInput | Prisma.WatchlistOrderByWithRelationInput[]
+  cursor?: Prisma.WatchlistWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WatchlistScalarFieldEnum | Prisma.WatchlistScalarFieldEnum[]
+}
+
+/**
  * Media.likes
  */
 export type Media$likesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2521,54 +3459,6 @@ export type Media$commentsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.CommentScalarFieldEnum | Prisma.CommentScalarFieldEnum[]
-}
-
-/**
- * Media.reviews
- */
-export type Media$reviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Review
-   */
-  select?: Prisma.ReviewSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Review
-   */
-  omit?: Prisma.ReviewOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ReviewInclude<ExtArgs> | null
-  where?: Prisma.ReviewWhereInput
-  orderBy?: Prisma.ReviewOrderByWithRelationInput | Prisma.ReviewOrderByWithRelationInput[]
-  cursor?: Prisma.ReviewWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
-}
-
-/**
- * Media.watchlists
- */
-export type Media$watchlistsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Watchlist
-   */
-  select?: Prisma.WatchlistSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Watchlist
-   */
-  omit?: Prisma.WatchlistOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.WatchlistInclude<ExtArgs> | null
-  where?: Prisma.WatchlistWhereInput
-  orderBy?: Prisma.WatchlistOrderByWithRelationInput | Prisma.WatchlistOrderByWithRelationInput[]
-  cursor?: Prisma.WatchlistWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.WatchlistScalarFieldEnum | Prisma.WatchlistScalarFieldEnum[]
 }
 
 /**

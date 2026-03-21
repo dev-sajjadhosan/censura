@@ -3,9 +3,27 @@ import { Prisma } from "../../../generated/prisma/client";
 import AppError from "../../error-helpers/AppError";
 import { prisma } from "../../lib/prisma";
 import { IRequestUser } from "../../interfaces";
+import { QueryBuilder } from "../../utils/QueryBuilder";
 
-const getAllMedia = async (user: IRequestUser, query: any) => {
-  const result = await prisma.media.findMany();
+const getAllMedia = async (user: IRequestUser, query: Record<string, unknown>) => {
+  const mediaQuery = new QueryBuilder(prisma.media, query as any, {
+    searchableFields: ["title", "synopsis", "director", "cast"],
+    filterableFields: [
+      "type",
+      "genre",
+      "releaseYear",
+      "pricing",
+      "isEditorsPick",
+      "isPublished",
+    ],
+  })
+    .search()
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await mediaQuery.execute();
   return result;
 };
 

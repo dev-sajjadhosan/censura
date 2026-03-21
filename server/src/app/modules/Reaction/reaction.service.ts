@@ -2,14 +2,24 @@ import { Prisma } from "../../../generated/prisma/client";
 import { IRequestUser } from "../../interfaces";
 import AppError from "../../error-helpers/AppError";
 import { prisma } from "../../lib/prisma";
+import { QueryBuilder } from "../../utils/QueryBuilder";
 
-const getAllComments = async (query: any, user: IRequestUser) => {
-  const result = await prisma.comment.findMany({
-    include: {
+const getAllComments = async (query: Record<string, unknown>, user: IRequestUser) => {
+  const commentQuery = new QueryBuilder(prisma.comment, query as any, {
+    searchableFields: ["content"],
+    filterableFields: ["userId", "mediaId", "reviewId", "parentId"],
+  })
+    .search()
+    .filter()
+    .sort()
+    .paginate()
+    .fields()
+    .include({
       user: true,
       replies: true,
-    },
-  });
+    });
+
+  const result = await commentQuery.execute();
   return result;
 };
 

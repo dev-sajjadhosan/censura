@@ -54,7 +54,10 @@ export const ModelName = {
   Admin: 'Admin',
   Comment: 'Comment',
   Like: 'Like',
+  Genre: 'Genre',
   Media: 'Media',
+  MediaPlatform: 'MediaPlatform',
+  Payment: 'Payment',
   Profile: 'Profile',
   Bookmark: 'Bookmark',
   Favorite: 'Favorite',
@@ -106,6 +109,7 @@ export const CommentScalarFieldEnum = {
   parentId: 'parentId',
   content: 'content',
   createdAt: 'createdAt',
+  status: 'status',
   mediaId: 'mediaId'
 } as const
 
@@ -114,6 +118,7 @@ export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeo
 
 export const LikeScalarFieldEnum = {
   id: 'id',
+  type: 'type',
   userId: 'userId',
   reviewId: 'reviewId',
   createdAt: 'createdAt',
@@ -124,26 +129,63 @@ export const LikeScalarFieldEnum = {
 export type LikeScalarFieldEnum = (typeof LikeScalarFieldEnum)[keyof typeof LikeScalarFieldEnum]
 
 
+export const GenreScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
+} as const
+
+export type GenreScalarFieldEnum = (typeof GenreScalarFieldEnum)[keyof typeof GenreScalarFieldEnum]
+
+
 export const MediaScalarFieldEnum = {
   id: 'id',
   title: 'title',
-  synopsis: 'synopsis',
+  slug: 'slug',
   type: 'type',
-  genre: 'genre',
+  synopsis: 'synopsis',
   releaseYear: 'releaseYear',
   director: 'director',
   cast: 'cast',
-  platforms: 'platforms',
   posterUrl: 'posterUrl',
-  streamingLink: 'streamingLink',
+  backdropUrl: 'backdropUrl',
+  trailerUrl: 'trailerUrl',
+  streamingUrl: 'streamingUrl',
+  runtimeMinutes: 'runtimeMinutes',
+  seasons: 'seasons',
   pricing: 'pricing',
-  isEditorsPick: 'isEditorsPick',
   isPublished: 'isPublished',
+  isFeatured: 'isFeatured',
+  avgRating: 'avgRating',
+  reviewCount: 'reviewCount',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   viewCount: 'viewCount'
 } as const
 
 export type MediaScalarFieldEnum = (typeof MediaScalarFieldEnum)[keyof typeof MediaScalarFieldEnum]
+
+
+export const MediaPlatformScalarFieldEnum = {
+  id: 'id',
+  mediaId: 'mediaId',
+  platform: 'platform',
+  url: 'url'
+} as const
+
+export type MediaPlatformScalarFieldEnum = (typeof MediaPlatformScalarFieldEnum)[keyof typeof MediaPlatformScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  subscriptionId: 'subscriptionId',
+  amount: 'amount',
+  currency: 'currency',
+  stripePaymentId: 'stripePaymentId',
+  status: 'status',
+  createdAt: 'createdAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
 export const ProfileScalarFieldEnum = {
@@ -207,10 +249,13 @@ export const SubscriptionScalarFieldEnum = {
   userId: 'userId',
   plan: 'plan',
   status: 'status',
-  stripeSessionId: 'stripeSessionId',
-  startDate: 'startDate',
-  endDate: 'endDate',
-  createdAt: 'createdAt'
+  stripeCustomerId: 'stripeCustomerId',
+  stripePriceId: 'stripePriceId',
+  currentPeriodStart: 'currentPeriodStart',
+  currentPeriodEnd: 'currentPeriodEnd',
+  cancelAtPeriodEnd: 'cancelAtPeriodEnd',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]

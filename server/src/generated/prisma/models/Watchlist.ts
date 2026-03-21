@@ -224,7 +224,7 @@ export type WatchlistCreateInput = {
   id?: string
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutWatchlistsInput
-  media: Prisma.MediaCreateNestedOneWithoutWatchlistsInput
+  media: Prisma.MediaCreateNestedOneWithoutWatchlistItemsInput
 }
 
 export type WatchlistUncheckedCreateInput = {
@@ -238,7 +238,7 @@ export type WatchlistUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutWatchlistsNestedInput
-  media?: Prisma.MediaUpdateOneRequiredWithoutWatchlistsNestedInput
+  media?: Prisma.MediaUpdateOneRequiredWithoutWatchlistItemsNestedInput
 }
 
 export type WatchlistUncheckedUpdateInput = {
@@ -438,7 +438,7 @@ export type WatchlistScalarWhereInput = {
 export type WatchlistCreateWithoutUserInput = {
   id?: string
   createdAt?: Date | string
-  media: Prisma.MediaCreateNestedOneWithoutWatchlistsInput
+  media: Prisma.MediaCreateNestedOneWithoutWatchlistItemsInput
 }
 
 export type WatchlistUncheckedCreateWithoutUserInput = {
@@ -506,7 +506,7 @@ export type WatchlistCreateManyUserInput = {
 export type WatchlistUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  media?: Prisma.MediaUpdateOneRequiredWithoutWatchlistsNestedInput
+  media?: Prisma.MediaUpdateOneRequiredWithoutWatchlistItemsNestedInput
 }
 
 export type WatchlistUncheckedUpdateWithoutUserInput = {

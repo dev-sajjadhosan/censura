@@ -9,7 +9,7 @@ import { AppRoutes } from "./routes/routes";
 import { auth } from "./lib/auth";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
 import { notFound } from "./middleware/notFound";
-import { startSubscriptionCronJobs } from "./cron/subscription.cron";
+import { startSubscriptionCronJobs } from "./utils/subscription.cron";
 
 const app = express();
 

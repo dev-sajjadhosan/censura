@@ -5,7 +5,7 @@ import { AuthService } from "./auth.service";
 import status from "http-status";
 import { tokenUtils } from "../../utils/token";
 import { CookieUtils } from "../../utils/cookie";
-import { IRequestUser } from "../../../interfaces";
+import { IRequestUser } from "../../interfaces";
 import AppError from "../../error-helpers/AppError";
 import { envVars } from "../../config/env";
 import { auth } from "../../lib/auth";

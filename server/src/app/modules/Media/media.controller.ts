@@ -1,7 +1,7 @@
 import catchAsync from "../../shared/catchAsync";
 import sendResponse from "../../shared/sendRes";
 import { MediaService } from "./media.service";
-import { IRequestUser } from "../../../interfaces";
+import { IRequestUser } from "../../interfaces";
 import status from "http-status";
 
 const getAllMedia = catchAsync(async (req, res) => {

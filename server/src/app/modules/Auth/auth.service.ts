@@ -5,7 +5,7 @@ import { auth } from "../../lib/auth";
 import { prisma } from "../../lib/prisma";
 import { IChangePassword, ILoginUser, IRegisterUser } from "./auth.interface";
 import { tokenUtils } from "../../utils/token";
-import { IRequestUser } from "../../../interfaces";
+import { IRequestUser } from "../../interfaces";
 import { jwtUtils } from "../../utils/jwt";
 import { envVars } from "../../config/env";
 import { JwtPayload } from "jsonwebtoken";
@@ -466,8 +466,6 @@ const googleLoginSuccess = async (session: Record<string, any>) => {
     refreshToken,
   };
 };
-
-
 
 export const AuthService = {
   register,

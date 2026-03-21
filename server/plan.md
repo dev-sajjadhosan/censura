@@ -207,7 +207,7 @@ backend/
 
 ---
 
-### 📋 Watchlist  `/api/v1/watchlist`
+### 📋 Watchlist  `/api/v1/watchlist` 
 
 | Method | Endpoint       | Access | Description              |
 |--------|----------------|--------|--------------------------|

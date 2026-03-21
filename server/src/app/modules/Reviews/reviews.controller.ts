@@ -1,12 +1,10 @@
-
-
 import httpStatus from "http-status";
 
 import { ReviewsService } from "./reviews.service";
 import catchAsync from "../../shared/catchAsync";
 import sendResponse from "../../shared/sendRes";
 import { Request, Response } from "express";
-import { IRequestUser } from "../../../interfaces";
+import { IRequestUser } from "../../interfaces";
 
 const getAllReview = catchAsync(async (req: Request, res: Response) => {
   const query = req.query;

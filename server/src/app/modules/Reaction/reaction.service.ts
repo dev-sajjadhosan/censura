@@ -1,5 +1,5 @@
 import { Prisma } from "../../../generated/prisma/client";
-import { IRequestUser } from "../../../interfaces";
+import { IRequestUser } from "../../interfaces";
 import AppError from "../../error-helpers/AppError";
 import { prisma } from "../../lib/prisma";
 

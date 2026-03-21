@@ -2,7 +2,7 @@ import status from "http-status";
 import { Prisma } from "../../../generated/prisma/client";
 import AppError from "../../error-helpers/AppError";
 import { prisma } from "../../lib/prisma";
-import { IRequestUser } from "../../../interfaces";
+import { IRequestUser } from "../../interfaces";
 
 const getAllMedia = async (user: IRequestUser, query: any) => {
   const result = await prisma.media.findMany();
@@ -18,14 +18,21 @@ const getSingleMedia = async (id: string) => {
   return result;
 };
 
-const createMedia = async (user: IRequestUser, payload: Prisma.MediaCreateInput) => {
+const createMedia = async (
+  user: IRequestUser,
+  payload: Prisma.MediaCreateInput,
+) => {
   const result = await prisma.media.create({
     data: payload,
   });
   return result;
 };
 
-const updateMedia = async (id: string, user: IRequestUser, payload: Prisma.MediaUpdateInput) => {
+const updateMedia = async (
+  id: string,
+  user: IRequestUser,
+  payload: Prisma.MediaUpdateInput,
+) => {
   const result = await prisma.media.update({
     where: {
       id,
@@ -94,7 +101,6 @@ const changePublishStatus = async (
   });
   return result;
 };
-
 
 export const MediaService = {
   getAllMedia,

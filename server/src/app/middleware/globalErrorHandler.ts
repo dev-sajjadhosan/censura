@@ -15,7 +15,7 @@ import {
   handlerPrismaClientInitializationError,
   handlerPrismaClientRustPanicError,
 } from "../error-helpers/handlePrismaError";
-import { TErrorResponse, TErrorSources } from "../../interfaces/error.interface";
+import { TErrorResponse, TErrorSources } from "../interfaces/error.interface";
 
 export const globalErrorHandler = async (
   err: any,

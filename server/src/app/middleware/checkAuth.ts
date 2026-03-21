@@ -81,7 +81,7 @@ export const checkAuth = (...authRoles: Role[]) => {
             role: user.role,
             email: user.email,
             name: user.name,
-            status: user.status,
+            status: user.status as UserStatus,
             isDeleted: user.isDeleted,
             emailVerified: user.emailVerified,
           };

@@ -29,7 +29,17 @@ app.use(
   }),
 );
 
+import { SubscriptionController } from "./modules/Subscription/subscription.controller";
+
 app.use("/api/auth", toNodeHandler(auth));
+
+// Mount webhook before express.json() so it retains the raw body as a buffer
+app.post(
+  "/api/v1/subscription/webhook",
+  express.raw({ type: "application/json" }),
+  SubscriptionController.webhook
+);
+
 app.use(express.json());
 app.use(cookieParser());
 

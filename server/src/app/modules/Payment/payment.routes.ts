@@ -6,7 +6,7 @@ import { Role } from "../../../generated/prisma/enums";
 const router = Router();
 
 router.get(
-  "/my-history",
+  "/my-payments",
   checkAuth(Role.USER, Role.ADMIN),
   PaymentController.getMyPayments,
 );

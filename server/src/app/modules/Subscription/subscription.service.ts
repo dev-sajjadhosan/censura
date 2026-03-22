@@ -112,12 +112,13 @@ const handleWebhook = async (body: Buffer, signature: string) => {
     }
 
     // 5. Update Database to activate the user's subscription!
-    await prisma.subscription.upsert({
+    const updatedSubscription = await prisma.subscription.upsert({
       where: { userId },
       update: {
         plan,
         status: SubscriptionStatus.ACTIVE,
-        stripeCustomerId: typeof session.customer === "string" ? session.customer : null,
+        stripeCustomerId:
+          typeof session.customer === "string" ? session.customer : null,
         currentPeriodStart,
         currentPeriodEnd,
       },
@@ -125,9 +126,21 @@ const handleWebhook = async (body: Buffer, signature: string) => {
         userId,
         plan,
         status: SubscriptionStatus.ACTIVE,
-        stripeCustomerId: typeof session.customer === "string" ? session.customer : null,
+        stripeCustomerId:
+          typeof session.customer === "string" ? session.customer : null,
         currentPeriodStart,
         currentPeriodEnd,
+      },
+    });
+
+    // 6. Create a Payment record for history
+    await prisma.payment.create({
+      data: {
+        subscriptionId: updatedSubscription.id,
+        amount: (session.amount_total || 0) / 100,
+        currency: session.currency || "usd",
+        stripePaymentId: session.payment_intent as string,
+        status: "COMPLETED",
       },
     });
 

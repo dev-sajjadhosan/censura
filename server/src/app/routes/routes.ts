@@ -5,6 +5,10 @@ import { MediaRoutes } from "../modules/Media/media.routes";
 import { userRoutes } from "../modules/User/user.routes";
 import { GenreRoutes } from "../modules/Genre/genre.routes";
 import { PaymentRoutes } from "../modules/Payment/payment.routes";
+import { ReactionRoutes } from "../modules/Reaction/reaction.route";
+import { SubscriptionRouter } from "../modules/Subscription/subscription.routes";
+import { WatchlistRouter } from "../modules/Watchlist/watchlist.router";
+import { AdminRoutes } from "../modules/Admin/admin.routes";
 
 const router = Router();
 
@@ -14,5 +18,9 @@ router.use("/media", MediaRoutes);
 router.use("/reviews", ReviewsRoutes);
 router.use("/genres", GenreRoutes);
 router.use("/payments", PaymentRoutes);
+router.use("/reactions", ReactionRoutes);
+router.use("/subscriptions", SubscriptionRouter);
+router.use("/watchlist", WatchlistRouter);
+router.use("/admin", AdminRoutes);
 
 export const AppRoutes = router;

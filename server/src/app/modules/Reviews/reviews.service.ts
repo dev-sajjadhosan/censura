@@ -105,6 +105,29 @@ const deleteReview = async (id: string) => {
   return result;
 };
 
+const updateMediaRating = async (mediaId: string) => {
+  const stats = await prisma.review.aggregate({
+    where: {
+      mediaId,
+      status: ReviewStatus.APPROVED,
+    },
+    _avg: {
+      rating: true,
+    },
+    _count: {
+      id: true,
+    },
+  });
+
+  await prisma.media.update({
+    where: { id: mediaId },
+    data: {
+      avgRating: stats._avg.rating || 0,
+      reviewCount: stats._count.id,
+    },
+  });
+};
+
 const updateReviewStatus = async (
   id: string,
   payload: { status: ReviewStatus },
@@ -127,6 +150,10 @@ const updateReviewStatus = async (
       status: payload.status,
     },
   });
+
+  // Recalculate rating
+  await updateMediaRating(isReviewExist.mediaId);
+
   return result;
 };
 
@@ -146,6 +173,10 @@ const deleteReviewByAdmin = async (id: string) => {
       id,
     },
   });
+
+  // Recalculate rating
+  await updateMediaRating(isReviewExist.mediaId);
+
   return result;
 };
 

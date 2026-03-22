@@ -23,10 +23,10 @@ router.patch(
 );
 router.delete("/:id", checkAuth(Role.ADMIN), MediaController.deleteMedia);
 router.patch(
-  "/editor-pick/status/:id",
+  "/featured/status/:id",
   checkAuth(Role.ADMIN),
-  validateRequest(MediaValidation.changeEditorsPickStatusValidation),
-  MediaController.changeEditorsPickStatus,
+  validateRequest(MediaValidation.changeFeaturedStatusValidation),
+  MediaController.changeFeaturedStatus,
 );
 router.patch(
   "/publish/status/:id",

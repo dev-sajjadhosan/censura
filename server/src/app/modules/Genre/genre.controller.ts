@@ -28,7 +28,7 @@ const getAllGenres = catchAsync(async (req: Request, res: Response) => {
 
 const deleteGenre = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const result = await GenreService.deleteGenre(id);
+  const result = await GenreService.deleteGenre(id as string);
 
   sendResponse(res, {
     statusCode: status.OK,
@@ -38,8 +38,21 @@ const deleteGenre = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateGenre = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await GenreService.updateGenre(id as string, req.body);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Genre updated successfully",
+    data: result,
+  });
+});
+
 export const GenreController = {
   createGenre,
   getAllGenres,
+  updateGenre,
   deleteGenre,
 };

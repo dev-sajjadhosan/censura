@@ -1762,7 +1762,14 @@ export type LikeScalarFieldEnum = (typeof LikeScalarFieldEnum)[keyof typeof Like
 
 export const GenreScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  image: 'image',
+  isPublished: 'isPublished',
+  isFeatured: 'isFeatured',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type GenreScalarFieldEnum = (typeof GenreScalarFieldEnum)[keyof typeof GenreScalarFieldEnum]

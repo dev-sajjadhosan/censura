@@ -31,9 +31,9 @@ const createMediaValidation = z
     cast: z.array(z.string("Cast is required")),
     platforms: z.array(z.string("Platforms is required")),
     posterUrl: z.string().optional(),
-    streamingLink: z.string().optional(),
+    streamingUrl: z.string().optional(),
     pricing: z.enum(["FREE", "PREMIUM", "RENTAL"]),
-    isEditorsPick: z.boolean().optional(),
+    isFeatured: z.boolean().optional(),
     price: z.number("Price is required").optional(),
   })
   .superRefine((data, ctx) => {
@@ -82,9 +82,9 @@ const updateMediaValidation = z
     cast: z.array(z.string("Cast is required")).optional(),
     platforms: z.array(z.string("Platforms is required")).optional(),
     posterUrl: z.string().optional(),
-    streamingLink: z.string().optional(),
+    streamingUrl: z.string().optional(),
     pricing: z.enum(["FREE", "PREMIUM", "RENTAL"]).optional(),
-    isEditorsPick: z.boolean().optional(),
+    isFeatured: z.boolean().optional(),
     price: z.number("Price is required").optional(),
   })
   .superRefine((data, ctx) => {
@@ -104,13 +104,13 @@ const changePublishStatusValidation = z.object({
   isPublished: z.boolean("isPublished is required"),
 });
 
-const changeEditorsPickStatusValidation = z.object({
-  isEditorsPick: z.boolean("isEditorsPick is required"),
+const changeFeaturedStatusValidation = z.object({
+  isFeatured: z.boolean("isFeatured is required"),
 });
 
 export const MediaValidation = {
   createMediaValidation,
   updateMediaValidation,
   changePublishStatusValidation,
-  changeEditorsPickStatusValidation,
+  changeFeaturedStatusValidation,
 };

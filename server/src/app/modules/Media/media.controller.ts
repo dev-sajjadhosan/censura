@@ -69,11 +69,11 @@ const deleteMedia = catchAsync(async (req, res) => {
   });
 });
 
-const changeEditorsPickStatus = catchAsync(async (req, res) => {
+const changeFeaturedStatus = catchAsync(async (req, res) => {
   const { id } = req.params;
   const data = req.body;
 
-  const result = await MediaService.changeEditorsPickStatus(id as string, data);
+  const result = await MediaService.changeFeaturedStatus(id as string, data);
 
   sendResponse(res, {
     statusCode: status.OK,
@@ -103,6 +103,6 @@ export const MediaController = {
   createMedia,
   updateMedia,
   deleteMedia,
-  changeEditorsPickStatus,
+  changeFeaturedStatus,
   changePublishStatus,
 };

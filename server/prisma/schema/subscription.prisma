@@ -15,4 +15,8 @@ model Subscription {
   payments Payment[]
 
   @@map("subscriptions")
+  @@index([userId])
+  @@index([plan])
+  @@index([status])
+  @@index([currentPeriodEnd])
 }

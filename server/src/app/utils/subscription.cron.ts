@@ -1,11 +1,12 @@
 import cron from "node-cron";
 import { prisma } from "../lib/prisma";
-import { SubStatus } from "../../generated/prisma/enums";
+import { SubscriptionStatus } from "../../generated/prisma/enums";
 import { sendEmail } from "../utils/email";
 import { envVars } from "../config/env";
 
 export const startSubscriptionCronJobs = () => {
     // Run every day at midnight
+    
     // cron string: "0 0 * * *"
     cron.schedule("0 0 * * *", async () => {
         console.log("Running daily subscription check cron job...");
@@ -13,15 +14,15 @@ export const startSubscriptionCronJobs = () => {
         try {
             const today = new Date();
             const activeSubscriptions = await prisma.subscription.findMany({
-                where: { status: SubStatus.ACTIVE },
+                where: { status: SubscriptionStatus.ACTIVE },
                 include: { user: true }
             });
 
             for (const sub of activeSubscriptions) {
-                if (!sub.endDate || !sub.user) continue;
+                if (!sub.currentPeriodEnd || !sub.user) continue;
 
-                const startTimestamp = sub.startDate.getTime();
-                const endTimestamp = sub.endDate.getTime();
+                const startTimestamp = sub.currentPeriodStart!.getTime();
+                const endTimestamp = sub.currentPeriodEnd!.getTime();
                 const halfwayTimestamp = startTimestamp + (endTimestamp - startTimestamp) / 2;
                 
                 const halfwayDate = new Date(halfwayTimestamp);
@@ -39,7 +40,7 @@ export const startSubscriptionCronJobs = () => {
                         templateData: {
                             userName: sub.user.name,
                             plan: sub.plan,
-                            endDate: sub.endDate.toLocaleDateString(),
+                            endDate: sub.currentPeriodEnd!.toLocaleDateString(),
                             loginUrl: `${envVars.FRONTEND_URL}/login`
                         }
                     });
@@ -47,11 +48,11 @@ export const startSubscriptionCronJobs = () => {
                 }
 
                 // 2. Check Expiration
-                if (sub.endDate < today) {
+                if (sub.currentPeriodEnd! < today) {
                     // Force update status in Database to EXPIRED
                     await prisma.subscription.update({
                         where: { id: sub.id },
-                        data: { status: SubStatus.EXPIRED }
+                        data: { status: SubscriptionStatus.EXPIRED }
                     });
 
                     // Send expiration email
@@ -62,7 +63,7 @@ export const startSubscriptionCronJobs = () => {
                         templateData: {
                             userName: sub.user.name,
                             plan: sub.plan,
-                            endDate: sub.endDate.toLocaleDateString(),
+                            endDate: sub.currentPeriodEnd!.toLocaleDateString(),
                             loginUrl: `${envVars.FRONTEND_URL}/dashboard` // Or pricing page
                         }
                     });

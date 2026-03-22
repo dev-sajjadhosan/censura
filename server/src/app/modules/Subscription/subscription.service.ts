@@ -4,7 +4,7 @@ import { prisma } from "../../lib/prisma";
 import AppError from "../../error-helpers/AppError";
 import httpStatus from "http-status";
 import { envVars } from "../../config/env";
-import { SubscriptionPlan, SubStatus } from "../../../generated/prisma/enums";
+import { SubscriptionPlan, SubscriptionStatus } from "../../../generated/prisma/enums";
 import { sendEmail } from "../../utils/email";
 
 const getPlans = async () => {
@@ -103,12 +103,12 @@ const handleWebhook = async (body: Buffer, signature: string) => {
       throw new AppError(httpStatus.BAD_REQUEST, "Missing metadata in session");
     }
 
-    const startDate = new Date();
-    const endDate = new Date();
+    const currentPeriodStart = new Date();
+    const currentPeriodEnd = new Date();
     if (plan === SubscriptionPlan.MONTHLY) {
-      endDate.setMonth(endDate.getMonth() + 1);
+      currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1);
     } else if (plan === SubscriptionPlan.YEARLY) {
-      endDate.setFullYear(endDate.getFullYear() + 1);
+      currentPeriodEnd.setFullYear(currentPeriodEnd.getFullYear() + 1);
     }
 
     // 5. Update Database to activate the user's subscription!
@@ -116,18 +116,18 @@ const handleWebhook = async (body: Buffer, signature: string) => {
       where: { userId },
       update: {
         plan,
-        status: SubStatus.ACTIVE,
-        stripeSessionId: session.id,
-        startDate,
-        endDate,
+        status: SubscriptionStatus.ACTIVE,
+        stripeCustomerId: typeof session.customer === "string" ? session.customer : null,
+        currentPeriodStart,
+        currentPeriodEnd,
       },
       create: {
         userId,
         plan,
-        status: SubStatus.ACTIVE,
-        stripeSessionId: session.id,
-        startDate,
-        endDate,
+        status: SubscriptionStatus.ACTIVE,
+        stripeCustomerId: typeof session.customer === "string" ? session.customer : null,
+        currentPeriodStart,
+        currentPeriodEnd,
       },
     });
 
@@ -142,8 +142,8 @@ const handleWebhook = async (body: Buffer, signature: string) => {
           templateData: {
             userName: user.name,
             plan,
-            startDate: startDate.toLocaleDateString(),
-            endDate: endDate.toLocaleDateString(),
+            startDate: currentPeriodStart.toLocaleDateString(),
+            endDate: currentPeriodEnd.toLocaleDateString(),
             loginUrl: `${envVars.FRONTEND_URL}/login`,
           },
         });
@@ -163,13 +163,13 @@ const getSubscriptionStatus = async (userId: string) => {
   });
 
   if (!subscription) {
-    return { status: SubStatus.EXPIRED, plan: SubscriptionPlan.FREE };
+    return { status: SubscriptionStatus.EXPIRED, plan: SubscriptionPlan.FREE };
   }
 
-  if (subscription.endDate && new Date() > subscription.endDate && subscription.status === SubStatus.ACTIVE) {
+  if (subscription.currentPeriodEnd && new Date() > subscription.currentPeriodEnd && subscription.status === SubscriptionStatus.ACTIVE) {
     const updated = await prisma.subscription.update({
       where: { id: subscription.id },
-      data: { status: SubStatus.EXPIRED },
+      data: { status: SubscriptionStatus.EXPIRED },
     });
     return updated;
   }

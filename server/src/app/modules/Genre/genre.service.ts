@@ -1,8 +1,9 @@
 import status from "http-status";
 import AppError from "../../error-helpers/AppError";
 import { prisma } from "../../lib/prisma";
+import { Prisma } from "../../../generated/prisma/client";
 
-const createGenre = async (payload: { name: string }) => {
+const createGenre = async (payload: Prisma.GenreCreateInput) => {
   const isExist = await prisma.genre.findUnique({
     where: { name: payload.name },
   });
@@ -25,6 +26,22 @@ const getAllGenres = async () => {
   });
 };
 
+const updateGenre = async (id: string, payload: Prisma.GenreUpdateInput) => {
+  const isExist = await prisma.genre.findUnique({
+    where: { id },
+  });
+
+  if (!isExist) {
+    throw new AppError(status.NOT_FOUND, "Genre not found");
+  }
+
+  const result = await prisma.genre.update({
+    where: { id },
+    data: payload,
+  });
+  return result;
+};
+
 const deleteGenre = async (id: string) => {
   const isExist = await prisma.genre.findUnique({
     where: { id },
@@ -43,5 +60,6 @@ const deleteGenre = async (id: string) => {
 export const GenreService = {
   createGenre,
   getAllGenres,
+  updateGenre,
   deleteGenre,
 };

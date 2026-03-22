@@ -1,7 +1,20 @@
 model Genre {
-  id    String  @id @default(uuid())
-  name  String  @unique
+  id          String  @id @default(uuid())
+  name        String  @unique
+  slug        String  @unique
+  description String?
+  image       String?
+
+  isPublished Boolean @default(true)
+  isFeatured  Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   media Media[] @relation("MediaGenres")
 
   @@map("genres")
+  @@index([name])
+  @@index([isPublished])
+  @@index([isFeatured])
 }

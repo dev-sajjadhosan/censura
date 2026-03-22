@@ -25,17 +25,20 @@ Censura is a high-performance backend server designed to handle complex media pl
 
 ## ✨ Key Features
 
-- **Modular Architecture:** Business logic is strictly separated into independent domains (Auth, User, Media, Reviews, Reaction, Watchlist, Subscription).
-- **Advanced Query Builder:** A custom Prisma query builder class that dynamically handles searching, filtering, pagination, sorting, and field selection across complex database relations.
+- **Modular Architecture:** Business logic is strictly separated into independent domains (Auth, User, Media, Genre, Reviews, Reaction, Watchlist, Subscription, Payment).
+- **Advanced Query Builder:** A custom Prisma query builder class that dynamically handles searching, filtering, pagination, sorting, and field selection across complex database relations (including featured content filtering).
 - **Type-Safe Validation:** Full Request validation (Body, Query, Params) using Zod schemas to ensure data integrity before it reaches the controllers.
 - **Secure Authentication:** Cookie-based session management, OAuth support, and role-based access control (Admin vs User).
-- **Payment Processing:** Integrated Stripe webhooks for secure, real-time subscription lifecycle management.
+- **Payment Processing:** Integrated Stripe webhooks for secure, real-time subscription lifecycle management and payment tracking.
 - **Automated Tasks:** Built-in cron jobs for handling subscription expirations and lifecycle emails.
 - **Centralized Error Handling:** Global error catching middleware ensuring consistent API error formatting (`AppError`).
+- **Interactive Mailing:** Responsive email templates with refined UI and interactive elements built with EJS.
 
 ## 📁 Project Structure
 
 ```text
+prisma/
+└── schema/               # Split Prisma schema files (modular architecture)
 src/
 ├── app/
 │   ├── build/            # Advanced utilities (e.g., QueryBuilder)
@@ -46,7 +49,9 @@ src/
 │   ├── middleware/       # Express middlewares (Zod validators, Auth guards)
 │   ├── modules/          # Core Business Logic (Domain Driven)
 │   │   ├── Auth/
-│   │   ├── Media/
+│   │   ├── Genre/        # Genre management catalog
+│   │   ├── Media/        # Movies, TV Shows, Episodes (Featured support)
+│   │   ├── Payment/      # Stripe integration and payment processing
 │   │   ├── Reaction/     # Comments, Likes
 │   │   ├── Reviews/
 │   │   ├── Subscription/

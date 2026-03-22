@@ -9,4 +9,7 @@ model Payment {
   createdAt       DateTime     @default(now())
 
   @@map("payments")
+  @@index([subscriptionId])
+  @@index([status])
+  @@index([createdAt])
 }

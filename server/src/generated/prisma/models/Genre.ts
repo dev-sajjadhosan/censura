@@ -27,16 +27,37 @@ export type AggregateGenre = {
 export type GenreMinAggregateOutputType = {
   id: string | null
   name: string | null
+  slug: string | null
+  description: string | null
+  image: string | null
+  isPublished: boolean | null
+  isFeatured: boolean | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type GenreMaxAggregateOutputType = {
   id: string | null
   name: string | null
+  slug: string | null
+  description: string | null
+  image: string | null
+  isPublished: boolean | null
+  isFeatured: boolean | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type GenreCountAggregateOutputType = {
   id: number
   name: number
+  slug: number
+  description: number
+  image: number
+  isPublished: number
+  isFeatured: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -44,16 +65,37 @@ export type GenreCountAggregateOutputType = {
 export type GenreMinAggregateInputType = {
   id?: true
   name?: true
+  slug?: true
+  description?: true
+  image?: true
+  isPublished?: true
+  isFeatured?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type GenreMaxAggregateInputType = {
   id?: true
   name?: true
+  slug?: true
+  description?: true
+  image?: true
+  isPublished?: true
+  isFeatured?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type GenreCountAggregateInputType = {
   id?: true
   name?: true
+  slug?: true
+  description?: true
+  image?: true
+  isPublished?: true
+  isFeatured?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -132,6 +174,13 @@ export type GenreGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type GenreGroupByOutputType = {
   id: string
   name: string
+  slug: string
+  description: string | null
+  image: string | null
+  isPublished: boolean
+  isFeatured: boolean
+  createdAt: Date
+  updatedAt: Date
   _count: GenreCountAggregateOutputType | null
   _min: GenreMinAggregateOutputType | null
   _max: GenreMaxAggregateOutputType | null
@@ -158,27 +207,55 @@ export type GenreWhereInput = {
   NOT?: Prisma.GenreWhereInput | Prisma.GenreWhereInput[]
   id?: Prisma.StringFilter<"Genre"> | string
   name?: Prisma.StringFilter<"Genre"> | string
+  slug?: Prisma.StringFilter<"Genre"> | string
+  description?: Prisma.StringNullableFilter<"Genre"> | string | null
+  image?: Prisma.StringNullableFilter<"Genre"> | string | null
+  isPublished?: Prisma.BoolFilter<"Genre"> | boolean
+  isFeatured?: Prisma.BoolFilter<"Genre"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"Genre"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Genre"> | Date | string
   media?: Prisma.MediaListRelationFilter
 }
 
 export type GenreOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
+  image?: Prisma.SortOrderInput | Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   media?: Prisma.MediaOrderByRelationAggregateInput
 }
 
 export type GenreWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   name?: string
+  slug?: string
   AND?: Prisma.GenreWhereInput | Prisma.GenreWhereInput[]
   OR?: Prisma.GenreWhereInput[]
   NOT?: Prisma.GenreWhereInput | Prisma.GenreWhereInput[]
+  description?: Prisma.StringNullableFilter<"Genre"> | string | null
+  image?: Prisma.StringNullableFilter<"Genre"> | string | null
+  isPublished?: Prisma.BoolFilter<"Genre"> | boolean
+  isFeatured?: Prisma.BoolFilter<"Genre"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"Genre"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Genre"> | Date | string
   media?: Prisma.MediaListRelationFilter
-}, "id" | "name">
+}, "id" | "name" | "slug">
 
 export type GenreOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
+  image?: Prisma.SortOrderInput | Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.GenreCountOrderByAggregateInput
   _max?: Prisma.GenreMaxOrderByAggregateInput
   _min?: Prisma.GenreMinOrderByAggregateInput
@@ -190,60 +267,137 @@ export type GenreScalarWhereWithAggregatesInput = {
   NOT?: Prisma.GenreScalarWhereWithAggregatesInput | Prisma.GenreScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Genre"> | string
   name?: Prisma.StringWithAggregatesFilter<"Genre"> | string
+  slug?: Prisma.StringWithAggregatesFilter<"Genre"> | string
+  description?: Prisma.StringNullableWithAggregatesFilter<"Genre"> | string | null
+  image?: Prisma.StringNullableWithAggregatesFilter<"Genre"> | string | null
+  isPublished?: Prisma.BoolWithAggregatesFilter<"Genre"> | boolean
+  isFeatured?: Prisma.BoolWithAggregatesFilter<"Genre"> | boolean
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Genre"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Genre"> | Date | string
 }
 
 export type GenreCreateInput = {
   id?: string
   name: string
+  slug: string
+  description?: string | null
+  image?: string | null
+  isPublished?: boolean
+  isFeatured?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
   media?: Prisma.MediaCreateNestedManyWithoutGenresInput
 }
 
 export type GenreUncheckedCreateInput = {
   id?: string
   name: string
+  slug: string
+  description?: string | null
+  image?: string | null
+  isPublished?: boolean
+  isFeatured?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
   media?: Prisma.MediaUncheckedCreateNestedManyWithoutGenresInput
 }
 
 export type GenreUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   media?: Prisma.MediaUpdateManyWithoutGenresNestedInput
 }
 
 export type GenreUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   media?: Prisma.MediaUncheckedUpdateManyWithoutGenresNestedInput
 }
 
 export type GenreCreateManyInput = {
   id?: string
   name: string
+  slug: string
+  description?: string | null
+  image?: string | null
+  isPublished?: boolean
+  isFeatured?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type GenreUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type GenreUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type GenreCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  image?: Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type GenreMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  image?: Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type GenreMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  image?: Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type GenreListRelationFilter = {
@@ -297,11 +451,25 @@ export type GenreUncheckedUpdateManyWithoutMediaNestedInput = {
 export type GenreCreateWithoutMediaInput = {
   id?: string
   name: string
+  slug: string
+  description?: string | null
+  image?: string | null
+  isPublished?: boolean
+  isFeatured?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type GenreUncheckedCreateWithoutMediaInput = {
   id?: string
   name: string
+  slug: string
+  description?: string | null
+  image?: string | null
+  isPublished?: boolean
+  isFeatured?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type GenreCreateOrConnectWithoutMediaInput = {
@@ -331,21 +499,49 @@ export type GenreScalarWhereInput = {
   NOT?: Prisma.GenreScalarWhereInput | Prisma.GenreScalarWhereInput[]
   id?: Prisma.StringFilter<"Genre"> | string
   name?: Prisma.StringFilter<"Genre"> | string
+  slug?: Prisma.StringFilter<"Genre"> | string
+  description?: Prisma.StringNullableFilter<"Genre"> | string | null
+  image?: Prisma.StringNullableFilter<"Genre"> | string | null
+  isPublished?: Prisma.BoolFilter<"Genre"> | boolean
+  isFeatured?: Prisma.BoolFilter<"Genre"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"Genre"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Genre"> | Date | string
 }
 
 export type GenreUpdateWithoutMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type GenreUncheckedUpdateWithoutMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type GenreUncheckedUpdateManyWithoutMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -382,6 +578,13 @@ export type GenreCountOutputTypeCountMediaArgs<ExtArgs extends runtime.Types.Ext
 export type GenreSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  slug?: boolean
+  description?: boolean
+  image?: boolean
+  isPublished?: boolean
+  isFeatured?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   media?: boolean | Prisma.Genre$mediaArgs<ExtArgs>
   _count?: boolean | Prisma.GenreCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["genre"]>
@@ -389,19 +592,40 @@ export type GenreSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type GenreSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  slug?: boolean
+  description?: boolean
+  image?: boolean
+  isPublished?: boolean
+  isFeatured?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }, ExtArgs["result"]["genre"]>
 
 export type GenreSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  slug?: boolean
+  description?: boolean
+  image?: boolean
+  isPublished?: boolean
+  isFeatured?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }, ExtArgs["result"]["genre"]>
 
 export type GenreSelectScalar = {
   id?: boolean
   name?: boolean
+  slug?: boolean
+  description?: boolean
+  image?: boolean
+  isPublished?: boolean
+  isFeatured?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type GenreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name", ExtArgs["result"]["genre"]>
+export type GenreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "description" | "image" | "isPublished" | "isFeatured" | "createdAt" | "updatedAt", ExtArgs["result"]["genre"]>
 export type GenreInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   media?: boolean | Prisma.Genre$mediaArgs<ExtArgs>
   _count?: boolean | Prisma.GenreCountOutputTypeDefaultArgs<ExtArgs>
@@ -417,6 +641,13 @@ export type $GenrePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
+    slug: string
+    description: string | null
+    image: string | null
+    isPublished: boolean
+    isFeatured: boolean
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["genre"]>
   composites: {}
 }
@@ -843,6 +1074,13 @@ export interface Prisma__GenreClient<T, Null = never, ExtArgs extends runtime.Ty
 export interface GenreFieldRefs {
   readonly id: Prisma.FieldRef<"Genre", 'String'>
   readonly name: Prisma.FieldRef<"Genre", 'String'>
+  readonly slug: Prisma.FieldRef<"Genre", 'String'>
+  readonly description: Prisma.FieldRef<"Genre", 'String'>
+  readonly image: Prisma.FieldRef<"Genre", 'String'>
+  readonly isPublished: Prisma.FieldRef<"Genre", 'Boolean'>
+  readonly isFeatured: Prisma.FieldRef<"Genre", 'Boolean'>
+  readonly createdAt: Prisma.FieldRef<"Genre", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Genre", 'DateTime'>
 }
     
 

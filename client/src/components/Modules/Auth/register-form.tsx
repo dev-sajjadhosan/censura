@@ -10,13 +10,24 @@ import { Label } from "@/components/ui/label";
 import { IRegisterProps, registerZodSchema } from "@/zod/auth.validation";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
-import { Eye, EyeOff, UserPlus2 } from "lucide-react";
+import { AtSign, Eye, EyeOff, Key, User2, UserPlus2 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function RegisterForm() {
   const [serverError, setServerError] = useState<string | null>(null);
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (rememberMe) {
+      toast.success("Remember me", {
+        description: "You will be remembered for 30 days",
+        duration: 2000,
+      });
+    }
+  }, [rememberMe]);
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (payload: IRegisterProps) => registerAction(payload),
@@ -27,6 +38,8 @@ export default function RegisterForm() {
       name: "",
       email: "",
       password: "",
+      acceptTerms: false,
+      rememberMe: false,
     },
     onSubmit: async ({ value }) => {
       setServerError(null);
@@ -76,6 +89,7 @@ export default function RegisterForm() {
           >
             {(field) => (
               <AppField
+                prepend={<User2 className="size-5 text-muted-foreground" />}
                 field={field}
                 label="Name"
                 type="text"
@@ -89,6 +103,7 @@ export default function RegisterForm() {
           >
             {(field) => (
               <AppField
+                prepend={<AtSign className="size-5 text-muted-foreground" />}
                 field={field}
                 label="Email"
                 type="email"
@@ -103,6 +118,7 @@ export default function RegisterForm() {
           >
             {(field) => (
               <AppField
+                prepend={<Key className="size-5 text-muted-foreground" />}
                 field={field}
                 label="Password"
                 type={showPassword ? "text" : "password"}
@@ -129,25 +145,52 @@ export default function RegisterForm() {
           </form.Field>
 
           <div className="flex items-center justify-between mb-11">
-            <div className="flex items-center gap-2">
-              <Checkbox id="terms-and-conditions" />
-              <Label
-                htmlFor="terms-and-conditions"
-                className="text-sm text-muted-foreground"
-              >
-                Accept Terms and Conditions
-              </Label>
-            </div>
+            {/* Accept Terms */}
+            <form.Field name="acceptTerms">
+              {(field) => (
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    id="terms-and-conditions"
+                    checked={field.state.value}
+                    onCheckedChange={(checked) => field.handleChange(!!checked)}
+                  />
+                  <Label
+                    htmlFor="terms-and-conditions"
+                    className="text-sm text-muted-foreground"
+                  >
+                    Accept Terms and Conditions
+                  </Label>
+                  {/* show error if not checked on submit */}
+                  {field.state.meta.errors?.[0] && (
+                    <p className="text-xs text-destructive">
+                      {field.state.meta.errors[0]}
+                    </p>
+                  )}
+                </div>
+              )}
+            </form.Field>
 
-            <div className="flex items-center gap-2">
-              <Checkbox id="remember-me" />
-              <Label
-                htmlFor="remember-me"
-                className="text-sm text-muted-foreground"
-              >
-                Remember me
-              </Label>
-            </div>
+            {/* Remember Me */}
+            <form.Field name="rememberMe">
+              {(field) => (
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    id="remember-me"
+                    checked={field.state.value}
+                    onCheckedChange={(checked) => {
+                      field.handleChange(!!checked);
+                      setRememberMe(!!checked);
+                    }}
+                  />
+                  <Label
+                    htmlFor="remember-me"
+                    className="text-sm text-muted-foreground"
+                  >
+                    Remember me
+                  </Label>
+                </div>
+              )}
+            </form.Field>
           </div>
 
           {serverError && (
@@ -163,7 +206,7 @@ export default function RegisterForm() {
               <AppSubmitButton
                 isPending={isSubmitting || isPending}
                 pendingLabel="Registering...."
-                disabled={!canSubmit}
+                disabled={!canSubmit || !form.state.values.acceptTerms}
               >
                 Register
                 <UserPlus2 />

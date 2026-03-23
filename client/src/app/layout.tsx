@@ -5,6 +5,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "next-themes";
 import { QueryProvider } from "@/providers/Query-Provider";
 
+import { Toaster } from "@/components/ui/sonner";
+
 const jetBarinMono = JetBrains_Mono({
   variable: "--font-jet-barin-mono",
   subsets: ["latin"],
@@ -41,6 +43,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <Toaster richColors position="top-right" />
             <TooltipProvider>{children}</TooltipProvider>
           </ThemeProvider>
         </QueryProvider>

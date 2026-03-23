@@ -19,7 +19,7 @@ export const registerZodSchema = z.object({
   name: z
     .string("Name is required.")
     .min(3, "Name must be at least 3 characters long")
-    .max(20, "Name must be at most 20 characters long"),
+    .max(30, "Name must be at most 30 characters."),
   email: z.email("Invalid email address."),
   password: z
     .string()
@@ -32,6 +32,10 @@ export const registerZodSchema = z.object({
   //   /[^A-Za-z0-9]/,
   //   "Password must contain at least one special character",
   // ),
+  acceptTerms: z.boolean().refine((value) => value === true, {
+    message: "You must accept the terms and conditions",
+  }),
+  rememberMe: z.boolean().optional(),
 });
 
 export type ILoginProps = z.infer<typeof loginZodSchema>;

@@ -127,4 +127,19 @@
   html {
     @apply font-sans;
   }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: var(--foreground) !important;
+  }
+
+  input:-moz-autofill,
+  input:-moz-autofill:focus {
+    filter: none !important;
+    background-color: transparent !important;
+    color: var(--foreground) !important;
+  }
 }

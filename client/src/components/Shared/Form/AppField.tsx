@@ -36,12 +36,17 @@ export default function AppField({
       <div className={cn("space-y-2", className)}>
         <Label
           htmlFor={field.name}
-          className={cn(hasError ? "text-orange-800" : "")}
+          className={cn(
+            "text-muted-foreground",
+            hasError ? "text-orange-800" : "",
+          )}
         >
           {label}
         </Label>
-        <div className="flex items-center gap-1">
-          {prepend && <div>{prepend}</div>}
+        <div
+          className={`flex items-center gap-1 px-4 rounded-lg ${hasError ? "border border-orange-800 bg-destructive/10" : "bg-secondary/50"}`}
+        >
+          {prepend && <>{prepend}</>}
           <Input
             id={field.name}
             name={field.name}
@@ -54,12 +59,10 @@ export default function AppField({
             aria-invalid={hasError}
             aria-describedby={hasError ? `${field.name}-error` : undefined}
             className={cn(
-              prepend && "pl-10",
-              append && "pr-10",
-              hasError ? "border-orange-800" : "",
+              "bg-transparent! border-0 autofill:bg-transparent! text-[12px] tracking-wide",
             )}
           />
-          {append && <div>{append}</div>}
+          {append && <>{append}</>}
         </div>
         {hasError && (
           <p

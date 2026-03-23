@@ -10,12 +10,12 @@ const router = Router();
 
 router.post(
   "/login",
-  validateRequest(AuthValidation.loginSchema),
+ // validateRequest(AuthValidation.loginSchema),
   AuthController.login,
 );
 router.post(
   "/register",
-  validateRequest(AuthValidation.registerSchema),
+ // validateRequest(AuthValidation.registerSchema),
   AuthController.register,
 );
 router.post("/logout", checkAuth(Role.USER, Role.ADMIN), AuthController.logout);

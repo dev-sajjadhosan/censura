@@ -8,6 +8,7 @@ import { LogOut } from "lucide-react";
 import { useState } from "react";
 import AppField from "@/components/Shared/Form/AppField";
 import { Textarea } from "@/components/ui/textarea";
+import LogoutDialog from "@/components/Modules/Auth/logout-dialog";
 
 const reasons = [
   {
@@ -30,6 +31,7 @@ const reasons = [
 
 export default function LogoutPage() {
   const [selected, setSelected] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
   return (
     <div className="flex w-11/12 mx-auto h-screen">
       {/* <h3 className="text-lg">Logout</h3> */}
@@ -59,10 +61,12 @@ export default function LogoutPage() {
               />
             </div>
           )}
+          <LogoutDialog open={open} setOpen={setOpen} />
           <Button
-            disabled={selected === null}
+            disabled={!selected}
             className="ml-auto w-44"
             size={"xl"}
+            onClick={() => setOpen(!open)}
           >
             Logout <LogOut />{" "}
           </Button>

@@ -15,7 +15,7 @@ export default function ItemLists({ data, selected, setSelected }: { data: any[]
   };
   return (
     <RadioGroup defaultValue="plus" className="w-full">
-      {data.map((item) => (
+      {data?.map((item) => (
         <Item variant={selected === item.label ? 'muted' : 'default'} key={item.id} onClick={() => handleSelect(item.label)}>
           <ItemMedia variant="icon">
             <ChevronsRight/>

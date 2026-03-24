@@ -68,7 +68,7 @@ const httpPost = async <TData>(
     return response.data;
   } catch (err: any) {
     console.error(`HTTP POST Error: ${endPath}`, err);
-    throw err;
+    throw err.response.data;
   }
 };
 

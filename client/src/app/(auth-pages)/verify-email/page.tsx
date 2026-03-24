@@ -7,6 +7,3 @@ export default async function VerifyEmailPage() {
     </div>
   );
 }
-
-
-// varification checking

@@ -127,8 +127,7 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
 });
 
 const verifyEmail = catchAsync(async (req: Request, res: Response) => {
-  const { email } = req.user as IRequestUser;
-  const { otp } = req.body;
+  const {email, otp } = req.body;
   const result = await AuthService.verifyEmail(email, otp);
 
   sendResponse(res, {

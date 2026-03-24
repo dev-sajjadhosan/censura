@@ -34,7 +34,7 @@ export const loginAction = async (
       parsedPayload.data,
     );
 
-    console.log("Login action response: ", res);
+    // console.log("Login action response---------------------: ", res);
 
     const { accessToken, refreshToken, token, user } = res.data;
 
@@ -48,9 +48,7 @@ export const loginAction = async (
       24 * 60 * 60 * 1000,
     ); // 1 day
 
-    if (!emailVerified) {
-      redirect(`/verify-email?email=${email}&redirectPath=${redirectPath}`);
-    } else if (needPasswordChange) {
+     if (needPasswordChange) {
       redirect(`/reset-password?email=${email}&redirectPath=${redirectPath}`);
     } else {
       const targetPath =
@@ -61,7 +59,11 @@ export const loginAction = async (
       redirect(targetPath);
     }
   } catch (error: any) {
-    console.log(`Login action error: ${error}`);
+    if (error.message === "Email not verified") {
+      redirect(`/verify-email?email=${parsedPayload.data.email}`);
+    }
+    console.log(`Login action error----------:`, error);
+
     if (
       error &&
       typeof error === "object" &&

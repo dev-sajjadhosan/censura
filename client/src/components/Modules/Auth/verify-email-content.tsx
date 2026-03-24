@@ -1,7 +1,6 @@
 "use client";
 
 import { verifyEmailAction } from "@/app/(auth-pages)/verify-email/_action";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,24 +20,36 @@ import {
   Loader,
   Mailbox,
   MailPlus,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
+
+/**
+ * State definitions for the verification flow
+ */
+type VerificationUIState =
+  | "EXPIRED"
+  | "LOADING"
+  | "SUCCESS"
+  | "RESEND"
+  | "OTP_INPUT";
 
 export default function VerifyEmailContent() {
   const [isSend, setIsSend] = useState(true);
   const [time, setTime] = useState(0);
-  const path = useSearchParams();
-  const resend = path.get("resend");
-  const email = path.get("email");
+  const [isVerified, setIsVerified] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const searchParams = useSearchParams();
+  const resend = searchParams.get("resend");
+  const email = searchParams.get("email");
 
   const { mutateAsync, isPending, isSuccess, error, isError } = useMutation({
     mutationFn: async (payload: IVerifyEmailProps) => {
       const res = await verifyEmailAction(payload);
-      if (res && typeof res === "object" && "success" in res && !res.success) {
-        throw new Error((res as any).message || "Verification failed");
-      }
       return res;
     },
   });
@@ -50,11 +61,17 @@ export default function VerifyEmailContent() {
     },
     onSubmit: async ({ value }) => {
       try {
-        console.log("verify email payload", value);
-        const res = await mutateAsync(value);
-        console.log("verify email res", res);
-      } catch (error) {
-        console.log("verify email error", error);
+        const res = (await mutateAsync(value)) as any;
+        console.log("verify email response", res);
+        if (res.success) {
+          toast.success(res?.message);
+        } else {
+          toast.error(res?.message);
+        }
+        setIsVerified(res.success);
+        setErrorMessage(res?.message);
+      } catch (error: any) {
+        setErrorMessage(error?.message);
       }
     },
   });
@@ -77,169 +94,209 @@ export default function VerifyEmailContent() {
       clearInterval(timer);
       setTime(0);
     };
-  }, []);
+  }, [resend]);
 
-  if (isPending) {
-    return (
-      <div className="flex flex-col items-center gap-2 justify-center h-full">
-        <Loader className="size-5 animate-spin" />
-        <p className="text-md">Please wait...</p>
-        <p className="text-sm text-muted-foreground">
-          {" "}
-          We are verifying your email...
-        </p>
-      </div>
-    );
-  }
+  // --- 1. Determine the Active UI State ---
+  const getActiveState = (): VerificationUIState => {
+    if (errorMessage === "OTP expired" || errorMessage === "Invalid OTP")
+      return "EXPIRED";
+    if (isPending) return "LOADING";
+    if (isSuccess && isVerified && !resend) return "SUCCESS";
+    if (resend === "true") return "RESEND";
+    return "OTP_INPUT";
+  };
 
-  if (isSuccess) {
-    return (
-      <div className="flex flex-col items-center gap-2 justify-center h-full">
-        <Check className="size-7 text-green-500" />
-        <p className="text-md">Thank you for your patience!</p>
-        <p className="text-sm text-muted-foreground text-center">
-          We have verified your email address. <br /> Now we are redirecting you
-          to the Profile page.
-        </p>
-      </div>
-    );
-  }
+  const activeState = getActiveState();
 
-  if (resend) {
-    return (
-      <div className="flex flex-col items-start justify-center gap-5 w-2xl">
-        <div className="flex items-center gap-2">
-          <Mailbox className="size-9 text-orange-500" />
-          <h1 className="text-2xl">Verification!</h1>
-        </div>
-        <p className="text-muted-foreground w-full">
-          We have sent a verification mail to your email address. The
-          Verification mail will expire in 24 hours.
-        </p>
-        <p className="text-muted-foreground w-full">
-          Please check your inbox and click on the verification link to verify
-          your email address.
-        </p>
-        <div className="flex flex-col gap-3 w-full">
-          <p className="text-xs text-muted-foreground">
-            Resend mail after{" "}
-            <span className="text-orange-500">{300 - time}s</span> out of 300s.
-          </p>
-          <Progress value={time} max={300} className="w-xs" />
-        </div>
-        <div className="mt-3 flex items-center gap-5">
-          <Button
-            variant="secondary"
-            size={"xl"}
-            className="w-50 gap-3"
-            disabled={isSend}
-          >
-            <MailPlus />
-            Resend Mail
-          </Button>
-          <Link href="/verify-email">
-            <Button variant="link" size={"xl"} className="w-50 gap-3">
-              Back to Verify Page
-              <ChevronRight />
-            </Button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  // --- 2. Render State-Specific Content ---
+  const renderContent = () => {
+    switch (activeState) {
+      case "EXPIRED":
+        return (
+          <div className="flex flex-col gap-2 justify-center h-full">
+            <h1 className="text-3xl mb-14 text-muted-foreground">Censura</h1>
+            <X className="size-7 text-red-500" />
+            <p className="text-md">Oops! {errorMessage}</p>
+            <p className="text-sm text-muted-foreground mb-9">
+              We are sorry, but it seems like your OTP is{" "}
+              <span className="text-red-500">{errorMessage}</span>. <br />
+              Please click on the resend button to get a new OTP.
+            </p>
+            <Link
+              href={`/verify-email?resend=true&email=${email}`}
+              onClick={() => {
+                setIsVerified(false);
+                setErrorMessage("");
+              }}
+              className="flex items-center gap-2 text-muted-foreground hover:text-orange-500 text-sm"
+            >
+              <MailPlus className="size-5" />
+              Resend Mail
+            </Link>
+          </div>
+        );
 
-  return (
-    <div className="flex flex-col items-start justify-center gap-1 w-2xl">
-      <Badge variant="outline" className="px-4 py-4">
-        UNVARIFIED EMAIL
-      </Badge>
-      <h1 className="text-3xl mt-1">Verify Your Email</h1>
-      <p className="text-sm text-muted-foreground w-full mt-2">
-        We have sent a varification code to your email address. The varification
-        code will expire in 5 minutes. Please check your inbox and enter the
-        varification code to varify your email address.
-      </p>
-      <div className="flex flex-col gap-3 mt-9">
-        <h3 className="text-md text-muted-foreground">
-          Enter Varification Code
-        </h3>
-        <form
-          noValidate
-          onSubmit={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            form.handleSubmit();
-          }}
-        >
-          <form.Field
-            name="otp"
-            validators={{
-              onChange: verifyEmailZodSchema.shape.otp,
-            }}
-          >
-            {(field) => (
-              <>
-                <InputOTP
-                  maxLength={6}
-                  value={field.state.value}
-                  onChange={(value) => field.handleChange(value)}
+      case "LOADING":
+        return (
+          <div className="flex flex-col items-center gap-2 justify-center h-full">
+            <Loader className="size-5 animate-spin" />
+            <p className="text-md">Please wait...</p>
+            <p className="text-sm text-muted-foreground">
+              We are verifying your email...
+            </p>
+          </div>
+        );
+
+      case "SUCCESS":
+        return (
+          <div className="flex flex-col items-center gap-2 justify-center h-full">
+            <Check className="size-7 text-green-500" />
+            <p className="text-md">Thank you for your patience!</p>
+            <p className="text-sm text-muted-foreground text-center">
+              We have verified your email address. <br />
+              Now we are redirecting you to the Profile page.
+            </p>
+          </div>
+        );
+
+      case "RESEND":
+        return (
+          <div className="flex flex-col items-start justify-center gap-5 w-2xl">
+            <div className="flex items-center gap-2">
+              <Mailbox className="size-9 text-orange-500" />
+              <h1 className="text-2xl">Verification!</h1>
+            </div>
+            <p className="text-muted-foreground w-full">
+              We have sent a verification mail to your email address. The
+              Verification mail will expire in 24 hours.
+            </p>
+            <div className="flex flex-col gap-3 w-full">
+              <p className="text-xs text-muted-foreground">
+                Resend mail after{" "}
+                <span className="text-orange-500">{300 - time}s</span> out of
+                300s.
+              </p>
+              <Progress value={time} max={300} className="w-xs" />
+            </div>
+            <div className="mt-3 flex items-center gap-5">
+              <Button
+                variant="secondary"
+                size="xl"
+                className="w-50 gap-3"
+                disabled={isSend}
+              >
+                <MailPlus />
+                Resend Mail
+              </Button>
+              <Link href="/verify-email">
+                <Button variant="link" size="xl" className="w-50 gap-3">
+                  Back to Verify Page
+                  <ChevronRight />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        );
+
+      case "OTP_INPUT":
+      default:
+        return (
+          <div className="flex flex-col items-start justify-center gap-1 w-2xl">
+            <Badge variant="outline" className="px-4 py-4">
+              UNVERIFIED EMAIL
+            </Badge>
+            <h1 className="text-3xl mt-1">Verify Your Email</h1>
+            <p className="text-sm text-muted-foreground w-full mt-2">
+              We have sent a verification code to your email address. The
+              verification code will expire in 5 minutes.
+            </p>
+
+            <div className="flex flex-col gap-3 mt-9">
+              <h3 className="text-md text-muted-foreground">
+                Enter Verification Code
+              </h3>
+              <form
+                noValidate
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  form.handleSubmit();
+                }}
+              >
+                <form.Field
+                  name="otp"
+                  validators={{ onChange: verifyEmailZodSchema.shape.otp }}
                 >
-                  <InputOTPGroup>
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                  </InputOTPGroup>
-                  <InputOTPSeparator />
-                  <InputOTPGroup>
-                    <InputOTPSlot index={3} />
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
-                  </InputOTPGroup>
-                </InputOTP>
+                  {(field) => (
+                    <>
+                      <InputOTP
+                        maxLength={6}
+                        value={field.state.value}
+                        onChange={(val) => field.handleChange(val)}
+                      >
+                        <InputOTPGroup>
+                          <InputOTPSlot index={0} />
+                          <InputOTPSlot index={1} />
+                          <InputOTPSlot index={2} />
+                        </InputOTPGroup>
+                        <InputOTPSeparator />
+                        <InputOTPGroup>
+                          <InputOTPSlot index={3} />
+                          <InputOTPSlot index={4} />
+                          <InputOTPSlot index={5} />
+                        </InputOTPGroup>
+                      </InputOTP>
 
-                {/* error lives inside the field, not on form.state */}
-                {field.state.meta.errors?.[0] && (
-                  <p
-                    role="alert"
-                    className="text-sm text-destructive mt-3 ml-2"
-                  >
-                    {field.state.meta.errors[0].message}
+                      {field.state.meta.errors?.[0] && (
+                        <p
+                          role="alert"
+                          className="text-sm text-destructive mt-3 ml-2"
+                        >
+                          {field.state.meta.errors[0].message}
+                        </p>
+                      )}
+                    </>
+                  )}
+                </form.Field>
+
+                <Button
+                  disabled={isPending}
+                  type="submit"
+                  variant="secondary"
+                  size="xl"
+                  className="w-fit justify-start gap-3 mt-9"
+                >
+                  {isPending ? (
+                    <Loader className="animate-spin" />
+                  ) : (
+                    <>
+                      Verify OTP <ArrowRight />
+                    </>
+                  )}
+                </Button>
+
+                {isError && (
+                  <p className="text-red-500 mt-5 px-5">
+                    {error?.message || "Something went wrong"}
                   </p>
                 )}
-              </>
-            )}
-          </form.Field>
+              </form>
+            </div>
 
-          <Button
-            disabled={isPending}
-            type="submit"
-            variant="secondary"
-            size="xl"
-            className="w-fit justify-start gap-3 mt-9"
-          >
-            {isPending ? (
-              <Loader className="animate-spin" />
-            ) : (
-              <>
-                Verify OTP <ArrowRight />
-              </>
-            )}
-          </Button>
-
-          {isError && (
-            <p className="text-red-500 mt-5 px-5">
-              {error?.message || "Something went wrong"}
+            <p className="text-sm text-muted-foreground w-full mt-9">
+              If you don't receive a verification code, click{" "}
+              <Link
+                href="/verify-email?resend=true"
+                className="text-orange-500"
+              >
+                here
+              </Link>{" "}
+              to resend the code.
             </p>
-          )}
-        </form>
-      </div>
-      <p className="text-sm text-muted-foreground w-full mt-9">
-        If you don't receive a verification code, click{" "}
-        <Link href="/verify-email?resend=true" className="text-orange-500">
-          here
-        </Link>{" "}
-        to resend the code.
-      </p>
-    </div>
-  );
+          </div>
+        );
+    }
+  };
+
+  return <div className="h-full flex items-center">{renderContent()}</div>;
 }

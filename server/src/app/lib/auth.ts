@@ -17,7 +17,6 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
-    autoSignInAfterVerification: true,
   },
   socialProviders: {
     google: {
@@ -75,6 +74,7 @@ export const auth = betterAuth({
     emailOTP({
       overrideDefaultEmailVerification: true,
       async sendVerificationOTP({ email, otp, type }) {
+        console.log(`[sendVerificationOTP] Hook triggered for ${email} with type: ${type}`);
         if (type === "email-verification") {
           const user = await prisma.user.findUnique({
             where: {
@@ -91,7 +91,7 @@ export const auth = betterAuth({
 
           if (user && user.role === Role.ADMIN) {
             console.error(
-              `User with email ${email} is an Admin. Skipping sending verification OTP.`,
+              `User with email ${email} is a Admin. Skipping sending verification OTP.`,
             );
             return;
           }
@@ -130,6 +130,7 @@ export const auth = betterAuth({
       otpLength: 6,
     }),
   ],
+
   trustedOrigins: [
     envVars.BETTER_AUTH_URL || "http://localhost:5000",
     "http://localhost:3000",
@@ -155,7 +156,7 @@ export const auth = betterAuth({
           httpOnly: true,
           path: "/",
         },
-      },    
+      },
     },
   },
   redirect: {

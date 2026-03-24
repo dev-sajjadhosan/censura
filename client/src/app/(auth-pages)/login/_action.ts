@@ -48,8 +48,10 @@ export const loginAction = async (
       24 * 60 * 60 * 1000,
     ); // 1 day
 
-    if (needPasswordChange) {
-      redirect(`/reset-password?email=${email}`);
+    if (!emailVerified) {
+      redirect(`/verify-email?email=${email}&redirectPath=${redirectPath}`);
+    } else if (needPasswordChange) {
+      redirect(`/reset-password?email=${email}&redirectPath=${redirectPath}`);
     } else {
       const targetPath =
         redirectPath && isValidRedicrectForRole(redirectPath, role as Role)

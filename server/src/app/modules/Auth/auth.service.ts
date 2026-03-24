@@ -10,30 +10,32 @@ import { jwtUtils } from "../../utils/jwt";
 import { envVars } from "../../config/env";
 import { JwtPayload } from "jsonwebtoken";
 
-const register = async (user: IRegisterUser) => {
-  const { name, email, password, role } = user;
+const register = async (user: any) => {
+  const { name, email, password, role, acceptTerms, rememberMe } = user;
 
   const data = await auth.api.signUpEmail({
     body: {
       name,
       email,
       password,
-      role: Role.USER,
     },
   });
+
 
   if (!data.user) {
     throw new AppError(status.FORBIDDEN, "User not created");
   }
 
   try {
-    const profile = await prisma.profile.create({
-      data: {
-        userId: data.user.id,
-        name,
-        email,
-        image: data.user.image,
-      },
+    const profile = await prisma.$transaction(async (tx) => {
+      return await tx.profile.create({
+        data: {
+          userId: data.user?.id,
+          name,
+          email,
+          // image: data.user.image,
+        },
+      });
     });
 
     const accessToken = tokenUtils.getAccessToken({
@@ -56,14 +58,24 @@ const register = async (user: IRegisterUser) => {
       emailVerified: data.user.emailVerified,
     });
 
-    return { ...data, profile, accessToken, refreshToken };
+    return { ...data, accessToken, refreshToken };
   } catch (err) {
     console.log("Register Transition Error", err);
-    await prisma.user.delete({
+    // Only delete if the user was actually created
+    const userExists = await prisma.user.findUnique({
       where: {
         id: data.user.id,
       },
     });
+
+    if (userExists) {
+      await prisma.user.delete({
+        where: {
+          id: userExists.id,
+        },
+      });
+    }
+
     throw new AppError(status.FORBIDDEN, "User not created");
   }
 };

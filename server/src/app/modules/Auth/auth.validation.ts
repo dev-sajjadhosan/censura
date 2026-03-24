@@ -22,6 +22,8 @@ const registerSchema = z.object({
     .string("Name is required")
     .min(3, "Name must be at least 3 characters long"),
   role: z.enum(["USER", "ADMIN"], "Role is required"),
+  acceptTerms: z.boolean("Accept Terms and Condition must be true"),
+  rememberMe: z.boolean().optional(),
 });
 
 const changePasswordSchema = z.object({
@@ -49,7 +51,7 @@ const resetPasswordSchema = z.object({
 
 const verifyEmailSchema = z.object({
   email: z.email("Invalid email"),
-  token: z.string("Token is required"),
+  otp: z.string("OTP is required")
 });
 
 export const AuthValidation = {

@@ -32,11 +32,18 @@ export const registerZodSchema = z.object({
   //   /[^A-Za-z0-9]/,
   //   "Password must contain at least one special character",
   // ),
-  acceptTerms: z.boolean().refine((value) => value === true, {
-    message: "You must accept the terms and conditions",
-  }),
+  acceptTerms: z.boolean("You must accept the terms and conditions"),
   rememberMe: z.boolean().optional(),
+});
+
+export const verifyEmailZodSchema = z.object({
+  email: z.email("Invalid email address"),
+  otp: z
+    .string()
+    .min(6, "OTP must be at least 6 digits long")
+    .max(6, "OTP must be at most 6 digits long"),
 });
 
 export type ILoginProps = z.infer<typeof loginZodSchema>;
 export type IRegisterProps = z.infer<typeof registerZodSchema>;
+export type IVerifyEmailProps = z.infer<typeof verifyEmailZodSchema>;

@@ -9,14 +9,14 @@ import { validateRequest } from "../../middleware/validateRequest";
 const router = Router();
 
 router.post(
-  "/login",
- // validateRequest(AuthValidation.loginSchema),
-  AuthController.login,
-);
-router.post(
   "/register",
  // validateRequest(AuthValidation.registerSchema),
   AuthController.register,
+);
+router.post(
+  "/login",
+ // validateRequest(AuthValidation.loginSchema),
+  AuthController.login,
 );
 router.post("/logout", checkAuth(Role.USER, Role.ADMIN), AuthController.logout);
 

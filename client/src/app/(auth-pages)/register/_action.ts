@@ -9,31 +9,33 @@ import { redirect } from "next/navigation";
 
 export const registerAction = async (
   payload: IRegisterProps,
-): Promise<ILoginResponse | ApiError> => {
+) => {
   const parsedPayload = registerZodSchema.safeParse(payload);
-
+  
   if (!parsedPayload.success) {
     const firstError =
-      parsedPayload.error.issues[0].message || "invalid credentials";
+    parsedPayload.error.issues[0].message || "invalid credentials";
     return {
       success: false,
       message: firstError,
     };
   }
-
+  
   try {
+    
     const res = await axiosClient.post<ILoginResponse>(
-      "/auth/register",
-      parsedPayload.data,
-    );
-
+        "/auth/register",
+        parsedPayload.data,
+      );
+      console.log("Register 000 Payload:", res);
+      
     const { accessToken, refreshToken, token, user } = res.data;
 
     await setTokenInCookie("accessToken", accessToken);
     await setTokenInCookie("refreshToken", refreshToken);
     await setTokenInCookie("token", token);
 
-    redirect("/profile");
+    redirect(`/verify-email?email=${user.email}`);
   } catch (error: any) {
     if (
       error &&

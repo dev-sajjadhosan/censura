@@ -10,15 +10,15 @@ const router = Router();
 
 router.post(
   "/register",
- // validateRequest(AuthValidation.registerSchema),
+  // validateRequest(AuthValidation.registerSchema),
   AuthController.register,
 );
 router.post(
   "/login",
- // validateRequest(AuthValidation.loginSchema),
+  // validateRequest(AuthValidation.loginSchema),
   AuthController.login,
 );
-router.post("/logout", checkAuth(Role.USER, Role.ADMIN), AuthController.logout);
+router.get("/logout", checkAuth(Role.USER, Role.ADMIN), AuthController.logout);
 
 router.get("/me", checkAuth(Role.USER, Role.ADMIN), AuthController.getMe);
 router.post("/refresh-token", AuthController.getNewToken);
@@ -43,6 +43,12 @@ router.post(
   "/verify-email",
   validateRequest(AuthValidation.verifyEmailSchema),
   AuthController.verifyEmail,
+);
+
+router.post(
+  "/send-verify-otp",
+  validateRequest(AuthValidation.sendVerifyOtpSchema),
+  AuthController.sendVerifyOtp,
 );
 
 router.get("/login/google", AuthController.googleLogin);

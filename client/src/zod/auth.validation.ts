@@ -43,7 +43,16 @@ export const verifyEmailZodSchema = z.object({
     .min(6, "OTP must be at least 6 digits long")
     .max(6, "OTP must be at most 6 digits long"),
 });
+export const sendVerifyOtpSchema = z.object({
+  email: z.email("Invalid email"),
+  type: z.enum(
+    ["sign-in", "email-verification", "forget-password", "change-email"],
+    "Type is required",
+  ),
+});
 
 export type ILoginProps = z.infer<typeof loginZodSchema>;
 export type IRegisterProps = z.infer<typeof registerZodSchema>;
 export type IVerifyEmailProps = z.infer<typeof verifyEmailZodSchema>;
+export type ISendVerifyOtpProps = z.infer<typeof sendVerifyOtpSchema>;
+

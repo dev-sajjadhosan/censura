@@ -1,6 +1,9 @@
 "use client";
 
-import { verifyEmailAction } from "@/app/(auth-pages)/verify-email/_action";
+import {
+  resendOtpAction,
+  verifyEmailAction,
+} from "@/app/(auth-pages)/verify-email/_action";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,7 +26,7 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -38,6 +41,7 @@ type VerificationUIState =
   | "OTP_INPUT";
 
 export default function VerifyEmailContent() {
+  const router = useRouter();
   const [isSend, setIsSend] = useState(true);
   const [time, setTime] = useState(0);
   const [isVerified, setIsVerified] = useState(false);
@@ -63,13 +67,14 @@ export default function VerifyEmailContent() {
       try {
         const res = (await mutateAsync(value)) as any;
         console.log("verify email response", res);
-        if (res.success) {
-          toast.success(res?.message);
+        setIsVerified(res.status || res.success);
+        setErrorMessage(res?.message);
+        if (res.user.emailVerified) {
+          toast.success("Email verified successfully!");
+          return router.push("/profile");
         } else {
           toast.error(res?.message);
         }
-        setIsVerified(res.success);
-        setErrorMessage(res?.message);
       } catch (error: any) {
         setErrorMessage(error?.message);
       }
@@ -183,12 +188,18 @@ export default function VerifyEmailContent() {
                 variant="secondary"
                 size="xl"
                 className="w-50 gap-3"
-                disabled={isSend}
+                // disabled={isSend}
+                onClick={() => {
+                  resendOtpAction({
+                    email: email || "",
+                    type: "email-verification",
+                  });
+                }}
               >
                 <MailPlus />
                 Resend Mail
               </Button>
-              <Link href="/verify-email">
+              <Link href={`/verify-email?email=${email}`}>
                 <Button variant="link" size="xl" className="w-50 gap-3">
                   Back to Verify Page
                   <ChevronRight />

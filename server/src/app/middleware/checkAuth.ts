@@ -19,7 +19,10 @@ export const checkAuth = (...authRoles: Role[]) => {
       );
 
       if (!sessionToken) {
-        throw new Error("Unauthorized access! No session token provided.");
+        throw new AppError(
+          status.UNAUTHORIZED,
+          "Unauthorized access! No session token provided.",
+        );
       }
 
       if (sessionToken) {
@@ -75,6 +78,7 @@ export const checkAuth = (...authRoles: Role[]) => {
               "Forbidden access! You do not have permission to access this resource.",
             );
           }
+
 
           req.user = {
             userId: user.id,

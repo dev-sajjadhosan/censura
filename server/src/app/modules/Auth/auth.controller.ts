@@ -57,12 +57,12 @@ const logout = catchAsync(async (req: Request, res: Response) => {
   const betterAuthToken = req.cookies["better-auth.session_token"];
   const result = await AuthService.logout(betterAuthToken);
 
-  CookieUtils.clearCookie(res, "access_token", {
+  CookieUtils.clearCookie(res, "accessToken", {
     httpOnly: true,
     secure: true,
     sameSite: "none",
   });
-  CookieUtils.clearCookie(res, "refresh_token", {
+  CookieUtils.clearCookie(res, "refreshToken", {
     httpOnly: true,
     secure: true,
     sameSite: "none",
@@ -77,7 +77,7 @@ const logout = catchAsync(async (req: Request, res: Response) => {
     statusCode: status.OK,
     success: true,
     message: "User logged out successfully",
-    data: null,
+    data: result,
   });
 });
 
@@ -135,6 +135,18 @@ const verifyEmail = catchAsync(async (req: Request, res: Response) => {
     success: true,
     message: "Email verified successfully",
     data: result,
+  });
+});
+
+const sendVerifyOtp = catchAsync(async (req: Request, res: Response) => {
+  const {email, type } = req.body;
+  await AuthService.sendVerifyOtp(email, type);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Verify otp sent successfully",
+    data: null,
   });
 });
 
@@ -244,4 +256,5 @@ export const AuthController = {
   handleOAuthError,
   googleLogin,
   googleSuccess,
+  sendVerifyOtp,
 };

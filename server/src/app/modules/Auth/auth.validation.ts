@@ -51,7 +51,15 @@ const resetPasswordSchema = z.object({
 
 const verifyEmailSchema = z.object({
   email: z.email("Invalid email"),
-  otp: z.string("OTP is required")
+  otp: z.string("OTP is required"),
+});
+
+const sendVerifyOtpSchema = z.object({
+  email: z.email("Invalid email"),
+  type: z.enum(
+    ["sign-in", "email-verification", "forget-password", "change-email"],
+    "Type is required",
+  ),
 });
 
 export const AuthValidation = {
@@ -61,4 +69,5 @@ export const AuthValidation = {
   forgotPasswordSchema,
   resetPasswordSchema,
   verifyEmailSchema,
+  sendVerifyOtpSchema,
 };

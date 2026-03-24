@@ -12,13 +12,16 @@ import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
 import { Eye, EyeOff, Key, Mail } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface LoginFormProps {
   redirectPath?: string;
 }
 
 export default function LoginForm({ redirectPath }: LoginFormProps) {
+  const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -36,10 +39,17 @@ export default function LoginForm({ redirectPath }: LoginFormProps) {
       try {
         const res = (await mutateAsync(value)) as any;
 
-        if (!res.success) {
-          setServerError(res.message || "Login failed. Please try again.");
+        console.log("Login form action response: ", res);
+
+        if (res?.message === "Login failed: Invalid email or password") {
+          toast.warning("User not found! Please register first.");
+          router.push("/register");
           return;
         }
+        // if (!res.success) {
+        //   setServerError(res.message || "Login failed. Please try again.");
+        //   return;
+        // }
       } catch (error: any) {
         console.log("Login form action error: ", error);
         setServerError(`Login failed: ${error.message}`);
@@ -127,9 +137,7 @@ export default function LoginForm({ redirectPath }: LoginFormProps) {
             </div>
 
             {serverError && (
-              <Alert variant={"destructive"}>
-                <AlertDescription>{serverError}</AlertDescription>
-              </Alert>
+              <p className="text-sm text-red-500">{serverError}</p>
             )}
 
             <form.Subscribe

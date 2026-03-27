@@ -6,8 +6,8 @@ model MediaPlatform {
   url      String?
 
   @@unique([mediaId, platform])
-  @@map("media_platforms")
   @@index([mediaId])
   @@index([platform])
   @@index([url])
+  @@map("media_platforms")
 }

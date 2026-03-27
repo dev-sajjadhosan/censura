@@ -19,12 +19,16 @@ import {
   History,
   Share2,
   BookmarkPlus,
+  Clapperboard,
+  ChevronRight,
+  Link2,
 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReviewSection from "@/components/Modules/Media/ReviewSection";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import DialogShowPlatfroms from "@/components/Modules/Media/DialogShowPlatfroms";
 
 export default async function MediaDetailPage({
   params,
@@ -52,8 +56,16 @@ export default async function MediaDetailPage({
       cast: ["Sarah Jenkins", "Michael Chen", "David Oyelowo", "Emily Blunt"],
       reviewCount: 1250,
       platforms: [
-        { id: "p1", platform: "Netflix" },
-        { id: "p2", platform: "Prime Video" },
+        { id: "p1", platform: "Netflix", type: "SUBSCRIPTION" },
+        { id: "p2", platform: "Prime Video", type: "RENTAL" },
+        { id: "p3", platform: "Disney+", type: "BUY" },
+        { id: "p4", platform: "Hulu", type: "SUBSCRIPTION" },
+        { id: "p5", platform: "HBO Max", type: "BUY" },
+        { id: "p6", platform: "Apple TV+", type: "RENTAL" },
+        { id: "p7", platform: "Paramount+", type: "SUBSCRIPTION" },
+        { id: "p8", platform: "Peacock", type: "BUY" },
+        { id: "p9", platform: "Discovery+", type: "RENTAL" },
+        { id: "p10", platform: "Showtime", type: "SUBSCRIPTION" },
       ],
       pricing: "FREE",
     },
@@ -295,13 +307,15 @@ export default async function MediaDetailPage({
                 {media.cast?.map((actor: string) => (
                   <div
                     key={actor}
-                    className="bg-neutral-700/40 p-4 rounded-xl h-50"
+                    className="p-5 rounded-xl bg-secondary/15 hover:bg-secondary/55 flex flex-col"
                   >
-                    <span className="block w-full h-30 bg-secondary rounded-2xl" />
-                    <p className="font-medium text-neutral-200">{actor}</p>
-                    <p className="text-xs text-neutral-500 uppercase tracking-tighter mt-1">
-                      Actor
-                    </p>
+                    <div className=" w-full h-35 bg-secondary/25 rounded-xl mb-5" />
+                    <div className="flex items-center justify-between">
+                      <p className="font-medium text-neutral-200">{actor}</p>
+                      <Badge className="text-xs uppercase tracking-tighter px-3 py-3">
+                        Actor
+                      </Badge>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -311,10 +325,10 @@ export default async function MediaDetailPage({
           {/* Sidebar / Info */}
           <div className="space-y-8">
             <section className="bg-neutral-900/30 p-6 rounded-xl border border-neutral-800/50">
-              <h3 className="text-xl font-bold mb-6 italic text-primary/80">
+              <h3 className="text-lg mb-4 italic text-primary/80">
                 Reviews Summary
               </h3>
-              <div className="space-y-4">
+              <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-neutral-400">Average Rating</span>
                   <span className="text-2xl font-bold text-yellow-500">
@@ -323,7 +337,15 @@ export default async function MediaDetailPage({
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-neutral-400">Total Reviews</span>
-                  <span className="font-medium">{media.reviewCount}</span>
+                  <span className="font-medium">
+                    {media.reviewCount || "00"}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-neutral-400">Total Views</span>
+                  <span className="font-medium">
+                    {media.viewsCount || "00"}
+                  </span>
                 </div>
               </div>
             </section>
@@ -331,21 +353,55 @@ export default async function MediaDetailPage({
             <section className="space-y-4">
               <h3 className="text-xl font-bold">Available On</h3>
               <div className="flex flex-wrap gap-3">
-                {media.platforms?.map((p: any) => (
+                {media.platforms?.slice(0, 5)?.map((p: any) => (
                   <div
                     key={p.id}
-                    className="bg-neutral-800 px-4 py-2 rounded-lg text-sm font-medium border border-neutral-700"
+                    className="bg-secondary/15 hover:bg-secondary/65 px-4 py-4 flex items-center gap-3 rounded-xl"
                   >
-                    {p.platform}
+                    <Clapperboard className="size-5 text-orange-500" />
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium">{p.platform}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {p.type}
+                      </span>
+                    </div>
+                    <Link
+                      href={p.url || "#"}
+                      target="_blank"
+                      className="ml-auto"
+                    >
+                      <Button variant="ghost" size="icon">
+                        <Link2 />
+                      </Button>
+                    </Link>
                   </div>
                 ))}
+                {media.platforms?.length > 5 && (
+                  <DialogShowPlatfroms
+                    platforms={media.platforms}
+                    title={
+                      <div className="bg-secondary/65 px-6 py-4 flex items-center gap-3 rounded-xl [&_svg]:size-4 hover:[&_svg]:translate-x-2 [&_svg]:duration-100">
+                        <div className="flex flex-col">
+                          <span className="text-sm font-medium">
+                            +{media.platforms?.length - 5} more
+                          </span>
+                        </div>
+                        <ChevronRight />
+                      </div>
+                    }
+                  />
+                )}
               </div>
             </section>
           </div>
         </div>
 
         {/* Reviews Section */}
-        <section className="pt-8 border-t border-neutral-800">
+        <section className="pt-8">
+          <h3 className="text-lg">Write Your Review Here</h3>
+          <p className="text-sm text-muted-foreground">
+            Share your thoughts and help others decide
+          </p>
           <ReviewSection
             mediaId={media.id}
             initialReviews={reviews || []}

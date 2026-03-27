@@ -1,30 +1,41 @@
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  needPasswordChange: boolean;
+  image: string;
+  status: string;
+  emailVerified: boolean;
+  phoneVerified: boolean;
+  phone: string;
+}
+
 export interface ILoginResponse {
   token: string;
   refreshToken: string;
   accessToken: string;
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
-    needPasswordChange: boolean;
-    image: string;
-    status: string;
-    emailVerified: boolean;
-    phoneVerified: boolean;
-    phone: string;
-  };
+  user: User;
+}
+
+export interface Meta {
+  bookmarks: number;
+  favorites: number;
+  watchlists: number;
+  likes: number;
+  reviews: number;
+  comments: number;
 }
 
 export interface IProfileResponse {
-  _count: {
-    bookmarks: number;
-    favorites: number;
-    watchlists: number;
-    likes: number;
-    reviews: number;
-    comments: number;
-  };
+  // _count: {
+  //   bookmarks: number;
+  //   favorites: number;
+  //   watchlists: number;
+  //   likes: number;
+  //   reviews: number;
+  //   comments: number;
+  // };
   bookmarks: Array<any>;
   favorites: Array<any>;
   watchlists: Array<any>;
@@ -35,28 +46,23 @@ export interface IProfileResponse {
   id: string;
   image: string | null;
   isDeleted: boolean;
-  meta: {
-    bookmarks: number;
-    favorites: number;
-    watchlists: number;
-    likes: number;
-    reviews: number;
-    comments: number;
-  };
+  meta: Meta;
   name: string;
   needPasswordChange: boolean;
-  profile: {
-    id: string;
-    userId: string;
-    name: string;
-    email: string;
-    image: string | null;
-    bio: string | null;
-    coverImage: string | null;
-    createdAt: string;
-    updatedAt: string;
-  };
+  profile: Profile;
   role: string;
   status: string;
+  updatedAt: string;
+}
+
+export interface Profile {
+  id: string;
+  userId: string;
+  name: string;
+  email: string;
+  image: string | null;
+  bio: string | null;
+  coverImage: string | null;
+  createdAt: string;
   updatedAt: string;
 }

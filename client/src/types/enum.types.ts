@@ -1,0 +1,12 @@
+export type Role = "USER" | "ADMIN";
+export type MediaType = "MOVIE" | "SERIES" | "DRAMA" | "ANIME" | "CARTOON" | "SHORT_FILM" | "DOCUMENTARY" | "TV_SHOW" | "WEB_SERIES" | "REALITY_SHOW" | "TALK_SHOW" | "GAME_SHOW" | "NEWS_CHANNEL" | "SPORTS_CHANNEL" | "MUSIC_CHANNEL" | "KIDS_CHANNEL" | "LIFESTYLE_CHANNEL" | "TRAVEL_CHANNEL" | "FOOD_CHANNEL";
+export type Pricing = "FREE" | "PREMIUM" | "RENTAL";
+export type ReviewStatus = "PENDING" | "APPROVED" | "UNPUBLISHED";
+export type SubscriptionPlan = "FREE" | "MONTHLY" | "YEARLY";
+export type SubscriptionStatus = "ACTIVE" | "CANCELLED" | "EXPIRED" | "PAST_DUE";
+export type PlatformName = "NETFLIX" | "DISNEY_PLUS" | "HBO" | "AMAZON_PRIME" | "APPLE_TV_PLUS" | "HULU" | "PARAMOUNT_PLUS" | "OTHER" | string;
+export type SubStatus = "ACTIVE" | "CANCELLED" | "EXPIRED";
+export type UserStatus = "ACTIVE" | "BLOCKED" | "PENDING" | "UNVERIFIED" | "DELETED";
+export type CommentStatus = "PENDING" | "APPROVED" | "UNPUBLISHED" | "REJECTED" | "BLOCKED";
+export type LikeType = "LIKE" | "HEART" | "CRY" | "LAUGH" | "DISLIKE";
+export type PurchaseType = "BUY" | "RENT";

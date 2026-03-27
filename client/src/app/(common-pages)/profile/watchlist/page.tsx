@@ -11,7 +11,7 @@ export default async function WatchlistPage() {
       <h1 className="text-3xl font-bold mb-8">My Watchlist</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {watchlist?.map((item: any) => (
+        {(watchlist as any)?.map((item: any) => (
           <div key={item.id} className="group relative bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-primary/50 transition-all">
             <Link href={`/media/${item.media.slug}`}>
               <div className="aspect-2/3 relative">
@@ -46,7 +46,7 @@ export default async function WatchlistPage() {
         ))}
       </div>
 
-      {watchlist?.length === 0 && (
+      {(watchlist as any)?.length === 0 && (
         <div className="py-20 text-center bg-neutral-900/10 rounded-2xl border border-dashed border-neutral-800">
           <p className="text-neutral-500 mb-4 text-lg">Your watchlist is empty.</p>
           <Link href="/explore">

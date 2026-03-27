@@ -390,6 +390,7 @@ export const ModelName = {
   Genre: 'Genre',
   Media: 'Media',
   MediaPlatform: 'MediaPlatform',
+  MediaPurchase: 'MediaPurchase',
   Payment: 'Payment',
   Profile: 'Profile',
   Bookmark: 'Bookmark',
@@ -416,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "comment" | "like" | "genre" | "media" | "mediaPlatform" | "payment" | "profile" | "bookmark" | "favorite" | "review" | "subscription" | "user" | "session" | "account" | "verification" | "watchlist"
+    modelProps: "admin" | "comment" | "like" | "genre" | "media" | "mediaPlatform" | "mediaPurchase" | "payment" | "profile" | "bookmark" | "favorite" | "review" | "subscription" | "user" | "session" | "account" | "verification" | "watchlist"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -861,6 +862,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.MediaPlatformCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.MediaPlatformCountAggregateOutputType> | number
+        }
+      }
+    }
+    MediaPurchase: {
+      payload: Prisma.$MediaPurchasePayload<ExtArgs>
+      fields: Prisma.MediaPurchaseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MediaPurchaseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaPurchasePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MediaPurchaseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaPurchasePayload>
+        }
+        findFirst: {
+          args: Prisma.MediaPurchaseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaPurchasePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MediaPurchaseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaPurchasePayload>
+        }
+        findMany: {
+          args: Prisma.MediaPurchaseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaPurchasePayload>[]
+        }
+        create: {
+          args: Prisma.MediaPurchaseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaPurchasePayload>
+        }
+        createMany: {
+          args: Prisma.MediaPurchaseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MediaPurchaseCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaPurchasePayload>[]
+        }
+        delete: {
+          args: Prisma.MediaPurchaseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaPurchasePayload>
+        }
+        update: {
+          args: Prisma.MediaPurchaseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaPurchasePayload>
+        }
+        deleteMany: {
+          args: Prisma.MediaPurchaseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MediaPurchaseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MediaPurchaseUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaPurchasePayload>[]
+        }
+        upsert: {
+          args: Prisma.MediaPurchaseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaPurchasePayload>
+        }
+        aggregate: {
+          args: Prisma.MediaPurchaseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMediaPurchase>
+        }
+        groupBy: {
+          args: Prisma.MediaPurchaseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MediaPurchaseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MediaPurchaseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MediaPurchaseCountAggregateOutputType> | number
         }
       }
     }
@@ -1813,6 +1888,19 @@ export const MediaPlatformScalarFieldEnum = {
 export type MediaPlatformScalarFieldEnum = (typeof MediaPlatformScalarFieldEnum)[keyof typeof MediaPlatformScalarFieldEnum]
 
 
+export const MediaPurchaseScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  mediaId: 'mediaId',
+  amount: 'amount',
+  type: 'type',
+  expiryDate: 'expiryDate',
+  createdAt: 'createdAt'
+} as const
+
+export type MediaPurchaseScalarFieldEnum = (typeof MediaPurchaseScalarFieldEnum)[keyof typeof MediaPurchaseScalarFieldEnum]
+
+
 export const PaymentScalarFieldEnum = {
   id: 'id',
   subscriptionId: 'subscriptionId',
@@ -2136,6 +2224,20 @@ export type ListEnumPlatformFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
 
 
 /**
+ * Reference to a field of type 'PurchaseType'
+ */
+export type EnumPurchaseTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PurchaseType'>
+    
+
+
+/**
+ * Reference to a field of type 'PurchaseType[]'
+ */
+export type ListEnumPurchaseTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PurchaseType[]'>
+    
+
+
+/**
  * Reference to a field of type 'ReviewStatus'
  */
 export type EnumReviewStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewStatus'>
@@ -2277,6 +2379,7 @@ export type GlobalOmitConfig = {
   genre?: Prisma.GenreOmit
   media?: Prisma.MediaOmit
   mediaPlatform?: Prisma.MediaPlatformOmit
+  mediaPurchase?: Prisma.MediaPurchaseOmit
   payment?: Prisma.PaymentOmit
   profile?: Prisma.ProfileOmit
   bookmark?: Prisma.BookmarkOmit

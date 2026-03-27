@@ -72,6 +72,11 @@ export type Media = Prisma.MediaModel
  */
 export type MediaPlatform = Prisma.MediaPlatformModel
 /**
+ * Model MediaPurchase
+ * 
+ */
+export type MediaPurchase = Prisma.MediaPurchaseModel
+/**
  * Model Payment
  * 
  */

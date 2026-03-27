@@ -37,23 +37,24 @@ const createWatchlist = async (payload: any, user: IRequestUser) => {
   return result;
 };
 
-const deleteWatchlist = async (id: string, user: IRequestUser) => {
+const deleteWatchlist = async (mediaId: string, user: IRequestUser) => {
   const isExist = await prisma.watchlist.findFirst({
     where: {
-      id,
+      mediaId,
       userId: user.userId as any,
     },
   });
+
   if (!isExist) {
     throw new AppError(
       status.BAD_REQUEST,
       "You didn't add this media to your watchlist",
     );
   }
+
   const result = await prisma.watchlist.delete({
     where: {
-      id,
-      userId: user.userId as any,
+      id: isExist.id,
     },
   });
   return result;

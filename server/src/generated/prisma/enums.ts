@@ -133,3 +133,11 @@ export const LikeType = {
 } as const
 
 export type LikeType = (typeof LikeType)[keyof typeof LikeType]
+
+
+export const PurchaseType = {
+  BUY: 'BUY',
+  RENT: 'RENT'
+} as const
+
+export type PurchaseType = (typeof PurchaseType)[keyof typeof PurchaseType]

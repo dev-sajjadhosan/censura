@@ -57,6 +57,7 @@ export const ModelName = {
   Genre: 'Genre',
   Media: 'Media',
   MediaPlatform: 'MediaPlatform',
+  MediaPurchase: 'MediaPurchase',
   Payment: 'Payment',
   Profile: 'Profile',
   Bookmark: 'Bookmark',
@@ -180,6 +181,19 @@ export const MediaPlatformScalarFieldEnum = {
 } as const
 
 export type MediaPlatformScalarFieldEnum = (typeof MediaPlatformScalarFieldEnum)[keyof typeof MediaPlatformScalarFieldEnum]
+
+
+export const MediaPurchaseScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  mediaId: 'mediaId',
+  amount: 'amount',
+  type: 'type',
+  expiryDate: 'expiryDate',
+  createdAt: 'createdAt'
+} as const
+
+export type MediaPurchaseScalarFieldEnum = (typeof MediaPurchaseScalarFieldEnum)[keyof typeof MediaPurchaseScalarFieldEnum]
 
 
 export const PaymentScalarFieldEnum = {

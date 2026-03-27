@@ -1,11 +1,25 @@
 import { Router } from "express";
+import { checkAuth } from "../../middleware/checkAuth";
 import { WatchlistController } from "./watchlist.controller";
+import { Role } from "../../../generated/prisma/enums";
 
 const router = Router();
 
-router.get("/", WatchlistController.getAllWatchlist);
-router.post("/", WatchlistController.createWatchlist);
-router.delete("/:id", WatchlistController.deleteWatchlist);
+router.get(
+  "/",
+  checkAuth(Role.ADMIN, Role.USER),
+  WatchlistController.getAllWatchlist,
+);
+router.post(
+  "/:mediaId",
+  checkAuth(Role.ADMIN, Role.USER),
+  WatchlistController.createWatchlist,
+);
+router.delete(
+  "/:mediaId",
+  checkAuth(Role.ADMIN, Role.USER),
+  WatchlistController.deleteWatchlist,
+);
 
 export const WatchlistRouter = router;
 

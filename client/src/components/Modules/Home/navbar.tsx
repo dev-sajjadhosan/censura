@@ -19,12 +19,7 @@ const navMenus = [
   {
     title: "TV Shows",
     href: "/explore?type=SERIES",
-  },
-  {
-    title: "Watchlist",
-    href: "/watchlist",
-    auth: true,
-  },
+  }
 ];
 
 export default async function Navbar() {
@@ -37,7 +32,6 @@ export default async function Navbar() {
       <div>
         <ul className="flex items-center gap-5">
            {navMenus
-             .filter(menu => !menu.auth || user)
              .map((menu) => (
              <li key={menu.href}>
                <Link href={menu.href} className="hover:text-primary transition-colors">

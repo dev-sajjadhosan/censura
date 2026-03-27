@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import ReviewSection from "@/components/Modules/Media/ReviewSection";
+import ReviewSection from "@/components/Modules/Media/ReviewForm";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import DialogShowPlatfroms from "@/components/Modules/Media/DialogShowPlatfroms";

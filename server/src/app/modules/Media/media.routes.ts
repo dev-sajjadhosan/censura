@@ -15,6 +15,7 @@ router.post(
 );
 router.get("/", MediaController.getAllMedia); // Public
 router.get("/:id", MediaController.getSingleMedia); // Public
+router.get("/slug/:slug", MediaController.getMediaBySlug); // Public
 router.patch(
   "/:id",
   checkAuth(Role.ADMIN),

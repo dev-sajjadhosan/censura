@@ -18,7 +18,6 @@ const getMyPayments = catchAsync(async (req: Request, res: Response) => {
 
 const getAllPayments = catchAsync(async (req: Request, res: Response) => {
   const result = await PaymentService.getAllPayments();
-
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
@@ -27,7 +26,34 @@ const getAllPayments = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getMyMediaPurchases = catchAsync(async (req: Request, res: Response) => {
+  const result = await PaymentService.getMyMediaPurchases(req.user as IRequestUser);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Media purchase history fetched successfully",
+    data: result,
+  });
+});
+
+const createMediaPurchase = catchAsync(async (req: Request, res: Response) => {
+  const result = await PaymentService.createMediaPurchase(
+    req.user as IRequestUser,
+    req.body,
+  );
+
+  sendResponse(res, {
+    statusCode: status.CREATED,
+    success: true,
+    message: "Media purchased successfully",
+    data: result,
+  });
+});
+
 export const PaymentController = {
   getMyPayments,
   getAllPayments,
+  getMyMediaPurchases,
+  createMediaPurchase,
 };

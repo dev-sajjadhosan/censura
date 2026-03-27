@@ -90,3 +90,8 @@ enum LikeType {
   LAUGH
   DISLIKE
 }
+
+enum PurchaseType {
+  BUY
+  RENT
+}

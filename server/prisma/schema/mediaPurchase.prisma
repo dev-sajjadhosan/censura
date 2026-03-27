@@ -1,0 +1,16 @@
+model MediaPurchase {
+  id         String       @id @default(uuid())
+  userId     String
+  mediaId    String
+  amount     Float
+  type       PurchaseType
+  expiryDate DateTime? // Only for RENT
+  createdAt  DateTime     @default(now())
+
+  user  User  @relation(fields: [userId], references: [id])
+  media Media @relation(fields: [mediaId], references: [id])
+
+  @@index([userId])
+  @@index([mediaId])
+  @@map("media_purchases")
+}

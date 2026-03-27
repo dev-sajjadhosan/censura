@@ -43,8 +43,7 @@ export default function LoginForm({ redirectPath }: LoginFormProps) {
 
         if (res?.message === "Login failed: Invalid email or password") {
           toast.warning("User not found! Please register first.");
-          router.push("/register");
-          return;
+          return router.push("/register");
         }
         // if (!res.success) {
         //   setServerError(res.message || "Login failed. Please try again.");

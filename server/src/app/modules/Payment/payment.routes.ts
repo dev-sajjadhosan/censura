@@ -12,9 +12,21 @@ router.get(
 );
 
 router.get(
-  "/",
+  "/all-payments",
   checkAuth(Role.ADMIN),
   PaymentController.getAllPayments,
+);
+
+router.get(
+  "/my-media-purchases",
+  checkAuth(Role.USER, Role.ADMIN),
+  PaymentController.getMyMediaPurchases,
+);
+
+router.post(
+  "/purchase-media",
+  checkAuth(Role.USER, Role.ADMIN),
+  PaymentController.createMediaPurchase,
 );
 
 export const PaymentRoutes = router;

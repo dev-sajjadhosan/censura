@@ -7,10 +7,10 @@ export async function logoutAction() {
     const res = await axiosClient.get("/auth/logout");
     console.log("logout action", res);
     if (res.success) {
-      deleteCookie("accessToken");
-      deleteCookie("refreshToken");
-      deleteCookie("better-auth.session_token");
-      deleteCookie("__next_hmr_refresh_hash__");
+      await deleteCookie("accessToken");
+      await deleteCookie("refreshToken");
+      await deleteCookie("better-auth.session_token");
+      await deleteCookie("__next_hmr_refresh_hash__");
     }
   } catch (error: any) {
     throw error.message;

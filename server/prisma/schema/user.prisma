@@ -24,6 +24,7 @@ model User {
   bookmarks    Bookmark[]
   favorites    Favorite[]
   admin        Admin?
+  purchases    MediaPurchase[]
 
   @@unique([email])
   @@map("user")

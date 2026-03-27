@@ -13,9 +13,11 @@ const getAllMedia = async (
     searchableFields: ["title", "synopsis", "director", "cast"],
     filterableFields: [
       "type",
-      "genre",
+      "genres.some.id",
+      "platforms.some.platform",
       "releaseYear",
       "pricing",
+      "avgRating",
       "isFeatured",
       "isPublished",
     ],
@@ -187,9 +189,23 @@ const changePublishStatus = async (
   return result;
 };
 
+const getMediaBySlug = async (slug: string) => {
+  const result = await prisma.media.findUniqueOrThrow({
+    where: {
+      slug,
+    },
+    include: {
+      genres: true,
+      platforms: true,
+    },
+  });
+  return result;
+};
+
 export const MediaService = {
   getAllMedia,
   getSingleMedia,
+  getMediaBySlug,
   createMedia,
   updateMedia,
   deleteMedia,

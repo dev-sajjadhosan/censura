@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 
 import { logoutAction } from "@/app/(auth-pages)/logout/_action";
 import { Button } from "@/components/ui/button";

@@ -5,7 +5,7 @@ import logout from "../../../../public/logout.svg";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AppField from "@/components/Shared/Form/AppField";
 import { Textarea } from "@/components/ui/textarea";
 import LogoutDialog from "@/components/Modules/Auth/logout-dialog";
@@ -30,8 +30,13 @@ const reasons = [
 ];
 
 export default function LogoutContent() {
+  const [mounted, setMounted] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   return (
     <>
       <div className="flex w-11/12 mx-auto h-screen">
@@ -65,7 +70,7 @@ export default function LogoutContent() {
             )}
             <LogoutDialog open={open} setOpen={setOpen} />
             <Button
-              disabled={!selected}
+              disabled={!mounted || !selected}
               className="ml-auto w-44"
               size={"xl"}
               onClick={() => setOpen(!open)}

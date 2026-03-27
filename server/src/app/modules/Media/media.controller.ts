@@ -28,6 +28,17 @@ const getSingleMedia = catchAsync(async (req, res) => {
   });
 });
 
+const getMediaBySlug = catchAsync(async (req, res) => {
+  const { slug } = req.params;
+  const result = await MediaService.getMediaBySlug(slug as string);
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Media fetched successfully",
+    data: result,
+  });
+});
+
 const createMedia = catchAsync(async (req, res) => {
   const user = req.user as IRequestUser;
   const data = req.body;
@@ -100,6 +111,7 @@ const changePublishStatus = catchAsync(async (req, res) => {
 export const MediaController = {
   getAllMedia,
   getSingleMedia,
+  getMediaBySlug,
   createMedia,
   updateMedia,
   deleteMedia,

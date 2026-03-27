@@ -1,5 +1,6 @@
 "use server";
 import { axiosClient } from "@/lib/axiosClient";
+import { IProfileResponse } from "@/types/auth.types";
 import { setTokenInCookie } from "@/utils/token-utils";
 import { cookies } from "next/headers";
 const BASE_API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -71,7 +72,7 @@ export async function getCurrentUser() {
 
     const { data } = await res.json();
 
-    return data;
+    return data as IProfileResponse;
   } catch (error) {
     console.error("Error fetching user info:", error);
     return null;

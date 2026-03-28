@@ -137,12 +137,25 @@ export default function ReviewCard({
                   <Star className="size-4 fill-orange-700" />
                   {review.rating}/10
                 </div>
-                {review.hasSpoiler && (
-                  <Badge variant={"default"} className="py-3">
-                    Spoiler
-                  </Badge>
-                )}
-                {isOwn && review.status === "UNPUBLISHED" && (
+                  {review.hasSpoiler && (
+                    <Badge variant={"default"} className="py-3">
+                      Spoiler
+                    </Badge>
+                  )}
+                  {currentUser?.role === "ADMIN" && (
+                    <Badge
+                      className={`text-xs ${
+                        review.status === "APPROVED"
+                          ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
+                          : review.status === "PENDING"
+                            ? "bg-amber-500/10 text-amber-600 border-amber-500/20"
+                            : "bg-red-500/10 text-red-500 border-red-500/20"
+                      }`}
+                    >
+                      {review.status}
+                    </Badge>
+                  )}
+                  {isOwn && review.status === "UNPUBLISHED" && (
                   <div className="flex gap-2">
                     <Button
                       variant="ghost"
@@ -165,16 +178,7 @@ export default function ReviewCard({
           </CardHeader>
           <CardContent className="p-3">
             <p className={`text-neutral-300 text-md leading-relaxed p-3`}>
-              {/* {review.content} */}
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
-              eos eligendi sunt voluptatibus velit a, recusandae magni
-              laboriosam similique inventore, et placeat maiores. Hic,
-              itaque!Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Officia eos eligendi sunt voluptatibus velit a, recusandae magni
-              laboriosam similique inventore, et placeat maiores. Hic,
-              itaque!Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Officia eos eligendi sunt voluptatibus velit a, recusandae magni
-              laboriosam similique inventore, et placeat maiores. Hic, itaque!
+              {review.content}
             </p>
 
             <div className="flex flex-wrap gap-2">
@@ -220,6 +224,39 @@ export default function ReviewCard({
                 <Badge className="text-xs ml-1">{commentsList.length}</Badge>
               </Button>
             </div>
+
+            {currentUser?.role === "ADMIN" && (
+              <div className="mt-4 pt-4 border-t border-border w-full">
+                <p className="text-xs font-medium text-muted-foreground mb-3">
+                  Admin Controls:
+                </p>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-emerald-500 border-emerald-500/30 hover:bg-emerald-500/10"
+                    disabled={review.status === "APPROVED"}
+                  >
+                    Approve
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-amber-500 border-amber-500/30 hover:bg-amber-500/10"
+                    disabled={review.status === "UNPUBLISHED"}
+                  >
+                    Unpublish
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-red-500 border-red-500/30 hover:bg-red-500/10"
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            )}
 
             <CommentSection
               showComments={showComments}

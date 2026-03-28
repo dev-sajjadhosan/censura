@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { LogOut, Trash2 } from "lucide-react";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function LogoutDialog({
   open,
@@ -22,14 +22,15 @@ export default function LogoutDialog({
   open: boolean;
   setOpen: (open: boolean) => void;
 }) {
-  // const router = useRouter();
+  const router = useRouter();
   const handleLogoutClick = async () => {
     try {
       await logoutAction();
-      // setOpen(!open);
-      // router.refresh();
+      setOpen(!open);
+      router.push("/login");
     } catch (error: any) {
-      throw new Error(error.message);
+      console.log(error);
+      throw new Error(error);
     }
   };
   return (

@@ -1,8 +1,10 @@
 export interface ApiResponse<T> {
   success: boolean;
   message: string;
-  data: T;
-  meta?: PaginationMeta;
+  data: {
+    data: T;
+    meta?: PaginationMeta;
+  };
 }
 
 export interface PaginationMeta {
@@ -17,7 +19,6 @@ export interface ApiError {
   message: string;
   error?: any;
 }
-
 
 export interface ApiRequestOptions {
   params?: Record<string, string | number | boolean>;

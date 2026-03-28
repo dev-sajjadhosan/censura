@@ -19,26 +19,28 @@ const navMenus = [
   {
     title: "TV Shows",
     href: "/explore?type=SERIES",
-  }
+  },
 ];
 
 export default async function Navbar() {
   const user = await getCurrentUser();
   return (
-    <header className="flex items-center justify-between h-18 w-9/12 mx-auto border-b border-neutral-700/45 sticky top-5 z-50">
+    <header className="flex items-center justify-between h-17 rounded-xl w-9/12 mx-auto sticky top-1 z-50 backdrop-blur-sm bg-secondary/50 px-7">
       <div>
         <h1 className="text-xl font-sans">Censura</h1>
       </div>
       <div>
         <ul className="flex items-center gap-5">
-           {navMenus
-             .map((menu) => (
-             <li key={menu.href}>
-               <Link href={menu.href} className="hover:text-primary transition-colors">
-                 {menu.title}
-               </Link>
-             </li>
-           ))}
+          {navMenus.map((menu) => (
+            <li key={menu.href}>
+              <Link
+                href={menu.href}
+                className="hover:text-primary transition-colors text-sm"
+              >
+                {menu.title}
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
       {user ? (

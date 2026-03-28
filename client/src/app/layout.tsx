@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { JetBrains_Mono, Ubuntu_Sans_Mono } from "next/font/google";
 import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "@/providers/theme-provider";
 import { QueryProvider } from "@/providers/Query-Provider";
 
 import { Toaster } from "@/components/ui/sonner";

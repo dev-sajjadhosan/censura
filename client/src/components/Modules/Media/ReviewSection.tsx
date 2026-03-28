@@ -26,6 +26,7 @@ export default function ReviewSection({
               key={review.id}
               review={review}
               isOwn={user?.id === review.userId}
+              currentUser={user}
             />
           ))}
           {initialReviews?.length === 0 && (

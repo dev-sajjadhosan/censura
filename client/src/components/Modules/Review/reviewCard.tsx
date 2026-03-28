@@ -10,17 +10,98 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Review } from "@/types/media.types";
-import { Edit, Eye, MessageSquare, Star, ThumbsUp, Trash2 } from "lucide-react";
+import {
+  Edit,
+  Eye,
+  MessageSquare,
+  Star,
+  ThumbsUp,
+  Trash2,
+  Send,
+  MessageCircle,
+} from "lucide-react";
 import { useState } from "react";
+import { IProfileResponse } from "@/types/auth.types";
+import {
+  createLike,
+  deleteLike,
+  addComment as addCommentApi,
+} from "@/services/reaction.service";
+import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import CommentSection from "../Media/CommentSection";
 
 export default function ReviewCard({
   review,
   isOwn,
+  currentUser,
 }: {
   review: Review;
   isOwn: boolean;
+  currentUser?: IProfileResponse | null;
 }) {
   const [reveal, setReveal] = useState<boolean>(false);
+  const [isLiked, setIsLiked] = useState<boolean>(() => {
+    return (
+      review.likes?.some((like) => like.userId === currentUser?.id) || false
+    );
+  });
+  const [likesCount, setLikesCount] = useState<number>(
+    review.likes?.length || 0,
+  );
+
+  const [showComments, setShowComments] = useState<boolean>(false);
+  const [commentContent, setCommentContent] = useState<string>("");
+  const [commentsList, setCommentsList] = useState<any[]>(
+    review.comments || [],
+  );
+  const [isSubmittingComment, setIsSubmittingComment] = useState(false);
+  const [isLiking, setIsLiking] = useState(false);
+
+  const handleToggleLike = async () => {
+    if (!currentUser) {
+      toast.error("Please login to like this review");
+      return;
+    }
+
+    try {
+      setIsLiking(true);
+      if (isLiked) {
+        // Optimistic update
+        setIsLiked(false);
+        setLikesCount((prev) => prev - 1);
+
+        // Find my like id
+        const myLike = review.likes?.find((l) => l.userId === currentUser.id);
+        if (myLike) {
+          await deleteLike(myLike?.id!, {
+            reviewId: review.id,
+            mediaId: review.mediaId,
+            likeType: "LIKE",
+          });
+        }
+      } else {
+        // Optimistic update
+        setIsLiked(true);
+        setLikesCount((prev) => prev + 1);
+
+        await createLike({
+          reviewId: review.id,
+          mediaId: review.mediaId,
+          likeType: "LIKE",
+        });
+      }
+    } catch (e) {
+      // Revert optimistic update
+      setIsLiked(!isLiked);
+      setLikesCount((prev) => (isLiked ? prev + 1 : prev - 1));
+      toast.error("Failed to update like status");
+    } finally {
+      setIsLiking(false);
+    }
+  };
+
+  const handleAddComment = async () => {};
 
   return (
     <>
@@ -107,19 +188,49 @@ export default function ReviewCard({
               ))}
             </div>
           </CardContent>
-          <CardFooter>
-            <div className="flex items-center gap-6">
-              <Button size={"lg"} variant={"ghost"} className="">
-                <ThumbsUp className="w-4 h-4" />
+          <CardFooter className="flex-col pb-0 mb-4 w-full items-start bg-transparent">
+            <div className="flex items-center gap-6 w-full">
+              <Button
+                size={"lg"}
+                variant={"ghost"}
+                className={isLiked ? "text-primary bg-primary/10" : ""}
+                disabled={isLiking || !currentUser}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleToggleLike();
+                }}
+              >
+                <ThumbsUp
+                  className={`w-4 h-4 ${isLiked ? "fill-primary" : ""}`}
+                />
                 <span>Like</span>
-                <Badge className="text-xs">{review?.likes?.length}</Badge>
+                <Badge className="text-xs ml-1">{likesCount}</Badge>
               </Button>
-              <Button size={"lg"} variant={"ghost"} className="">
+              <Button
+                size={"lg"}
+                variant={"ghost"}
+                // disabled={!currentUser}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowComments(!showComments);
+                }}
+              >
                 <MessageSquare className="w-4 h-4" />
                 <span>Comment</span>
-                <Badge className="text-xs">{review?.comments?.length}</Badge>
+                <Badge className="text-xs ml-1">{commentsList.length}</Badge>
               </Button>
             </div>
+
+            <CommentSection
+              showComments={showComments}
+              commentContent={commentContent}
+              setCommentContent={setCommentContent}
+              handleAddComment={handleAddComment}
+              reviewId={review.id}
+              mediaId={review.mediaId}
+              commentsList={commentsList}
+              currentUser={currentUser!}
+            />
           </CardFooter>
         </div>
       </Card>

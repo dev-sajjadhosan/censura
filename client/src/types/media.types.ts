@@ -1,5 +1,6 @@
 import { User } from "./auth.types";
 import { PlatformName, ReviewStatus } from "./enum.types";
+import { Like } from "./reaction.types";
 
 export interface Platform {
   id: string;
@@ -44,23 +45,6 @@ export interface MediaPurchase {
   amount: number;
   type: string;
   expiryDate: string;
-  createdAt: string;
-}
-
-export interface Like {
-  id: string;
-  userId: string;
-  mediaId: string;
-  type: string;
-}
-
-export interface Comment {
-  id: string;
-  userId: string;
-  user: User;
-  mediaId: string;
-  media: Media;
-  content: string;
   createdAt: string;
 }
 

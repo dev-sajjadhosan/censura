@@ -3,7 +3,9 @@ import {
   getMediaReviews,
   addToWatchlist,
   removeFromWatchlist,
+  getMyMediaPurchases,
 } from "@/services/media.service";
+import MediaActions from "@/components/Modules/Media/MediaActions";
 import { getCurrentUser } from "@/services/user.service";
 import { Button } from "@/components/ui/button";
 import {
@@ -302,6 +304,18 @@ export default async function MediaDetailPage({
 
   const user = await getCurrentUser();
 
+  let hasPurchased = false;
+  if (user && media.pricing !== "FREE") {
+    try {
+      const res = (await getMyMediaPurchases()) as any;
+      const purchases = res?.data || [];
+      hasPurchased = purchases.some((p: any) => p.mediaId === media.id);
+    } catch (e) {}
+  }
+
+  const initialIsBookmarked =
+    media?.bookmarks?.some((b: any) => b.userId === user?.id) || false;
+
   return (
     <div className="min-h-screen bg-black text-white mt-10">
       {/* Hero Section */}
@@ -343,11 +357,11 @@ export default async function MediaDetailPage({
                     {media.avgRating?.toFixed(1) || "N/A"}
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
                   <Button size={"icon-lg"} variant={"ghost"}>
                     <Share2 />
                   </Button>
-                  <Button size={"icon-lg"} className="gap-2">
+                  <Button size={"icon-lg"} variant={"ghost"}>
                     <BookmarkPlus />
                   </Button>
                 </div>
@@ -376,23 +390,12 @@ export default async function MediaDetailPage({
                 {media.synopsis}
               </p>
 
-              <div className="flex flex-wrap gap-4 pt-4">
-                <Button size="lg" className="gap-2">
-                  Watch Now
-                  <Video />
-                </Button>
-                <Button size="lg" variant="secondary" className="gap-2">
-                  <History className="w-5 h-5" />
-                  Add to Watchlist
-                </Button>
-
-                {media.pricing !== "FREE" && (
-                  <Button size="lg">
-                    <ShoppingCart />
-                    {media.pricing === "RENTAL" ? "Rent" : "Buy"}
-                  </Button>
-                )}
-              </div>
+              <MediaActions
+                media={media}
+                hasPurchasedInitial={hasPurchased}
+                user={user}
+                initialIsBookmarked={initialIsBookmarked}
+              />
             </div>
           </div>
         </div>
@@ -413,7 +416,7 @@ export default async function MediaDetailPage({
             <div className="w-full h-full">
               <h2 className="text-2xl font-bold mb-4">Cast</h2>
               <div className="flex flex-col h-full">
-                {media.cast?.length === 4 ? (
+                {media.cast?.length === 0 ? (
                   <div className=" h-60 rounded-xl flex flex-col items-center justify-center py-10 bg-secondary/35">
                     <Users2 className="size-7 text-muted-foreground mb-2" />
                     <h3 className="text-xl">No Cast</h3>

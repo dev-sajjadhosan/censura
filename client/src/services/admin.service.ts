@@ -3,7 +3,7 @@ import { axiosClient } from "@/lib/axiosClient";
 
 // ─── Media CRUD ────────────────────────────────────────────────
 export const adminGetAllMedia = async (params?: any) => {
-  return await axiosClient.get("/admin/media", { params });
+  return await axiosClient.get<any[]>("/admin/media", { params });
 };
 
 export const adminGetMediaById = async (id: string) => {
@@ -31,7 +31,7 @@ export const adminToggleMediaPublish = async (
 
 // ─── Review Moderation ─────────────────────────────────────────
 export const adminGetAllReviews = async (params?: any) => {
-  return await axiosClient.get("/reviews", { params });
+  return await axiosClient.get<any[]>("/reviews", { params });
 };
 
 export const adminUpdateReviewStatus = async (
@@ -47,7 +47,7 @@ export const adminDeleteReview = async (id: string) => {
 
 // ─── User Management ──────────────────────────────────────────
 export const adminGetAllUsers = async (params?: any) => {
-  return await axiosClient.get("/users", { params });
+  return await axiosClient.get<any[]>("/users", { params });
 };
 
 export const adminUpdateUserStatus = async (

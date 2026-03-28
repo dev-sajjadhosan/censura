@@ -23,7 +23,7 @@ export default async function AdminLayout({
     <SidebarProvider>
       <AdminSidebar user={user} />
       <SidebarInset className="bg-background/95">
-        <div className="flex flex-1 flex-col gap-4 p-6 pt-6">{children}</div>
+        <div className="p-5">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );

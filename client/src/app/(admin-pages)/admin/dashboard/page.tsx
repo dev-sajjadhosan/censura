@@ -103,7 +103,7 @@ export default async function AdminDashboardPage() {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 h-full">
       {/* Page header */}
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
@@ -114,14 +114,14 @@ export default async function AdminDashboardPage() {
 
       {/* Stats grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        {cards.map((card) => (
+        {cards?.map((card) => (
           <StatsCard key={card.title} {...card} />
         ))}
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-5 gap-6 h-full">
         {/* Pending Reviews */}
-        <section className="xl:col-span-3 space-y-4">
+        <section className="xl:col-span-3 space-y-4 h-full">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <AlertCircle className="size-4 text-amber-500" />
@@ -133,14 +133,14 @@ export default async function AdminDashboardPage() {
               )}
             </div>
             <Link href="/admin/reviews">
-              <Button variant="ghost" size="sm" className="text-xs">
+              <Button variant="ghost" size={"lg"} className="text-xs">
                 View all →
               </Button>
             </Link>
           </div>
 
-          {pendingReviews.length === 0 ? (
-            <div className="flex flex-col items-center justify-center gap-2 py-12 rounded-xl border border-dashed border-border text-center">
+          {pendingReviews?.length === 0 ? (
+            <div className="flex flex-col items-center justify-center gap-2 min-h-8/12 rounded-xl border border-dashed border-border text-center">
               <CheckCircle2 className="size-8 text-emerald-500" />
               <p className="font-medium text-sm">All caught up!</p>
               <p className="text-xs text-muted-foreground">
@@ -149,7 +149,7 @@ export default async function AdminDashboardPage() {
             </div>
           ) : (
             <div className="space-y-3">
-              {pendingReviews.map((review: any) => (
+              {pendingReviews?.map((review: any) => (
                 <div
                   key={review.id}
                   className="flex items-start gap-4 p-4 rounded-xl bg-card border border-border hover:border-amber-500/30 transition-colors"
@@ -184,21 +184,21 @@ export default async function AdminDashboardPage() {
         </section>
 
         {/* Top Reviewed Media */}
-        <section className="xl:col-span-2 space-y-4">
+        <section className="xl:col-span-2 space-y-3 mt-1">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <TrendingUp className="size-4 text-blue-500" />
               <h2 className="font-semibold text-sm">Most Reviewed</h2>
             </div>
             <Link href="/admin/media">
-              <Button variant="ghost" size="sm" className="text-xs">
+              <Button variant="ghost" size="lg" className="text-xs">
                 Manage →
               </Button>
             </Link>
           </div>
 
           {topMedia.length === 0 ? (
-            <div className="flex flex-col items-center justify-center gap-2 py-12 rounded-xl border border-dashed border-border text-center">
+            <div className="flex flex-col items-center justify-center gap-2 min-h-8/12 rounded-xl border border-dashed border-border text-center">
               <Film className="size-8 text-muted-foreground" />
               <p className="text-xs text-muted-foreground">No media found.</p>
             </div>

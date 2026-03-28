@@ -12,10 +12,10 @@ interface StatsCardProps {
 
 const variantStyles = {
   default: "bg-card border-border",
-  success: "bg-emerald-500/5 border-emerald-500/20",
-  warning: "bg-amber-500/5 border-amber-500/20",
-  danger: "bg-red-500/5 border-red-500/20",
-  info: "bg-blue-500/5 border-blue-500/20",
+  success: "bg-emerald-500/5 border-emerald-500/10",
+  warning: "bg-amber-500/5 border-amber-500/10",
+  danger: "bg-red-500/5 border-red-500/10",
+  info: "bg-blue-500/5 border-blue-500/10",
 };
 
 const iconStyles = {

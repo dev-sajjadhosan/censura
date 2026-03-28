@@ -223,7 +223,7 @@ const TanTable = <TData,>({
       )}
 
       {/* // Table */}
-      <div className="rounded-lg border py-2">
+      <div className="rounded-lg border p-5">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((hg) => (

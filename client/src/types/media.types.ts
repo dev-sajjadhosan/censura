@@ -7,6 +7,9 @@ export interface Platform {
   platform: PlatformName;
   type?: string;
   url?: string;
+
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Cast {
@@ -14,6 +17,9 @@ export interface Cast {
   name: string;
   role: string;
   imageUrl?: string;
+
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Genre {
@@ -24,18 +30,27 @@ export interface Genre {
   image: string;
   isPublished: boolean;
   isFeatured: boolean;
+
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Bookmark {
   id: string;
   userId: string;
   mediaId: string;
+
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Favorite {
   id: string;
   userId: string;
   mediaId: string;
+
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface MediaPurchase {
@@ -45,7 +60,9 @@ export interface MediaPurchase {
   amount: number;
   type: string;
   expiryDate: string;
+
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface Media {
@@ -74,6 +91,9 @@ export interface Media {
   bookmarks: Bookmark[];
   favorites: Favorite[];
   purchases: MediaPurchase[];
+
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Review {
@@ -86,9 +106,10 @@ export interface Review {
   title: string;
   content: string;
   rating: number;
-  createdAt: string;
-  updatedAt: string;
   user: User;
   likes: Like[];
   comments: Comment[];
+
+  createdAt: string;
+  updatedAt: string;
 }

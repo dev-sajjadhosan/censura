@@ -34,7 +34,6 @@ const axiosInstance = async () => {
       "Content-Type": "application/json",
       cookie: cookieHeaders,
     },
-    withCredentials: true,
   });
   return instance;
 };

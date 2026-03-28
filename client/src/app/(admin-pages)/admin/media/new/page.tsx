@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function NewMediaPage() {
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="w-full space-y-6">
       <div className="flex items-center gap-3">
         <Link
           href="/admin/media"
@@ -18,7 +18,7 @@ export default function NewMediaPage() {
           <ArrowLeft className="size-4" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Add New Media</h1>
+          <h1 className="text-xl tracking-tight">Add New Media</h1>
           <p className="text-sm text-muted-foreground mt-0.5">
             Create a new movie, series, or other content entry.
           </p>

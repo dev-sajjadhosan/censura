@@ -19,23 +19,26 @@ export const useServerManagedDataTable = ({
   const pathname = usePathname();
   const [isRouteRefreshPending, startTransition] = useTransition();
 
+  // Safety fallback for searchParams
+  const params = useMemo(() => searchParams || new URLSearchParams(), [searchParams]);
+
   const updateParams = useCallback(
     (nextParams: Record<string, string | string[] | undefined>) => {
-      const params = new URLSearchParams(searchParams.toString());
+      const p = new URLSearchParams(params.toString());
 
       Object.entries(nextParams).forEach(([key, value]) => {
         if (value === undefined || value === "" || (Array.isArray(value) && value.length === 0)) {
-          params.delete(key);
+          p.delete(key);
         } else if (Array.isArray(value)) {
-          params.delete(key);
-          value.forEach((v) => params.append(key, v));
+          p.delete(key);
+          value.forEach((v) => p.append(key, v));
         } else {
-          params.set(key, value);
+          p.set(key, value);
         }
       });
 
-      const nextQueryString = params.toString();
-      const currentQueryString = searchParams.toString();
+      const nextQueryString = p.toString();
+      const currentQueryString = params.toString();
 
       if (nextQueryString === currentQueryString) {
         return;
@@ -45,27 +48,27 @@ export const useServerManagedDataTable = ({
         router.push(`${pathname}?${nextQueryString}`);
       });
     },
-    [searchParams, pathname, router],
+    [params, pathname, router],
   );
 
   const optimisticSortingState = useMemo<SortingState>(() => {
-    const sortBy = searchParams.get("sortBy");
-    const sortOrder = searchParams.get("sortOrder");
+    const sortBy = params.get("sortBy");
+    const sortOrder = params.get("sortOrder");
 
     if (!sortBy) return [];
 
     return [{ id: sortBy, desc: sortOrder === "desc" }];
-  }, [searchParams]);
+  }, [params]);
 
   const optimisticPaginationState = useMemo<PaginationState>(() => {
-    const page = Number(searchParams.get("page")) || defaultPage;
-    const limit = Number(searchParams.get("limit")) || defaultLimit;
+    const page = Number(params.get("page")) || defaultPage;
+    const limit = Number(params.get("limit")) || defaultLimit;
 
     return {
       pageIndex: page - 1,
       pageSize: limit,
     };
-  }, [searchParams, defaultPage, defaultLimit]);
+  }, [params, defaultPage, defaultLimit]);
 
   const handleSortingChange = useCallback(
     (sortingState: SortingState) => {
@@ -95,7 +98,7 @@ export const useServerManagedDataTable = ({
   );
 
   return {
-    queryStringFromUrl: searchParams.toString(),
+    queryStringFromUrl: params.toString(),
     optimisticSortingState,
     optimisticPaginationState,
     isRouteRefreshPending,

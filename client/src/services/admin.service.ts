@@ -69,3 +69,36 @@ export const adminGetSalesAnalytics = async (params?: any) => {
 export const adminGetReviewAnalytics = async () => {
   return await axiosClient.get("/analytics/reviews");
 };
+// ─── Genre Management ─────────────────────────────────────────
+export const adminGetAllGenres = async (params?: any) => {
+  return await axiosClient.get<any[]>("/genres", { params });
+};
+
+export const adminCreateGenre = async (payload: any) => {
+  return await axiosClient.post("/genres", payload);
+};
+
+export const adminUpdateGenre = async (id: string, payload: any) => {
+  return await axiosClient.patch(`/genres/${id}`, payload);
+};
+
+export const adminDeleteGenre = async (id: string) => {
+  return await axiosClient.delete(`/genres/${id}`);
+};
+
+// ─── Platform Management ──────────────────────────────────────
+export const adminGetAllPlatforms = async (params?: any) => {
+  return await axiosClient.get<any[]>("/platforms", { params });
+};
+
+export const adminCreatePlatform = async (payload: any) => {
+  return await axiosClient.post("/platforms", payload);
+};
+
+export const adminUpdatePlatform = async (id: string, payload: any) => {
+  return await axiosClient.patch(`/platforms/${id}`, payload);
+};
+
+export const adminDeletePlatform = async (id: string) => {
+  return await axiosClient.delete(`/platforms/${id}`);
+};

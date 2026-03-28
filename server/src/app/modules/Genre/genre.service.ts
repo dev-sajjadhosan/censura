@@ -2,6 +2,7 @@ import status from "http-status";
 import AppError from "../../error-helpers/AppError";
 import { prisma } from "../../lib/prisma";
 import { Prisma } from "../../../generated/prisma/client";
+import { QueryBuilder } from "../../utils/QueryBuilder";
 
 const createGenre = async (payload: Prisma.GenreCreateInput) => {
   const isExist = await prisma.genre.findUnique({
@@ -18,12 +19,19 @@ const createGenre = async (payload: Prisma.GenreCreateInput) => {
   return result;
 };
 
-const getAllGenres = async () => {
-  return await prisma.genre.findMany({
-    orderBy: {
-      name: "asc",
-    },
-  });
+const getAllGenres = async (query: Record<string, unknown>) => {
+  const genreQuery = new QueryBuilder(prisma.genre, query as any, {
+    searchableFields: ["name", "slug", "description"],
+    filterableFields: ["isFeatured", "isPublished"],
+  })
+    .search()
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await genreQuery.execute();
+  return result;
 };
 
 const updateGenre = async (id: string, payload: Prisma.GenreUpdateInput) => {

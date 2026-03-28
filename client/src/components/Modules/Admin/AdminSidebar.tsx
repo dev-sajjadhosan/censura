@@ -11,6 +11,8 @@ import {
   LogOut,
   Shield,
   Clapperboard,
+  Tag,
+  ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { IProfileResponse } from "@/types/auth.types";
@@ -22,13 +24,21 @@ import {
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
+  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarRail,
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Separator } from "@/components/ui/separator";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { NavUser } from "./Users/NavUser";
 
 const navItems = [
@@ -41,6 +51,46 @@ const navItems = [
     label: "Media Library",
     href: "/admin/media",
     icon: Film,
+    children: [
+      {
+        label: "Create Media",
+        href: "/admin/media/create",
+      },
+      {
+        label: "All Media",
+        href: "/admin/media",
+      },
+    ],
+  },
+  {
+    label: "Genres",
+    href: "/admin/genres",
+    icon: Tag,
+    children: [
+      {
+        label: "Create Genre",
+        href: "/admin/genres/create",
+      },
+      {
+        label: "All Genres",
+        href: "/admin/genres",
+      },
+    ],
+  },
+  {
+    label: "Platforms",
+    href: "/admin/platforms",
+    icon: Clapperboard,
+    children: [
+      {
+        label: "Create Platform",
+        href: "/admin/platforms/create",
+      },
+      {
+        label: "All Platforms",
+        href: "/admin/platforms",
+      },
+    ],
   },
   {
     label: "Reviews",
@@ -91,10 +141,60 @@ export default function AdminSidebar({ user }: { user: IProfileResponse }) {
           <SidebarGroupContent>
             <SidebarMenu>
               {navItems.map((item) => {
+                const hasChildren = item.children && item.children.length > 0;
                 const isActive =
                   pathname === item.href ||
                   (item.href !== "/admin/dashboard" &&
                     pathname.startsWith(item.href));
+
+                if (hasChildren) {
+                  return (
+                    <Collapsible
+                      key={item.label}
+                      asChild
+                      defaultOpen={isActive}
+                      className="group/collapsible"
+                    >
+                      <SidebarMenuItem>
+                        <CollapsibleTrigger asChild>
+                          <SidebarMenuButton
+                            tooltip={item.label}
+                            isActive={isActive}
+                            className={cn(
+                              "h-10 transition-all duration-200",
+                              isActive
+                                ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground shadow-sm"
+                                : "text-muted-foreground hover:bg-muted/80 hover:text-foreground",
+                            )}
+                          >
+                            {item.icon && (
+                              <item.icon className="size-4.5 shrink-0" />
+                            )}
+                            <span>{item.label}</span>
+                            <ChevronRight className="ml-auto size-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                          </SidebarMenuButton>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                          <SidebarMenuSub>
+                            {item.children?.map((subItem) => (
+                              <SidebarMenuSubItem key={subItem.label}>
+                                <SidebarMenuSubButton
+                                  asChild
+                                  isActive={pathname === subItem.href}
+                                >
+                                  <Link href={subItem.href}>
+                                    <span>{subItem.label}</span>
+                                  </Link>
+                                </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                            ))}
+                          </SidebarMenuSub>
+                        </CollapsibleContent>
+                      </SidebarMenuItem>
+                    </Collapsible>
+                  );
+                }
+
                 return (
                   <SidebarMenuItem key={item.href}>
                     <SidebarMenuButton

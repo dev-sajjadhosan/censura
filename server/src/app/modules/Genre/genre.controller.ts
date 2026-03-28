@@ -5,6 +5,9 @@ import status from "http-status";
 import { GenreService } from "./genre.service";
 
 const createGenre = catchAsync(async (req: Request, res: Response) => {
+
+  console.log(req.body);
+
   const result = await GenreService.createGenre(req.body);
 
   sendResponse(res, {
@@ -16,7 +19,9 @@ const createGenre = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllGenres = catchAsync(async (req: Request, res: Response) => {
-  const result = await GenreService.getAllGenres();
+  const query = req.query;
+  console.log("genre query: ",query);
+  const result = await GenreService.getAllGenres(query);
 
   sendResponse(res, {
     statusCode: status.OK,

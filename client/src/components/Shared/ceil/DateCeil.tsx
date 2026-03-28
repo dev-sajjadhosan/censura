@@ -6,13 +6,15 @@ interface DateCeilProps {
   date: string | number | Date;
   formatString?: string; // Kept for compatibility with your existing callers
   className?: string;
+  isTimeShow?: boolean;
 }
 
-const DateCeil = ({ date, className }: DateCeilProps) => {
+const DateCeil = ({ date, className, isTimeShow = true }: DateCeilProps) => {
   if (!date) return <span className="text-muted-foreground">—</span>;
 
   const d = new Date(date);
-  if (isNaN(d.getTime())) return <span className="text-muted-foreground">—</span>;
+  if (isNaN(d.getTime()))
+    return <span className="text-muted-foreground">—</span>;
 
   // Emulating "MMM dd, yyyy" using Intl.DateTimeFormat
   const formatted = new Intl.DateTimeFormat("en-US", {
@@ -23,14 +25,16 @@ const DateCeil = ({ date, className }: DateCeilProps) => {
 
   return (
     <div className={cn("flex flex-col min-w-[100px]", className)}>
-      <span className="text-sm font-medium tracking-tight">{formatted}</span>
-      <span className="text-[10px] text-muted-foreground uppercase tracking-widest mt-0.5">
-        {d.toLocaleTimeString("en-US", {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-        })}
-      </span>
+      <span className="text-xs font-medium tracking-tight">{formatted}</span>
+      {isTimeShow && (
+        <span className="text-[10px] text-muted-foreground uppercase tracking-widest mt-0.5">
+          {d.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+          })}
+        </span>
+      )}
     </div>
   );
 };

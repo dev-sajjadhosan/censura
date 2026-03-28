@@ -38,7 +38,7 @@ const ProfileMenus: ProfileMenu[] = [
   },
   {
     title: "Subscription",
-    href: "/profile/subscription",
+    href: "/subscription",
     icon: "CreditCard",
   },
   {

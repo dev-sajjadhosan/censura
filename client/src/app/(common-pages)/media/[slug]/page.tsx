@@ -22,6 +22,7 @@ import {
   Clapperboard,
   ChevronRight,
   Link2,
+  Users2,
 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -181,12 +182,120 @@ export default async function MediaDetailPage({
         rating: 9,
         content:
           "This was an absolutely mind-bending experience! The cinematography was top-notch and the acting was superb. Highly recommend to anyone who loves deep, atmospheric stories.",
-        isSpoiler: false,
+        hasSpoiler: false,
         tags: ["Must Watch", "Atmospheric"],
         user: { name: "CinematicFan" },
         createdAt: new Date().toISOString(),
-        likesCount: 12,
-        commentsCount: 2,
+        likes: [
+          {
+            id: "mock-like-1",
+            userId: "mock-user-1",
+            mediaId: "mock-media-1",
+            type: "LIKE",
+          },
+          {
+            id: "mock-like-2",
+            userId: "mock-user-2",
+            mediaId: "mock-media-1",
+            type: "LIKE",
+          },
+          {
+            id: "mock-like-3",
+            userId: "mock-user-3",
+            mediaId: "mock-media-1",
+            type: "LIKE",
+          },
+          {
+            id: "mock-like-4",
+            userId: "mock-user-4",
+            mediaId: "mock-media-1",
+            type: "LIKE",
+          },
+          {
+            id: "mock-like-5",
+            userId: "mock-user-5",
+            mediaId: "mock-media-1",
+            type: "LIKE",
+          },
+          {
+            id: "mock-like-6",
+            userId: "mock-user-6",
+            mediaId: "mock-media-1",
+            type: "LIKE",
+          },
+          {
+            id: "mock-like-7",
+            userId: "mock-user-7",
+            mediaId: "mock-media-1",
+            type: "LIKE",
+          },
+          {
+            id: "mock-like-8",
+            userId: "mock-user-8",
+            mediaId: "mock-media-1",
+            type: "LIKE",
+          },
+          {
+            id: "mock-like-9",
+            userId: "mock-user-9",
+            mediaId: "mock-media-1",
+            type: "LIKE",
+          },
+          {
+            id: "mock-like-10",
+            userId: "mock-user-10",
+            mediaId: "mock-media-1",
+            type: "LIKE",
+          },
+        ],
+        comments: [
+          {
+            id: "mock-comment-1",
+            userId: "mock-user-1",
+            mediaId: "mock-media-1",
+            content: "Great review!",
+          },
+          {
+            id: "mock-comment-2",
+            userId: "mock-user-2",
+            mediaId: "mock-media-1",
+            content: "Great review!",
+          },
+          {
+            id: "mock-comment-3",
+            userId: "mock-user-3",
+            mediaId: "mock-media-1",
+            content: "Great review!",
+          },
+          {
+            id: "mock-comment-4",
+            userId: "mock-user-4",
+            mediaId: "mock-media-1",
+            content: "Great review!",
+          },
+          {
+            id: "mock-comment-5",
+            userId: "mock-user-5",
+            mediaId: "mock-media-1",
+            content: "Great review!",
+          },
+        ],
+      },
+      {
+        id: "mock-rev-2",
+        rating: 4,
+        content:
+          "This was an absolutely mind-bending experience! The cinematography was top-notch and the acting was superb. Highly recommend to anyone who loves deep, atmospheric stories.",
+        hasSpoiler: true,
+        tags: ["Spoiler", "Ending Spoiler", "Plot Spoiler"],
+        user: {
+          name: "John Doe",
+          id: "mock-user-1",
+          image: "https://github.com/shadcn.png",
+        },
+        createdAt: new Date().toISOString(),
+        likesCount: 120,
+        commentsCount: 5,
       },
     ];
   }
@@ -301,25 +410,40 @@ export default async function MediaDetailPage({
               </p>
             </section>
 
-            <section>
+            <div className="w-full h-full">
               <h2 className="text-2xl font-bold mb-4">Cast</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {media.cast?.map((actor: string) => (
-                  <div
-                    key={actor}
-                    className="p-5 rounded-xl bg-secondary/15 hover:bg-secondary/55 flex flex-col"
-                  >
-                    <div className=" w-full h-35 bg-secondary/25 rounded-xl mb-5" />
-                    <div className="flex items-center justify-between">
-                      <p className="font-medium text-neutral-200">{actor}</p>
-                      <Badge className="text-xs uppercase tracking-tighter px-3 py-3">
-                        Actor
-                      </Badge>
-                    </div>
+              <div className="flex flex-col h-full">
+                {media.cast?.length === 4 ? (
+                  <div className=" h-60 rounded-xl flex flex-col items-center justify-center py-10 bg-secondary/35">
+                    <Users2 className="size-7 text-muted-foreground mb-2" />
+                    <h3 className="text-xl">No Cast</h3>
+                    <p className="text-muted-foreground">
+                      {" "}
+                      No cast members found.
+                    </p>
                   </div>
-                ))}
+                ) : (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {media.cast?.map((actor: string) => (
+                      <div
+                        key={actor}
+                        className="p-5 rounded-xl bg-secondary/15 hover:bg-secondary/55 flex flex-col"
+                      >
+                        <div className=" w-full h-35 bg-secondary/25 rounded-xl mb-5" />
+                        <div className="flex items-center justify-between">
+                          <p className="font-medium text-neutral-200">
+                            {actor}
+                          </p>
+                          <Badge className="text-xs uppercase tracking-tighter px-3 py-3">
+                            Actor
+                          </Badge>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-            </section>
+            </div>
           </div>
 
           {/* Sidebar / Info */}

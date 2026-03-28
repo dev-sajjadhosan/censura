@@ -1,4 +1,4 @@
-import { User } from "@/types/auth.types";
+import { IProfileResponse } from "@/types/auth.types";
 import ReviewCard from "../Review/reviewCard";
 import { Review } from "@/types/media.types";
 import { MessageSquare } from "lucide-react";
@@ -8,7 +8,7 @@ export default function ReviewSection({
   user,
 }: {
   initialReviews?: Review[];
-  user: User;
+  user?: IProfileResponse | null;
 }) {
   return (
     <>

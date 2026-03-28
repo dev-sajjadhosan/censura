@@ -14,17 +14,17 @@ import {
   CreateReviewValidation,
   CreateReviewValidationType,
 } from "@/zod/review.validation";
-import { User } from "@/types/auth.types";
+import { IProfileResponse, User } from "@/types/auth.types";
 import ReviewSection from "./ReviewSection";
 import { Review } from "@/types/media.types";
 
 export default function ReviewForm({
   mediaId,
   user,
-  initialReviews,
+  initialReviews = [],
 }: {
   mediaId: string;
-  user: User;
+  user: IProfileResponse | null;
   initialReviews?: Review[];
 }) {
   const { mutateAsync, isPending } = useMutation({
@@ -47,7 +47,7 @@ export default function ReviewForm({
           hasSpoiler: value.hasSpoiler,
           tags: value.tags,
           status: "PENDING", // Default on backend
-          userId: user.id,
+          userId: user?.id,
         };
         console.log(data);
         const res = (await mutateAsync(data)) as any;
@@ -65,7 +65,7 @@ export default function ReviewForm({
   return (
     <div className="space-y-12 mt-7">
       {user && (
-        <section className="bg-muted/50 p-7 rounded-xl">
+        <section className="bg-secondary/35 p-7 rounded-xl">
           <h3 className="text-lg text-muted-foreground mb-6">Write a Review</h3>
           <form
             noValidate
@@ -84,7 +84,7 @@ export default function ReviewForm({
                     placeholder="What did you think of this title? (Share your thoughts...)"
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
-                    className="p-5 border-0 resize-none"
+                    className="p-5 border-0 resize-none bg-background!"
                     rows={9}
                     required
                   />
@@ -105,7 +105,7 @@ export default function ReviewForm({
                     placeholder="Add tags related to your review (comma separated)"
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
-                    className="p-5 border-0 bg-secondary text-sm"
+                    className="p-5 border-0 bg-background text-sm"
                     required
                   />
                   {field.state.meta.errors.length > 0 && (
@@ -183,15 +183,20 @@ export default function ReviewForm({
               className="rounded-lg"
               size={"xl"}
             >
-              {form.state.isSubmitting || isPending
-                ? "Submitting..."
-                : "Post Review"}
+              {form.state.isSubmitting || isPending ? (
+                "Submitting..."
+              ) : (
+                <>
+                  <Star className="fill-secondary" />
+                  Post Review
+                </>
+              )}
             </Button>
           </form>
         </section>
       )}
 
-      <ReviewSection initialReviews={[]} user={user} />
+      <ReviewSection initialReviews={initialReviews} user={user} />
     </div>
   );
 }

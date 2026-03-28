@@ -105,4 +105,6 @@ export interface Review {
   createdAt: string;
   updatedAt: string;
   user: User;
+  likes: Like[];
+  comments: Comment[];
 }

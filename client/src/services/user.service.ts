@@ -69,7 +69,7 @@ export async function getCurrentUser() {
       console.error("Failed to fetch user info:", res.status, res.statusText);
       return null;
     }
-
+ 
     const { data } = await res.json();
 
     return data as IProfileResponse;

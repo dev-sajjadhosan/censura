@@ -25,14 +25,14 @@ export default function ReviewCard({
   return (
     <>
       <Card className="relative p-0" onClick={() => setReveal(true)}>
-        {!reveal && (
-          <div className="absolute inset-0 w-full h-full flex flex-col gap-1 items-center justify-center cursor-pointer">
-            <Eye className="size-7 text-neutral-500" />
-            <h3 className="text-2xl font-bold">Spoiler Review</h3>
-            <p className="text-sm text-muted-foreground">Click to reveal</p>
+        {review.hasSpoiler && !reveal && (
+          <div className="absolute w-full h-full flex flex-col gap-1 items-center justify-center cursor-pointer">
+            <Eye className="size-7" />
+            <h3 className="text-xl">Spoiler Review</h3>
+            <p className="text-sm text-red-500">Click to reveal the review</p>
           </div>
         )}
-        <div className={` ${reveal ? "" : "blur-md"}`}>
+        <div className={` ${review.hasSpoiler && !reveal ? "blur-md" : ""}`}>
           <CardHeader>
             <div className="flex items-center justify-between pt-4">
               <div className="flex items-center gap-3">
@@ -51,11 +51,16 @@ export default function ReviewCard({
                   </Badge>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
                 <div className="flex items-center gap-2 bg-orange-700/20 text-orange-700 px-3 py-1 rounded-full">
                   <Star className="size-4 fill-orange-700" />
                   {review.rating}/10
                 </div>
+                {review.hasSpoiler && (
+                  <Badge variant={"default"} className="py-3">
+                    Spoiler
+                  </Badge>
+                )}
                 {isOwn && review.status === "UNPUBLISHED" && (
                   <div className="flex gap-2">
                     <Button
@@ -104,14 +109,16 @@ export default function ReviewCard({
           </CardContent>
           <CardFooter>
             <div className="flex items-center gap-6">
-              <button className="flex items-center gap-2 text-sm text-neutral-400 hover:text-primary transition-colors">
+              <Button size={"lg"} variant={"ghost"} className="">
                 <ThumbsUp className="w-4 h-4" />
                 <span>Like</span>
-              </button>
-              <button className="flex items-center gap-2 text-sm text-neutral-400 hover:text-primary transition-colors">
+                <Badge className="text-xs">{review?.likes?.length}</Badge>
+              </Button>
+              <Button size={"lg"} variant={"ghost"} className="">
                 <MessageSquare className="w-4 h-4" />
                 <span>Comment</span>
-              </button>
+                <Badge className="text-xs">{review?.comments?.length}</Badge>
+              </Button>
             </div>
           </CardFooter>
         </div>

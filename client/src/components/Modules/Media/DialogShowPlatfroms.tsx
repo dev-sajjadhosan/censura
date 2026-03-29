@@ -31,7 +31,7 @@ export default function DialogShowPlatforms({
               >
                 <Clapperboard className="size-5 text-orange-500" />
                 <div className="flex flex-col">
-                  <span className="text-sm font-medium">{p.platform}</span>
+                  <span className="text-sm font-medium">{p.name}</span>
                   <span className="text-xs text-muted-foreground">
                     {p.type}
                   </span>

@@ -18,7 +18,7 @@ router.post(
   // validateRequest(AuthValidation.loginSchema),
   AuthController.login,
 );
-router.get("/logout", checkAuth(Role.USER, Role.ADMIN), AuthController.logout);
+router.post("/logout", checkAuth(Role.USER, Role.ADMIN), AuthController.logout);
 
 router.get("/me", checkAuth(Role.USER, Role.ADMIN), AuthController.getMe);
 router.post("/refresh-token", AuthController.getNewToken);

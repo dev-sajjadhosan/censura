@@ -53,7 +53,6 @@ const ProfileMenus: ProfileMenu[] = [
 
 export default async function ProfilePage() {
   const user = await getCurrentUser();
-  // console.log(user);
   return (
     <div className="flex h-screen w-full gap-10 p-10">
       <div className="flex flex-col justify-between gap-5 w-md h-full bg-secondary/40 p-5 rounded-xl">
@@ -98,8 +97,8 @@ export default async function ProfilePage() {
             <AvatarImage src={user?.image || "https://github.com/shadcn.png"} />
             <AvatarFallback className="text-9xl">
               {(user?.name as string)?.split(" ")[0][0]}
-              {(user?.name as string)?.split(" ")[1][0]}
-              {(user?.name as string)?.split(" ")[2][0]}
+              {(user?.name as string)?.split(" ")[1][0] || ""}
+              {/* {(user?.name as string)?.split(" ")[2][0] || ""} */}
             </AvatarFallback>
           </Avatar>
 
@@ -111,7 +110,7 @@ export default async function ProfilePage() {
             <h3 className="font-medium text-muted-foreground">
               {user?.email || "default.example@gmail.com"}
             </h3>
-            {/* <p> {user?.profile.bio || "No bio available"}</p> */}
+            {/* <p className="text-xs mt-3 text-muted-foreground"> {user?.profile.bio || "No bio available"}</p> */}
             <p className="text-xs mt-3 text-muted-foreground">
               {" "}
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam,
@@ -123,7 +122,7 @@ export default async function ProfilePage() {
             </p>
           </div>
         </div>
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-2 mt-3">
           <h3 className="">Your Activity</h3>
           <div className="flex items-center gap-5">
             {Object.entries(user?.meta || {}).map(([key, value], i) => (

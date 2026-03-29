@@ -13,9 +13,15 @@ export interface Like {
 export interface Comment {
   id?: string;
   userId: string;
+  parentId: string;
   user: User;
   mediaId: string;
+  status: string;
+  reviewId: string;
   media: Media;
   content: string;
   createdAt: string;
+  replies?: Comment[];
+  likes?: Like[];
+  parent?: Comment;
 }

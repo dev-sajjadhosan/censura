@@ -1,12 +1,14 @@
 "use server";
 import { axiosClient } from "@/lib/axiosClient";
+import { ApiResponse } from "@/types/api.types";
+import { Media } from "@/types/media.types";
 
 export const getAllMedia = async (params?: any) => {
   return await axiosClient.get("/media", { params });
 };
 
 export const getMediaBySlug = async (slug: string) => {
-  return await axiosClient.get(`/media/slug/${slug}`);
+  return await axiosClient.get<Media>(`/media/slug/${slug}`);
 };
 
 export const getMediaReviews = async (mediaId: string) => {

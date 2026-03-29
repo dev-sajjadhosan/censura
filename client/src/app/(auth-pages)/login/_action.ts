@@ -59,9 +59,11 @@ export const loginAction = async (
       redirect(targetPath);
     }
   } catch (error: any) {
-    console.log(`Login action error----------:`, error);
-
-    if (error && error.message === "Email not varified") {
+    // console.log(`Login action error----------:`, error.message);
+    if (
+      (error && error.message === "Email not verified") ||
+      error.message === "User not verified. Again send verification email."
+    ) {
       return redirect(`/verify-email?email=${parsedPayload.data.email}`);
     }
     if (

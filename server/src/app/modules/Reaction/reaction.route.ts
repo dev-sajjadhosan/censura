@@ -8,6 +8,8 @@ import { ReactionValidation } from "./reaction.validation";
 const router = Router();
 
 router.get("/comment", ReactionController.getAllComments); // public
+router.get("/comment/:reviewId",  ReactionController.getCommentsByReviewId); // public
+
 router.post(
   "/",
   checkAuth(Role.USER),

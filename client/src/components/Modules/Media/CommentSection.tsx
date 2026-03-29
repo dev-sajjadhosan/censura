@@ -5,38 +5,42 @@ import { Button } from "@/components/ui/button";
 import { Send, MessageCircle } from "lucide-react";
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   commentValidationSchema,
   CommentValidationType,
 } from "@/zod/reaction.validation";
-import { addComment } from "@/services/reaction.service";
-import { Comment } from "@/types/reaction.types";
+import { addComment, getComments } from "@/services/reaction.service";
+import { Comment as ReviewComment } from "@/types/reaction.types";
 
 interface CommentSectionProps {
   showComments: boolean;
-  commentContent: string;
-  setCommentContent: (content: string) => void;
-  handleAddComment: () => void;
   reviewId: string;
   mediaId: string;
-  commentsList: Comment[];
   currentUser: IProfileResponse | null;
 }
 
 export default function CommentSection({
   showComments,
-  commentContent,
-  setCommentContent,
-  handleAddComment,
   reviewId,
   mediaId,
-  commentsList,
   currentUser,
 }: CommentSectionProps) {
+  const queryclient = useQueryClient();
   const { mutateAsync, isPending } = useMutation({
     mutationFn: (payload: CommentValidationType) => addComment(payload),
+    onSuccess: () => {
+      queryclient.invalidateQueries({
+        queryKey: ["comments", reviewId],
+      });
+    },
   });
+
+  const { data: comments } = useQuery({
+    queryKey: ["comments", reviewId],
+    queryFn: () => getComments(reviewId),
+  });
+
   const form = useForm({
     defaultValues: {
       content: "",
@@ -57,8 +61,8 @@ export default function CommentSection({
           userId: currentUser.id,
           type: "LIKE",
         });
-
         toast.success("Comment added!");
+        form.reset();
       } catch (e) {
         toast.error("Failed to add comment");
       }
@@ -125,7 +129,7 @@ export default function CommentSection({
           </div>
 
           <div className="space-y-3 pt-2">
-            {commentsList.map((comment) => (
+            {comments?.map((comment: any) => (
               <div key={comment.id} className="flex gap-3">
                 <Avatar className="size-8 shrink-0">
                   <AvatarImage src={comment.user?.image || ""} />
@@ -146,7 +150,7 @@ export default function CommentSection({
                 </div>
               </div>
             ))}
-            {commentsList.length === 0 && (
+            {comments?.length === 0 && (
               <div className="flex flex-col items-center justify-center my-11">
                 <MessageCircle className="size-7 mb-3 text-muted-foreground" />
                 <h3 className="text-center">No Comments Yet!</h3>

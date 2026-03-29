@@ -77,7 +77,8 @@ export default function ReviewCard({
           await deleteLike(myLike?.id!, {
             reviewId: review.id,
             mediaId: review.mediaId,
-            likeType: "LIKE",
+            userId: currentUser.id,
+            type: "LIKE",
           });
         }
       } else {
@@ -85,11 +86,13 @@ export default function ReviewCard({
         setIsLiked(true);
         setLikesCount((prev) => prev + 1);
 
-        await createLike({
+        const resLike = await createLike({
           reviewId: review.id,
           mediaId: review.mediaId,
-          likeType: "LIKE",
+          userId: currentUser.id,
+          type: "LIKE",
         });
+        console.log("like response", resLike);
       }
     } catch (e) {
       // Revert optimistic update
@@ -137,25 +140,25 @@ export default function ReviewCard({
                   <Star className="size-4 fill-orange-700" />
                   {review.rating}/10
                 </div>
-                  {review.hasSpoiler && (
-                    <Badge variant={"default"} className="py-3">
-                      Spoiler
-                    </Badge>
-                  )}
-                  {currentUser?.role === "ADMIN" && (
-                    <Badge
-                      className={`text-xs ${
-                        review.status === "APPROVED"
-                          ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
-                          : review.status === "PENDING"
-                            ? "bg-amber-500/10 text-amber-600 border-amber-500/20"
-                            : "bg-red-500/10 text-red-500 border-red-500/20"
-                      }`}
-                    >
-                      {review.status}
-                    </Badge>
-                  )}
-                  {isOwn && review.status === "UNPUBLISHED" && (
+                {review.hasSpoiler && (
+                  <Badge variant={"default"} className="py-3">
+                    Spoiler
+                  </Badge>
+                )}
+                {currentUser?.role === "ADMIN" && (
+                  <Badge
+                    className={`text-xs ${
+                      review.status === "APPROVED"
+                        ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
+                        : review.status === "PENDING"
+                          ? "bg-amber-500/10 text-amber-600 border-amber-500/20"
+                          : "bg-red-500/10 text-red-500 border-red-500/20"
+                    }`}
+                  >
+                    {review.status}
+                  </Badge>
+                )}
+                {isOwn && review.status === "PENDING" && (
                   <div className="flex gap-2">
                     <Button
                       variant="ghost"
@@ -204,11 +207,9 @@ export default function ReviewCard({
                   handleToggleLike();
                 }}
               >
-                <ThumbsUp
-                  className={`w-4 h-4 ${isLiked ? "fill-primary" : ""}`}
-                />
+                <ThumbsUp className={`${isLiked ? "fill-primary" : ""}`} />
                 <span>Like</span>
-                <Badge className="text-xs ml-1">{likesCount}</Badge>
+                <Badge className="text-xs ml-1">{review?.likes?.length}</Badge>
               </Button>
               <Button
                 size={"lg"}
@@ -221,7 +222,9 @@ export default function ReviewCard({
               >
                 <MessageSquare className="w-4 h-4" />
                 <span>Comment</span>
-                <Badge className="text-xs ml-1">{commentsList.length}</Badge>
+                <Badge className="text-xs ml-1">
+                  {review?.comments?.length}
+                </Badge>
               </Button>
             </div>
 
@@ -260,12 +263,8 @@ export default function ReviewCard({
 
             <CommentSection
               showComments={showComments}
-              commentContent={commentContent}
-              setCommentContent={setCommentContent}
-              handleAddComment={handleAddComment}
               reviewId={review.id}
               mediaId={review.mediaId}
-              commentsList={commentsList}
               currentUser={currentUser!}
             />
           </CardFooter>

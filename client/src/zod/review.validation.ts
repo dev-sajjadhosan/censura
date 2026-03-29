@@ -5,17 +5,21 @@ export const CreateReviewValidation = z.object({
   rating: z.number().min(1, "Rating is required"),
   hasSpoiler: z.boolean(),
   tags: z
-    .string("Tag must be a string.")
-    .min(3, "Tags are required. Please add 1/2 tag related to your review."),
+    .string()
+    .min(1, "Tags are required")
+    .transform((val) =>
+      val
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean),
+    ),
 });
 
 export const UpdateReviewValidation = z.object({
   content: z.string().min(10, "Review content is required"),
   rating: z.number().min(1, "Rating is required"),
   hasSpoiler: z.boolean(),
-  tags: z
-    .string("Tag must be a string.")
-    .min(3, "Tags are required. Please add 1/2 tag related to your review."),
+  tags: z.array(z.string("Tag must be a string.")).min(1, "Tags are required"),
 });
 
 export type CreateReviewValidationType = z.infer<typeof CreateReviewValidation>;

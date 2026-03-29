@@ -18,6 +18,18 @@ const getAllComments = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getCommentsByReviewId = catchAsync(async (req: Request, res: Response) => {
+  const reviewId = req.params.reviewId as string;
+  const result = await LikesService.getCommentsByReviewId(reviewId);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Comments fetched successfully",
+    data: result,
+  });
+});
+
 const createLike = catchAsync(async (req: Request, res: Response) => {
   const result = await LikesService.createReviewLike(
     req.user as IRequestUser,
@@ -115,6 +127,7 @@ const adminDeleteComment = catchAsync(async (req: Request, res: Response) => {
 
 export const ReactionController = {
   getAllComments,
+  getCommentsByReviewId,
   createLike,
   deleteLike,
   createComment,

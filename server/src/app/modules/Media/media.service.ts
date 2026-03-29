@@ -347,6 +347,13 @@ const changePublishStatus = async (
 };
 
 const getMediaBySlug = async (slug: string) => {
+  await prisma.media.update({
+    where: { slug },
+    data: {
+      viewCount: { increment: 1 },
+    },
+  });
+
   const result = await prisma.media.findUniqueOrThrow({
     where: { slug },
     include: {
@@ -355,6 +362,14 @@ const getMediaBySlug = async (slug: string) => {
         include: { platform: true },
       },
       cast: true,
+      reviews: {
+        include: {
+          likes: true,
+          comments: true,
+        },
+      },
+      likes: true,
+      comments: true,
     },
   });
   return result;

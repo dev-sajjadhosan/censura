@@ -32,6 +32,8 @@ import ReviewSection from "@/components/Modules/Media/ReviewForm";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import DialogShowPlatfroms from "@/components/Modules/Media/DialogShowPlatfroms";
+import { Cast, MediaPlatform, Platform } from "@/types/media.types";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default async function MediaDetailPage({
   params,
@@ -39,268 +41,9 @@ export default async function MediaDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-
-  const mockMediaData: Record<string, any> = {
-    "silent-shadows": {
-      id: "mock-1",
-      title: "The Silent Shadows",
-      slug: "silent-shadows",
-      posterUrl:
-        "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&q=80",
-      backdropUrl:
-        "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1920&q=80",
-      avgRating: 8.5,
-      releaseYear: 2023,
-      runtimeMinutes: 124,
-      director: "Elena Rodriguez",
-      type: "MOVIE",
-      synopsis:
-        "A gripping psychological thriller about a woman who discovers that her reflections have a life of their own. As she investigates the origins of this phenomenon, she uncovers a dark family secret that threatens to consume her reality.",
-      cast: ["Sarah Jenkins", "Michael Chen", "David Oyelowo", "Emily Blunt"],
-      reviewCount: 1250,
-      platforms: [
-        { id: "p1", platform: "Netflix", type: "SUBSCRIPTION" },
-        { id: "p2", platform: "Prime Video", type: "RENTAL" },
-        { id: "p3", platform: "Disney+", type: "BUY" },
-        { id: "p4", platform: "Hulu", type: "SUBSCRIPTION" },
-        { id: "p5", platform: "HBO Max", type: "BUY" },
-        { id: "p6", platform: "Apple TV+", type: "RENTAL" },
-        { id: "p7", platform: "Paramount+", type: "SUBSCRIPTION" },
-        { id: "p8", platform: "Peacock", type: "BUY" },
-        { id: "p9", platform: "Discovery+", type: "RENTAL" },
-        { id: "p10", platform: "Showtime", type: "SUBSCRIPTION" },
-      ],
-      pricing: "FREE",
-    },
-    "nightfall-chronicles": {
-      id: "mock-2",
-      title: "Nightfall Chronicles",
-      slug: "nightfall-chronicles",
-      posterUrl:
-        "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&q=80",
-      backdropUrl:
-        "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1920&q=80",
-      avgRating: 7.9,
-      releaseYear: 2024,
-      runtimeMinutes: 45,
-      director: "Marcus Thorne",
-      type: "SERIES",
-      synopsis:
-        "In a world where the sun never rises, a group of survivors must navigate the eternal darkness and the creatures that thrive within it. A tale of hope, betrayal, and the limits of human endurance.",
-      cast: ["Jakob Wright", "Aria Stark", "Liam Neeson", "Zoe Saldana"],
-      reviewCount: 3420,
-      platforms: [
-        { id: "p3", platform: "Disney+" },
-        { id: "p4", platform: "HBO Max" },
-      ],
-      pricing: "PREMIUM",
-    },
-    "beyond-horizon": {
-      id: "mock-3",
-      title: "Beyond the Horizon",
-      slug: "beyond-horizon",
-      posterUrl:
-        "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=800&q=80",
-      backdropUrl:
-        "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=1920&q=80",
-      avgRating: 9.2,
-      releaseYear: 2022,
-      runtimeMinutes: 142,
-      director: "Christopher Nolan",
-      type: "MOVIE",
-      synopsis:
-        "An epic space odyssey that pushes the boundaries of time and space. When a team of explorers discovers a wormhole near Saturn, they embark on a journey that will determine the future of humanity.",
-      cast: ["Matthew McConaughey", "Anne Hathaway", "Jessica Chastain"],
-      reviewCount: 15400,
-      platforms: [{ id: "p2", platform: "Prime Video" }],
-      pricing: "PURCHASE",
-    },
-    "digital-echoes": {
-      id: "mock-4",
-      title: "Digital Echoes",
-      slug: "digital-echoes",
-      posterUrl:
-        "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=800&q=80",
-      backdropUrl:
-        "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=1920&q=80",
-      avgRating: 6.8,
-      releaseYear: 2023,
-      runtimeMinutes: 52,
-      director: "Sophia Wang",
-      type: "SERIES",
-      synopsis:
-        "A cyberpunk anthology series exploring the impact of advanced technology on human relationships and society. Each episode tells a standalone story in a shared neon-lit future.",
-      cast: ["Ken Jeong", "Awkwafina", "Steven Yeun"],
-      reviewCount: 890,
-      platforms: [{ id: "p1", platform: "Netflix" }],
-      pricing: "FREE",
-    },
-    "urban-legends": {
-      id: "mock-5",
-      title: "Urban Legends",
-      slug: "urban-legends",
-      posterUrl:
-        "https://images.unsplash.com/photo-1542204172-658a09b60509?w=800&q=80",
-      backdropUrl:
-        "https://images.unsplash.com/photo-1542204172-658a09b60509?w=1920&q=80",
-      avgRating: 8.1,
-      releaseYear: 2024,
-      runtimeMinutes: 110,
-      director: "Jordan Peele",
-      type: "MOVIE",
-      synopsis:
-        "Modern myths come to life in this terrifying anthology film. From the man with the hook to the killer in the backseat, discover the truth behind the stories we tell in the dark.",
-      cast: ["Daniel Kaluuya", "Keke Palmer", "Steven Yeun"],
-      reviewCount: 2100,
-      platforms: [{ id: "p4", platform: "HBO Max" }],
-      pricing: "RENTAL",
-    },
-  };
-
-  let media: any = mockMediaData[slug];
-
-  if (!media) {
-    try {
-      const response = (await getMediaBySlug(slug)) as any;
-      media = response.data;
-    } catch (e) {
-      return notFound();
-    }
-  }
-
-  let reviews: any[] = [];
-  if (!media.id.startsWith("mock-")) {
-    try {
-      const { data: reviewsData } = (await getMediaReviews(media.id)) as any;
-      reviews = reviewsData;
-    } catch (e) {
-      console.error("Failed to fetch reviews:", e);
-    }
-  } else {
-    // Add 1 mock review for demonstration
-    reviews = [
-      {
-        id: "mock-rev-1",
-        rating: 9,
-        content:
-          "This was an absolutely mind-bending experience! The cinematography was top-notch and the acting was superb. Highly recommend to anyone who loves deep, atmospheric stories.",
-        hasSpoiler: false,
-        tags: ["Must Watch", "Atmospheric"],
-        user: { name: "CinematicFan" },
-        createdAt: new Date().toISOString(),
-        likes: [
-          {
-            id: "mock-like-1",
-            userId: "mock-user-1",
-            mediaId: "mock-media-1",
-            type: "LIKE",
-          },
-          {
-            id: "mock-like-2",
-            userId: "mock-user-2",
-            mediaId: "mock-media-1",
-            type: "LIKE",
-          },
-          {
-            id: "mock-like-3",
-            userId: "mock-user-3",
-            mediaId: "mock-media-1",
-            type: "LIKE",
-          },
-          {
-            id: "mock-like-4",
-            userId: "mock-user-4",
-            mediaId: "mock-media-1",
-            type: "LIKE",
-          },
-          {
-            id: "mock-like-5",
-            userId: "mock-user-5",
-            mediaId: "mock-media-1",
-            type: "LIKE",
-          },
-          {
-            id: "mock-like-6",
-            userId: "mock-user-6",
-            mediaId: "mock-media-1",
-            type: "LIKE",
-          },
-          {
-            id: "mock-like-7",
-            userId: "mock-user-7",
-            mediaId: "mock-media-1",
-            type: "LIKE",
-          },
-          {
-            id: "mock-like-8",
-            userId: "mock-user-8",
-            mediaId: "mock-media-1",
-            type: "LIKE",
-          },
-          {
-            id: "mock-like-9",
-            userId: "mock-user-9",
-            mediaId: "mock-media-1",
-            type: "LIKE",
-          },
-          {
-            id: "mock-like-10",
-            userId: "mock-user-10",
-            mediaId: "mock-media-1",
-            type: "LIKE",
-          },
-        ],
-        comments: [
-          {
-            id: "mock-comment-1",
-            userId: "mock-user-1",
-            mediaId: "mock-media-1",
-            content: "Great review!",
-          },
-          {
-            id: "mock-comment-2",
-            userId: "mock-user-2",
-            mediaId: "mock-media-1",
-            content: "Great review!",
-          },
-          {
-            id: "mock-comment-3",
-            userId: "mock-user-3",
-            mediaId: "mock-media-1",
-            content: "Great review!",
-          },
-          {
-            id: "mock-comment-4",
-            userId: "mock-user-4",
-            mediaId: "mock-media-1",
-            content: "Great review!",
-          },
-          {
-            id: "mock-comment-5",
-            userId: "mock-user-5",
-            mediaId: "mock-media-1",
-            content: "Great review!",
-          },
-        ],
-      },
-      {
-        id: "mock-rev-2",
-        rating: 4,
-        content:
-          "This was an absolutely mind-bending experience! The cinematography was top-notch and the acting was superb. Highly recommend to anyone who loves deep, atmospheric stories.",
-        hasSpoiler: true,
-        tags: ["Spoiler", "Ending Spoiler", "Plot Spoiler"],
-        user: {
-          name: "John Doe",
-          id: "mock-user-1",
-          image: "https://github.com/shadcn.png",
-        },
-        createdAt: new Date().toISOString(),
-        likesCount: 120,
-        commentsCount: 5,
-      },
-    ];
-  }
+  const { data: media } = await getMediaBySlug(slug);
+  const reviews = media.reviews;
+  console.log("response of single media: ", media);
 
   const user = await getCurrentUser();
 
@@ -427,18 +170,23 @@ export default async function MediaDetailPage({
                   </div>
                 ) : (
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    {media.cast?.map((actor: string) => (
+                    {media.cast?.map((cast: Cast) => (
                       <div
-                        key={actor}
+                        key={cast.id}
                         className="p-5 rounded-xl bg-secondary/15 hover:bg-secondary/55 flex flex-col"
                       >
-                        <div className=" w-full h-35 bg-secondary/25 rounded-xl mb-5" />
-                        <div className="flex items-center justify-between">
+                        <Avatar className="size-25 mx-auto">
+                          <AvatarImage src={cast.image} />
+                          <AvatarFallback>
+                            {cast.name.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="mt-3 flex flex-col gap-2 items-center justify-between">
                           <p className="font-medium text-neutral-200">
-                            {actor}
+                            {cast.name}
                           </p>
                           <Badge className="text-xs uppercase tracking-tighter px-3 py-3">
-                            Actor
+                            {cast.role}
                           </Badge>
                         </div>
                       </div>
@@ -470,9 +218,7 @@ export default async function MediaDetailPage({
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-neutral-400">Total Views</span>
-                  <span className="font-medium">
-                    {media.viewsCount || "00"}
-                  </span>
+                  <span className="font-medium">{media.viewCount || "00"}</span>
                 </div>
               </div>
             </section>
@@ -480,20 +226,22 @@ export default async function MediaDetailPage({
             <section className="space-y-4">
               <h3 className="text-xl font-bold">Available On</h3>
               <div className="flex flex-wrap gap-3">
-                {media.platforms?.slice(0, 5)?.map((p: any) => (
+                {media.platforms?.slice(0, 5)?.map((p: MediaPlatform) => (
                   <div
                     key={p.id}
                     className="bg-secondary/15 hover:bg-secondary/65 px-4 py-4 flex items-center gap-3 rounded-xl"
                   >
                     <Clapperboard className="size-5 text-orange-500" />
                     <div className="flex flex-col">
-                      <span className="text-sm font-medium">{p.platform}</span>
+                      <span className="text-sm font-medium">
+                        {p.platform.name}
+                      </span>
                       <span className="text-xs text-muted-foreground">
-                        {p.type}
+                        {p.platform.type}
                       </span>
                     </div>
                     <Link
-                      href={p.url || "#"}
+                      href={p.platform.url || "#"}
                       target="_blank"
                       className="ml-auto"
                     >
@@ -505,7 +253,7 @@ export default async function MediaDetailPage({
                 ))}
                 {media.platforms?.length > 5 && (
                   <DialogShowPlatfroms
-                    platforms={media.platforms}
+                    platforms={media.platforms.map((p) => p.platform)}
                     title={
                       <div className="bg-secondary/65 px-6 py-4 flex items-center gap-3 rounded-xl [&_svg]:size-4 hover:[&_svg]:translate-x-2 [&_svg]:duration-100">
                         <div className="flex flex-col">
@@ -531,7 +279,7 @@ export default async function MediaDetailPage({
           </p>
           <ReviewSection
             mediaId={media.id}
-            initialReviews={reviews || []}
+            initialReviews={reviews}
             user={user}
           />
         </section>

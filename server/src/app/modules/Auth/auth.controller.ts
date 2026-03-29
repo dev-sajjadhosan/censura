@@ -140,13 +140,14 @@ const verifyEmail = catchAsync(async (req: Request, res: Response) => {
 
 const sendVerifyOtp = catchAsync(async (req: Request, res: Response) => {
   const {email, type } = req.body;
-  await AuthService.sendVerifyOtp(email, type);
+
+  const result = await AuthService.sendVerifyOtp(email, type);
 
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
     message: "Verify otp sent successfully",
-    data: null,
+    data: result,
   });
 });
 

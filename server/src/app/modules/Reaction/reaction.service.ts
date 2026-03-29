@@ -4,7 +4,10 @@ import AppError from "../../error-helpers/AppError";
 import { prisma } from "../../lib/prisma";
 import { QueryBuilder } from "../../utils/QueryBuilder";
 
-const getAllComments = async (query: Record<string, unknown>, user: IRequestUser) => {
+const getAllComments = async (
+  query: Record<string, unknown>,
+  user: IRequestUser,
+) => {
   const commentQuery = new QueryBuilder(prisma.comment, query as any, {
     searchableFields: ["content"],
     filterableFields: ["userId", "mediaId", "reviewId", "parentId"],
@@ -20,6 +23,27 @@ const getAllComments = async (query: Record<string, unknown>, user: IRequestUser
     });
 
   const result = await commentQuery.execute();
+  return result;
+};
+const getCommentsByReviewId = async (reviewId: string) => {
+  const result = await prisma.comment.findMany({
+    where: {
+      reviewId,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          image: true,
+        },
+      },
+      replies: true,
+      likes: true,
+      parent: true,
+    },
+  });
   return result;
 };
 
@@ -173,6 +197,7 @@ const adminDeleteReviewComment = async (id: string) => {
 
 export const LikesService = {
   getAllComments,
+  getCommentsByReviewId,
   createReviewLike,
   deleteReviewLike,
   createReviewComment,

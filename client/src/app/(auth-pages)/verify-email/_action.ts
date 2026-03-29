@@ -1,7 +1,13 @@
 "use server";
 
 import { axiosClient } from "@/lib/axiosClient";
-import { ISendVerifyOtpProps, IVerifyEmailProps, sendVerifyOtpSchema, verifyEmailZodSchema } from "@/zod/auth.validation";
+import { setTokenInCookie } from "@/utils/token-utils";
+import {
+  ISendVerifyOtpProps,
+  IVerifyEmailProps,
+  sendVerifyOtpSchema,
+  verifyEmailZodSchema,
+} from "@/zod/auth.validation";
 
 export const verifyEmailAction = async (payload: IVerifyEmailProps) => {
   const parsedPayload = verifyEmailZodSchema.safeParse(payload);
@@ -17,6 +23,10 @@ export const verifyEmailAction = async (payload: IVerifyEmailProps) => {
   try {
     const res = await axiosClient.post("/auth/verify-email", payload);
     console.log("verify Email Action", res.data);
+
+    const { token } = res.data as any;
+    await setTokenInCookie("better-auth.session_token", token);
+
     return res.data;
   } catch (error: any) {
     return {
@@ -30,19 +40,19 @@ export const verifyEmailAction = async (payload: IVerifyEmailProps) => {
 };
 
 export const resendOtpAction = async (payload: ISendVerifyOtpProps) => {
-  const parsedPayload = sendVerifyOtpSchema.safeParse(payload);
-  if (!parsedPayload.success) {
-    const firstError =
-      parsedPayload.error.issues[0].message || "Invalid field values.";
-    return {
-      success: false,
-      message: firstError,
-    };
-  }
+  // const parsedPayload = sendVerifyOtpSchema.safeParse(payload);
+  // if (!parsedPayload.success) {
+  //   const firstError =
+  //     parsedPayload.error.issues[0].message || "Invalid field values.";
+  //   return {
+  //     success: false,
+  //     message: firstError,
+  //   };
+  // }
 
   try {
     const res = await axiosClient.post("/auth/send-verify-otp", payload);
-    console.log("resend Otp Action", res.data);
+    // console.log("resend Otp Action", res.data);
     return res.data;
   } catch (error: any) {
     return {

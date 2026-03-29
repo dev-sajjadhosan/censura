@@ -5,13 +5,7 @@ export type RouteConfig = {
 
 export type Role = "USER" | "ADMIN";
 
-export const authRoles = [
-  "/login",
-  "/register",
-  "/forgot-password",
-  "/reset-password",
-  "/verify-email",
-];
+export const authRoles = ["/login", "/register", "/forgot-password"];
 
 export const isAuthRoute = (pathname: string) => {
   return authRoles.some((route) => route === pathname);

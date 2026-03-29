@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useForm } from "@tanstack/react-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Label } from "@/components/ui/label";
 import {
   CreateReviewValidation,
@@ -17,6 +17,7 @@ import {
 import { IProfileResponse, User } from "@/types/auth.types";
 import ReviewSection from "./ReviewSection";
 import { Review } from "@/types/media.types";
+import Link from "next/link";
 
 export default function ReviewForm({
   mediaId,
@@ -27,8 +28,12 @@ export default function ReviewForm({
   user: IProfileResponse | null;
   initialReviews?: Review[];
 }) {
+  const queryClient = useQueryClient();
   const { mutateAsync, isPending } = useMutation({
     mutationFn: (payload: CreateReviewValidationType) => createReview(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["reviews", mediaId] });
+    },
   });
 
   const form = useForm({
@@ -45,16 +50,17 @@ export default function ReviewForm({
           content: value.content,
           rating: value.rating,
           hasSpoiler: value.hasSpoiler,
-          tags: value.tags,
+          tags: value.tags
+            .split(",")
+            .map((t) => t.trim())
+            .filter(Boolean),
           status: "PENDING", // Default on backend
           userId: user?.id,
         };
-        console.log(data);
         const res = (await mutateAsync(data)) as any;
         toast.success("Review submitted for approval!");
-        // form.reset();
+        form.reset();
         console.log("Review submitted successfully:", res);
-        // Ideally refresh reviews here or just show a message
       } catch (error: any) {
         console.error("Error submitting review:", error);
         toast.error(error.message || "Failed to submit review");
@@ -64,7 +70,7 @@ export default function ReviewForm({
 
   return (
     <div className="space-y-12 mt-7">
-      {user && (
+      {user ? (
         <section className="bg-secondary/35 p-7 rounded-xl">
           <h3 className="text-lg text-muted-foreground mb-6">Write a Review</h3>
           <form
@@ -194,6 +200,25 @@ export default function ReviewForm({
             </Button>
           </form>
         </section>
+      ) : (
+        <div className="bg-secondary/35 p-17 rounded-xl flex items-center justify-between">
+          <div className="flex flex-col">
+            <h3 className=" text-muted-foreground mb-1">To Write a Review</h3>
+            <p className="text-muted-foreground">Please login or register.</p>
+          </div>
+          <div className="flex items-center gap-5">
+            <Link href="/login">
+              <Button size={"lg"} variant={"secondary"}>
+                Login
+              </Button>
+            </Link>
+            <Link href="/register">
+              <Button size={"lg"} variant={"secondary"}>
+                Register
+              </Button>
+            </Link>
+          </div>
+        </div>
       )}
 
       <ReviewSection initialReviews={initialReviews} user={user} />

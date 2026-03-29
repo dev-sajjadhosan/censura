@@ -128,6 +128,8 @@ export interface Media {
   comments: Comment[];
   bookmarks: Bookmark[];
   favorites: Favorite[];
+  reviews: Review[];
+  platforms: MediaPlatform[];
   purchases: MediaPurchase[];
 
   createdAt: string;

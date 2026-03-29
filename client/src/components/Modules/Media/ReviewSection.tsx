@@ -4,7 +4,7 @@ import { Review } from "@/types/media.types";
 import { MessageSquare } from "lucide-react";
 
 export default function ReviewSection({
-  initialReviews = [],
+  initialReviews,
   user,
 }: {
   initialReviews?: Review[];

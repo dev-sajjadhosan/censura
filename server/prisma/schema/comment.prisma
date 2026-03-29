@@ -16,7 +16,7 @@ model Comment {
   media   Media  @relation(fields: [mediaId], references: [id])
   likes   Like[]
 
-  @@unique([userId, reviewId])
+  // @@unique([userId, reviewId])
   @@index([userId])
   @@index([reviewId])
   @@index([parentId])

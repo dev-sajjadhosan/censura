@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/services/user.service";
 import { ArrowUpRightFromCircle } from "lucide-react";
+import { headers } from "next/headers";
 import Link from "next/link";
 
 const navMenus = [
@@ -23,7 +24,14 @@ const navMenus = [
 ];
 
 export default async function Navbar() {
+  const headersList = await headers();
+  const pathname = headersList.get("x-pathname");
   const user = await getCurrentUser();
+
+  if (pathname?.includes("/profile")) {
+    return null;
+  }
+
   return (
     <header className="flex items-center justify-between h-17 rounded-xl w-9/12 mx-auto sticky top-1 z-50 backdrop-blur-sm bg-secondary/50 px-7">
       <div>

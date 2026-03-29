@@ -233,7 +233,6 @@ export type CommentOrderByWithRelationInput = {
 
 export type CommentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  userId_reviewId?: Prisma.CommentUserIdReviewIdCompoundUniqueInput
   AND?: Prisma.CommentWhereInput | Prisma.CommentWhereInput[]
   OR?: Prisma.CommentWhereInput[]
   NOT?: Prisma.CommentWhereInput | Prisma.CommentWhereInput[]
@@ -250,7 +249,7 @@ export type CommentWhereUniqueInput = Prisma.AtLeast<{
   replies?: Prisma.CommentListRelationFilter
   media?: Prisma.XOR<Prisma.MediaScalarRelationFilter, Prisma.MediaWhereInput>
   likes?: Prisma.LikeListRelationFilter
-}, "id" | "userId_reviewId">
+}, "id">
 
 export type CommentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -374,11 +373,6 @@ export type CommentListRelationFilter = {
 
 export type CommentOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type CommentUserIdReviewIdCompoundUniqueInput = {
-  userId: string
-  reviewId: string
 }
 
 export type CommentCountOrderByAggregateInput = {

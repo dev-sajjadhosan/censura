@@ -10,7 +10,7 @@ const getAllMedia = async (
   query: Record<string, unknown>,
 ) => {
   const mediaQuery = new QueryBuilder(prisma.media, query as any, {
-    searchableFields: ["title", "synopsis", "director", "cast"],
+    searchableFields: ["title", "synopsis", "director"],
     filterableFields: [
       "type",
       "genres.some.id",
@@ -34,70 +34,86 @@ const getAllMedia = async (
 
 const getSingleMedia = async (id: string) => {
   const result = await prisma.media.findUniqueOrThrow({
-    where: {
-      id,
+    where: { id },
+    include: {
+      genres: true,
+      platforms: {
+        include: {
+          platform: true, // include platform details
+        },
+      },
+      cast: true,
     },
   });
   return result;
 };
 
 const createMedia = async (user: IRequestUser, payload: any) => {
-  const { genres, platforms, ...mediaData } = payload;
+  const { genres, platforms, cast, ...mediaData } = payload;
 
-  if (genres && genres.length > 0) {
+  if (genres?.length > 0) {
     await prisma.genre.findFirstOrThrow({
-      where: {
-        id: {
-          in: genres,
-        },
-      },
+      where: { id: { in: genres } },
     });
   }
 
   const result = await prisma.media.create({
     data: {
       ...mediaData,
+      release: Number(mediaData.release),
+      runtime: Number(mediaData.runtime),
+      seasons: Number(mediaData.seasons),
       genres:
-        genres && genres.length > 0
+        genres?.length > 0
           ? { connect: genres.map((id: string) => ({ id })) }
           : undefined,
       platforms:
-        platforms && platforms.length > 0 ? { create: platforms } : undefined,
+        platforms?.length > 0
+          ? { connect: platforms.map((id: string) => ({ id })) }
+          : undefined,
+      cast: cast?.length > 0 ? { create: cast } : undefined,
     },
   });
+
   return result;
 };
 
 const updateMedia = async (id: string, user: IRequestUser, payload: any) => {
-  const { genres, platforms, ...mediaData } = payload;
+  const { genres, platforms, cast, ...mediaData } = payload; // ← extract cast too
 
-  const media = await prisma.media.findUniqueOrThrow({
-    where: {
-      id,
-    },
-  });
-
-  if (!media) {
-    throw new AppError(status.NOT_FOUND, "Media not found");
-  }
+  await prisma.media.findUniqueOrThrow({ where: { id } }); // findUniqueOrThrow already throws if not found, no need for manual check
 
   const result = await prisma.media.update({
-    where: {
-      id,
-    },
+    where: { id },
     data: {
       ...mediaData,
+      // coerce numbers same as create
+      ...(mediaData.release && { release: Number(mediaData.release) }),
+      ...(mediaData.runtime && { runtime: Number(mediaData.runtime) }),
+      ...(mediaData.seasons && { seasons: Number(mediaData.seasons) }),
+
+      // genres — set replaces all, correct
       genres: genres
         ? { set: genres.map((id: string) => ({ id })) }
         : undefined,
+
+      // platforms — was wrong, fix connect like create
       platforms: platforms
         ? {
-            deleteMany: {},
-            create: platforms,
+            set: platforms.map((id: string) => ({ id })), // ← connect by ID not create
+          }
+        : undefined,
+
+      // cast — delete old ones and recreate
+      cast: cast
+        ? {
+            deleteMany: {}, // ← wipe existing cast
+            create: cast, // ← recreate with new data
           }
         : undefined,
     },
   });
+
   return result;
 };
 
@@ -112,8 +128,8 @@ const deleteMedia = async (id: string) => {
     throw new AppError(status.NOT_FOUND, "Media not found");
   }
 
-  if (media.isPublished === false) {
-    throw new AppError(status.BAD_REQUEST, "Media is not published");
+  if (media.isPublished === true) {
+    throw new AppError(status.BAD_REQUEST, "Unpublish media before deleting");
   }
 
   const result = await prisma.media.delete({
@@ -185,12 +201,13 @@ const changePublishStatus = async (
 
 const getMediaBySlug = async (slug: string) => {
   const result = await prisma.media.findUniqueOrThrow({
-    where: {
-      slug,
-    },
+    where: { slug },
     include: {
       genres: true,
-      platforms: true,
+      platforms: {
+        include: { platform: true },
+      },
+      cast: true,
     },
   });
   return result;

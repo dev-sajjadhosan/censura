@@ -4,7 +4,7 @@ import { Genre } from "@/types/media.types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Tag, Loader2, Loader } from "lucide-react";
+import { Tag, Loader2, Loader, Trash2 } from "lucide-react";
 import { AnyFieldApi } from "@tanstack/react-form";
 
 export default function GenresInMedia({ field }: { field: AnyFieldApi }) {
@@ -20,10 +20,8 @@ export default function GenresInMedia({ field }: { field: AnyFieldApi }) {
     <>
       <Label className="flex items-center gap-2">
         <Tag className="size-4" />
-        Genres
-        <Badge>
-          {genreLoading ? <Loader2 className="animate-spin" /> : genres?.length}
-        </Badge>
+        Genres Selected <Badge>{field.state.value.length}</Badge> of{" "}
+        {genres?.length}
       </Label>
       <div className="flex flex-wrap gap-2">
         {genreLoading ? (
@@ -33,16 +31,39 @@ export default function GenresInMedia({ field }: { field: AnyFieldApi }) {
           </div>
         ) : (
           genres?.map((g: Genre) => (
-            <Button
-              key={g.id}
-              type="button"
-              size={"lg"}
-              variant={field.state.value.includes(g.id) ? "default" : "ghost"}
-              onClick={() => field.handleChange([...field.state.value, g.id])}
-            >
-              <Tag />
-              {g.name}
-            </Button>
+            <div key={g.id} className="flex items-center gap-1">
+              <Button
+                type="button"
+                size={"lg"}
+                variant={field.state.value.includes(g.id) ? "default" : "ghost"}
+                onClick={() => {
+                  if (field.state.value.includes(g.id)) {
+                    field.handleChange(
+                      field.state.value.filter((id: string) => id !== g.id),
+                    );
+                  } else {
+                    field.handleChange([...field.state.value, g.id]);
+                  }
+                }}
+              >
+                <Tag />
+                {g.name}
+              </Button>
+              {field.state.value.includes(g.id) && (
+                <Button
+                  type="button"
+                  size={"icon"}
+                  variant={"destructive"}
+                  onClick={() =>
+                    field.handleChange(
+                      field.state.value.filter((id: string) => id !== g.id),
+                    )
+                  }
+                >
+                  <Trash2 />
+                </Button>
+              )}
+            </div>
           ))
         )}
       </div>

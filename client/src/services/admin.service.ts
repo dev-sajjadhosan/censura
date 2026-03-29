@@ -3,7 +3,7 @@ import { axiosClient } from "@/lib/axiosClient";
 
 // ─── Media CRUD ────────────────────────────────────────────────
 export const adminGetAllMedia = async (params?: any) => {
-  return await axiosClient.get<any[]>("/admin/media", { params });
+  return await axiosClient.get<any[]>("/media", { params });
 };
 
 export const adminGetMediaById = async (id: string) => {

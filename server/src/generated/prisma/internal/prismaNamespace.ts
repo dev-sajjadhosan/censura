@@ -389,6 +389,7 @@ export const ModelName = {
   Like: 'Like',
   Genre: 'Genre',
   Media: 'Media',
+  CastMember: 'CastMember',
   MediaPlatform: 'MediaPlatform',
   MediaPurchase: 'MediaPurchase',
   Payment: 'Payment',
@@ -418,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "comment" | "like" | "genre" | "media" | "mediaPlatform" | "mediaPurchase" | "payment" | "platform" | "profile" | "bookmark" | "favorite" | "review" | "subscription" | "user" | "session" | "account" | "verification" | "watchlist"
+    modelProps: "admin" | "comment" | "like" | "genre" | "media" | "castMember" | "mediaPlatform" | "mediaPurchase" | "payment" | "platform" | "profile" | "bookmark" | "favorite" | "review" | "subscription" | "user" | "session" | "account" | "verification" | "watchlist"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -789,6 +790,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.MediaCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.MediaCountAggregateOutputType> | number
+        }
+      }
+    }
+    CastMember: {
+      payload: Prisma.$CastMemberPayload<ExtArgs>
+      fields: Prisma.CastMemberFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CastMemberFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CastMemberPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CastMemberFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CastMemberPayload>
+        }
+        findFirst: {
+          args: Prisma.CastMemberFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CastMemberPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CastMemberFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CastMemberPayload>
+        }
+        findMany: {
+          args: Prisma.CastMemberFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CastMemberPayload>[]
+        }
+        create: {
+          args: Prisma.CastMemberCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CastMemberPayload>
+        }
+        createMany: {
+          args: Prisma.CastMemberCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CastMemberCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CastMemberPayload>[]
+        }
+        delete: {
+          args: Prisma.CastMemberDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CastMemberPayload>
+        }
+        update: {
+          args: Prisma.CastMemberUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CastMemberPayload>
+        }
+        deleteMany: {
+          args: Prisma.CastMemberDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CastMemberUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CastMemberUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CastMemberPayload>[]
+        }
+        upsert: {
+          args: Prisma.CastMemberUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CastMemberPayload>
+        }
+        aggregate: {
+          args: Prisma.CastMemberAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCastMember>
+        }
+        groupBy: {
+          args: Prisma.CastMemberGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CastMemberGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CastMemberCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CastMemberCountAggregateOutputType> | number
         }
       }
     }
@@ -1933,7 +2008,6 @@ export const MediaScalarFieldEnum = {
   synopsis: 'synopsis',
   releaseYear: 'releaseYear',
   director: 'director',
-  cast: 'cast',
   posterUrl: 'posterUrl',
   backdropUrl: 'backdropUrl',
   trailerUrl: 'trailerUrl',
@@ -1953,12 +2027,21 @@ export const MediaScalarFieldEnum = {
 export type MediaScalarFieldEnum = (typeof MediaScalarFieldEnum)[keyof typeof MediaScalarFieldEnum]
 
 
+export const CastMemberScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  role: 'role',
+  image: 'image',
+  mediaId: 'mediaId'
+} as const
+
+export type CastMemberScalarFieldEnum = (typeof CastMemberScalarFieldEnum)[keyof typeof CastMemberScalarFieldEnum]
+
+
 export const MediaPlatformScalarFieldEnum = {
   id: 'id',
   mediaId: 'mediaId',
-  platformId: 'platformId',
-  type: 'type',
-  url: 'url'
+  platformId: 'platformId'
 } as const
 
 export type MediaPlatformScalarFieldEnum = (typeof MediaPlatformScalarFieldEnum)[keyof typeof MediaPlatformScalarFieldEnum]
@@ -2457,6 +2540,7 @@ export type GlobalOmitConfig = {
   like?: Prisma.LikeOmit
   genre?: Prisma.GenreOmit
   media?: Prisma.MediaOmit
+  castMember?: Prisma.CastMemberOmit
   mediaPlatform?: Prisma.MediaPlatformOmit
   mediaPurchase?: Prisma.MediaPurchaseOmit
   payment?: Prisma.PaymentOmit

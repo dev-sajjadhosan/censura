@@ -28,24 +28,18 @@ export type MediaPlatformMinAggregateOutputType = {
   id: string | null
   mediaId: string | null
   platformId: string | null
-  type: string | null
-  url: string | null
 }
 
 export type MediaPlatformMaxAggregateOutputType = {
   id: string | null
   mediaId: string | null
   platformId: string | null
-  type: string | null
-  url: string | null
 }
 
 export type MediaPlatformCountAggregateOutputType = {
   id: number
   mediaId: number
   platformId: number
-  type: number
-  url: number
   _all: number
 }
 
@@ -54,24 +48,18 @@ export type MediaPlatformMinAggregateInputType = {
   id?: true
   mediaId?: true
   platformId?: true
-  type?: true
-  url?: true
 }
 
 export type MediaPlatformMaxAggregateInputType = {
   id?: true
   mediaId?: true
   platformId?: true
-  type?: true
-  url?: true
 }
 
 export type MediaPlatformCountAggregateInputType = {
   id?: true
   mediaId?: true
   platformId?: true
-  type?: true
-  url?: true
   _all?: true
 }
 
@@ -151,8 +139,6 @@ export type MediaPlatformGroupByOutputType = {
   id: string
   mediaId: string
   platformId: string
-  type: string
-  url: string | null
   _count: MediaPlatformCountAggregateOutputType | null
   _min: MediaPlatformMinAggregateOutputType | null
   _max: MediaPlatformMaxAggregateOutputType | null
@@ -180,8 +166,6 @@ export type MediaPlatformWhereInput = {
   id?: Prisma.StringFilter<"MediaPlatform"> | string
   mediaId?: Prisma.StringFilter<"MediaPlatform"> | string
   platformId?: Prisma.StringFilter<"MediaPlatform"> | string
-  type?: Prisma.StringFilter<"MediaPlatform"> | string
-  url?: Prisma.StringNullableFilter<"MediaPlatform"> | string | null
   media?: Prisma.XOR<Prisma.MediaScalarRelationFilter, Prisma.MediaWhereInput>
   platform?: Prisma.XOR<Prisma.PlatformScalarRelationFilter, Prisma.PlatformWhereInput>
 }
@@ -190,8 +174,6 @@ export type MediaPlatformOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   mediaId?: Prisma.SortOrder
   platformId?: Prisma.SortOrder
-  type?: Prisma.SortOrder
-  url?: Prisma.SortOrderInput | Prisma.SortOrder
   media?: Prisma.MediaOrderByWithRelationInput
   platform?: Prisma.PlatformOrderByWithRelationInput
 }
@@ -204,8 +186,6 @@ export type MediaPlatformWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.MediaPlatformWhereInput | Prisma.MediaPlatformWhereInput[]
   mediaId?: Prisma.StringFilter<"MediaPlatform"> | string
   platformId?: Prisma.StringFilter<"MediaPlatform"> | string
-  type?: Prisma.StringFilter<"MediaPlatform"> | string
-  url?: Prisma.StringNullableFilter<"MediaPlatform"> | string | null
   media?: Prisma.XOR<Prisma.MediaScalarRelationFilter, Prisma.MediaWhereInput>
   platform?: Prisma.XOR<Prisma.PlatformScalarRelationFilter, Prisma.PlatformWhereInput>
 }, "id" | "mediaId_platformId">
@@ -214,8 +194,6 @@ export type MediaPlatformOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   mediaId?: Prisma.SortOrder
   platformId?: Prisma.SortOrder
-  type?: Prisma.SortOrder
-  url?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.MediaPlatformCountOrderByAggregateInput
   _max?: Prisma.MediaPlatformMaxOrderByAggregateInput
   _min?: Prisma.MediaPlatformMinOrderByAggregateInput
@@ -228,14 +206,10 @@ export type MediaPlatformScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"MediaPlatform"> | string
   mediaId?: Prisma.StringWithAggregatesFilter<"MediaPlatform"> | string
   platformId?: Prisma.StringWithAggregatesFilter<"MediaPlatform"> | string
-  type?: Prisma.StringWithAggregatesFilter<"MediaPlatform"> | string
-  url?: Prisma.StringNullableWithAggregatesFilter<"MediaPlatform"> | string | null
 }
 
 export type MediaPlatformCreateInput = {
   id?: string
-  type: string
-  url?: string | null
   media: Prisma.MediaCreateNestedOneWithoutPlatformsInput
   platform: Prisma.PlatformCreateNestedOneWithoutMediaPlatformsInput
 }
@@ -244,14 +218,10 @@ export type MediaPlatformUncheckedCreateInput = {
   id?: string
   mediaId: string
   platformId: string
-  type: string
-  url?: string | null
 }
 
 export type MediaPlatformUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   media?: Prisma.MediaUpdateOneRequiredWithoutPlatformsNestedInput
   platform?: Prisma.PlatformUpdateOneRequiredWithoutMediaPlatformsNestedInput
 }
@@ -260,30 +230,22 @@ export type MediaPlatformUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mediaId?: Prisma.StringFieldUpdateOperationsInput | string
   platformId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MediaPlatformCreateManyInput = {
   id?: string
   mediaId: string
   platformId: string
-  type: string
-  url?: string | null
 }
 
 export type MediaPlatformUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MediaPlatformUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mediaId?: Prisma.StringFieldUpdateOperationsInput | string
   platformId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MediaPlatformListRelationFilter = {
@@ -305,24 +267,18 @@ export type MediaPlatformCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   mediaId?: Prisma.SortOrder
   platformId?: Prisma.SortOrder
-  type?: Prisma.SortOrder
-  url?: Prisma.SortOrder
 }
 
 export type MediaPlatformMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   mediaId?: Prisma.SortOrder
   platformId?: Prisma.SortOrder
-  type?: Prisma.SortOrder
-  url?: Prisma.SortOrder
 }
 
 export type MediaPlatformMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   mediaId?: Prisma.SortOrder
   platformId?: Prisma.SortOrder
-  type?: Prisma.SortOrder
-  url?: Prisma.SortOrder
 }
 
 export type MediaPlatformCreateNestedManyWithoutMediaInput = {
@@ -411,16 +367,12 @@ export type MediaPlatformUncheckedUpdateManyWithoutPlatformNestedInput = {
 
 export type MediaPlatformCreateWithoutMediaInput = {
   id?: string
-  type: string
-  url?: string | null
   platform: Prisma.PlatformCreateNestedOneWithoutMediaPlatformsInput
 }
 
 export type MediaPlatformUncheckedCreateWithoutMediaInput = {
   id?: string
   platformId: string
-  type: string
-  url?: string | null
 }
 
 export type MediaPlatformCreateOrConnectWithoutMediaInput = {
@@ -456,22 +408,16 @@ export type MediaPlatformScalarWhereInput = {
   id?: Prisma.StringFilter<"MediaPlatform"> | string
   mediaId?: Prisma.StringFilter<"MediaPlatform"> | string
   platformId?: Prisma.StringFilter<"MediaPlatform"> | string
-  type?: Prisma.StringFilter<"MediaPlatform"> | string
-  url?: Prisma.StringNullableFilter<"MediaPlatform"> | string | null
 }
 
 export type MediaPlatformCreateWithoutPlatformInput = {
   id?: string
-  type: string
-  url?: string | null
   media: Prisma.MediaCreateNestedOneWithoutPlatformsInput
 }
 
 export type MediaPlatformUncheckedCreateWithoutPlatformInput = {
   id?: string
   mediaId: string
-  type: string
-  url?: string | null
 }
 
 export type MediaPlatformCreateOrConnectWithoutPlatformInput = {
@@ -503,57 +449,41 @@ export type MediaPlatformUpdateManyWithWhereWithoutPlatformInput = {
 export type MediaPlatformCreateManyMediaInput = {
   id?: string
   platformId: string
-  type: string
-  url?: string | null
 }
 
 export type MediaPlatformUpdateWithoutMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   platform?: Prisma.PlatformUpdateOneRequiredWithoutMediaPlatformsNestedInput
 }
 
 export type MediaPlatformUncheckedUpdateWithoutMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   platformId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MediaPlatformUncheckedUpdateManyWithoutMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   platformId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MediaPlatformCreateManyPlatformInput = {
   id?: string
   mediaId: string
-  type: string
-  url?: string | null
 }
 
 export type MediaPlatformUpdateWithoutPlatformInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   media?: Prisma.MediaUpdateOneRequiredWithoutPlatformsNestedInput
 }
 
 export type MediaPlatformUncheckedUpdateWithoutPlatformInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mediaId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MediaPlatformUncheckedUpdateManyWithoutPlatformInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mediaId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -562,8 +492,6 @@ export type MediaPlatformSelect<ExtArgs extends runtime.Types.Extensions.Interna
   id?: boolean
   mediaId?: boolean
   platformId?: boolean
-  type?: boolean
-  url?: boolean
   media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
   platform?: boolean | Prisma.PlatformDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mediaPlatform"]>
@@ -572,8 +500,6 @@ export type MediaPlatformSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   id?: boolean
   mediaId?: boolean
   platformId?: boolean
-  type?: boolean
-  url?: boolean
   media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
   platform?: boolean | Prisma.PlatformDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mediaPlatform"]>
@@ -582,8 +508,6 @@ export type MediaPlatformSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   id?: boolean
   mediaId?: boolean
   platformId?: boolean
-  type?: boolean
-  url?: boolean
   media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
   platform?: boolean | Prisma.PlatformDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mediaPlatform"]>
@@ -592,11 +516,9 @@ export type MediaPlatformSelectScalar = {
   id?: boolean
   mediaId?: boolean
   platformId?: boolean
-  type?: boolean
-  url?: boolean
 }
 
-export type MediaPlatformOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "mediaId" | "platformId" | "type" | "url", ExtArgs["result"]["mediaPlatform"]>
+export type MediaPlatformOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "mediaId" | "platformId", ExtArgs["result"]["mediaPlatform"]>
 export type MediaPlatformInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
   platform?: boolean | Prisma.PlatformDefaultArgs<ExtArgs>
@@ -620,8 +542,6 @@ export type $MediaPlatformPayload<ExtArgs extends runtime.Types.Extensions.Inter
     id: string
     mediaId: string
     platformId: string
-    type: string
-    url: string | null
   }, ExtArgs["result"]["mediaPlatform"]>
   composites: {}
 }
@@ -1050,8 +970,6 @@ export interface MediaPlatformFieldRefs {
   readonly id: Prisma.FieldRef<"MediaPlatform", 'String'>
   readonly mediaId: Prisma.FieldRef<"MediaPlatform", 'String'>
   readonly platformId: Prisma.FieldRef<"MediaPlatform", 'String'>
-  readonly type: Prisma.FieldRef<"MediaPlatform", 'String'>
-  readonly url: Prisma.FieldRef<"MediaPlatform", 'String'>
 }
     
 

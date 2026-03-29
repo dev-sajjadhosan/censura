@@ -56,6 +56,7 @@ export const ModelName = {
   Like: 'Like',
   Genre: 'Genre',
   Media: 'Media',
+  CastMember: 'CastMember',
   MediaPlatform: 'MediaPlatform',
   MediaPurchase: 'MediaPurchase',
   Payment: 'Payment',
@@ -154,7 +155,6 @@ export const MediaScalarFieldEnum = {
   synopsis: 'synopsis',
   releaseYear: 'releaseYear',
   director: 'director',
-  cast: 'cast',
   posterUrl: 'posterUrl',
   backdropUrl: 'backdropUrl',
   trailerUrl: 'trailerUrl',
@@ -174,12 +174,21 @@ export const MediaScalarFieldEnum = {
 export type MediaScalarFieldEnum = (typeof MediaScalarFieldEnum)[keyof typeof MediaScalarFieldEnum]
 
 
+export const CastMemberScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  role: 'role',
+  image: 'image',
+  mediaId: 'mediaId'
+} as const
+
+export type CastMemberScalarFieldEnum = (typeof CastMemberScalarFieldEnum)[keyof typeof CastMemberScalarFieldEnum]
+
+
 export const MediaPlatformScalarFieldEnum = {
   id: 'id',
   mediaId: 'mediaId',
-  platformId: 'platformId',
-  type: 'type',
-  url: 'url'
+  platformId: 'platformId'
 } as const
 
 export type MediaPlatformScalarFieldEnum = (typeof MediaPlatformScalarFieldEnum)[keyof typeof MediaPlatformScalarFieldEnum]

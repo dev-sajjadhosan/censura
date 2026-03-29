@@ -43,6 +43,11 @@ export type Genre = Prisma.GenreModel
  */
 export type Media = Prisma.MediaModel
 /**
+ * Model CastMember
+ * 
+ */
+export type CastMember = Prisma.CastMemberModel
+/**
  * Model MediaPlatform
  * 
  */

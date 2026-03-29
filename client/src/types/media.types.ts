@@ -30,13 +30,13 @@ export interface MediaPlatform {
 }
 
 export interface Cast {
-  id: string;
+  id?: string;
   name: string;
   role: string;
-  imageUrl?: string;
+  image?: string;
 
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Genre {

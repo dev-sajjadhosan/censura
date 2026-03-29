@@ -21,7 +21,11 @@ export default function GenresInMedia({ field }: { field: AnyFieldApi }) {
       <Label className="flex items-center gap-2">
         <Tag className="size-4" />
         Genres Selected <Badge>{field.state.value.length}</Badge> of{" "}
-        {genres?.length}
+        {genreLoading ? (
+          <Loader2 className="size-4 animate-spin" />
+        ) : (
+          genres?.length
+        )}
       </Label>
       <div className="flex flex-wrap gap-2">
         {genreLoading ? (

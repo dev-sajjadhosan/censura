@@ -48,7 +48,7 @@ export const loginAction = async (
       24 * 60 * 60 * 1000,
     ); // 1 day
 
-     if (needPasswordChange) {
+    if (needPasswordChange) {
       redirect(`/reset-password?email=${email}&redirectPath=${redirectPath}`);
     } else {
       const targetPath =
@@ -61,6 +61,9 @@ export const loginAction = async (
   } catch (error: any) {
     console.log(`Login action error----------:`, error);
 
+    if (error && error.message === "Email not varified") {
+      return redirect(`/verify-email?email=${parsedPayload.data.email}`);
+    }
     if (
       error &&
       typeof error === "object" &&
@@ -69,14 +72,6 @@ export const loginAction = async (
       error.digest.startsWith("NEXT_REDIRECT")
     ) {
       throw error;
-    }
-
-    if (
-      error &&
-      error.response &&
-      error.response.data.message === "Email not varified"
-    ) {
-      redirect(`/verify-email?email=${parsedPayload.data.email}`);
     }
 
     return {

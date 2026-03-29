@@ -1,104 +1,62 @@
 import { z } from "zod";
 
-const createMediaValidation = z
-  .object({
-    title: z.string("Name is required"),
-    synopsis: z.string("Synopsis is required"),
-    type: z.enum([
-      "MOVIE",
-      "SERIES",
-      "DRAMA",
-      "ANIME",
-      "CARTOON",
-      "SHORT_FILM",
-      "DOCUMENTARY",
-      "TV_SHOW",
-      "WEB_SERIES",
-      "REALITY_SHOW",
-      "TALK_SHOW",
-      "GAME_SHOW",
-      "NEWS_CHANNEL",
-      "SPORTS_CHANNEL",
-      "MUSIC_CHANNEL",
-      "KIDS_CHANNEL",
-      "LIFESTYLE_CHANNEL",
-      "TRAVEL_CHANNEL",
-      "FOOD_CHANNEL",
-    ]),
-    genre: z.array(z.string("Genre is required")),
-    releaseYear: z.number("Release year is required"),
-    director: z.string("Director is required"),
-    cast: z.array(z.string("Cast is required")),
-    platforms: z.array(z.string("Platforms is required")),
-    posterUrl: z.string().optional(),
-    streamingUrl: z.string().optional(),
-    pricing: z.enum(["FREE", "PREMIUM", "RENTAL"]),
-    isFeatured: z.boolean().optional(),
-    price: z.number("Price is required").optional(),
-  })
-  .superRefine((data, ctx) => {
-    if (data.pricing === "RENTAL" || data.pricing === "PREMIUM") {
-      if (data.price === undefined || data.price === null || data.price <= 0) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message:
-            "Price is required for RENTAL and PREMIUM content. Must be greater than 0.",
-          path: ["price"],
-        });
-      }
-    }
-  });
+export const createMediaValidationSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  synopsis: z.string().min(1, "Synopsis is required"),
+  slug: z.string().min(1, "Slug is required"),
+  type: z.string().min(1, "Type is required"),
+  releaseYear: z.string({ error: "Release year is required" }),
+  director: z.string().min(1, "Director is required"),
+  posterUrl: z.string().min(1, "Poster URL is required"),
+  backdropUrl: z.string().optional(),
+  trailerUrl: z.string().optional(),
+  streamingUrl: z.string().optional(),
+  runtimeMinutes: z.string().optional(),
+  seasons: z.string().optional(),
+  pricing: z.enum(["FREE", "PREMIUM", "RENTAL"]),
+  isPublished: z.boolean().default(false),
+  isFeatured: z.boolean().default(false),
+  cast: z
+    .array(
+      z.object({
+        name: z.string(),
+        role: z.string(),
+        image: z.string().optional(),
+      }),
+    )
+    .optional(),
+  genres: z.array(z.string()).optional(),
+  platforms: z.array(z.string()).optional(),
+});
 
-const updateMediaValidation = z
-  .object({
-    title: z.string("Name is required").optional(),
-    synopsis: z.string("Synopsis is required").optional(),
-    type: z
-      .enum([
-        "MOVIE",
-        "SERIES",
-        "DRAMA",
-        "ANIME",
-        "CARTOON",
-        "SHORT_FILM",
-        "DOCUMENTARY",
-        "TV_SHOW",
-        "WEB_SERIES",
-        "REALITY_SHOW",
-        "TALK_SHOW",
-        "GAME_SHOW",
-        "NEWS_CHANNEL",
-        "SPORTS_CHANNEL",
-        "MUSIC_CHANNEL",
-        "KIDS_CHANNEL",
-        "LIFESTYLE_CHANNEL",
-        "TRAVEL_CHANNEL",
-        "FOOD_CHANNEL",
-      ])
-      .optional(),
-    genre: z.array(z.string("Genre is required")).optional(),
-    releaseYear: z.number("Release year is required").optional(),
-    director: z.string("Director is required").optional(),
-    cast: z.array(z.string("Cast is required")).optional(),
-    platforms: z.array(z.string("Platforms is required")).optional(),
-    posterUrl: z.string().optional(),
-    streamingUrl: z.string().optional(),
-    pricing: z.enum(["FREE", "PREMIUM", "RENTAL"]).optional(),
-    isFeatured: z.boolean().optional(),
-    price: z.number("Price is required").optional(),
-  })
-  .superRefine((data, ctx) => {
-    if (data.pricing === "RENTAL" || data.pricing === "PREMIUM") {
-      if (data.price === undefined || data.price === null || data.price <= 0) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message:
-            "Price is required for RENTAL and PREMIUM content. Must be greater than 0.",
-          path: ["price"],
-        });
-      }
-    }
-  });
+const updateMediaValidation = z.object({
+  title: z.string().min(1, "Title is required").optional(),
+  synopsis: z.string().min(1, "Synopsis is required").optional(),
+  slug: z.string().min(1, "Slug is required").optional(),
+  type: z.string().min(1, "Type is required").optional(),
+  releaseYear: z.string({ error: "Release year is required" }).optional(),
+  director: z.string().min(1, "Director is required").optional(),
+  posterUrl: z.string().min(1, "Poster URL is required").optional(),
+  backdropUrl: z.string().optional(),
+  trailerUrl: z.string().optional(),
+  streamingUrl: z.string().optional(),
+  runtimeMinutes: z.string().optional(),
+  seasons: z.string().optional(),
+  pricing: z.enum(["FREE", "PREMIUM", "RENTAL"]).optional(),
+  isPublished: z.boolean().optional(),
+  isFeatured: z.boolean().optional(),
+  cast: z
+    .array(
+      z.object({
+        name: z.string(),
+        role: z.string(),
+        image: z.string().optional(),
+      }),
+    )
+    .optional(),
+  genres: z.array(z.string()).optional(),
+  platforms: z.array(z.string()).optional(),
+});
 
 const changePublishStatusValidation = z.object({
   isPublished: z.boolean("isPublished is required"),
@@ -109,7 +67,7 @@ const changeFeaturedStatusValidation = z.object({
 });
 
 export const MediaValidation = {
-  createMediaValidation,
+  createMediaValidationSchema,
   updateMediaValidation,
   changePublishStatusValidation,
   changeFeaturedStatusValidation,

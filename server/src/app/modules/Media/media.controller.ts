@@ -41,8 +41,7 @@ const getMediaBySlug = catchAsync(async (req, res) => {
 
 const createMedia = catchAsync(async (req, res) => {
   const user = req.user as IRequestUser;
-  const data = req.body;
-
+  const data = req.body
   const result = await MediaService.createMedia(user, data);
 
   sendResponse(res, {

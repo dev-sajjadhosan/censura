@@ -59,15 +59,15 @@ export const adminUpdateUserStatus = async (
 
 // ─── Analytics / Dashboard ────────────────────────────────────
 export const adminGetDashboardStats = async () => {
-  return await axiosClient.get("/analytics/stats");
+  return await axiosClient.get("/admin/analytics/stats");
 };
 
 export const adminGetSalesAnalytics = async (params?: any) => {
-  return await axiosClient.get("/analytics/sales", { params });
+  return await axiosClient.get("/admin/analytics/sales", { params });
 };
 
 export const adminGetReviewAnalytics = async () => {
-  return await axiosClient.get("/analytics/reviews");
+  return await axiosClient.get("/admin/analytics/reviews");
 };
 // ─── Genre Management ─────────────────────────────────────────
 export const adminGetAllGenres = async (params?: any) => {

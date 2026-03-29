@@ -39,7 +39,11 @@ export default function PlatfromInMedia({ field }: { field: AnyFieldApi }) {
       <>
         <Label htmlFor="platforms">
           Platforms Selected <Badge>{field.state.value.length}</Badge> of{" "}
-          {platfroms?.length}
+          {isLoading ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            platfroms?.length
+          )}
         </Label>
         <div className="flex gap-2 flex-wrap">
           {isLoading ? (
@@ -49,9 +53,8 @@ export default function PlatfromInMedia({ field }: { field: AnyFieldApi }) {
             </div>
           ) : (
             platfroms?.map((p: Platform) => (
-              <div className="flex items-center gap-1">
+              <div key={p.id} className="flex items-center gap-1">
                 <Button
-                  key={p.id}
                   type="button"
                   size={"lg"}
                   variant={

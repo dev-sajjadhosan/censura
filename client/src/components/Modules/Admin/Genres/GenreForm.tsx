@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "@tanstack/react-form";
 import { adminCreateGenre, adminUpdateGenre } from "@/services/admin.service";
 import { createGenreSchema, UpdateGenreInput } from "@/zod/genre.validation";
@@ -26,12 +26,16 @@ export const GenreForm = ({
   onCancel: () => void;
   isModal?: boolean;
 }) => {
+  const queryClient = useQueryClient();
   const router = useRouter();
 
   // Mutations
   const { mutateAsync: createMutateAsync, isPending: createIsPending } =
     useMutation({
       mutationFn: (payload: any) => adminCreateGenre(payload),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["admin-genres"] });
+      },
     });
 
   const { mutateAsync: updateMutateAsync, isPending: updateIsPending } =

@@ -79,17 +79,18 @@ export default function MediaForm({
   const form = useForm({
     defaultValues: {
       title: initialData?.title || "",
+      slug: initialData?.slug || "",
       synopsis: initialData?.synopsis || "",
       type: initialData?.type || "MOVIE",
-      release: initialData?.release || new Date().getFullYear(),
+      releaseYear: initialData?.releaseYear || new Date().getFullYear(),
       director: initialData?.director || "",
-      poster: initialData?.poster || "",
-      backdrop: initialData?.backdrop || "",
-      trailer: initialData?.trailer || "",
+      posterUrl: initialData?.posterUrl || "",
+      backdropUrl: initialData?.backdropUrl || "",
+      trailerUrl: initialData?.trailerUrl || "",
       cast: initialData?.cast || [],
       genres: initialData?.genres || [],
-      streaming: initialData?.streaming || "",
-      runtime: initialData?.runtime || 0,
+      streamingUrl: initialData?.streamingUrl || "",
+      runtimeMinutes: initialData?.runtimeMinutes || 0,
       seasons: initialData?.seasons || 0,
       pricing: initialData?.pricing || "FREE",
       isPublished: initialData?.isPublished ?? false,
@@ -98,16 +99,13 @@ export default function MediaForm({
     },
     onSubmit: async ({ value }) => {
       try {
-        setSaving(true);
-        console.log("Media Payload", value);
-        // const res = await mutateAsync(value);
-        // toast.success("Media created successfully");
+        const res = await mutateAsync(value);
+        console.log("Media Payload", res);
+        toast.success("Media created successfully");
         // router.push("/admin/media");
         // router.refresh();
       } catch (err: any) {
-        toast.error(err?.message || "Failed to save media");
-      } finally {
-        setSaving(false);
+        toast.error("Failed to create media");
       }
     },
   });
@@ -127,32 +125,67 @@ export default function MediaForm({
           Basic Information
         </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div className="md:col-span-2 space-y-2">
-            <form.Field
-              name="title"
-              validators={{
-                onChange: createMediaValidationSchema.shape.title,
-              }}
-              children={(field) => (
-                <>
-                  <Label htmlFor="title">Title</Label>
-                  <Input
-                    id="title"
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    placeholder="Enter media title"
-                    className="text-sm"
-                  />
+        <div className="flex flex-col gap-5 w-full">
+          <div className="flex items-center gap-5 w-full">
+            <div className="space-y-2 w-full">
+              <form.Field
+                name="title"
+                validators={{
+                  onChange: createMediaValidationSchema.shape.title,
+                }}
+                children={(field) => (
+                  <>
+                    <Label htmlFor="title">Title</Label>
+                    <Input
+                      id="title"
+                      value={field.state.value}
+                      onChange={(e) => {
+                        field.handleChange(e.target.value);
+                        const slug = e.target.value
+                          .toLowerCase()
+                          .replace(/ /g, "-")
+                          .replace(/[^\w-]+/g, "");
+                        form.setFieldValue("slug", slug);
+                      }}
+                      placeholder="Enter media title"
+                      className="text-sm"
+                    />
 
-                  {field.state.meta.errors.length > 0 && (
-                    <p className="text-red-500 text-sm">
-                      {field.state.meta.errors[0]?.message}
-                    </p>
-                  )}
-                </>
-              )}
-            />
+                    {field.state.meta.errors.length > 0 && (
+                      <p className="text-red-500 text-sm">
+                        {field.state.meta.errors[0]?.message}
+                      </p>
+                    )}
+                  </>
+                )}
+              />
+            </div>
+            <div className="space-y-2 w-full">
+              <form.Field
+                name="slug"
+                validators={{
+                  onChange: createMediaValidationSchema.shape.slug,
+                }}
+                children={(field) => (
+                  <>
+                    <Label htmlFor="slug">Slug</Label>
+                    <Input
+                      id="slug"
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="Enter media slug"
+                      className="text-sm"
+                    />
+
+                    {field.state.meta.errors.length > 0 && (
+                      <p className="text-red-500 text-sm">
+                        {field.state.meta.errors[0]?.message}
+                      </p>
+                    )}
+                  </>
+                )}
+              />
+            </div>
           </div>
 
           <div className="md:col-span-2 space-y-2">
@@ -251,9 +284,9 @@ export default function MediaForm({
 
           <div className="space-y-2">
             <form.Field
-              name="release"
+              name="releaseYear"
               validators={{
-                onChange: createMediaValidationSchema.shape.release,
+                onChange: createMediaValidationSchema.shape.releaseYear,
               }}
               children={(field) => (
                 <>
@@ -304,9 +337,9 @@ export default function MediaForm({
 
           <div className="space-y-2">
             <form.Field
-              name="runtime"
+              name="runtimeMinutes"
               validators={{
-                onChange: createMediaValidationSchema.shape.runtime,
+                onChange: createMediaValidationSchema.shape.runtimeMinutes,
               }}
               children={(field) => (
                 <>
@@ -408,9 +441,9 @@ export default function MediaForm({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="space-y-2">
             <form.Field
-              name="poster"
+              name="posterUrl"
               validators={{
-                onChange: createMediaValidationSchema.shape.poster,
+                onChange: createMediaValidationSchema.shape.posterUrl,
               }}
               children={(field) => (
                 <>
@@ -434,9 +467,9 @@ export default function MediaForm({
           </div>
           <div className="space-y-2">
             <form.Field
-              name="backdrop"
+              name="backdropUrl"
               validators={{
-                onChange: createMediaValidationSchema.shape.backdrop,
+                onChange: createMediaValidationSchema.shape.backdropUrl,
               }}
               children={(field) => (
                 <>
@@ -460,9 +493,9 @@ export default function MediaForm({
           </div>
           <div className="space-y-2">
             <form.Field
-              name="trailer"
+              name="trailerUrl"
               validators={{
-                onChange: createMediaValidationSchema.shape.trailer,
+                onChange: createMediaValidationSchema.shape.trailerUrl,
               }}
               children={(field) => (
                 <>
@@ -486,9 +519,9 @@ export default function MediaForm({
           </div>
           <div className="space-y-2">
             <form.Field
-              name="streaming"
+              name="streamingUrl"
               validators={{
-                onChange: createMediaValidationSchema.shape.streaming,
+                onChange: createMediaValidationSchema.shape.streamingUrl,
               }}
               children={(field) => (
                 <>
@@ -583,12 +616,8 @@ export default function MediaForm({
         >
           Cancel
         </Button>
-        <Button
-          type="submit"
-          disabled={saving || isPending || isError}
-          size={"lg"}
-        >
-          {saving ? (
+        <Button type="submit" disabled={isPending} size={"lg"}>
+          {isPending ? (
             <>
               <Loader2 className="size-4 mr-2 animate-spin" />
               Saving…

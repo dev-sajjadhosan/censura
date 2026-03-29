@@ -49,66 +49,133 @@ const getSingleMedia = async (id: string) => {
 };
 
 const createMedia = async (user: IRequestUser, payload: any) => {
-  const { genres, platforms, cast, ...mediaData } = payload;
+  const {
+    genres,
+    platforms,
+    cast,
+    slug,
+    releaseYear,
+    runtimeMinutes,
+    seasons,
+    ...mediaData
+  } = payload;
 
-  if (genres?.length > 0) {
-    await prisma.genre.findFirstOrThrow({
-      where: { id: { in: genres } },
+  const slugMaker = slug
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .replace(/[^\w-]+/g, "");
+
+  const result = await prisma.$transaction(async (tx) => {
+    // 1. Create the media first
+    const media = await tx.media.create({
+      data: {
+        ...mediaData,
+        slug: slugMaker,
+        releaseYear: Number(releaseYear),
+        runtimeMinutes: Number(runtimeMinutes) || null,
+        seasons: Number(seasons) || null,
+      },
     });
-  }
 
-  const result = await prisma.media.create({
-    data: {
-      ...mediaData,
-      release: Number(mediaData.release),
-      runtime: Number(mediaData.runtime),
-      seasons: Number(mediaData.seasons),
-      genres:
-        genres?.length > 0
-          ? { connect: genres.map((id: string) => ({ id })) }
-          : undefined,
-      platforms:
-        platforms?.length > 0
-          ? { connect: platforms.map((id: string) => ({ id })) }
-          : undefined,
-      cast: cast?.length > 0 ? { create: cast } : undefined,
-    },
+    // 2. Connect genres (they already exist, just link them)
+    if (genres?.length > 0) {
+      // Verify all genres exist first
+      const existingGenres = await tx.genre.findMany({
+        where: { id: { in: genres } },
+        select: { id: true },
+      });
+
+      if (existingGenres.length !== genres.length) {
+        throw new AppError(status.BAD_REQUEST, "One or more genres not found");
+      }
+
+      await tx.media.update({
+        where: { id: media.id },
+        data: {
+          genres: { connect: genres.map((id: string) => ({ id })) },
+        },
+      });
+    }
+
+    // 3. Connect platforms via MediaPlatform join table
+    if (platforms?.length > 0) {
+      // Verify all platforms exist first
+      const existingPlatforms = await tx.platform.findMany({
+        where: { id: { in: platforms } },
+        select: { id: true },
+      });
+
+      if (existingPlatforms.length !== platforms.length) {
+        throw new AppError(
+          status.BAD_REQUEST,
+          "One or more platforms not found",
+        );
+      }
+
+      await tx.mediaPlatform.createMany({
+        data: platforms.map((platformId: string) => ({
+          mediaId: media.id,
+          platformId,
+        })),
+      });
+    }
+
+    // 4. Create cast members
+    if (cast?.length > 0) {
+      await tx.castMember.createMany({
+        data: cast.map(
+          (member: { name: string; role: string; image?: string }) => ({
+            mediaId: media.id,
+            name: member.name,
+            role: member.role,
+            image: member.image || null,
+          }),
+        ),
+      });
+    }
+
+    // 5. Return media with all relations
+    return tx.media.findUniqueOrThrow({
+      where: { id: media.id },
+      include: {
+        genres: true,
+        platforms: { include: { platform: true } },
+        cast: true,
+      },
+    });
   });
 
   return result;
 };
-
 const updateMedia = async (id: string, user: IRequestUser, payload: any) => {
-  const { genres, platforms, cast, ...mediaData } = payload; // ← extract cast too
+  const { genres, platforms, cast, ...mediaData } = payload;
 
-  await prisma.media.findUniqueOrThrow({ where: { id } }); // findUniqueOrThrow already throws if not found, no need for manual check
+  await prisma.media.findUniqueOrThrow({ where: { id } });
 
   const result = await prisma.media.update({
     where: { id },
     data: {
       ...mediaData,
-      // coerce numbers same as create
+
       ...(mediaData.release && { release: Number(mediaData.release) }),
       ...(mediaData.runtime && { runtime: Number(mediaData.runtime) }),
       ...(mediaData.seasons && { seasons: Number(mediaData.seasons) }),
 
-      // genres — set replaces all, correct
       genres: genres
         ? { set: genres.map((id: string) => ({ id })) }
         : undefined,
 
-      // platforms — was wrong, fix connect like create
       platforms: platforms
         ? {
-            set: platforms.map((id: string) => ({ id })), // ← connect by ID not create
+            deleteMany: {},
+            create: platforms.map((platformId: string) => ({ platformId })),
           }
         : undefined,
 
-      // cast — delete old ones and recreate
       cast: cast
         ? {
-            deleteMany: {}, // ← wipe existing cast
-            create: cast, // ← recreate with new data
+            deleteMany: {},
+            create: cast,
           }
         : undefined,
     },

@@ -13,8 +13,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Cast } from "@/types/media.types";
+import { createGenreSchema } from "@/zod/genre.validation";
+import { createCastValidationSchema } from "@/zod/media.validation";
 import { useForm } from "@tanstack/react-form";
-import { PlusCircle, UserPlus2 } from "lucide-react";
+import { Loader2, PlusCircle, UserPlus2 } from "lucide-react";
 import { useState } from "react";
 
 export default function CastInMediaDialog({
@@ -47,19 +49,19 @@ export default function CastInMediaDialog({
             <p className="text-muted-foreground">No cast added yet!</p>
           </div>
         )}
-        {cast.map((c) => (
+        {cast.map((c, i) => (
           <div
-            key={c.id}
+            key={i}
             className="flex items-center gap-3 bg-secondary/35 px-3 py-2 rounded-lg"
           >
             <Avatar>
-              <AvatarImage src={c.image || "https://github.com/shadcn.png"} />
-              <AvatarFallback>{c.name.charAt(0)}</AvatarFallback>
+              <AvatarImage src={c?.image || "https://github.com/shadcn.png"} />
+              <AvatarFallback>{c?.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <Separator orientation="vertical" className="h-5! my-auto" />
             <div className="flex flex-col">
-              <h3 className="text-sm font-medium">{c.name}</h3>
-              <p className="text-xs text-muted-foreground">{c.role}</p>
+              <h3 className="text-sm font-medium">{c?.name}</h3>
+              <p className="text-xs text-muted-foreground">{c?.role}</p>
             </div>
           </div>
         ))}
@@ -78,6 +80,7 @@ export default function CastInMediaDialog({
           <form
             onSubmit={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               form.handleSubmit();
             }}
             noValidate
@@ -93,7 +96,9 @@ export default function CastInMediaDialog({
 
               <form.Field
                 name="image"
-                
+                validators={{
+                  onChange: createCastValidationSchema.shape.image,
+                }}
                 children={(field) => {
                   return (
                     <div className="flex flex-col gap-2 w-full">
@@ -107,9 +112,9 @@ export default function CastInMediaDialog({
                         placeholder="Cast Image"
                         className="bg-background/45"
                       />
-                      {field.state.error && (
+                      {field.state.meta.errors.length > 0 && (
                         <p className="text-xs text-red-500">
-                          {field.state.error}
+                          {field.state.meta.errors[0]?.message}
                         </p>
                       )}
                     </div>
@@ -120,6 +125,9 @@ export default function CastInMediaDialog({
 
             <form.Field
               name="name"
+              validators={{
+                onChange: createCastValidationSchema.shape.name,
+              }}
               children={(field) => {
                 return (
                   <div className="flex flex-col gap-2">
@@ -130,12 +138,20 @@ export default function CastInMediaDialog({
                       placeholder="Cast Name"
                       className="bg-background/45"
                     />
+                    {field.state.meta.errors.length > 0 && (
+                      <p className="text-xs text-red-500">
+                        {field.state.meta.errors[0]?.message}
+                      </p>
+                    )}
                   </div>
                 );
               }}
             />
             <form.Field
               name="role"
+              validators={{
+                onChange: createCastValidationSchema.shape.role,
+              }}
               children={(field) => {
                 return (
                   <div className="flex flex-col gap-2">
@@ -146,13 +162,27 @@ export default function CastInMediaDialog({
                       placeholder="Cast Role"
                       className="bg-background/45"
                     />
+                    {field.state.meta.errors.length > 0 && (
+                      <p className="text-xs text-red-500">
+                        {field.state.meta.errors[0]?.message}
+                      </p>
+                    )}
                   </div>
                 );
               }}
             />
 
-            <Button type="submit" className="mt-5 mx-auto" size={"lg"}>
-              <PlusCircle />
+            <Button
+              type="submit"
+              className="mt-5 mx-auto"
+              size={"lg"}
+              disabled={form.state.isSubmitting}
+            >
+              {form.state.isSubmitting ? (
+                <Loader2 className="size-5 animate-spin" />
+              ) : (
+                <PlusCircle />
+              )}
               Add Cast
             </Button>
           </form>

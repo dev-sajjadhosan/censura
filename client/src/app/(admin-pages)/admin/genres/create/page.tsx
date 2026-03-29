@@ -23,7 +23,7 @@ export default function CreateGenrePage() {
       </div>
 
       <div className="w-9/12 mx-auto mt-22">
-        <GenreForm />
+        <GenreForm onSuccess={() => {}} onCancel={() => {}} />
       </div>
     </div>
   );

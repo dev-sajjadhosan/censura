@@ -49,12 +49,18 @@ export const PlatformForm = ({
   const { mutateAsync: createPlatform, isPending: createIsPending } =
     useMutation({
       mutationFn: (payload: any) => adminCreatePlatform(payload),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["admin-platforms"] });
+      },
     });
 
   const { mutateAsync: updatePlatform, isPending: updateIsPending } =
     useMutation({
       mutationFn: (payload: UpdatePlatformInput) =>
         adminUpdatePlatform(initialData?.id as string, payload),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["admin-platforms"] });
+      },
     });
 
   const form = useForm({
@@ -73,17 +79,15 @@ export const PlatformForm = ({
         const res = await updatePlatform(value as any);
         if (res.success) {
           toast.success("Platform updated successfully");
-          queryClient.invalidateQueries({ queryKey: ["admin-platforms"] });
           if (onSuccess) onSuccess();
-          // if (!isModal) router.push("/admin/platforms");
+          if (!isModal) router.push("/admin/platforms");
         }
       } else {
         const res = await createPlatform(value as any);
         if (res.success) {
           toast.success("Platform registered successfully");
-          queryClient.invalidateQueries({ queryKey: ["admin-platforms"] });
           if (onSuccess) onSuccess();
-          // if (!isModal) router.push("/admin/platforms");
+          if (!isModal) router.push("/admin/platforms");
         }
       }
     },

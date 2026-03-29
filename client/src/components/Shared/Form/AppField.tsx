@@ -59,7 +59,7 @@ export default function AppField({
             aria-invalid={hasError}
             aria-describedby={hasError ? `${field.name}-error` : undefined}
             className={cn(
-              "border-0 autofill:bg-transparent text-[12px] tracking-wide",
+              "border-0 bg-transparent! text-[12px] tracking-wide",
             )}
           />
           {append && <>{append}</>}

@@ -1,10 +1,7 @@
 export interface ApiResponse<T> {
   success: boolean;
   message: string;
-  data: {
-    data: T;
-    meta?: PaginationMeta;
-  };
+  data: T;
 }
 
 export interface PaginationMeta {

@@ -1,8 +1,9 @@
 "use client";
 
-import MediaTable from "./Media/MediaTable";
+
 import { Suspense } from "react";
 import { Loader2 } from "lucide-react";
+import MediaTable from "./MediaTable";
 
 export default function MediaListClient() {
   return (

@@ -1,4 +1,4 @@
-import MediaForm from "@/components/Modules/Admin/MediaForm";
+import MediaForm from "@/components/Modules/Admin/Media/MediaForm";
 import { adminGetMediaById } from "@/services/admin.service";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";

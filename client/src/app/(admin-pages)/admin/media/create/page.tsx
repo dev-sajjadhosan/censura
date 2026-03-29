@@ -1,4 +1,4 @@
-import MediaForm from "@/components/Modules/Admin/MediaForm";
+import MediaForm from "@/components/Modules/Admin/Media/MediaForm";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 

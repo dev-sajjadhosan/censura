@@ -13,29 +13,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 export const getPlatformColumns = (
   onEdit: (platform: Platform) => void,
   onDelete: (platform: Platform) => void,
 ): ColumnDef<Platform>[] => [
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
+    id: "No.",
+    header: "No.",
+    cell: ({ row, table }) => (
+      <span className="text-sm font-medium text-muted-foreground">
+        {table.getRowModel().rows.indexOf(row) + 1}
+      </span>
     ),
   },
   {
@@ -45,9 +37,10 @@ export const getPlatformColumns = (
       const p = row.original;
       return (
         <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-primary/10 text-primary shrink-0 transition-colors">
-            <Globe className="h-4 w-4" />
-          </div>
+          <Avatar className="size-9">
+            <AvatarImage src={p.icon} />
+            <AvatarFallback>{p.name.charAt(0)}</AvatarFallback>
+          </Avatar>
           <div className="flex flex-col">
             <span className="font-medium text-sm capitalize">{p.name}</span>
             <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-medium">
@@ -63,8 +56,15 @@ export const getPlatformColumns = (
     header: "Plan Type",
     cell: ({ row }) => (
       <span className="text-sm font-medium text-muted-foreground uppercase tracking-tight">
-        {row.original.icon || "N/A"}
+        {row.original.type || "N/A"}
       </span>
+    ),
+  },
+  {
+    accessorKey: "_",
+    header: "Total Media",
+    cell: ({ row }) => (
+      <span className="">{row.original?.mediaPlatforms?.length || 0}</span>
     ),
   },
   {
@@ -72,8 +72,38 @@ export const getPlatformColumns = (
     header: "Official URL",
     cell: ({ row }) => (
       <span className="text-xs text-blue-500 hover:underline cursor-pointer truncate max-w-[200px] block">
-        {row.original.isPublished || "Not Linked"}
+        {row.original.url ? (
+          <Link href={row.original.url || "#"} target="_blank">
+            {row.original.url}
+          </Link>
+        ) : (
+          "Not Linked"
+        )}
       </span>
+    ),
+  },
+  {
+    accessorKey: "isFeatured",
+    header: "Featured",
+    cell: ({ row }) => (
+      <Badge
+        variant={row.original.isFeatured ? "default" : "secondary"}
+        className="uppercase tracking-tight py-3 px-3"
+      >
+        {row.original.isFeatured ? "Yes" : "No"}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: "isPublished",
+    header: "Published",
+    cell: ({ row }) => (
+      <Badge
+        variant={row.original.isPublished ? "default" : "secondary"}
+        className="uppercase tracking-tight py-3 px-3"
+      >
+        {row.original.isPublished ? "Yes" : "No"}
+      </Badge>
     ),
   },
   {

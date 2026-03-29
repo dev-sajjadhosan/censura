@@ -1,4 +1,5 @@
-import MediaListClient from "@/components/Modules/Admin/MediaListClient";
+import MediaListClient from "@/components/Modules/Admin/Media/MediaListClient";
+
 
 export const metadata = {
   title: "Media Library | Censura Admin",

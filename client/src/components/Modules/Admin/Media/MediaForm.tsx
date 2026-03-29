@@ -26,15 +26,21 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { adminCreateMedia, adminUpdateMedia } from "@/services/admin.service";
+import {
+  adminCreateMedia,
+  adminGetAllGenres,
+  adminUpdateMedia,
+} from "@/services/admin.service";
 import { useForm } from "@tanstack/react-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   createMediaValidationSchema,
   CreateMediaValidationType,
 } from "@/zod/media.validation";
 import AppField from "@/components/Shared/Form/AppField";
 import { Separator } from "@/components/ui/separator";
+import { Genre } from "@/types/media.types";
+import GenresInMedia from "./GenresInMedia";
 
 const MEDIA_TYPES = [
   "MOVIE",
@@ -89,6 +95,7 @@ export default function MediaForm({
       backdrop: initialData?.backdrop || "",
       trailer: initialData?.trailer || "",
       cast: initialData?.cast || [],
+      genres: initialData?.genres || [],
       streaming: initialData?.streaming || "",
       runtime: initialData?.runtime || 0,
       seasons: initialData?.seasons || 0,
@@ -134,11 +141,6 @@ export default function MediaForm({
     })) || [],
   );
 
-  const [genreInput, setGenreInput] = useState("");
-  const [genres, setGenres] = useState<string[]>(
-    initialData?.genres?.map((g: any) => g.name || g) || [],
-  );
-
   const addCastMember = () => {
     if (!castInput.trim()) return;
     setCastMembers((prev) => [
@@ -160,16 +162,6 @@ export default function MediaForm({
 
   const removePlatform = (idx: number) => {
     setPlatforms((prev) => prev.filter((_, i) => i !== idx));
-  };
-
-  const addGenre = () => {
-    if (!genreInput.trim() || genres.includes(genreInput.trim())) return;
-    setGenres((prev) => [...prev, genreInput.trim()]);
-    setGenreInput("");
-  };
-
-  const removeGenre = (idx: number) => {
-    setGenres((prev) => prev.filter((_, i) => i !== idx));
   };
 
   return (
@@ -578,41 +570,12 @@ export default function MediaForm({
       <Separator />
       {/* Genres */}
       <section className="space-y-4">
-        <h3 className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-          <Tag className="size-4" />
-          Genres
-        </h3>
-        <div className="flex gap-2">
-          <Input
-            value={genreInput}
-            onChange={(e) => setGenreInput(e.target.value)}
-            placeholder="Add a genre"
-            className="text-sm max-w-xs"
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                addGenre();
-              }
-            }}
-          />
-          <Button type="button" variant="outline" size="sm" onClick={addGenre}>
-            <Plus className="size-3 mr-1" />
-            Add
-          </Button>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {genres.map((g, idx) => (
-            <Badge
-              key={idx}
-              variant="secondary"
-              className="gap-1 cursor-pointer hover:bg-destructive/10"
-              onClick={() => removeGenre(idx)}
-            >
-              {g}
-              <X className="size-3" />
-            </Badge>
-          ))}
-        </div>
+        <form.Field
+          name="genres"
+          children={(field) => (
+            <GenresInMedia field={field} />
+          )}
+        />
       </section>
 
       {/* Cast */}

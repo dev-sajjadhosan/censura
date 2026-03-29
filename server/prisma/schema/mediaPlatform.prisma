@@ -4,12 +4,9 @@ model MediaPlatform {
   media      Media    @relation(fields: [mediaId], references: [id], onDelete: Cascade)
   platformId String
   platform   Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
-  type       String
-  url        String?
 
   @@unique([mediaId, platformId])
   @@index([mediaId])
   @@index([platformId])
-  @@index([url])
   @@map("media_platforms")
 }

@@ -15,11 +15,18 @@ import { Platform } from "@/types/media.types";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Loader2, Plus, Save, Globe, ArrowLeft } from "lucide-react";
+import { Loader2, Plus, Save, Globe, ArrowLeft, Link2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface PlatformFormProps {
   initialData?: Platform | null;
@@ -56,14 +63,14 @@ export const PlatformForm = ({
       slug: initialData?.slug || "",
       description: initialData?.description || "",
       url: initialData?.url || "",
-      type: initialData?.type || "",
+      type: initialData?.type || "FREE",
       icon: initialData?.icon || "",
       isPublished: initialData?.isPublished || true,
       isFeatured: initialData?.isFeatured || false,
     },
     onSubmit: async ({ value }) => {
       if (isEditing) {
-        const res = await updatePlatform(value);
+        const res = await updatePlatform(value as any);
         if (res.success) {
           toast.success("Platform updated successfully");
           queryClient.invalidateQueries({ queryKey: ["admin-platforms"] });
@@ -71,7 +78,7 @@ export const PlatformForm = ({
           // if (!isModal) router.push("/admin/platforms");
         }
       } else {
-        const res = await createPlatform(value);
+        const res = await createPlatform(value as any);
         if (res.success) {
           toast.success("Platform registered successfully");
           queryClient.invalidateQueries({ queryKey: ["admin-platforms"] });
@@ -164,15 +171,25 @@ export const PlatformForm = ({
               children={(field) => (
                 <div className="space-y-2">
                   <Label htmlFor={field.name}>URL *</Label>
-                  <Input
-                    id={field.name}
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    placeholder="https://example.com"
-                    // className="h-11"
-                  />
+                  <div className="flex items-center gap-1 bg-secondary/45 rounded-lg px-3">
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="https://example.com"
+                      className="bg-transparent"
+                    />
+                    <Button
+                      size={"icon-lg"}
+                      variant={"ghost"}
+                      disabled={!field.state.value}
+                      onClick={() => window.open(field.state.value, "_blank")}
+                    >
+                      <Link2 />
+                    </Button>
+                  </div>
                   {field.state.meta.errors.length > 0 ? (
                     <em className="text-[11px] text-destructive">
                       {field.state.meta.errors[0]?.message}
@@ -189,15 +206,25 @@ export const PlatformForm = ({
               children={(field) => (
                 <div className="space-y-2">
                   <Label htmlFor={field.name}>Type *</Label>
-                  <Input
-                    id={field.name}
-                    name={field.name}
+                  <Select
                     value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    placeholder="e.g. Streaming Service"
-                    // className="h-11"
-                  />
+                    onValueChange={(value) => field.handleChange(value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="FREE">Free</SelectItem>
+                      <SelectItem value="LIMITED_FREE">Limited Free</SelectItem>
+                      <SelectItem value="PREMIUM">Premium</SelectItem>
+                      <SelectItem value="RENTAL">Rental</SelectItem>
+                      <SelectItem value="BUY">Buy</SelectItem>
+                      <SelectItem value="ONE_TIME">One Time</SelectItem>
+                      <SelectItem value="SUBSCRIPTION">Subscription</SelectItem>
+                      <SelectItem value="FREE_WITH_ADS">Free with Ads</SelectItem>
+
+                    </SelectContent>
+                  </Select>
                   {field.state.meta.errors.length > 0 ? (
                     <em className="text-[11px] text-destructive">
                       {field.state.meta.errors[0]?.message}

@@ -20,7 +20,6 @@ const createGenre = catchAsync(async (req: Request, res: Response) => {
 
 const getAllGenres = catchAsync(async (req: Request, res: Response) => {
   const query = req.query;
-  console.log("genre query: ",query);
   const result = await GenreService.getAllGenres(query);
 
   sendResponse(res, {

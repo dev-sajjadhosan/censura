@@ -59,6 +59,7 @@ export const ModelName = {
   MediaPlatform: 'MediaPlatform',
   MediaPurchase: 'MediaPurchase',
   Payment: 'Payment',
+  Platform: 'Platform',
   Profile: 'Profile',
   Bookmark: 'Bookmark',
   Favorite: 'Favorite',
@@ -176,7 +177,8 @@ export type MediaScalarFieldEnum = (typeof MediaScalarFieldEnum)[keyof typeof Me
 export const MediaPlatformScalarFieldEnum = {
   id: 'id',
   mediaId: 'mediaId',
-  platform: 'platform',
+  platformId: 'platformId',
+  type: 'type',
   url: 'url'
 } as const
 
@@ -207,6 +209,23 @@ export const PaymentScalarFieldEnum = {
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const PlatformScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  icon: 'icon',
+  url: 'url',
+  type: 'type',
+  isFeatured: 'isFeatured',
+  isPublished: 'isPublished',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlatformScalarFieldEnum = (typeof PlatformScalarFieldEnum)[keyof typeof PlatformScalarFieldEnum]
 
 
 export const ProfileScalarFieldEnum = {

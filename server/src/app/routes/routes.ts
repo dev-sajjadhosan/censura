@@ -9,6 +9,7 @@ import { ReactionRoutes } from "../modules/Reaction/reaction.route";
 import { SubscriptionRouter } from "../modules/Subscription/subscription.routes";
 import { WatchlistRouter } from "../modules/Watchlist/watchlist.router";
 import { AdminRoutes } from "../modules/Admin/admin.routes";
+import { PlatformRoutes } from "../modules/Platform/platform.routes";
 
 const router = Router();
 
@@ -17,6 +18,7 @@ router.use("/users", userRoutes);
 router.use("/media", MediaRoutes);
 router.use("/reviews", ReviewsRoutes);
 router.use("/genres", GenreRoutes);
+router.use("/platforms", PlatformRoutes);
 router.use("/payments", PaymentRoutes);
 router.use("/reactions", ReactionRoutes);
 router.use("/subscriptions", SubscriptionRouter);

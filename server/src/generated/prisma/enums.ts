@@ -79,20 +79,6 @@ export const SubscriptionStatus = {
 export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
 
 
-export const Platform = {
-  NETFLIX: 'NETFLIX',
-  DISNEY_PLUS: 'DISNEY_PLUS',
-  HBO: 'HBO',
-  AMAZON_PRIME: 'AMAZON_PRIME',
-  APPLE_TV_PLUS: 'APPLE_TV_PLUS',
-  HULU: 'HULU',
-  PARAMOUNT_PLUS: 'PARAMOUNT_PLUS',
-  OTHER: 'OTHER'
-} as const
-
-export type Platform = (typeof Platform)[keyof typeof Platform]
-
-
 export const SubStatus = {
   ACTIVE: 'ACTIVE',
   CANCELLED: 'CANCELLED',

@@ -1,13 +1,15 @@
 model MediaPlatform {
-  id       String   @id @default(uuid())
-  mediaId  String
-  media    Media    @relation(fields: [mediaId], references: [id], onDelete: Cascade)
-  platform Platform
-  url      String?
+  id         String   @id @default(uuid())
+  mediaId    String
+  media      Media    @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  platformId String
+  platform   Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+  type       String
+  url        String?
 
-  @@unique([mediaId, platform])
+  @@unique([mediaId, platformId])
   @@index([mediaId])
-  @@index([platform])
+  @@index([platformId])
   @@index([url])
   @@map("media_platforms")
 }

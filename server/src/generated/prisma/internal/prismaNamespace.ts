@@ -392,6 +392,7 @@ export const ModelName = {
   MediaPlatform: 'MediaPlatform',
   MediaPurchase: 'MediaPurchase',
   Payment: 'Payment',
+  Platform: 'Platform',
   Profile: 'Profile',
   Bookmark: 'Bookmark',
   Favorite: 'Favorite',
@@ -417,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "comment" | "like" | "genre" | "media" | "mediaPlatform" | "mediaPurchase" | "payment" | "profile" | "bookmark" | "favorite" | "review" | "subscription" | "user" | "session" | "account" | "verification" | "watchlist"
+    modelProps: "admin" | "comment" | "like" | "genre" | "media" | "mediaPlatform" | "mediaPurchase" | "payment" | "platform" | "profile" | "bookmark" | "favorite" | "review" | "subscription" | "user" | "session" | "account" | "verification" | "watchlist"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1010,6 +1011,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.PaymentCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.PaymentCountAggregateOutputType> | number
+        }
+      }
+    }
+    Platform: {
+      payload: Prisma.$PlatformPayload<ExtArgs>
+      fields: Prisma.PlatformFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PlatformFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlatformPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PlatformFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlatformPayload>
+        }
+        findFirst: {
+          args: Prisma.PlatformFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlatformPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PlatformFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlatformPayload>
+        }
+        findMany: {
+          args: Prisma.PlatformFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlatformPayload>[]
+        }
+        create: {
+          args: Prisma.PlatformCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlatformPayload>
+        }
+        createMany: {
+          args: Prisma.PlatformCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PlatformCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlatformPayload>[]
+        }
+        delete: {
+          args: Prisma.PlatformDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlatformPayload>
+        }
+        update: {
+          args: Prisma.PlatformUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlatformPayload>
+        }
+        deleteMany: {
+          args: Prisma.PlatformDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PlatformUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PlatformUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlatformPayload>[]
+        }
+        upsert: {
+          args: Prisma.PlatformUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlatformPayload>
+        }
+        aggregate: {
+          args: Prisma.PlatformAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePlatform>
+        }
+        groupBy: {
+          args: Prisma.PlatformGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PlatformGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PlatformCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PlatformCountAggregateOutputType> | number
         }
       }
     }
@@ -1881,7 +1956,8 @@ export type MediaScalarFieldEnum = (typeof MediaScalarFieldEnum)[keyof typeof Me
 export const MediaPlatformScalarFieldEnum = {
   id: 'id',
   mediaId: 'mediaId',
-  platform: 'platform',
+  platformId: 'platformId',
+  type: 'type',
   url: 'url'
 } as const
 
@@ -1912,6 +1988,23 @@ export const PaymentScalarFieldEnum = {
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const PlatformScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  icon: 'icon',
+  url: 'url',
+  type: 'type',
+  isFeatured: 'isFeatured',
+  isPublished: 'isPublished',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlatformScalarFieldEnum = (typeof PlatformScalarFieldEnum)[keyof typeof PlatformScalarFieldEnum]
 
 
 export const ProfileScalarFieldEnum = {
@@ -2210,20 +2303,6 @@ export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMode
 
 
 /**
- * Reference to a field of type 'Platform'
- */
-export type EnumPlatformFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Platform'>
-    
-
-
-/**
- * Reference to a field of type 'Platform[]'
- */
-export type ListEnumPlatformFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Platform[]'>
-    
-
-
-/**
  * Reference to a field of type 'PurchaseType'
  */
 export type EnumPurchaseTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PurchaseType'>
@@ -2381,6 +2460,7 @@ export type GlobalOmitConfig = {
   mediaPlatform?: Prisma.MediaPlatformOmit
   mediaPurchase?: Prisma.MediaPurchaseOmit
   payment?: Prisma.PaymentOmit
+  platform?: Prisma.PlatformOmit
   profile?: Prisma.ProfileOmit
   bookmark?: Prisma.BookmarkOmit
   favorite?: Prisma.FavoriteOmit

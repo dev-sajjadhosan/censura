@@ -4,9 +4,26 @@ import { Like } from "./reaction.types";
 
 export interface Platform {
   id: string;
-  platform: PlatformName;
-  type?: string;
-  url?: string;
+  name: string;
+  slug: string;
+  url: string;
+  type: string;
+  description?: string;
+  icon?: string;
+  isPublished: boolean;
+  isFeatured: boolean;
+  createdAt: string;
+  updatedAt: string;
+
+  mediaPlatforms: MediaPlatform[];
+}
+
+export interface MediaPlatform {
+  id: string;
+  mediaId: string;
+  platformId: string;
+  platform: Platform;
+  media: Media;
 
   createdAt: string;
   updatedAt: string;

@@ -1,0 +1,17 @@
+model Platform {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  icon        String?
+  url         String?
+  type        String?
+  isFeatured  Boolean  @default(false)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  mediaPlatforms MediaPlatform[]
+
+  @@map("platforms")
+}

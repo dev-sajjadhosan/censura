@@ -14,7 +14,7 @@ const getAllMedia = async (
     filterableFields: [
       "type",
       "genres.some.id",
-      "platforms.some.platform",
+      "platforms.some.platformId",
       "releaseYear",
       "pricing",
       "avgRating",
@@ -44,21 +44,15 @@ const getSingleMedia = async (id: string) => {
 const createMedia = async (user: IRequestUser, payload: any) => {
   const { genres, platforms, ...mediaData } = payload;
 
-  await prisma.genre.findFirstOrThrow({
-    where: {
-      id: {
-        in: genres,
+  if (genres && genres.length > 0) {
+    await prisma.genre.findFirstOrThrow({
+      where: {
+        id: {
+          in: genres,
+        },
       },
-    },
-  });
-
-  await prisma.mediaPlatform.findFirstOrThrow({
-    where: {
-      id: {
-        in: platforms,
-      },
-    },
-  });
+    });
+  }
 
   const result = await prisma.media.create({
     data: {

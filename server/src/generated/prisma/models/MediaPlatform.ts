@@ -27,21 +27,24 @@ export type AggregateMediaPlatform = {
 export type MediaPlatformMinAggregateOutputType = {
   id: string | null
   mediaId: string | null
-  platform: $Enums.Platform | null
+  platformId: string | null
+  type: string | null
   url: string | null
 }
 
 export type MediaPlatformMaxAggregateOutputType = {
   id: string | null
   mediaId: string | null
-  platform: $Enums.Platform | null
+  platformId: string | null
+  type: string | null
   url: string | null
 }
 
 export type MediaPlatformCountAggregateOutputType = {
   id: number
   mediaId: number
-  platform: number
+  platformId: number
+  type: number
   url: number
   _all: number
 }
@@ -50,21 +53,24 @@ export type MediaPlatformCountAggregateOutputType = {
 export type MediaPlatformMinAggregateInputType = {
   id?: true
   mediaId?: true
-  platform?: true
+  platformId?: true
+  type?: true
   url?: true
 }
 
 export type MediaPlatformMaxAggregateInputType = {
   id?: true
   mediaId?: true
-  platform?: true
+  platformId?: true
+  type?: true
   url?: true
 }
 
 export type MediaPlatformCountAggregateInputType = {
   id?: true
   mediaId?: true
-  platform?: true
+  platformId?: true
+  type?: true
   url?: true
   _all?: true
 }
@@ -144,7 +150,8 @@ export type MediaPlatformGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type MediaPlatformGroupByOutputType = {
   id: string
   mediaId: string
-  platform: $Enums.Platform
+  platformId: string
+  type: string
   url: string | null
   _count: MediaPlatformCountAggregateOutputType | null
   _min: MediaPlatformMinAggregateOutputType | null
@@ -172,35 +179,42 @@ export type MediaPlatformWhereInput = {
   NOT?: Prisma.MediaPlatformWhereInput | Prisma.MediaPlatformWhereInput[]
   id?: Prisma.StringFilter<"MediaPlatform"> | string
   mediaId?: Prisma.StringFilter<"MediaPlatform"> | string
-  platform?: Prisma.EnumPlatformFilter<"MediaPlatform"> | $Enums.Platform
+  platformId?: Prisma.StringFilter<"MediaPlatform"> | string
+  type?: Prisma.StringFilter<"MediaPlatform"> | string
   url?: Prisma.StringNullableFilter<"MediaPlatform"> | string | null
   media?: Prisma.XOR<Prisma.MediaScalarRelationFilter, Prisma.MediaWhereInput>
+  platform?: Prisma.XOR<Prisma.PlatformScalarRelationFilter, Prisma.PlatformWhereInput>
 }
 
 export type MediaPlatformOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   mediaId?: Prisma.SortOrder
-  platform?: Prisma.SortOrder
+  platformId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   url?: Prisma.SortOrderInput | Prisma.SortOrder
   media?: Prisma.MediaOrderByWithRelationInput
+  platform?: Prisma.PlatformOrderByWithRelationInput
 }
 
 export type MediaPlatformWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  mediaId_platform?: Prisma.MediaPlatformMediaIdPlatformCompoundUniqueInput
+  mediaId_platformId?: Prisma.MediaPlatformMediaIdPlatformIdCompoundUniqueInput
   AND?: Prisma.MediaPlatformWhereInput | Prisma.MediaPlatformWhereInput[]
   OR?: Prisma.MediaPlatformWhereInput[]
   NOT?: Prisma.MediaPlatformWhereInput | Prisma.MediaPlatformWhereInput[]
   mediaId?: Prisma.StringFilter<"MediaPlatform"> | string
-  platform?: Prisma.EnumPlatformFilter<"MediaPlatform"> | $Enums.Platform
+  platformId?: Prisma.StringFilter<"MediaPlatform"> | string
+  type?: Prisma.StringFilter<"MediaPlatform"> | string
   url?: Prisma.StringNullableFilter<"MediaPlatform"> | string | null
   media?: Prisma.XOR<Prisma.MediaScalarRelationFilter, Prisma.MediaWhereInput>
-}, "id" | "mediaId_platform">
+  platform?: Prisma.XOR<Prisma.PlatformScalarRelationFilter, Prisma.PlatformWhereInput>
+}, "id" | "mediaId_platformId">
 
 export type MediaPlatformOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   mediaId?: Prisma.SortOrder
-  platform?: Prisma.SortOrder
+  platformId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   url?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.MediaPlatformCountOrderByAggregateInput
   _max?: Prisma.MediaPlatformMaxOrderByAggregateInput
@@ -213,55 +227,62 @@ export type MediaPlatformScalarWhereWithAggregatesInput = {
   NOT?: Prisma.MediaPlatformScalarWhereWithAggregatesInput | Prisma.MediaPlatformScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"MediaPlatform"> | string
   mediaId?: Prisma.StringWithAggregatesFilter<"MediaPlatform"> | string
-  platform?: Prisma.EnumPlatformWithAggregatesFilter<"MediaPlatform"> | $Enums.Platform
+  platformId?: Prisma.StringWithAggregatesFilter<"MediaPlatform"> | string
+  type?: Prisma.StringWithAggregatesFilter<"MediaPlatform"> | string
   url?: Prisma.StringNullableWithAggregatesFilter<"MediaPlatform"> | string | null
 }
 
 export type MediaPlatformCreateInput = {
   id?: string
-  platform: $Enums.Platform
+  type: string
   url?: string | null
   media: Prisma.MediaCreateNestedOneWithoutPlatformsInput
+  platform: Prisma.PlatformCreateNestedOneWithoutMediaPlatformsInput
 }
 
 export type MediaPlatformUncheckedCreateInput = {
   id?: string
   mediaId: string
-  platform: $Enums.Platform
+  platformId: string
+  type: string
   url?: string | null
 }
 
 export type MediaPlatformUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  platform?: Prisma.EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   media?: Prisma.MediaUpdateOneRequiredWithoutPlatformsNestedInput
+  platform?: Prisma.PlatformUpdateOneRequiredWithoutMediaPlatformsNestedInput
 }
 
 export type MediaPlatformUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mediaId?: Prisma.StringFieldUpdateOperationsInput | string
-  platform?: Prisma.EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+  platformId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MediaPlatformCreateManyInput = {
   id?: string
   mediaId: string
-  platform: $Enums.Platform
+  platformId: string
+  type: string
   url?: string | null
 }
 
 export type MediaPlatformUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  platform?: Prisma.EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MediaPlatformUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mediaId?: Prisma.StringFieldUpdateOperationsInput | string
-  platform?: Prisma.EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+  platformId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -275,29 +296,32 @@ export type MediaPlatformOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type MediaPlatformMediaIdPlatformCompoundUniqueInput = {
+export type MediaPlatformMediaIdPlatformIdCompoundUniqueInput = {
   mediaId: string
-  platform: $Enums.Platform
+  platformId: string
 }
 
 export type MediaPlatformCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   mediaId?: Prisma.SortOrder
-  platform?: Prisma.SortOrder
+  platformId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   url?: Prisma.SortOrder
 }
 
 export type MediaPlatformMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   mediaId?: Prisma.SortOrder
-  platform?: Prisma.SortOrder
+  platformId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   url?: Prisma.SortOrder
 }
 
 export type MediaPlatformMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   mediaId?: Prisma.SortOrder
-  platform?: Prisma.SortOrder
+  platformId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   url?: Prisma.SortOrder
 }
 
@@ -343,19 +367,59 @@ export type MediaPlatformUncheckedUpdateManyWithoutMediaNestedInput = {
   deleteMany?: Prisma.MediaPlatformScalarWhereInput | Prisma.MediaPlatformScalarWhereInput[]
 }
 
-export type EnumPlatformFieldUpdateOperationsInput = {
-  set?: $Enums.Platform
+export type MediaPlatformCreateNestedManyWithoutPlatformInput = {
+  create?: Prisma.XOR<Prisma.MediaPlatformCreateWithoutPlatformInput, Prisma.MediaPlatformUncheckedCreateWithoutPlatformInput> | Prisma.MediaPlatformCreateWithoutPlatformInput[] | Prisma.MediaPlatformUncheckedCreateWithoutPlatformInput[]
+  connectOrCreate?: Prisma.MediaPlatformCreateOrConnectWithoutPlatformInput | Prisma.MediaPlatformCreateOrConnectWithoutPlatformInput[]
+  createMany?: Prisma.MediaPlatformCreateManyPlatformInputEnvelope
+  connect?: Prisma.MediaPlatformWhereUniqueInput | Prisma.MediaPlatformWhereUniqueInput[]
+}
+
+export type MediaPlatformUncheckedCreateNestedManyWithoutPlatformInput = {
+  create?: Prisma.XOR<Prisma.MediaPlatformCreateWithoutPlatformInput, Prisma.MediaPlatformUncheckedCreateWithoutPlatformInput> | Prisma.MediaPlatformCreateWithoutPlatformInput[] | Prisma.MediaPlatformUncheckedCreateWithoutPlatformInput[]
+  connectOrCreate?: Prisma.MediaPlatformCreateOrConnectWithoutPlatformInput | Prisma.MediaPlatformCreateOrConnectWithoutPlatformInput[]
+  createMany?: Prisma.MediaPlatformCreateManyPlatformInputEnvelope
+  connect?: Prisma.MediaPlatformWhereUniqueInput | Prisma.MediaPlatformWhereUniqueInput[]
+}
+
+export type MediaPlatformUpdateManyWithoutPlatformNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaPlatformCreateWithoutPlatformInput, Prisma.MediaPlatformUncheckedCreateWithoutPlatformInput> | Prisma.MediaPlatformCreateWithoutPlatformInput[] | Prisma.MediaPlatformUncheckedCreateWithoutPlatformInput[]
+  connectOrCreate?: Prisma.MediaPlatformCreateOrConnectWithoutPlatformInput | Prisma.MediaPlatformCreateOrConnectWithoutPlatformInput[]
+  upsert?: Prisma.MediaPlatformUpsertWithWhereUniqueWithoutPlatformInput | Prisma.MediaPlatformUpsertWithWhereUniqueWithoutPlatformInput[]
+  createMany?: Prisma.MediaPlatformCreateManyPlatformInputEnvelope
+  set?: Prisma.MediaPlatformWhereUniqueInput | Prisma.MediaPlatformWhereUniqueInput[]
+  disconnect?: Prisma.MediaPlatformWhereUniqueInput | Prisma.MediaPlatformWhereUniqueInput[]
+  delete?: Prisma.MediaPlatformWhereUniqueInput | Prisma.MediaPlatformWhereUniqueInput[]
+  connect?: Prisma.MediaPlatformWhereUniqueInput | Prisma.MediaPlatformWhereUniqueInput[]
+  update?: Prisma.MediaPlatformUpdateWithWhereUniqueWithoutPlatformInput | Prisma.MediaPlatformUpdateWithWhereUniqueWithoutPlatformInput[]
+  updateMany?: Prisma.MediaPlatformUpdateManyWithWhereWithoutPlatformInput | Prisma.MediaPlatformUpdateManyWithWhereWithoutPlatformInput[]
+  deleteMany?: Prisma.MediaPlatformScalarWhereInput | Prisma.MediaPlatformScalarWhereInput[]
+}
+
+export type MediaPlatformUncheckedUpdateManyWithoutPlatformNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaPlatformCreateWithoutPlatformInput, Prisma.MediaPlatformUncheckedCreateWithoutPlatformInput> | Prisma.MediaPlatformCreateWithoutPlatformInput[] | Prisma.MediaPlatformUncheckedCreateWithoutPlatformInput[]
+  connectOrCreate?: Prisma.MediaPlatformCreateOrConnectWithoutPlatformInput | Prisma.MediaPlatformCreateOrConnectWithoutPlatformInput[]
+  upsert?: Prisma.MediaPlatformUpsertWithWhereUniqueWithoutPlatformInput | Prisma.MediaPlatformUpsertWithWhereUniqueWithoutPlatformInput[]
+  createMany?: Prisma.MediaPlatformCreateManyPlatformInputEnvelope
+  set?: Prisma.MediaPlatformWhereUniqueInput | Prisma.MediaPlatformWhereUniqueInput[]
+  disconnect?: Prisma.MediaPlatformWhereUniqueInput | Prisma.MediaPlatformWhereUniqueInput[]
+  delete?: Prisma.MediaPlatformWhereUniqueInput | Prisma.MediaPlatformWhereUniqueInput[]
+  connect?: Prisma.MediaPlatformWhereUniqueInput | Prisma.MediaPlatformWhereUniqueInput[]
+  update?: Prisma.MediaPlatformUpdateWithWhereUniqueWithoutPlatformInput | Prisma.MediaPlatformUpdateWithWhereUniqueWithoutPlatformInput[]
+  updateMany?: Prisma.MediaPlatformUpdateManyWithWhereWithoutPlatformInput | Prisma.MediaPlatformUpdateManyWithWhereWithoutPlatformInput[]
+  deleteMany?: Prisma.MediaPlatformScalarWhereInput | Prisma.MediaPlatformScalarWhereInput[]
 }
 
 export type MediaPlatformCreateWithoutMediaInput = {
   id?: string
-  platform: $Enums.Platform
+  type: string
   url?: string | null
+  platform: Prisma.PlatformCreateNestedOneWithoutMediaPlatformsInput
 }
 
 export type MediaPlatformUncheckedCreateWithoutMediaInput = {
   id?: string
-  platform: $Enums.Platform
+  platformId: string
+  type: string
   url?: string | null
 }
 
@@ -391,31 +455,104 @@ export type MediaPlatformScalarWhereInput = {
   NOT?: Prisma.MediaPlatformScalarWhereInput | Prisma.MediaPlatformScalarWhereInput[]
   id?: Prisma.StringFilter<"MediaPlatform"> | string
   mediaId?: Prisma.StringFilter<"MediaPlatform"> | string
-  platform?: Prisma.EnumPlatformFilter<"MediaPlatform"> | $Enums.Platform
+  platformId?: Prisma.StringFilter<"MediaPlatform"> | string
+  type?: Prisma.StringFilter<"MediaPlatform"> | string
   url?: Prisma.StringNullableFilter<"MediaPlatform"> | string | null
+}
+
+export type MediaPlatformCreateWithoutPlatformInput = {
+  id?: string
+  type: string
+  url?: string | null
+  media: Prisma.MediaCreateNestedOneWithoutPlatformsInput
+}
+
+export type MediaPlatformUncheckedCreateWithoutPlatformInput = {
+  id?: string
+  mediaId: string
+  type: string
+  url?: string | null
+}
+
+export type MediaPlatformCreateOrConnectWithoutPlatformInput = {
+  where: Prisma.MediaPlatformWhereUniqueInput
+  create: Prisma.XOR<Prisma.MediaPlatformCreateWithoutPlatformInput, Prisma.MediaPlatformUncheckedCreateWithoutPlatformInput>
+}
+
+export type MediaPlatformCreateManyPlatformInputEnvelope = {
+  data: Prisma.MediaPlatformCreateManyPlatformInput | Prisma.MediaPlatformCreateManyPlatformInput[]
+  skipDuplicates?: boolean
+}
+
+export type MediaPlatformUpsertWithWhereUniqueWithoutPlatformInput = {
+  where: Prisma.MediaPlatformWhereUniqueInput
+  update: Prisma.XOR<Prisma.MediaPlatformUpdateWithoutPlatformInput, Prisma.MediaPlatformUncheckedUpdateWithoutPlatformInput>
+  create: Prisma.XOR<Prisma.MediaPlatformCreateWithoutPlatformInput, Prisma.MediaPlatformUncheckedCreateWithoutPlatformInput>
+}
+
+export type MediaPlatformUpdateWithWhereUniqueWithoutPlatformInput = {
+  where: Prisma.MediaPlatformWhereUniqueInput
+  data: Prisma.XOR<Prisma.MediaPlatformUpdateWithoutPlatformInput, Prisma.MediaPlatformUncheckedUpdateWithoutPlatformInput>
+}
+
+export type MediaPlatformUpdateManyWithWhereWithoutPlatformInput = {
+  where: Prisma.MediaPlatformScalarWhereInput
+  data: Prisma.XOR<Prisma.MediaPlatformUpdateManyMutationInput, Prisma.MediaPlatformUncheckedUpdateManyWithoutPlatformInput>
 }
 
 export type MediaPlatformCreateManyMediaInput = {
   id?: string
-  platform: $Enums.Platform
+  platformId: string
+  type: string
   url?: string | null
 }
 
 export type MediaPlatformUpdateWithoutMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  platform?: Prisma.EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  platform?: Prisma.PlatformUpdateOneRequiredWithoutMediaPlatformsNestedInput
 }
 
 export type MediaPlatformUncheckedUpdateWithoutMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  platform?: Prisma.EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+  platformId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MediaPlatformUncheckedUpdateManyWithoutMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  platform?: Prisma.EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+  platformId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type MediaPlatformCreateManyPlatformInput = {
+  id?: string
+  mediaId: string
+  type: string
+  url?: string | null
+}
+
+export type MediaPlatformUpdateWithoutPlatformInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  media?: Prisma.MediaUpdateOneRequiredWithoutPlatformsNestedInput
+}
+
+export type MediaPlatformUncheckedUpdateWithoutPlatformInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  mediaId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type MediaPlatformUncheckedUpdateManyWithoutPlatformInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  mediaId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -424,54 +561,66 @@ export type MediaPlatformUncheckedUpdateManyWithoutMediaInput = {
 export type MediaPlatformSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   mediaId?: boolean
-  platform?: boolean
+  platformId?: boolean
+  type?: boolean
   url?: boolean
   media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
+  platform?: boolean | Prisma.PlatformDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mediaPlatform"]>
 
 export type MediaPlatformSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   mediaId?: boolean
-  platform?: boolean
+  platformId?: boolean
+  type?: boolean
   url?: boolean
   media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
+  platform?: boolean | Prisma.PlatformDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mediaPlatform"]>
 
 export type MediaPlatformSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   mediaId?: boolean
-  platform?: boolean
+  platformId?: boolean
+  type?: boolean
   url?: boolean
   media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
+  platform?: boolean | Prisma.PlatformDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mediaPlatform"]>
 
 export type MediaPlatformSelectScalar = {
   id?: boolean
   mediaId?: boolean
-  platform?: boolean
+  platformId?: boolean
+  type?: boolean
   url?: boolean
 }
 
-export type MediaPlatformOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "mediaId" | "platform" | "url", ExtArgs["result"]["mediaPlatform"]>
+export type MediaPlatformOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "mediaId" | "platformId" | "type" | "url", ExtArgs["result"]["mediaPlatform"]>
 export type MediaPlatformInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
+  platform?: boolean | Prisma.PlatformDefaultArgs<ExtArgs>
 }
 export type MediaPlatformIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
+  platform?: boolean | Prisma.PlatformDefaultArgs<ExtArgs>
 }
 export type MediaPlatformIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
+  platform?: boolean | Prisma.PlatformDefaultArgs<ExtArgs>
 }
 
 export type $MediaPlatformPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "MediaPlatform"
   objects: {
     media: Prisma.$MediaPayload<ExtArgs>
+    platform: Prisma.$PlatformPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     mediaId: string
-    platform: $Enums.Platform
+    platformId: string
+    type: string
     url: string | null
   }, ExtArgs["result"]["mediaPlatform"]>
   composites: {}
@@ -868,6 +1017,7 @@ readonly fields: MediaPlatformFieldRefs;
 export interface Prisma__MediaPlatformClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   media<T extends Prisma.MediaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MediaDefaultArgs<ExtArgs>>): Prisma.Prisma__MediaClient<runtime.Types.Result.GetResult<Prisma.$MediaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  platform<T extends Prisma.PlatformDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PlatformDefaultArgs<ExtArgs>>): Prisma.Prisma__PlatformClient<runtime.Types.Result.GetResult<Prisma.$PlatformPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -899,7 +1049,8 @@ export interface Prisma__MediaPlatformClient<T, Null = never, ExtArgs extends ru
 export interface MediaPlatformFieldRefs {
   readonly id: Prisma.FieldRef<"MediaPlatform", 'String'>
   readonly mediaId: Prisma.FieldRef<"MediaPlatform", 'String'>
-  readonly platform: Prisma.FieldRef<"MediaPlatform", 'Platform'>
+  readonly platformId: Prisma.FieldRef<"MediaPlatform", 'String'>
+  readonly type: Prisma.FieldRef<"MediaPlatform", 'String'>
   readonly url: Prisma.FieldRef<"MediaPlatform", 'String'>
 }
     

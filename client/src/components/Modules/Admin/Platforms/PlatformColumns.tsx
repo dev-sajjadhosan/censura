@@ -49,7 +49,7 @@ export const getPlatformColumns = (
             <Globe className="h-4 w-4" />
           </div>
           <div className="flex flex-col">
-            <span className="font-medium text-sm capitalize">{p.platform}</span>
+            <span className="font-medium text-sm capitalize">{p.name}</span>
             <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-medium">
               Streaming Service
             </span>
@@ -63,7 +63,7 @@ export const getPlatformColumns = (
     header: "Plan Type",
     cell: ({ row }) => (
       <span className="text-sm font-medium text-muted-foreground uppercase tracking-tight">
-        {row.original.type || "N/A"}
+        {row.original.icon || "N/A"}
       </span>
     ),
   },
@@ -72,7 +72,7 @@ export const getPlatformColumns = (
     header: "Official URL",
     cell: ({ row }) => (
       <span className="text-xs text-blue-500 hover:underline cursor-pointer truncate max-w-[200px] block">
-        {row.original.url || "Not Linked"}
+        {row.original.isPublished || "Not Linked"}
       </span>
     ),
   },

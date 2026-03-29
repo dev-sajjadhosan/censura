@@ -58,6 +58,11 @@ export type MediaPurchase = Prisma.MediaPurchaseModel
  */
 export type Payment = Prisma.PaymentModel
 /**
+ * Model Platform
+ * 
+ */
+export type Platform = Prisma.PlatformModel
+/**
  * Model Profile
  * 
  */

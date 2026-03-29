@@ -297,23 +297,6 @@ export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedFloatNullableFilter<$PrismaModel>
 }
 
-export type EnumPlatformFilter<$PrismaModel = never> = {
-  equals?: $Enums.Platform | Prisma.EnumPlatformFieldRefInput<$PrismaModel>
-  in?: $Enums.Platform[] | Prisma.ListEnumPlatformFieldRefInput<$PrismaModel>
-  notIn?: $Enums.Platform[] | Prisma.ListEnumPlatformFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPlatformFilter<$PrismaModel> | $Enums.Platform
-}
-
-export type EnumPlatformWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.Platform | Prisma.EnumPlatformFieldRefInput<$PrismaModel>
-  in?: $Enums.Platform[] | Prisma.ListEnumPlatformFieldRefInput<$PrismaModel>
-  notIn?: $Enums.Platform[] | Prisma.ListEnumPlatformFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPlatformWithAggregatesFilter<$PrismaModel> | $Enums.Platform
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumPlatformFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumPlatformFilter<$PrismaModel>
-}
-
 export type FloatFilter<$PrismaModel = never> = {
   equals?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel>
@@ -692,23 +675,6 @@ export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
   _sum?: Prisma.NestedFloatNullableFilter<$PrismaModel>
   _min?: Prisma.NestedFloatNullableFilter<$PrismaModel>
   _max?: Prisma.NestedFloatNullableFilter<$PrismaModel>
-}
-
-export type NestedEnumPlatformFilter<$PrismaModel = never> = {
-  equals?: $Enums.Platform | Prisma.EnumPlatformFieldRefInput<$PrismaModel>
-  in?: $Enums.Platform[] | Prisma.ListEnumPlatformFieldRefInput<$PrismaModel>
-  notIn?: $Enums.Platform[] | Prisma.ListEnumPlatformFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPlatformFilter<$PrismaModel> | $Enums.Platform
-}
-
-export type NestedEnumPlatformWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.Platform | Prisma.EnumPlatformFieldRefInput<$PrismaModel>
-  in?: $Enums.Platform[] | Prisma.ListEnumPlatformFieldRefInput<$PrismaModel>
-  notIn?: $Enums.Platform[] | Prisma.ListEnumPlatformFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPlatformWithAggregatesFilter<$PrismaModel> | $Enums.Platform
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumPlatformFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumPlatformFilter<$PrismaModel>
 }
 
 export type NestedEnumPurchaseTypeFilter<$PrismaModel = never> = {

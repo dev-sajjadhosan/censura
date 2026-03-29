@@ -1,5 +1,7 @@
 "use server";
 import { axiosClient } from "@/lib/axiosClient";
+import { ApiResult } from "@/types/api.types";
+import { Genre, Platform } from "@/types/media.types";
 
 // ─── Media CRUD ────────────────────────────────────────────────
 export const adminGetAllMedia = async (params?: any) => {
@@ -70,8 +72,8 @@ export const adminGetReviewAnalytics = async () => {
   return await axiosClient.get("/admin/analytics/reviews");
 };
 // ─── Genre Management ─────────────────────────────────────────
-export const adminGetAllGenres = async (params?: any) => {
-  return await axiosClient.get<any[]>("/genres", { params });
+export const getAllGenres = async (params?: any) => {
+  return await axiosClient.get<ApiResult<Genre[]>>("/genres", { params });
 };
 
 export const adminCreateGenre = async (payload: any) => {
@@ -87,8 +89,8 @@ export const adminDeleteGenre = async (id: string) => {
 };
 
 // ─── Platform Management ──────────────────────────────────────
-export const adminGetAllPlatforms = async (params?: any) => {
-  return await axiosClient.get<any[]>("/platforms", { params });
+export const getAllPlatforms = async (params?: any) => {
+  return await axiosClient.get<ApiResult<Platform[]>>("/platforms", { params });
 };
 
 export const adminCreatePlatform = async (payload: any) => {

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { adminGetAllGenres } from "@/services/admin.service";
+import { getAllGenres } from "@/services/admin.service";
 import { Genre } from "@/types/media.types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -7,15 +7,18 @@ import { Label } from "@/components/ui/label";
 import { Tag, Loader2, Loader, Trash2 } from "lucide-react";
 import { AnyFieldApi } from "@tanstack/react-form";
 
-export default function GenresInMedia({ field }: { field: AnyFieldApi }) {
+export default function GenresInMedia({
+  field,
+  initialData,
+}: {
+  field: AnyFieldApi;
+  initialData: Genre[];
+}) {
   const { data, isLoading: genreLoading } = useQuery({
     queryKey: ["genres"],
-    queryFn: () =>
-      adminGetAllGenres({ isPublished: true, page: 1, limit: 100 }),
+    queryFn: () => getAllGenres({ isPublished: true, page: 1, limit: 100 }),
   });
-  const genres = data?.data.data;
-
-  console.log("all admin genres: ", data?.data.data);
+  const genres = data?.data?.data;
   return (
     <>
       <Label className="flex items-center gap-2">
@@ -39,7 +42,13 @@ export default function GenresInMedia({ field }: { field: AnyFieldApi }) {
               <Button
                 type="button"
                 size={"lg"}
-                variant={field.state.value.includes(g.id) ? "default" : "ghost"}
+                variant={
+                  field.state.value.includes(g.id)
+                    ? "default"
+                    : initialData?.some((item) => item.id === g.id)
+                      ? "default"
+                      : "ghost"
+                }
                 onClick={() => {
                   if (field.state.value.includes(g.id)) {
                     field.handleChange(

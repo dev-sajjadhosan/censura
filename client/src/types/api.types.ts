@@ -2,6 +2,12 @@ export interface ApiResponse<T> {
   success: boolean;
   message: string;
   data: T;
+  meta?: PaginationMeta;
+}
+
+export interface ApiResult<T> {
+  data: T;
+  meta: PaginationMeta;
 }
 
 export interface PaginationMeta {

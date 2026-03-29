@@ -27,23 +27,15 @@ export default async function EditMediaPage({
   if (!media) return notFound();
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
-      <div className="flex items-center gap-3">
-        <Link
-          href="/admin/media"
-          className="p-2 rounded-lg hover:bg-muted transition-colors"
-        >
-          <ArrowLeft className="size-4" />
-        </Link>
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Edit Media</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">
-            Editing: <span className="font-medium">{media.title}</span>
-          </p>
-        </div>
+    <div className="space-y-6">
+      <div className="flex flex-col gap-1">
+        <h1 className="text-xl  tracking-tight">Edit Media</h1>
+        <p className="text-sm text-muted-foreground mt-0.5">
+          Editing: <span className="font-medium">{media.title}</span>
+        </p>
       </div>
 
-      <MediaForm initialData={media} isEditing />
+      <MediaForm initialData={media} isEditing={true} />
     </div>
   );
 }

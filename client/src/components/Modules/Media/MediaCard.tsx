@@ -3,9 +3,10 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight, Star } from "lucide-react";
+import { ChevronRight, DollarSign, Play, Star } from "lucide-react";
+import { Media } from "@/types/media.types";
 
-export default function MediaCard({ media }: { media: any }) {
+export default function MediaCard({ media }: { media: Media }) {
   return (
     <Card>
       <CardHeader className="flex items-center justify-between">
@@ -30,7 +31,17 @@ export default function MediaCard({ media }: { media: any }) {
             <span>{media.releaseYear}</span>
           </div>
           <div className="flex items-center gap-3 mt-3">
-            <Button size="sm">Buy Now</Button>
+            {media.pricing === "FREE" ? (
+              <Button size="sm">
+                {" "}
+                <Play /> Watch Now
+              </Button>
+            ) : (
+              <Button size="sm">
+                {" "}
+                <DollarSign /> Buy Now
+              </Button>
+            )}
             <Link href={`/media/${media.slug}`}>
               <Button size="sm">
                 View

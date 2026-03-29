@@ -74,7 +74,7 @@ export const getPlatformColumns = (
       <span className="text-xs text-blue-500 hover:underline cursor-pointer truncate max-w-[200px] block">
         {row.original.url ? (
           <Link href={row.original.url || "#"} target="_blank">
-            {row.original.url}
+           Visit Site
           </Link>
         ) : (
           "Not Linked"

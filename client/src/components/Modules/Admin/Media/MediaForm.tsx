@@ -12,49 +12,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import {
-  Film,
-  Plus,
-  X,
-  Save,
-  Loader2,
-  Link2,
-  Image as ImageIcon,
-  Tag,
-} from "lucide-react";
+import { Save, Loader2, Image as ImageIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import {
-  adminCreateMedia,
-  adminGetAllGenres,
-  adminUpdateMedia,
-} from "@/services/admin.service";
+import { adminCreateMedia, adminUpdateMedia } from "@/services/admin.service";
 import { useForm } from "@tanstack/react-form";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import {
   createMediaValidationSchema,
   CreateMediaValidationType,
+  updateMediaValidationSchema,
 } from "@/zod/media.validation";
-import AppField from "@/components/Shared/Form/AppField";
 import { Separator } from "@/components/ui/separator";
-import { Genre, Platform } from "@/types/media.types";
+import { Genre, MediaPlatform, Platform } from "@/types/media.types";
 import GenresInMedia from "./GenresInMedia";
 import CastInMediaDialog from "./CastInMediaDialog";
 import PlatfromInMedia from "./PlatfromInMedia";
+import ViewMediaLink from "./ViewMediaLink";
+import { MEDIA_TYPES } from "@/Constant/media.const";
 
-const MEDIA_TYPES = [
-  "MOVIE",
-  "SERIES",
-  "DRAMA",
-  "ANIME",
-  "CARTOON",
-  "SHORT_FILM",
-  "DOCUMENTARY",
-  "TV_SHOW",
-  "WEB_SERIES",
-];
 
 const PRICING_OPTIONS = ["FREE", "PREMIUM", "RENTAL"];
 
@@ -68,13 +45,18 @@ export default function MediaForm({
   isEditing = false,
 }: MediaFormProps) {
   const router = useRouter();
-  const [saving, setSaving] = useState(false);
-  const [platforms, setPlatforms] = useState<Platform[]>([]);
 
-  const { mutateAsync, isPending, isError } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationFn: (payload: CreateMediaValidationType) =>
       adminCreateMedia(payload),
   });
+
+  const { mutateAsync: updateMedia, isPending: isUpdating } = useMutation({
+    mutationFn: (payload: CreateMediaValidationType) =>
+      adminUpdateMedia(initialData?.id, payload),
+  });
+
+  console.log("initialData platforms: ", initialData.platforms);
 
   const form = useForm({
     defaultValues: {
@@ -82,30 +64,44 @@ export default function MediaForm({
       slug: initialData?.slug || "",
       synopsis: initialData?.synopsis || "",
       type: initialData?.type || "MOVIE",
-      releaseYear: initialData?.releaseYear || new Date().getFullYear(),
+      releaseYear: String(initialData?.releaseYear) || "",
       director: initialData?.director || "",
       posterUrl: initialData?.posterUrl || "",
       backdropUrl: initialData?.backdropUrl || "",
       trailerUrl: initialData?.trailerUrl || "",
-      cast: initialData?.cast || [],
-      genres: initialData?.genres || [],
       streamingUrl: initialData?.streamingUrl || "",
-      runtimeMinutes: initialData?.runtimeMinutes || 0,
-      seasons: initialData?.seasons || 0,
+      runtimeMinutes: String(initialData?.runtimeMinutes) || "",
+      seasons: String(initialData?.seasons) || "",
       pricing: initialData?.pricing || "FREE",
       isPublished: initialData?.isPublished ?? false,
       isFeatured: initialData?.isFeatured ?? false,
-      platforms: initialData?.platforms || [],
+      cast: initialData?.cast || [],
+      genres: initialData?.genres
+        ? initialData?.genres?.map((p: Genre) => p.id)
+        : [],
+      platforms: initialData?.platforms
+        ? initialData?.platforms?.map((p: MediaPlatform) => p.platform.id)
+        : [],
     },
     onSubmit: async ({ value }) => {
       try {
-        const res = await mutateAsync(value);
-        console.log("Media Payload", res);
-        toast.success("Media created successfully");
-        // router.push("/admin/media");
-        // router.refresh();
+        if (isEditing) {
+          const res = await updateMedia(value);
+          console.log("Media Payload", res);
+          toast.success("Media updated successfully");
+          router.push("/admin/media");
+          router.refresh();
+        } else {
+          const res = await mutateAsync(value);
+          console.log("Media Payload", res);
+          toast.success("Media created successfully");
+          router.push("/admin/media");
+          router.refresh();
+        }
       } catch (err: any) {
-        toast.error("Failed to create media");
+        toast.error(
+          `${isEditing ? "Failed to update" : "Failed to create"} media`,
+        );
       }
     },
   });
@@ -131,7 +127,9 @@ export default function MediaForm({
               <form.Field
                 name="title"
                 validators={{
-                  onChange: createMediaValidationSchema.shape.title,
+                  onChange: isEditing
+                    ? updateMediaValidationSchema.shape.title
+                    : createMediaValidationSchema.shape.title,
                 }}
                 children={(field) => (
                   <>
@@ -448,13 +446,20 @@ export default function MediaForm({
               children={(field) => (
                 <>
                   <Label htmlFor="poster">Poster URL</Label>
-                  <Input
-                    id="poster"
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    placeholder="https://..."
-                    className="text-sm"
-                  />
+                  <div className="flex items-center gap-1">
+                    <Input
+                      id="poster"
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="https://..."
+                      className="text-sm"
+                    />
+                    <ViewMediaLink
+                      url={field.state.value}
+                      type="pic"
+                      title={form.state.values.title}
+                    />
+                  </div>
 
                   {field.state.meta.errors.length > 0 && (
                     <p className="text-red-500 text-sm">
@@ -465,6 +470,7 @@ export default function MediaForm({
               )}
             />
           </div>
+
           <div className="space-y-2">
             <form.Field
               name="backdropUrl"
@@ -474,13 +480,20 @@ export default function MediaForm({
               children={(field) => (
                 <>
                   <Label htmlFor="backdrop">Backdrop URL</Label>
-                  <Input
-                    id="backdrop"
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    placeholder="https://..."
-                    className="text-sm"
-                  />
+                  <div className="flex items-center gap-1">
+                    <Input
+                      id="backdrop"
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="https://..."
+                      className="text-sm"
+                    />
+                    <ViewMediaLink
+                      url={field.state.value}
+                      type="pic"
+                      title={form.state.values.title}
+                    />
+                  </div>
 
                   {field.state.meta.errors.length > 0 && (
                     <p className="text-red-500 text-sm">
@@ -500,13 +513,20 @@ export default function MediaForm({
               children={(field) => (
                 <>
                   <Label htmlFor="trailer">Trailer URL</Label>
-                  <Input
-                    id="trailer"
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    placeholder="YouTube trailer URL"
-                    className="text-sm"
-                  />
+                  <div className="flex items-center gap-1">
+                    <Input
+                      id="trailer"
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="YouTube trailer URL"
+                      className="text-sm"
+                    />
+                    <ViewMediaLink
+                      url={field.state.value}
+                      type="video"
+                      title={form.state.values.title}
+                    />
+                  </div>
 
                   {field.state.meta.errors.length > 0 && (
                     <p className="text-red-500 text-sm">
@@ -526,13 +546,20 @@ export default function MediaForm({
               children={(field) => (
                 <>
                   <Label htmlFor="streaming">Streaming URL (YouTube)</Label>
-                  <Input
-                    id="streaming"
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    placeholder="YouTube streaming link"
-                    className="text-sm"
-                  />
+                  <div className="flex items-center gap-1">
+                    <Input
+                      id="streaming"
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="YouTube streaming link"
+                      className="text-sm"
+                    />
+                    <ViewMediaLink
+                      url={field.state.value}
+                      type="video"
+                      title={form.state.values.title}
+                    />
+                  </div>
 
                   {field.state.meta.errors.length > 0 && (
                     <p className="text-red-500 text-sm">
@@ -550,17 +577,17 @@ export default function MediaForm({
       <section className="space-y-4">
         <form.Field
           name="genres"
-          validators={{
-            onChange: createMediaValidationSchema.shape.genres,
-          }}
+          // validators={{
+          //   onChange: createMediaValidationSchema.shape.genres,
+          // }}
           children={(field) => (
             <>
-              <GenresInMedia field={field} />
-              {field.state.meta.errors.length > 0 && (
+              <GenresInMedia field={field} initialData={initialData?.genres} />
+              {/* {field.state.meta.errors.length > 0 && (
                 <p className="text-red-500 text-sm">
                   {field.state.meta.errors[0]?.message}
                 </p>
-              )}
+              )} */}
             </>
           )}
         />
@@ -569,9 +596,9 @@ export default function MediaForm({
       <section className="space-y-4">
         <form.Field
           name="cast"
-          validators={{
-            onChange: createMediaValidationSchema.shape.cast,
-          }}
+          // validators={{
+          //   onChange: createMediaValidationSchema.shape.cast,
+          // }}
           children={(field) => (
             <>
               <Label htmlFor="cast">Cast Members</Label>
@@ -579,11 +606,11 @@ export default function MediaForm({
                 cast={field.state.value}
                 setCast={field.handleChange}
               />
-              {field.state.meta.errors.length > 0 && (
+              {/* {field.state.meta.errors.length > 0 && (
                 <p className="text-red-500 text-sm">
                   {field.state.meta.errors[0]?.message}
                 </p>
-              )}
+              )} */}
             </>
           )}
         />
@@ -591,17 +618,20 @@ export default function MediaForm({
       <section className="space-y-4">
         <form.Field
           name="platforms"
-          validators={{
-            onChange: createMediaValidationSchema.shape.platforms,
-          }}
+          // validators={{
+          //   onChange: createMediaValidationSchema.shape.platforms,
+          // }}
           children={(field) => (
             <>
-              <PlatfromInMedia field={field} />
-              {field.state.meta.errors.length > 0 && (
+              <PlatfromInMedia
+                field={field}
+                initialData={initialData?.platforms}
+              />
+              {/* {field.state.meta.errors.length > 0 && (
                 <p className="text-red-500 text-sm">
                   {field.state.meta.errors[0]?.message}
                 </p>
-              )}
+              )} */}
             </>
           )}
         />

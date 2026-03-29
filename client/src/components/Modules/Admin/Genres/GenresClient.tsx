@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { adminGetAllGenres, adminDeleteGenre } from "@/services/admin.service";
+import { getAllGenres, adminDeleteGenre } from "@/services/admin.service";
 import { useServerManagedDataTable } from "@/hooks/useServerManagedDataTable";
 import { GenresTable } from "./GenresTable";
 import { Genre } from "@/types/media.types";
@@ -23,7 +23,7 @@ export const GenresClient = () => {
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin-genres", tableState.queryStringFromUrl],
-    queryFn: () => adminGetAllGenres(tableState.queryStringFromUrl),
+    queryFn: () => getAllGenres(tableState.queryStringFromUrl),
   });
 
   const deleteMutation = useMutation({

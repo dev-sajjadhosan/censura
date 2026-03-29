@@ -13,7 +13,13 @@ import {
   SlidersHorizontal,
   X,
   Clapperboard,
+  Loader2,
+  Tag,
 } from "lucide-react";
+import { MEDIA_TYPES } from "@/Constant/media.const";
+import { useQuery } from "@tanstack/react-query";
+import { getAllPlatforms, getAllGenres } from "@/services/admin.service";
+import { Genre, Platform } from "@/types/media.types";
 
 const GENRES = [
   "Action",
@@ -75,6 +81,21 @@ export default function ExploreFilters() {
     router.push(`/explore?${createQueryString(updates)}`);
   };
 
+  const { data: genresData, isLoading: genreLoading } = useQuery({
+    queryKey: ["genres"],
+    queryFn: () => getAllGenres(),
+  });
+
+  const { data: platformsData, isLoading: platformLoading } = useQuery({
+    queryKey: ["platforms"],
+    queryFn: () => getAllPlatforms(),
+  });
+
+  console.log("platformsData", platformsData);
+
+  const genres = genresData?.data?.data;
+  const platfroms = platformsData?.data?.data;
+
   const current = {
     sort: searchParams.get("sort") || "recent",
     type: searchParams.get("type") || "",
@@ -133,25 +154,19 @@ export default function ExploreFilters() {
         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
           Type
         </p>
-        <div className="flex gap-2">
-          <Button
-            size={"lg"}
-            onClick={() =>
-              push({ type: current.type === "MOVIE" ? null : "MOVIE" })
-            }
-            variant={current.type === "MOVIE" ? "default" : "secondary"}
-          >
-            <Film className="size-4" /> Movie
-          </Button>
-          <Button
-            size={"lg"}
-            onClick={() =>
-              push({ type: current.type === "SERIES" ? null : "SERIES" })
-            }
-            variant={current.type === "SERIES" ? "default" : "secondary"}
-          >
-            <Tv className="size-4" /> Series
-          </Button>
+        <div className="flex flex-wrap gap-2">
+          {MEDIA_TYPES.map((type) => (
+            <Button
+              key={type}
+              size={"lg"}
+              onClick={() =>
+                push({ type: current.type === type ? null : type })
+              }
+              variant={current.type === type ? "default" : "secondary"}
+            >
+              <Film /> {type}
+            </Button>
+          ))}
         </div>
       </div>
 
@@ -161,19 +176,24 @@ export default function ExploreFilters() {
           Genre
         </p>
         <div className="flex flex-wrap gap-2">
-          {GENRES.map((genre) => (
-            <Button
-              key={genre}
-              size={"lg"}
-              onClick={() =>
-                push({ genre: current.genre === genre ? null : genre })
-              }
-              variant={current.genre === genre ? "default" : "secondary"}
-            >
-              {genre}
-              {/* <Badge>00</Badge> */}
-            </Button>
-          ))}
+          {genreLoading ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            genres?.map((genre: Genre) => (
+              <Button
+                key={genre.id}
+                size={"lg"}
+                onClick={() =>
+                  push({ genre: current.genre === genre.id ? null : genre.id })
+                }
+                variant={current.genre === genre.id ? "default" : "secondary"}
+              >
+                <Tag />
+                {genre.name}
+                {/* <Badge>{genre.}</Badge> */}
+              </Button>
+            ))
+          )}
         </div>
       </div>
 
@@ -207,18 +227,21 @@ export default function ExploreFilters() {
           Platform
         </p>
         <div className="flex flex-wrap gap-2">
-          {PLATFORMS.map(({ label, value }) => (
+          {platfroms?.map((platform: Platform) => (
             <Button
-              key={value}
+              key={platform.id}
               size={"lg"}
               onClick={() =>
-                push({ platform: current.platform === value ? null : value })
+                push({
+                  platform:
+                    current.platform === platform.name ? null : platform.name,
+                })
               }
-              variant={current.platform === value ? "default" : "secondary"}
+              variant={current.platform === platform.name ? "default" : "secondary"}
             >
               {/* <Image src={label.image} alt={label} width={20} height={20} /> */}
               <Clapperboard />
-              {label}
+              {platform.name}
             </Button>
           ))}
         </div>

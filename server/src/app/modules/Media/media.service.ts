@@ -4,6 +4,7 @@ import AppError from "../../error-helpers/AppError";
 import { prisma } from "../../lib/prisma";
 import { IRequestUser } from "../../interfaces";
 import { QueryBuilder } from "../../utils/QueryBuilder";
+import { normalizeIds, parseNullableNumber } from "../../utils/serviceHelpers";
 
 const getAllMedia = async (
   user: IRequestUser,
@@ -33,18 +34,19 @@ const getAllMedia = async (
 };
 
 const getSingleMedia = async (id: string) => {
-  const result = await prisma.media.findUniqueOrThrow({
+  const result = await prisma.media.findUnique({
     where: { id },
     include: {
       genres: true,
-      platforms: {
-        include: {
-          platform: true, // include platform details
-        },
-      },
+      platforms: { include: { platform: true } },
       cast: true,
     },
   });
+
+  if (!result) {
+    throw new AppError(status.NOT_FOUND, "Media not found");
+  }
+
   return result;
 };
 
@@ -148,37 +150,115 @@ const createMedia = async (user: IRequestUser, payload: any) => {
   return result;
 };
 const updateMedia = async (id: string, user: IRequestUser, payload: any) => {
-  const { genres, platforms, cast, ...mediaData } = payload;
+  const {
+    genres,
+    platforms,
+    cast,
+    slug,
+    releaseYear,
+    runtimeMinutes,
+    seasons,
+    ...mediaData
+  } = payload;
 
   await prisma.media.findUniqueOrThrow({ where: { id } });
 
-  const result = await prisma.media.update({
-    where: { id },
-    data: {
-      ...mediaData,
+  const result = await prisma.$transaction(async (tx) => {
+    // 1. Update base media fields
+    const media = await tx.media.update({
+      where: { id },
+      data: {
+        ...mediaData,
+        ...(slug && {
+          slug: slug
+            .toLowerCase()
+            .replace(/ /g, "-")
+            .replace(/[^\w-]+/g, ""),
+        }),
+        ...(releaseYear && { releaseYear: Number(releaseYear) }),
+        runtimeMinutes: parseNullableNumber(runtimeMinutes),
+        seasons: parseNullableNumber(seasons),
+      },
+    });
 
-      ...(mediaData.release && { release: Number(mediaData.release) }),
-      ...(mediaData.runtime && { runtime: Number(mediaData.runtime) }),
-      ...(mediaData.seasons && { seasons: Number(mediaData.seasons) }),
+    // 2. Update genres
+    if (genres !== undefined) {
+      const genreIds = normalizeIds(genres);
 
-      genres: genres
-        ? { set: genres.map((id: string) => ({ id })) }
-        : undefined,
+      if (genreIds.length > 0) {
+        const existingGenres = await tx.genre.findMany({
+          where: { id: { in: genreIds } },
+          select: { id: true },
+        });
+        if (existingGenres.length !== genreIds.length) {
+          throw new AppError(
+            status.BAD_REQUEST,
+            "One or more genres not found",
+          );
+        }
+      }
 
-      platforms: platforms
-        ? {
-            deleteMany: {},
-            create: platforms.map((platformId: string) => ({ platformId })),
-          }
-        : undefined,
+      await tx.media.update({
+        where: { id: media.id },
+        data: {
+          genres: { set: genreIds.map((gid) => ({ id: gid })) },
+        },
+      });
+    }
 
-      cast: cast
-        ? {
-            deleteMany: {},
-            create: cast,
-          }
-        : undefined,
-    },
+    // 3. Update platforms
+    if (platforms !== undefined) {
+      const platformIds = normalizeIds(platforms);
+
+      await tx.mediaPlatform.deleteMany({ where: { mediaId: media.id } });
+
+      if (platformIds.length > 0) {
+        const existingPlatforms = await tx.platform.findMany({
+          where: { id: { in: platformIds } },
+          select: { id: true },
+        });
+        if (existingPlatforms.length !== platformIds.length) {
+          throw new AppError(
+            status.BAD_REQUEST,
+            "One or more platforms not found",
+          );
+        }
+        await tx.mediaPlatform.createMany({
+          data: platformIds.map((platformId) => ({
+            mediaId: media.id,
+            platformId,
+          })),
+        });
+      }
+    }
+
+    // 4. Update cast
+    if (cast !== undefined) {
+      await tx.castMember.deleteMany({ where: { mediaId: media.id } });
+
+      if (cast.length > 0) {
+        await tx.castMember.createMany({
+          data: cast.map(
+            (member: { name: string; role: string; image?: string }) => ({
+              mediaId: media.id,
+              name: member.name,
+              role: member.role,
+              image: member.image || null,
+            }),
+          ),
+        });
+      }
+    }
+
+    // 5. Return updated media with all relations
+    return tx.media.findUniqueOrThrow({
+      where: { id: media.id },
+      include: {
+        genres: true,
+        platforms: { include: { platform: true } },
+        cast: true,
+      },
+    });
   });
 
   return result;

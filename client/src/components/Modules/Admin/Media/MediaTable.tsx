@@ -131,9 +131,9 @@ const MediaTable = ({ initialQueryString }: { initialQueryString?: string }) => 
           onClearAll: clearAllFilters,
         }}
         toolbarAction={
-          <Link href="/admin/media/new">
-            <Button size="sm">
-              <Plus className="mr-2 h-4 w-4" />
+          <Link href="/admin/media/create">
+            <Button size="lg">
+              <Plus />
               Add Media
             </Button>
           </Link>

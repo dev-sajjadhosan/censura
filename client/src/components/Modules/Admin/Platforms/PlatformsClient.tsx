@@ -2,10 +2,7 @@
 
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  adminGetAllPlatforms,
-  adminDeletePlatform,
-} from "@/services/admin.service";
+import { getAllPlatforms, adminDeletePlatform } from "@/services/admin.service";
 import { useServerManagedDataTable } from "@/hooks/useServerManagedDataTable";
 import { PlatformsTable } from "./PlatformsTable";
 import { Platform } from "@/types/media.types";
@@ -41,8 +38,10 @@ export const PlatformsClient = () => {
   // Data fetching
   const { data, isLoading } = useQuery({
     queryKey: ["admin-platforms", tableState.queryStringFromUrl],
-    queryFn: () => adminGetAllPlatforms(tableState.queryStringFromUrl),
+    queryFn: () => getAllPlatforms(tableState.queryStringFromUrl),
   });
+
+  console.log("platfrom data", data);
 
   // Delete mutation
   const deleteMutation = useMutation({

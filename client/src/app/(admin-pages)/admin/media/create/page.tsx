@@ -25,7 +25,7 @@ export default function NewMediaPage() {
         </div>
       </div>
 
-      <MediaForm />
+      <MediaForm initialData={{}} />
     </div>
   );
 }

@@ -55,7 +55,7 @@ export default function DeleteMediaDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-500/10 text-red-500 mb-4">
             <Trash2 className="h-6 w-6" />
@@ -64,30 +64,33 @@ export default function DeleteMediaDialog({
             Delete Media Content?
           </DialogTitle>
           <DialogDescription className="text-center">
-            Are you sure you want to delete <span className="font-bold text-foreground">"{media.title}"</span>? 
-            This action is permanent and cannot be undone. All related reviews and metadata will be removed.
+            Are you sure you want to delete{" "}
+            <span className="font-bold text-foreground">"{media.title}"</span>?
+            This action is permanent and cannot be undone. All related reviews
+            and metadata will be removed.
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="sm:justify-center gap-2 mt-4">
+        <div className="flex justify-center gap-2 mt-4">
           <Button
             type="button"
             variant="ghost"
             onClick={() => onOpenChange(false)}
             disabled={isDeleting}
+            size={"lg"}
           >
             Cancel
           </Button>
           <Button
             type="button"
-            variant="destructive"
+            // variant="destructive"
             onClick={handleAction}
             disabled={isDeleting}
-            className="px-8 shadow-lg shadow-red-500/20"
+            size={"lg"}
           >
-            {isDeleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isDeleting ? <Loader2 className="animate-spin" /> : <Trash2 />}
             Confirm Delete
           </Button>
-        </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -2,6 +2,28 @@ import { User } from "./auth.types";
 import { PlatformName, ReviewStatus } from "./enum.types";
 import { Like } from "./reaction.types";
 
+/**
+ * 
+ * {
+  "id": "c4ec8beb-a95a-4c2a-a64a-f4f4cf9675de",
+  "mediaId": "8a82b0ac-a677-427c-9bb6-37a38e07d603",
+  "platformId": "07544a96-34db-41ad-8339-a6a28fec709a",
+  "platform": {
+    "id": "07544a96-34db-41ad-8339-a6a28fec709a",
+    "name": "Netflix",
+    "slug": "netflix",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia eos eligendi sunt voluptatibus velit a, recusandae magni laboriosam similique inventore, et placeat maiores. Hic, itaque!",
+    "icon": "https://i.pinimg.com/736x/8f/8f/49/8f8f4940be98db59d6f99595a1292adf.jpg",
+    "url": null,
+    "type": null,
+    "isFeatured": false,
+    "isPublished": true,
+    "createdAt": "2026-03-29T15:38:20.694Z",
+    "updatedAt": "2026-03-29T15:38:20.694Z"
+  }
+}
+ */
+
 export interface Platform {
   id: string;
   name: string;
@@ -24,7 +46,6 @@ export interface MediaPlatform {
   platformId: string;
   platform: Platform;
   media: Media;
-
   createdAt: string;
   updatedAt: string;
 }

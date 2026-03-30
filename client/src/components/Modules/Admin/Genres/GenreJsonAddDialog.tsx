@@ -2,24 +2,24 @@
 
 import { JsonImportModal } from "@/components/Shared/JsonEditor/JsonImportModal";
 import { Button } from "@/components/ui/button";
-import { adminCreateMediaBulk } from "@/services/admin.service";
+import { adminCreateGenreBulk } from "@/services/admin.service";
 import { useMutation } from "@tanstack/react-query";
 import { Braces, Plus } from "lucide-react";
 import { useState } from "react";
 
-export default function MediaJsonAddDialog() {
+export default function GenreJsonAddDialog() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
-  const { mutateAsync: createMediaBulk, isPending } =
+  const { mutateAsync: createGenreBulk, isPending } =
     useMutation({
-      mutationKey: ["media-bulk-import"],
-      mutationFn: (data: any) => adminCreateMediaBulk(data),
+      mutationKey: ["genre-bulk-import"],
+      mutationFn: (data: any) => adminCreateGenreBulk(data),
       onSuccess: () => {
         setIsImportModalOpen(false);
       },
     });
   const handleBulkImport = async (data: any) => {
     console.log("Importing:", data);
-    const res = await createMediaBulk(data);
+    const res = await createGenreBulk(data);
     console.log("Bulk Import Response:", res);
   };
 
@@ -30,8 +30,8 @@ export default function MediaJsonAddDialog() {
         Import JSON
       </Button>
       <JsonImportModal
-        title="Bulk Import Media"
-        description="Paste an array of media objects to import multiple titles at once."
+        title="Bulk Import Genre"
+        description="Paste an array of genre objects to import multiple genres at once."
         isOpen={isImportModalOpen}
         onOpenChange={setIsImportModalOpen}
         onImport={handleBulkImport}

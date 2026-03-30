@@ -14,7 +14,7 @@ import UpdateUserStatusDialog from "./UpdateUserStatusDialog";
 import { TanTableFilterConfig, TanTableFilterValues } from "@/components/Shared/table/TanTableFilters";
 
 const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 10;
+const DEFAULT_LIMIT = 10; 
 
 const USER_FILTER_DEFINITIONS = [
   serverManagedFilter.single("role"),

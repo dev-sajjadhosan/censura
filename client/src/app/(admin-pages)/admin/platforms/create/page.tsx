@@ -4,11 +4,12 @@ import { PlatformForm } from "@/components/Modules/Admin/Platforms/PlatformForm"
 import { ChevronLeft, Globe, Layout, MonitorPlay } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import PlatformJsonAddDialog from "@/components/Modules/Admin/Platforms/PlatformJsonAddDialog";
 
 export default function CreatePlatformPage() {
   return (
     <div className="w-full p-5 space-y-10">
-      <div className="flex flex-col gap-6">
+      <div className="flex justify-between items-center gap-4">
         <div className="flex items-center gap-6">
           <div>
             <MonitorPlay className="h-7 w-7" />
@@ -20,6 +21,7 @@ export default function CreatePlatformPage() {
             </p>
           </div>
         </div>
+        <PlatformJsonAddDialog/>
       </div>
 
       <div className="mt-25">

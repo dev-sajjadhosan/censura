@@ -7,6 +7,14 @@ export const adminCreateMediaBulk = async (payload: any) => {
   return await axiosClient.post("/media/bulk", payload);
 };
 
+export const adminCreateGenreBulk = async (paylaod:any) => {
+  return await axiosClient.post("/genres/bulk", paylaod)
+}
+
+export const adminCreatePlatformBulk = async (payload:any) => {
+  return await axiosClient.post("/platforms/bulk", payload)
+}
+
 // ─── Media CRUD ────────────────────────────────────────────────
 export const adminGetAllMedia = async (params?: any) => {
   return await axiosClient.get<any[]>("/media", { params });

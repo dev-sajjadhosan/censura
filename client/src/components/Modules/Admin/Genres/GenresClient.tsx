@@ -13,6 +13,7 @@ import { UpdateGenreModal } from "./UpdateGenreModal";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import GenreDeleteModal from "./GenreDeleteModal";
+import GenreJsonAddDialog from "./GenreJsonAddDialog";
 
 export const GenresClient = () => {
   const queryClient = useQueryClient();
@@ -57,15 +58,18 @@ export const GenresClient = () => {
           </p>
         </div>
 
-        <Button
-          asChild
-          className="gap-2 h-11 px-6 shadow-lg shadow-primary/10 rounded-xl relative z-10"
-        >
-          <Link href="/admin/genres/create">
-            <Plus className="h-4.5 w-4.5" />
-            Create Genre
-          </Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <GenreJsonAddDialog />
+          <Button
+            asChild
+            size={"lg"}
+          >
+            <Link href="/admin/genres/create">
+              <Plus className="h-4.5 w-4.5" />
+              Create Genre
+            </Link>
+          </Button>
+        </div>
       </div>
 
       <div>

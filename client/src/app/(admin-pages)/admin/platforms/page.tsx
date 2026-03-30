@@ -1,4 +1,4 @@
-import { PlatformsClient } from "@/components/Modules/Admin/Platforms/PlatformsClient";
+import { PlatformsClient } from "@/components/Modules/Admin/Platforms/PlatformsTable";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

@@ -141,7 +141,7 @@ const MediaTable = ({
           onClearAll: clearAllFilters,
         }}
         toolbarAction={
-          <>
+          <div className="flex items-center gap-3">
             <Link href="/admin/media/create">
               <Button size="lg">
                 <Plus />
@@ -149,7 +149,7 @@ const MediaTable = ({
               </Button>
             </Link>
             <MediaJsonAddDialog />
-          </>
+          </div>
         }
         meta={meta}
         actions={{

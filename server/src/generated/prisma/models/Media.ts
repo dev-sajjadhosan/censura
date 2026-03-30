@@ -48,7 +48,7 @@ export type MediaMinAggregateOutputType = {
   id: string | null
   title: string | null
   slug: string | null
-  type: $Enums.MediaType | null
+  type: string | null
   synopsis: string | null
   releaseYear: number | null
   director: string | null
@@ -72,7 +72,7 @@ export type MediaMaxAggregateOutputType = {
   id: string | null
   title: string | null
   slug: string | null
-  type: $Enums.MediaType | null
+  type: string | null
   synopsis: string | null
   releaseYear: number | null
   director: string | null
@@ -299,7 +299,7 @@ export type MediaGroupByOutputType = {
   id: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -346,7 +346,7 @@ export type MediaWhereInput = {
   id?: Prisma.StringFilter<"Media"> | string
   title?: Prisma.StringFilter<"Media"> | string
   slug?: Prisma.StringFilter<"Media"> | string
-  type?: Prisma.EnumMediaTypeFilter<"Media"> | $Enums.MediaType
+  type?: Prisma.StringFilter<"Media"> | string
   synopsis?: Prisma.StringFilter<"Media"> | string
   releaseYear?: Prisma.IntFilter<"Media"> | number
   director?: Prisma.StringFilter<"Media"> | string
@@ -418,7 +418,7 @@ export type MediaWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.MediaWhereInput[]
   NOT?: Prisma.MediaWhereInput | Prisma.MediaWhereInput[]
   title?: Prisma.StringFilter<"Media"> | string
-  type?: Prisma.EnumMediaTypeFilter<"Media"> | $Enums.MediaType
+  type?: Prisma.StringFilter<"Media"> | string
   synopsis?: Prisma.StringFilter<"Media"> | string
   releaseYear?: Prisma.IntFilter<"Media"> | number
   director?: Prisma.StringFilter<"Media"> | string
@@ -484,7 +484,7 @@ export type MediaScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Media"> | string
   title?: Prisma.StringWithAggregatesFilter<"Media"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Media"> | string
-  type?: Prisma.EnumMediaTypeWithAggregatesFilter<"Media"> | $Enums.MediaType
+  type?: Prisma.StringWithAggregatesFilter<"Media"> | string
   synopsis?: Prisma.StringWithAggregatesFilter<"Media"> | string
   releaseYear?: Prisma.IntWithAggregatesFilter<"Media"> | number
   director?: Prisma.StringWithAggregatesFilter<"Media"> | string
@@ -508,7 +508,7 @@ export type MediaCreateInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -542,7 +542,7 @@ export type MediaUncheckedCreateInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -576,7 +576,7 @@ export type MediaUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -610,7 +610,7 @@ export type MediaUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -644,7 +644,7 @@ export type MediaCreateManyInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -668,7 +668,7 @@ export type MediaUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -692,7 +692,7 @@ export type MediaUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -888,10 +888,6 @@ export type MediaUncheckedUpdateManyWithoutGenresNestedInput = {
   deleteMany?: Prisma.MediaScalarWhereInput | Prisma.MediaScalarWhereInput[]
 }
 
-export type EnumMediaTypeFieldUpdateOperationsInput = {
-  set?: $Enums.MediaType
-}
-
 export type IntFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -1022,7 +1018,7 @@ export type MediaCreateWithoutCommentsInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -1055,7 +1051,7 @@ export type MediaUncheckedCreateWithoutCommentsInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -1104,7 +1100,7 @@ export type MediaUpdateWithoutCommentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1137,7 +1133,7 @@ export type MediaUncheckedUpdateWithoutCommentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1170,7 +1166,7 @@ export type MediaCreateWithoutLikesInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -1203,7 +1199,7 @@ export type MediaUncheckedCreateWithoutLikesInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -1252,7 +1248,7 @@ export type MediaUpdateWithoutLikesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1285,7 +1281,7 @@ export type MediaUncheckedUpdateWithoutLikesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1318,7 +1314,7 @@ export type MediaCreateWithoutGenresInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -1351,7 +1347,7 @@ export type MediaUncheckedCreateWithoutGenresInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -1408,7 +1404,7 @@ export type MediaScalarWhereInput = {
   id?: Prisma.StringFilter<"Media"> | string
   title?: Prisma.StringFilter<"Media"> | string
   slug?: Prisma.StringFilter<"Media"> | string
-  type?: Prisma.EnumMediaTypeFilter<"Media"> | $Enums.MediaType
+  type?: Prisma.StringFilter<"Media"> | string
   synopsis?: Prisma.StringFilter<"Media"> | string
   releaseYear?: Prisma.IntFilter<"Media"> | number
   director?: Prisma.StringFilter<"Media"> | string
@@ -1432,7 +1428,7 @@ export type MediaCreateWithoutCastInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -1465,7 +1461,7 @@ export type MediaUncheckedCreateWithoutCastInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -1514,7 +1510,7 @@ export type MediaUpdateWithoutCastInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1547,7 +1543,7 @@ export type MediaUncheckedUpdateWithoutCastInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1580,7 +1576,7 @@ export type MediaCreateWithoutPlatformsInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -1613,7 +1609,7 @@ export type MediaUncheckedCreateWithoutPlatformsInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -1662,7 +1658,7 @@ export type MediaUpdateWithoutPlatformsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1695,7 +1691,7 @@ export type MediaUncheckedUpdateWithoutPlatformsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1728,7 +1724,7 @@ export type MediaCreateWithoutPurchasesInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -1761,7 +1757,7 @@ export type MediaUncheckedCreateWithoutPurchasesInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -1810,7 +1806,7 @@ export type MediaUpdateWithoutPurchasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1843,7 +1839,7 @@ export type MediaUncheckedUpdateWithoutPurchasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1876,7 +1872,7 @@ export type MediaCreateWithoutBookmarksInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -1909,7 +1905,7 @@ export type MediaUncheckedCreateWithoutBookmarksInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -1958,7 +1954,7 @@ export type MediaUpdateWithoutBookmarksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1991,7 +1987,7 @@ export type MediaUncheckedUpdateWithoutBookmarksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2024,7 +2020,7 @@ export type MediaCreateWithoutFavoritesInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -2057,7 +2053,7 @@ export type MediaUncheckedCreateWithoutFavoritesInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -2106,7 +2102,7 @@ export type MediaUpdateWithoutFavoritesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2139,7 +2135,7 @@ export type MediaUncheckedUpdateWithoutFavoritesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2172,7 +2168,7 @@ export type MediaCreateWithoutReviewsInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -2205,7 +2201,7 @@ export type MediaUncheckedCreateWithoutReviewsInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -2254,7 +2250,7 @@ export type MediaUpdateWithoutReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2287,7 +2283,7 @@ export type MediaUncheckedUpdateWithoutReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2320,7 +2316,7 @@ export type MediaCreateWithoutWatchlistItemsInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -2353,7 +2349,7 @@ export type MediaUncheckedCreateWithoutWatchlistItemsInput = {
   id?: string
   title: string
   slug: string
-  type: $Enums.MediaType
+  type: string
   synopsis: string
   releaseYear: number
   director: string
@@ -2402,7 +2398,7 @@ export type MediaUpdateWithoutWatchlistItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2435,7 +2431,7 @@ export type MediaUncheckedUpdateWithoutWatchlistItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2468,7 +2464,7 @@ export type MediaUpdateWithoutGenresInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2501,7 +2497,7 @@ export type MediaUncheckedUpdateWithoutGenresInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2534,7 +2530,7 @@ export type MediaUncheckedUpdateManyWithoutGenresInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   synopsis?: Prisma.StringFieldUpdateOperationsInput | string
   releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
   director?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2808,7 +2804,7 @@ export type $MediaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     id: string
     title: string
     slug: string
-    type: $Enums.MediaType
+    type: string
     synopsis: string
     releaseYear: number
     director: string
@@ -3262,7 +3258,7 @@ export interface MediaFieldRefs {
   readonly id: Prisma.FieldRef<"Media", 'String'>
   readonly title: Prisma.FieldRef<"Media", 'String'>
   readonly slug: Prisma.FieldRef<"Media", 'String'>
-  readonly type: Prisma.FieldRef<"Media", 'MediaType'>
+  readonly type: Prisma.FieldRef<"Media", 'String'>
   readonly synopsis: Prisma.FieldRef<"Media", 'String'>
   readonly releaseYear: Prisma.FieldRef<"Media", 'Int'>
   readonly director: Prisma.FieldRef<"Media", 'String'>

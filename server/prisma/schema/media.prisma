@@ -2,7 +2,7 @@ model Media {
   id             String    @id @default(uuid())
   title          String
   slug           String    @unique
-  type           MediaType
+  type           String
   synopsis       String    @db.Text
   releaseYear    Int
   director       String

@@ -24,10 +24,6 @@ const REVIEW_FILTER_DEFINITIONS = [
 const ReviewsTable = ({ initialQueryString }: { initialQueryString?: string }) => {
   const searchParams = useSearchParams();
 
-  // We actually don't have a view/edit/delete modal for reviews yet in this table pattern,
-  // we'll rely on the existing status update logic if needed, but for now just the list.
-  const { tableActions } = useRowActionModalState<any>();
-
   const {
     queryStringFromUrl,
     optimisticSortingState,
@@ -123,7 +119,6 @@ const ReviewsTable = ({ initialQueryString }: { initialQueryString?: string }) =
         meta={meta}
         actions={{
           onView: (review) => {
-             // Logic to show review full content could go here
              toast.info(`Viewing review by ${review.user?.name}`);
           },
         }}

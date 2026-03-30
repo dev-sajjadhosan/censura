@@ -47,7 +47,7 @@ export default function GenresInMedia({
                     ? "default"
                     : initialData?.some((item) => item.id === g.id)
                       ? "default"
-                      : "ghost"
+                      : "outline"
                 }
                 onClick={() => {
                   if (field.state.value.includes(g.id)) {

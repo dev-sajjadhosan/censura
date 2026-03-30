@@ -56,7 +56,7 @@ export default function MediaForm({
       adminUpdateMedia(initialData?.id, payload),
   });
 
-  console.log("initialData platforms: ", initialData.platforms);
+  console.log("initialData : ", initialData);
 
   const form = useForm({
     defaultValues: {

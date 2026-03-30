@@ -22,7 +22,7 @@ const createPlatform = async (payload: Prisma.PlatformCreateInput) => {
 const getAllPlatforms = async (query: Record<string, unknown>) => {
   const platformQuery = new QueryBuilder(prisma.platform, query as any, {
     searchableFields: ["name", "slug", "description"],
-    filterableFields: ["isFeatured", "isPublished"],
+    filterableFields: ["isFeatured", "isPublished", "type"],
   })
     .search()
     .filter()
@@ -76,7 +76,7 @@ const createManyPlatfrom = async (payload: any) => {
     skipDuplicates: true,
   });
   return res;
-}
+};
 
 export const PlatformService = {
   createPlatform,

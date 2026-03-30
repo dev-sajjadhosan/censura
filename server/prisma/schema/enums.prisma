@@ -50,8 +50,6 @@ enum SubscriptionStatus {
   PAST_DUE
 }
 
-
-
 enum SubStatus {
   ACTIVE
   CANCELLED

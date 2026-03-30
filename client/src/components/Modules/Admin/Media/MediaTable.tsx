@@ -72,7 +72,7 @@ const MediaTable = ({
     });
 
   const { data, isLoading, isFetching } = useQuery({
-    queryKey: ["media", queryString],
+    queryKey: ["admin-medias", queryString],
     queryFn: () =>
       adminGetAllMedia(Object.fromEntries(new URLSearchParams(queryString))),
   });

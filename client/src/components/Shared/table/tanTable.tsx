@@ -26,7 +26,15 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  Edit,
+  Eye,
+  MoreHorizontal,
+  Trash2,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import TanTableFilters, {
   TanTableFilterConfig,
@@ -75,7 +83,6 @@ interface TanTableProps<TData> {
   meta?: PaginationMeta;
 }
 
-
 const TanTable = <TData,>({
   data = [] as TData[],
   columns,
@@ -109,22 +116,21 @@ const TanTable = <TData,>({
             return (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant={"ghost"} className="h-8 w-8 p-0">
-                    <span className="sr-only">Open Menu</span>
-                    <MoreHorizontal className="h-4 w-4" />
+                  <Button variant={"ghost"} size={"icon-lg"}>
+                    <MoreHorizontal />
                   </Button>
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="w-40 p-3">
                   {actions.onView && (
                     <DropdownMenuItem onClick={() => actions.onView?.(rowData)}>
-                      View
+                      <Eye className="mr-2" /> View
                     </DropdownMenuItem>
                   )}
 
                   {actions.onEdit && (
                     <DropdownMenuItem onClick={() => actions.onEdit?.(rowData)}>
-                      Edit
+                      <Edit className="mr-2" /> Edit
                     </DropdownMenuItem>
                   )}
 
@@ -132,7 +138,7 @@ const TanTable = <TData,>({
                     <DropdownMenuItem
                       onClick={() => actions.onDelete?.(rowData)}
                     >
-                      Delete
+                      <Trash2 className="mr-2" /> Delete
                     </DropdownMenuItem>
                   )}
                 </DropdownMenuContent>

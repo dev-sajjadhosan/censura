@@ -21,7 +21,7 @@ const createGenre = async (payload: Prisma.GenreCreateInput) => {
 
 const getAllGenres = async (query: Record<string, unknown>) => {
   const genreQuery = new QueryBuilder(prisma.genre, query as any, {
-    searchableFields: ["name", "slug", "description"],
+    searchableFields: ["name", "description"],
     filterableFields: ["isFeatured", "isPublished"],
   })
     .search()

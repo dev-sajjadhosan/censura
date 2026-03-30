@@ -1,35 +1,43 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import TanTable from "@/components/Shared/table/tanTable";
 import { useServerManagedDataTable } from "@/hooks/useServerManagedDataTable";
 import { useServerManagedDataTableSearch } from "@/hooks/useServerManagedDataTableSearch";
-import { useServerManagedDataTableFilters, serverManagedFilter } from "@/hooks/useServerManagedDataTableFilters";
+import {
+  useServerManagedDataTableFilters,
+  serverManagedFilter,
+} from "@/hooks/useServerManagedDataTableFilters";
 import { useRowActionModalState } from "@/hooks/useRowActionModalState";
 import { adminGetAllUsers } from "@/services/admin.service";
 import { userColumns } from "./userColumns";
 import UpdateUserStatusDialog from "./UpdateUserStatusDialog";
-import { TanTableFilterConfig, TanTableFilterValues } from "@/components/Shared/table/TanTableFilters";
+import {
+  TanTableFilterConfig,
+  TanTableFilterValues,
+} from "@/components/Shared/table/TanTableFilters";
+import ViewUserDialog from "./ViewUserDialog";
+import { User } from "@/types/auth.types";
 
 const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 10; 
+const DEFAULT_LIMIT = 10;
 
 const USER_FILTER_DEFINITIONS = [
   serverManagedFilter.single("role"),
   serverManagedFilter.single("status"),
 ];
 
-const UsersTable = ({ initialQueryString }: { initialQueryString?: string }) => {
+const UsersTable = ({
+  initialQueryString,
+}: {
+  initialQueryString?: string;
+}) => {
   const searchParams = useSearchParams();
 
-  const {
-    deletingItem: statusUpdateItem,
-    isDeleteDialogOpen: isStatusUpdateOpen,
-    onDeleteOpenChange: onStatusUpdateOpenChange,
-    tableActions,
-  } = useRowActionModalState<any>();
+  const [viewUser, setViewUser] = useState<User | null>(null);
+  const [statusUpdateUser, setStatusUpdateUser] = useState<User | null>(null);
 
   const {
     queryStringFromUrl,
@@ -47,24 +55,29 @@ const UsersTable = ({ initialQueryString }: { initialQueryString?: string }) => 
 
   const queryString = queryStringFromUrl || initialQueryString || "";
 
-  const { searchTermFromUrl, handleDebouncedSearchChange } = useServerManagedDataTableSearch({
-    searchParams,
-    updateParams,
-  });
+  const { searchTermFromUrl, handleDebouncedSearchChange } =
+    useServerManagedDataTableSearch({
+      searchParams,
+      updateParams,
+    });
 
-  const { filterValues, handleFilterChange, clearAllFilters } = useServerManagedDataTableFilters({
-    searchParams,
-    definitions: USER_FILTER_DEFINITIONS,
-    updateParams,
-  });
+  const { filterValues, handleFilterChange, clearAllFilters } =
+    useServerManagedDataTableFilters({
+      searchParams,
+      definitions: USER_FILTER_DEFINITIONS,
+      updateParams,
+    });
 
   const { data, isLoading, isFetching } = useQuery({
     queryKey: ["users", queryString],
-    queryFn: () => adminGetAllUsers(Object.fromEntries(new URLSearchParams(queryString))),
+    queryFn: () =>
+      adminGetAllUsers(Object.fromEntries(new URLSearchParams(queryString))),
   });
 
   const users = (data as any)?.data?.data || [];
   const meta = (data as any)?.data?.meta;
+
+  console.log("users from user-table: ", users);
 
   const filterConfigs = useMemo<TanTableFilterConfig[]>(() => {
     return [
@@ -126,14 +139,20 @@ const UsersTable = ({ initialQueryString }: { initialQueryString?: string }) => 
         }}
         meta={meta}
         actions={{
-          onEdit: (user) => tableActions.onDelete(user), // Mapped to block/unblock action
+          onView: (user) => setViewUser(user),
+          onEdit: (user) => setStatusUpdateUser(user), // Mapped to block/unblock action
         }}
       />
 
       <UpdateUserStatusDialog
-        open={isStatusUpdateOpen}
-        onOpenChange={onStatusUpdateOpenChange}
-        user={statusUpdateItem}
+        open={!!statusUpdateUser}
+        onOpenChange={(open) => !open && setStatusUpdateUser(null)}
+        user={statusUpdateUser}
+      />
+      <ViewUserDialog
+        open={!!viewUser}
+        onOpenChange={(open) => !open && setViewUser(null)}
+        user={viewUser!!}
       />
     </>
   );

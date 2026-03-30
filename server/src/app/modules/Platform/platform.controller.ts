@@ -17,6 +17,9 @@ const createPlatform = catchAsync(async (req: Request, res: Response) => {
 
 const getAllPlatforms = catchAsync(async (req: Request, res: Response) => {
   const query = req.query;
+
+  console.log("query from platfrom get all: ", query);
+
   const result = await PlatformService.getAllPlatforms(query);
 
   sendResponse(res, {

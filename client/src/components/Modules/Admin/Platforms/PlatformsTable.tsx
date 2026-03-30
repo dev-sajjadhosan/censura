@@ -6,21 +6,12 @@ import { getAllPlatforms, adminDeletePlatform } from "@/services/admin.service";
 import { useServerManagedDataTable } from "@/hooks/useServerManagedDataTable";
 import { Platform } from "@/types/media.types";
 import { Button } from "@/components/ui/button";
-import { Plus, Globe, ChevronRight } from "lucide-react";
+import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { UpdatePlatformModal } from "./UpdatePlatformModal";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+
 import PlatformDeleteModal from "./PlatformDeleteModal";
 import PlatformJsonAddDialog from "./PlatformJsonAddDialog";
 import {
@@ -50,7 +41,6 @@ export const PlatformsClient = ({
 }) => {
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
-  const tableState = useServerManagedDataTable({ searchParams });
 
   const {
     deletingItem: statusUpdateItem,
@@ -136,6 +126,9 @@ export const PlatformsClient = ({
           { label: "Subscription", value: "SUBSCRIPTION" },
           { label: "Rental", value: "RENTAL" },
           { label: "Buy", value: "BUY" },
+          { label: "Free with Ads", value: "FREE_WITH_ADS" },
+          { label: "Limited Free", value: "LIMITED_FREE" },
+          { label: "One Time", value: "ONE_TIME" },
         ],
       },
       {

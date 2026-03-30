@@ -1,19 +1,8 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Genre } from "@/types/media.types";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Genre } from "@/types/media.types"
 import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal, Edit, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import StatusBadgeCell from "@/components/Shared/ceil/StatusBadgeCell";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import DateCeil from "@/components/Shared/ceil/DateCeil";
@@ -23,9 +12,13 @@ export const getGenreColumns = (
   onDelete: (genre: Genre) => void,
 ): ColumnDef<Genre>[] => [
   {
-    id: "No.",
-    header: "No",
-    cell: ({ row }) => row.index + 1,
+    id: "id",
+    header: "Id",
+    cell: ({ row }) => (
+      <span className="text-xs text-muted-foreground">
+        {row.original.id.slice(0, 5)}...{row.original.id.slice(-5)}
+      </span>
+    ),
     enableSorting: false,
     enableHiding: false,
   },
@@ -54,6 +47,7 @@ export const getGenreColumns = (
   },
   {
     accessorKey: "isPublished",
+    enableSorting: false,
     header: "Status",
     cell: ({ row }) => (
       <StatusBadgeCell
@@ -65,15 +59,13 @@ export const getGenreColumns = (
     accessorKey: "createdAt",
     header: "Created At",
     cell: ({ row }) => (
-      <DateCeil
-        date={row.original.createdAt}
-        isTimeShow={false}
-      />
+      <DateCeil date={row.original.createdAt} isTimeShow={false} />
     ),
   },
   {
     accessorKey: "isFeatured",
     header: "Featured",
+    enableSorting: false,
     cell: ({ row }) => (
       <Badge
         variant={row.original.isFeatured ? "default" : "secondary"}
@@ -83,22 +75,22 @@ export const getGenreColumns = (
       </Badge>
     ),
   },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const genre = row.original;
-      return (
-        <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" onClick={() => onEdit(genre)}>
-            <Edit />
-            {/* Edit Genre */}
-          </Button>
-          <Button variant="ghost" size="icon" onClick={() => onDelete(genre)}>
-            <Trash2 />
-            {/* Delete Genre */}
-          </Button>
-        </div>
-      );
-    },
-  },
+  // {
+  //   id: "actions",
+  //   cell: ({ row }) => {
+  //     const genre = row.original;
+  //     return (
+  //       <div className="flex items-center gap-3">
+  //         <Button variant="ghost" size="icon" onClick={() => onEdit(genre)}>
+  //           <Edit />
+  //           {/* Edit Genre */}
+  //         </Button>
+  //         <Button variant="ghost" size="icon" onClick={() => onDelete(genre)}>
+  //           <Trash2 />
+  //           {/* Delete Genre */}
+  //         </Button>
+  //       </div>
+  //     );
+  //   },
+  // },
 ];

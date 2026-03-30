@@ -2,34 +2,24 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Platform } from "@/types/media.types";
-import { Checkbox } from "@/components/ui/checkbox";
-import { MoreHorizontal, Edit, Trash2, Globe } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { TitleCaseFormat } from "@/utils/app.utils";
 
 export const getPlatformColumns = (
   onEdit: (platform: Platform) => void,
   onDelete: (platform: Platform) => void,
 ): ColumnDef<Platform>[] => [
-  {
-    id: "No.",
-    header: "No.",
-    cell: ({ row, table }) => (
-      <span className="text-sm font-medium text-muted-foreground">
-        {table.getRowModel().rows.indexOf(row) + 1}
-      </span>
-    ),
-  },
+  // {
+  //   id: "id",
+  //   header: "Id",
+  //   cell: ({ row, table }) => (
+  //     <span className="text-sm font-medium text-muted-foreground">
+  //       {row.original.id.slice(0, 5)}...{row.original.id.slice(-3)}
+  //     </span>
+  //   ),
+  // },
   {
     accessorKey: "platform",
     header: "Platform",
@@ -55,8 +45,8 @@ export const getPlatformColumns = (
     accessorKey: "type",
     header: "Plan Type",
     cell: ({ row }) => (
-      <span className="text-sm font-medium text-muted-foreground uppercase tracking-tight">
-        {row.original.type || "N/A"}
+      <span className="text-sm font-medium text-muted-foreground tracking-tight">
+        {row.original.type ? TitleCaseFormat(row.original.type) : "N/A"}
       </span>
     ),
   },
@@ -64,7 +54,9 @@ export const getPlatformColumns = (
     accessorKey: "_",
     header: "Total Media",
     cell: ({ row }) => (
-      <span className="">{row.original?.mediaPlatforms?.length || 0}</span>
+      <span>
+        {row.original?.mediaPlatforms?.length || "000"}
+      </span>
     ),
   },
   {
@@ -74,7 +66,7 @@ export const getPlatformColumns = (
       <span className="text-xs text-blue-500 hover:underline cursor-pointer truncate max-w-[200px] block">
         {row.original.url ? (
           <Link href={row.original.url || "#"} target="_blank">
-           Visit Site
+            Visit Site
           </Link>
         ) : (
           "Not Linked"
@@ -84,6 +76,7 @@ export const getPlatformColumns = (
   },
   {
     accessorKey: "isFeatured",
+    enableSorting: false,
     header: "Featured",
     cell: ({ row }) => (
       <Badge
@@ -96,6 +89,7 @@ export const getPlatformColumns = (
   },
   {
     accessorKey: "isPublished",
+    enableSorting: false,
     header: "Published",
     cell: ({ row }) => (
       <Badge
@@ -106,5 +100,4 @@ export const getPlatformColumns = (
       </Badge>
     ),
   },
-  
 ];

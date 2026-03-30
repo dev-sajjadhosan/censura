@@ -17,9 +17,11 @@ export default function PlatfromInMedia({
 }) {
   const { data, isLoading } = useQuery({
     queryKey: ["admin-platforms"],
-    queryFn: () => getAllPlatforms(),
+    queryFn: () => getAllPlatforms({ page: 1, limit: 100 }),
   });
   const platfroms = data?.data?.data;
+
+  console.log("initialData", initialData);
 
   return (
     <>
@@ -48,7 +50,7 @@ export default function PlatfromInMedia({
                     ? "default"
                     : initialData?.some((item) => item.platform.id === p.id)
                       ? "default"
-                      : "ghost"
+                      : "outline"
                 }
                 onClick={() => {
                   if (field.state.value.includes(p.id)) {

@@ -377,14 +377,81 @@ const getMediaBySlug = async (slug: string) => {
 
 // -----------------
 
-const createManyMedia = async (payload: any) => {
-  const result = await prisma.media.createMany({
-    data: payload,
-    skipDuplicates: true,
-  });
-  return result;
-};
+const createManyMedia = async (payload: any[]) => {
+  const results = await prisma.$transaction(async (tx) => {
+    const createdMedia = [];
 
+    for (const item of payload) {
+      const {
+        genres,
+        platforms,
+        cast,
+        slug,
+        releaseYear,
+        runtimeMinutes,
+        seasons,
+        ...mediaData
+      } = item;
+
+      // 1. Format the slug and numbers (Matching your single handler logic)
+      const slugMaker = slug
+        .toLowerCase()
+        .replace(/ /g, "-")
+        .replace(/[^\w-]+/g, "");
+
+      // 2. Create the individual Media record
+      const media = await tx.media.create({
+        data: {
+          ...mediaData,
+          slug: slugMaker,
+          releaseYear: Number(releaseYear),
+          runtimeMinutes: Number(runtimeMinutes) || null,
+          seasons: Number(seasons) || null,
+        },
+      });
+
+      // 3. Connect Genres (Many-to-Many)
+      if (genres?.length > 0) {
+        await tx.media.update({
+          where: { id: media.id },
+          data: {
+            genres: {
+              connect: genres.map((id: string) => ({ id })),
+            },
+          },
+        });
+      }
+
+      // 4. Connect Platforms (via Join Table)
+      if (platforms?.length > 0) {
+        await tx.mediaPlatform.createMany({
+          data: platforms.map((platformId: string) => ({
+            mediaId: media.id,
+            platformId,
+          })),
+        });
+      }
+
+      // 5. Create Cast Members
+      if (cast?.length > 0) {
+        await tx.castMember.createMany({
+          data: cast.map((member: any) => ({
+            mediaId: media.id,
+            name: member.name,
+            role: member.role,
+            image: member.image || null,
+          })),
+        });
+      }
+
+      createdMedia.push(media);
+    }
+    
+    return createdMedia;
+  });
+
+  return results;
+};
 export const MediaService = {
   getAllMedia,
   getSingleMedia,

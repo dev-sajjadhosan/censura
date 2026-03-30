@@ -1,4 +1,4 @@
-import { GenresClient } from "@/components/Modules/Admin/Genres/GenresClient";
+import { GenresClient } from "@/components/Modules/Admin/Genres/GenresTable";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

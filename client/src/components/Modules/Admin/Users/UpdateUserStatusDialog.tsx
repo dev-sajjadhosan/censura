@@ -60,25 +60,31 @@ export default function UpdateUserStatusDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-lg bg-secondary p-9">
         <DialogHeader>
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10 text-destructive mb-4">
-            {isBlocked ? <UserCheck className="h-6 w-6" /> : <UserX className="h-6 w-6" />}
+            {isBlocked ? (
+              <UserCheck className="h-6 w-6" />
+            ) : (
+              <UserX className="h-6 w-6" />
+            )}
           </div>
           <DialogTitle className="text-center font-bold">
             {isBlocked ? "Unblock User?" : "Block User?"}
           </DialogTitle>
           <DialogDescription className="text-center">
-            Are you sure you want to {action} <span className="font-semibold text-foreground">{user.name}</span>?
-            {isBlocked 
-              ? " This will restore their access to the platform." 
+            Are you sure you want to {action}{" "}
+            <span className="font-semibold text-orange-500">{user.name}</span>?
+            {isBlocked
+              ? " This will restore their access to the platform."
               : " This will prevent them from logging in or performing any actions."}
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="sm:justify-center gap-2 mt-2">
+        <div className="flex items-center justify-center gap-5 mt-2">
           <Button
             type="button"
             variant="ghost"
+            size={"lg"}
             onClick={() => onOpenChange(false)}
             disabled={isSubmitting}
           >
@@ -87,14 +93,15 @@ export default function UpdateUserStatusDialog({
           <Button
             type="button"
             variant={isBlocked ? "default" : "destructive"}
+            size={"lg"}
             onClick={handleAction}
             disabled={isSubmitting}
             className="px-8"
           >
             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Confirm {isBlocked ? "Unblock" : "Block"}
+            Confirm? {isBlocked ? "Unblock" : "Block"}
           </Button>
-        </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -1,141 +1,114 @@
 import { NextFunction, Request, Response } from "express";
-
-import AppError from "../error-helpers/AppError";
-import status from "http-status";
-import { envVars } from "../config/env";
-
 import { Role, UserStatus } from "../../generated/prisma/enums";
-import { prisma } from "../lib/prisma";
 import { CookieUtils } from "../utils/cookie";
+import status from "http-status";
+import AppError from "../error-helpers/AppError";
+import { prisma } from "../lib/prisma";
 import { jwtUtils } from "../utils/jwt";
+import { envVars } from "../config/env";
 
 export const checkAuth = (...authRoles: Role[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // Session Token Verification
+      // 1. Check session token
       const sessionToken = CookieUtils.getCookie(
         req,
         "better-auth.session_token",
       );
-
       if (!sessionToken) {
-        throw new AppError(
-          status.UNAUTHORIZED,
-          "Unauthorized access! No session token provided.",
-        );
+        throw new AppError(status.UNAUTHORIZED, "No session token provided.");
       }
 
-      if (sessionToken) {
-        const sessionExist = await prisma.session.findFirst({
+      const sessionExist = await prisma.session.findFirst({
+        where: {
+          token: sessionToken,
+          expiresAt: { gt: new Date() },
+        },
+        include: { user: true },
+      });
+
+      // 2. Session must exist
+      if (!sessionExist || !sessionExist.user) {
+        throw new AppError(status.UNAUTHORIZED, "Invalid or expired session.");
+      }
+
+      const user = sessionExist.user;
+
+      // 3. User must be active
+      if (
+        user.status === UserStatus.BLOCKED ||
+        user.status === UserStatus.DELETED ||
+        user.isDeleted
+      ) {
+        throw new AppError(status.UNAUTHORIZED, "User account is not active.");
+      }
+
+      // 4. Email must be verified
+      if (!user.emailVerified) {
+        throw new AppError(status.UNAUTHORIZED, "Email not verified.");
+      }
+      if (user.emailVerified && user.status === UserStatus.UNVERIFIED) {
+        await prisma.user.update({
           where: {
-            token: sessionToken,
-            expiresAt: {
-              gt: new Date(),
-            },
+            id: user.id,
           },
-          include: {
-            user: true,
+          data: {
+            status: UserStatus.ACTIVE,
           },
         });
-
-        if (sessionExist && sessionExist.user) {
-          const user = sessionExist.user;
-          const now = new Date();
-          const expiresAt = new Date(sessionExist.expiresAt);
-          const createdAt = new Date(sessionExist.createdAt);
-
-          const sessionLifeTime = expiresAt.getTime() - createdAt.getTime();
-          const timeRemaining = expiresAt.getTime() - now.getTime();
-          const percentRemaining = (timeRemaining / sessionLifeTime) * 100;
-
-          if (percentRemaining < 20) {
-            res.setHeader("X-Session-Refresh", "true");
-            res.setHeader("X-Session-Expires-At", expiresAt.toISOString());
-            res.setHeader("X-Time-Remaining", timeRemaining.toString());
-
-            console.log("Session Expring Soon!");
-          }
-          if (
-            user.status === UserStatus.BLOCKED ||
-            user.status === UserStatus.DELETED
-          ) {
-            throw new AppError(
-              status.UNAUTHORIZED,
-              "Unauthorized access! User not active.",
-            );
-          }
-
-          if (user.isDeleted) {
-            throw new AppError(
-              status.UNAUTHORIZED,
-              "Unauthorized access! User not active.",
-            );
-          }
-
-          if (authRoles.length > 0 && !authRoles.includes(user.role as Role)) {
-            throw new AppError(
-              status.FORBIDDEN,
-              "Forbidden access! You do not have permission to access this resource.",
-            );
-          }
-
-
-          req.user = {
-            userId: user.id,
-            role: user.role,
-            email: user.email,
-            name: user.name,
-            status: user.status as UserStatus,
-            isDeleted: user.isDeleted,
-            emailVerified: user.emailVerified,
-          };
-        }
-
-        // Access Token Verification
-        const accessToken = CookieUtils.getCookie(req, "accessToken");
-
-        if (!accessToken) {
-          throw new AppError(
-            status.UNAUTHORIZED,
-            "Unauthorize access! No access token provided.",
-          );
-        }
       }
 
-      const accessToken = CookieUtils.getCookie(req, "accessToken");
+      // 5. Session expiry warning
+      const now = new Date();
+      const expiresAt = new Date(sessionExist.expiresAt);
+      const createdAt = new Date(sessionExist.createdAt);
+      const sessionLifeTime = expiresAt.getTime() - createdAt.getTime();
+      const timeRemaining = expiresAt.getTime() - now.getTime();
+      const percentRemaining = (timeRemaining / sessionLifeTime) * 100;
 
+      if (percentRemaining < 20) {
+        res.setHeader("X-Session-Refresh", "true");
+        res.setHeader("X-Session-Expires-At", expiresAt.toISOString());
+        res.setHeader("X-Time-Remaining", timeRemaining.toString());
+      }
+
+      // 6. Check access token
+      const accessToken = CookieUtils.getCookie(req, "accessToken");
       if (!accessToken) {
-        throw new AppError(
-          status.UNAUTHORIZED,
-          "Unauthorized access! No access token provided.",
-        );
+        throw new AppError(status.UNAUTHORIZED, "No access token provided.");
       }
 
       const verifyToken = jwtUtils.verifyToken(
         accessToken,
         envVars.ACCESS_TOKEN_SECRET,
       );
-
       if (!verifyToken.success) {
-        throw new AppError(
-          status.UNAUTHORIZED,
-          "Unauthorized access! Invalid access token.",
-        );
+        throw new AppError(status.UNAUTHORIZED, "Invalid access token.");
       }
 
-      // console.log(verifyToken.data!.role);
-
+      // 7. Role check
       if (
         authRoles.length > 0 &&
         !authRoles.includes(verifyToken.data!.role as Role)
       ) {
         throw new AppError(
           status.FORBIDDEN,
-          "Forbidden access! You do not have permission to access this resource.",
+          "You do not have permission to access this resource.",
         );
       }
 
-      next(); // Go to the next road...
+      // 8. Attach user to request
+      req.user = {
+        userId: user.id,
+        role: user.role,
+        email: user.email,
+        name: user.name,
+        status: user.status as UserStatus,
+        isDeleted: user.isDeleted,
+        emailVerified: user.emailVerified,
+      };
+
+      next();
     } catch (error: any) {
       next(error);
     }

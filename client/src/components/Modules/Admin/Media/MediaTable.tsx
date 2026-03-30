@@ -6,15 +6,22 @@ import { useQuery } from "@tanstack/react-query";
 import TanTable from "@/components/Shared/table/tanTable";
 import { useServerManagedDataTable } from "@/hooks/useServerManagedDataTable";
 import { useServerManagedDataTableSearch } from "@/hooks/useServerManagedDataTableSearch";
-import { useServerManagedDataTableFilters, serverManagedFilter } from "@/hooks/useServerManagedDataTableFilters";
+import {
+  useServerManagedDataTableFilters,
+  serverManagedFilter,
+} from "@/hooks/useServerManagedDataTableFilters";
 import { useRowActionModalState } from "@/hooks/useRowActionModalState";
 import { adminGetAllMedia } from "@/services/admin.service";
 import { mediaColumns } from "./mediaColumns";
 import DeleteMediaDialog from "./DeleteMediaDialog";
-import { TanTableFilterConfig, TanTableFilterValues } from "@/components/Shared/table/TanTableFilters";
+import {
+  TanTableFilterConfig,
+  TanTableFilterValues,
+} from "@/components/Shared/table/TanTableFilters";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import MediaJsonAddDialog from "./MediaJsonAddDialog";
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 10;
@@ -24,16 +31,16 @@ const MEDIA_FILTER_DEFINITIONS = [
   serverManagedFilter.single("pricing"),
 ];
 
-const MediaTable = ({ initialQueryString }: { initialQueryString?: string }) => {
+const MediaTable = ({
+  initialQueryString,
+}: {
+  initialQueryString?: string;
+}) => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const {
-    deletingItem,
-    isDeleteDialogOpen,
-    onDeleteOpenChange,
-    tableActions,
-  } = useRowActionModalState<any>();
+  const { deletingItem, isDeleteDialogOpen, onDeleteOpenChange, tableActions } =
+    useRowActionModalState<any>();
 
   const {
     queryStringFromUrl,
@@ -51,20 +58,23 @@ const MediaTable = ({ initialQueryString }: { initialQueryString?: string }) => 
 
   const queryString = queryStringFromUrl || initialQueryString || "";
 
-  const { searchTermFromUrl, handleDebouncedSearchChange } = useServerManagedDataTableSearch({
-    searchParams,
-    updateParams,
-  });
+  const { searchTermFromUrl, handleDebouncedSearchChange } =
+    useServerManagedDataTableSearch({
+      searchParams,
+      updateParams,
+    });
 
-  const { filterValues, handleFilterChange, clearAllFilters } = useServerManagedDataTableFilters({
-    searchParams,
-    definitions: MEDIA_FILTER_DEFINITIONS,
-    updateParams,
-  });
+  const { filterValues, handleFilterChange, clearAllFilters } =
+    useServerManagedDataTableFilters({
+      searchParams,
+      definitions: MEDIA_FILTER_DEFINITIONS,
+      updateParams,
+    });
 
   const { data, isLoading, isFetching } = useQuery({
     queryKey: ["media", queryString],
-    queryFn: () => adminGetAllMedia(Object.fromEntries(new URLSearchParams(queryString))),
+    queryFn: () =>
+      adminGetAllMedia(Object.fromEntries(new URLSearchParams(queryString))),
   });
 
   const items = (data as any)?.data?.data || [];
@@ -131,12 +141,15 @@ const MediaTable = ({ initialQueryString }: { initialQueryString?: string }) => 
           onClearAll: clearAllFilters,
         }}
         toolbarAction={
-          <Link href="/admin/media/create">
-            <Button size="lg">
-              <Plus />
-              Add Media
-            </Button>
-          </Link>
+          <>
+            <Link href="/admin/media/create">
+              <Button size="lg">
+                <Plus />
+                Add Media
+              </Button>
+            </Link>
+            <MediaJsonAddDialog />
+          </>
         }
         meta={meta}
         actions={{

@@ -15,10 +15,7 @@ import { isTokenExpiredSoon } from "./utils/token-utils";
 async function refreshTokenMiddleware(refreshToken: string): Promise<boolean> {
   try {
     const refresh = await getNewTokensWithRefreshToken(refreshToken);
-    if (!refresh) {
-      return false;
-    }
-    return true;
+    return !!refresh;
   } catch (error) {
     console.error("Error refreshing token in middleware:", error);
     return false;
@@ -31,6 +28,7 @@ export async function proxy(request: NextRequest) {
     const origin = url.origin;
     const pathname = url.pathname;
     const search = url.search;
+
     const headers = new Headers(request.headers);
     headers.set("x-url", request.url);
     headers.set("x-origin", origin);
@@ -39,13 +37,13 @@ export async function proxy(request: NextRequest) {
 
     const accessToken = request.cookies.get("accessToken")?.value;
     const refreshToken = request.cookies.get("refreshToken")?.value;
-    const decodedAccessToken =
-      accessToken &&
-      verifyToken(accessToken, process.env.JWT_ACCESS_SECRET as string).data;
 
-    const isValidAccessToken =
-      accessToken &&
-      verifyToken(accessToken, process.env.JWT_ACCESS_SECRET as string).success;
+    // Fix-5: verify token once
+    const tokenResult = accessToken
+      ? verifyToken(accessToken, process.env.JWT_ACCESS_SECRET as string)
+      : null;
+    const isValidAccessToken = tokenResult?.success ?? false;
+    const decodedAccessToken = tokenResult?.data ?? null;
 
     let userRole: Role | null = null;
     if (decodedAccessToken) {
@@ -55,46 +53,35 @@ export async function proxy(request: NextRequest) {
     const routerOwner = getRouteOwner(pathname);
     const isAuth = isAuthRoute(pathname);
 
-    // Proactively refresh token if refresh token exists and access token is expired or about to expire
+    // Fix-1: refresh if token invalid OR expiring soon
     if (
-      isValidAccessToken &&
       refreshToken &&
-      (await isTokenExpiredSoon(accessToken))
+      (!isValidAccessToken ||
+        (accessToken && (await isTokenExpiredSoon(accessToken))))
     ) {
       const requestHeaders = new Headers(request.headers);
-
-      const response = NextResponse.next({
-        request: {
-          headers: requestHeaders,
-        },
-      });
       try {
         const refreshed = await refreshTokenMiddleware(refreshToken);
         if (refreshed) {
           requestHeaders.set("x-token-refreshed", "1");
         }
-
-        return NextResponse.next({
-          request: {
-            headers: requestHeaders,
-          },
-          headers: response.headers,
-        });
       } catch (error) {
         console.error("Error refreshing token:", error);
       }
 
-      return response;
+      return NextResponse.next({
+        request: { headers: requestHeaders },
+      });
     }
 
-    // Rule-1: User is logged in and trying to access auth route -> redirect to default route
+    // Rule-1: Logged in + auth route -> redirect to default
     if (isAuth && isValidAccessToken) {
       return NextResponse.redirect(
         new URL(getDefaultRoute(userRole as Role), request.url),
       );
     }
 
-    // Rule-2: User is trying to access reset password page
+    // Rule-2: Reset password page
     if (pathname === "/reset-password") {
       const email = request.nextUrl.searchParams.get("email");
 
@@ -109,9 +96,7 @@ export async function proxy(request: NextRequest) {
         }
       }
 
-      if (email) {
-        return NextResponse.next();
-      }
+      if (email) return NextResponse.next();
 
       const loginUrl = new URL("/login", request.url);
       loginUrl.searchParams.set("redirect", pathname);
@@ -123,19 +108,18 @@ export async function proxy(request: NextRequest) {
       return NextResponse.next();
     }
 
-    // Rule-4: Not logged in but trying to access protected route -> redirect to login
+    // Rule-4: Not logged in + protected route -> redirect to login
     if (!accessToken || !isValidAccessToken) {
       const loginUrl = new URL("/login", request.url);
       loginUrl.searchParams.set("redirect", pathname);
       return NextResponse.redirect(loginUrl);
     }
 
-    // Rule-5: Enforce email verification and password change flows
+    // Rule-5: Email verification + password change enforcement
     if (accessToken) {
       const userInfo = await getCurrentUser();
 
       if (userInfo) {
-        // Email not verified
         if (userInfo.emailVerified === false) {
           if (pathname !== "/verify-email") {
             const verifyEmailUrl = new URL("/verify-email", request.url);
@@ -145,14 +129,12 @@ export async function proxy(request: NextRequest) {
           return NextResponse.next();
         }
 
-        // Email verified but still on verify-email page
         if (userInfo.emailVerified && pathname === "/verify-email") {
           return NextResponse.redirect(
             new URL(getDefaultRoute(userRole as Role), request.url),
           );
         }
 
-        // Needs password change
         if (userInfo.needPasswordChange) {
           if (pathname !== "/reset-password") {
             const resetPasswordUrl = new URL("/reset-password", request.url);
@@ -162,7 +144,6 @@ export async function proxy(request: NextRequest) {
           return NextResponse.next();
         }
 
-        // Password change done but still on reset-password page
         if (!userInfo.needPasswordChange && pathname === "/reset-password") {
           return NextResponse.redirect(
             new URL(getDefaultRoute(userRole as Role), request.url),
@@ -176,8 +157,8 @@ export async function proxy(request: NextRequest) {
       return NextResponse.next();
     }
 
-    // Rule-7: Role-based protected route, wrong role -> redirect to their default route
-    if (routerOwner === "ADMIN") {
+    // Fix-4: Role-based route, wrong role -> redirect
+    if (routerOwner === "ADMIN" || routerOwner === "USER") {
       if (routerOwner !== userRole) {
         return NextResponse.redirect(
           new URL(getDefaultRoute(userRole as Role), request.url),
@@ -186,12 +167,12 @@ export async function proxy(request: NextRequest) {
     }
 
     return NextResponse.next({
-      request: {
-        headers: headers,
-      },
+      request: { headers },
     });
   } catch (error) {
+    // Fix-3: always return a response
     console.error("Error in proxy middleware:", error);
+    return NextResponse.next();
   }
 }
 

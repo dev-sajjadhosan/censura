@@ -84,3 +84,19 @@ enum PurchaseType {
   BUY
   RENT
 }
+
+enum RentalStatus {
+  ACTIVE
+  EXPIRED
+  CANCELLED
+}
+enum MediaPurchaseType {
+  RENTAL
+  BUY
+}
+
+enum MediaPurchaseStatus {
+  ACTIVE
+  EXPIRED
+  CANCELLED
+}

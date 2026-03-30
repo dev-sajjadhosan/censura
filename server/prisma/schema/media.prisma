@@ -1,24 +1,26 @@
 model Media {
-  id             String    @id @default(uuid())
+  id             String   @id @default(uuid())
   title          String
-  slug           String    @unique
+  slug           String   @unique
   type           String
-  synopsis       String    @db.Text
+  synopsis       String   @db.Text
   releaseYear    Int
   director       String
   posterUrl      String?
   backdropUrl    String?
   trailerUrl     String?
   streamingUrl   String?
+  rentalPrice    Decimal? @db.Decimal(10, 2)
+  buyPrice       Decimal? @db.Decimal(10, 2)
   runtimeMinutes Int?
   seasons        Int?
-  pricing        Pricing   @default(FREE)
-  isPublished    Boolean   @default(true)
-  isFeatured     Boolean   @default(false)
+  pricing        Pricing  @default(FREE)
+  isPublished    Boolean  @default(true)
+  isFeatured     Boolean  @default(false)
   avgRating      Float?
-  reviewCount    Int       @default(0)
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  reviewCount    Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   genres         Genre[]         @relation("MediaGenres")
   platforms      MediaPlatform[]
@@ -32,6 +34,7 @@ model Media {
   favorites Favorite[]
   purchases MediaPurchase[]
   cast      CastMember[]
+  rentals   Rental[]
 
   @@unique([title, releaseYear])
   @@index([title])

@@ -1,3 +1,6 @@
+import { MediaPurchase } from "./media.types";
+import { Subscription } from "./payment.types";
+
 export interface User {
   id: string;
   name: string;
@@ -53,6 +56,8 @@ export interface IProfileResponse {
   role: string;
   status: string;
   updatedAt: string;
+  subscription: Subscription;
+  purchases: MediaPurchase[];
 }
 
 export interface Profile {

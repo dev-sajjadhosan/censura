@@ -28,6 +28,8 @@ export type AggregateMedia = {
 
 export type MediaAvgAggregateOutputType = {
   releaseYear: number | null
+  rentalPrice: runtime.Decimal | null
+  buyPrice: runtime.Decimal | null
   runtimeMinutes: number | null
   seasons: number | null
   avgRating: number | null
@@ -37,6 +39,8 @@ export type MediaAvgAggregateOutputType = {
 
 export type MediaSumAggregateOutputType = {
   releaseYear: number | null
+  rentalPrice: runtime.Decimal | null
+  buyPrice: runtime.Decimal | null
   runtimeMinutes: number | null
   seasons: number | null
   avgRating: number | null
@@ -56,6 +60,8 @@ export type MediaMinAggregateOutputType = {
   backdropUrl: string | null
   trailerUrl: string | null
   streamingUrl: string | null
+  rentalPrice: runtime.Decimal | null
+  buyPrice: runtime.Decimal | null
   runtimeMinutes: number | null
   seasons: number | null
   pricing: $Enums.Pricing | null
@@ -80,6 +86,8 @@ export type MediaMaxAggregateOutputType = {
   backdropUrl: string | null
   trailerUrl: string | null
   streamingUrl: string | null
+  rentalPrice: runtime.Decimal | null
+  buyPrice: runtime.Decimal | null
   runtimeMinutes: number | null
   seasons: number | null
   pricing: $Enums.Pricing | null
@@ -104,6 +112,8 @@ export type MediaCountAggregateOutputType = {
   backdropUrl: number
   trailerUrl: number
   streamingUrl: number
+  rentalPrice: number
+  buyPrice: number
   runtimeMinutes: number
   seasons: number
   pricing: number
@@ -120,6 +130,8 @@ export type MediaCountAggregateOutputType = {
 
 export type MediaAvgAggregateInputType = {
   releaseYear?: true
+  rentalPrice?: true
+  buyPrice?: true
   runtimeMinutes?: true
   seasons?: true
   avgRating?: true
@@ -129,6 +141,8 @@ export type MediaAvgAggregateInputType = {
 
 export type MediaSumAggregateInputType = {
   releaseYear?: true
+  rentalPrice?: true
+  buyPrice?: true
   runtimeMinutes?: true
   seasons?: true
   avgRating?: true
@@ -148,6 +162,8 @@ export type MediaMinAggregateInputType = {
   backdropUrl?: true
   trailerUrl?: true
   streamingUrl?: true
+  rentalPrice?: true
+  buyPrice?: true
   runtimeMinutes?: true
   seasons?: true
   pricing?: true
@@ -172,6 +188,8 @@ export type MediaMaxAggregateInputType = {
   backdropUrl?: true
   trailerUrl?: true
   streamingUrl?: true
+  rentalPrice?: true
+  buyPrice?: true
   runtimeMinutes?: true
   seasons?: true
   pricing?: true
@@ -196,6 +214,8 @@ export type MediaCountAggregateInputType = {
   backdropUrl?: true
   trailerUrl?: true
   streamingUrl?: true
+  rentalPrice?: true
+  buyPrice?: true
   runtimeMinutes?: true
   seasons?: true
   pricing?: true
@@ -307,6 +327,8 @@ export type MediaGroupByOutputType = {
   backdropUrl: string | null
   trailerUrl: string | null
   streamingUrl: string | null
+  rentalPrice: runtime.Decimal | null
+  buyPrice: runtime.Decimal | null
   runtimeMinutes: number | null
   seasons: number | null
   pricing: $Enums.Pricing
@@ -354,6 +376,8 @@ export type MediaWhereInput = {
   backdropUrl?: Prisma.StringNullableFilter<"Media"> | string | null
   trailerUrl?: Prisma.StringNullableFilter<"Media"> | string | null
   streamingUrl?: Prisma.StringNullableFilter<"Media"> | string | null
+  rentalPrice?: Prisma.DecimalNullableFilter<"Media"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.DecimalNullableFilter<"Media"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.IntNullableFilter<"Media"> | number | null
   seasons?: Prisma.IntNullableFilter<"Media"> | number | null
   pricing?: Prisma.EnumPricingFilter<"Media"> | $Enums.Pricing
@@ -374,6 +398,7 @@ export type MediaWhereInput = {
   favorites?: Prisma.FavoriteListRelationFilter
   purchases?: Prisma.MediaPurchaseListRelationFilter
   cast?: Prisma.CastMemberListRelationFilter
+  rentals?: Prisma.RentalListRelationFilter
 }
 
 export type MediaOrderByWithRelationInput = {
@@ -388,6 +413,8 @@ export type MediaOrderByWithRelationInput = {
   backdropUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   trailerUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   streamingUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  rentalPrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  buyPrice?: Prisma.SortOrderInput | Prisma.SortOrder
   runtimeMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
   seasons?: Prisma.SortOrderInput | Prisma.SortOrder
   pricing?: Prisma.SortOrder
@@ -408,6 +435,7 @@ export type MediaOrderByWithRelationInput = {
   favorites?: Prisma.FavoriteOrderByRelationAggregateInput
   purchases?: Prisma.MediaPurchaseOrderByRelationAggregateInput
   cast?: Prisma.CastMemberOrderByRelationAggregateInput
+  rentals?: Prisma.RentalOrderByRelationAggregateInput
 }
 
 export type MediaWhereUniqueInput = Prisma.AtLeast<{
@@ -426,6 +454,8 @@ export type MediaWhereUniqueInput = Prisma.AtLeast<{
   backdropUrl?: Prisma.StringNullableFilter<"Media"> | string | null
   trailerUrl?: Prisma.StringNullableFilter<"Media"> | string | null
   streamingUrl?: Prisma.StringNullableFilter<"Media"> | string | null
+  rentalPrice?: Prisma.DecimalNullableFilter<"Media"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.DecimalNullableFilter<"Media"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.IntNullableFilter<"Media"> | number | null
   seasons?: Prisma.IntNullableFilter<"Media"> | number | null
   pricing?: Prisma.EnumPricingFilter<"Media"> | $Enums.Pricing
@@ -446,6 +476,7 @@ export type MediaWhereUniqueInput = Prisma.AtLeast<{
   favorites?: Prisma.FavoriteListRelationFilter
   purchases?: Prisma.MediaPurchaseListRelationFilter
   cast?: Prisma.CastMemberListRelationFilter
+  rentals?: Prisma.RentalListRelationFilter
 }, "id" | "slug" | "title_releaseYear">
 
 export type MediaOrderByWithAggregationInput = {
@@ -460,6 +491,8 @@ export type MediaOrderByWithAggregationInput = {
   backdropUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   trailerUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   streamingUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  rentalPrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  buyPrice?: Prisma.SortOrderInput | Prisma.SortOrder
   runtimeMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
   seasons?: Prisma.SortOrderInput | Prisma.SortOrder
   pricing?: Prisma.SortOrder
@@ -492,6 +525,8 @@ export type MediaScalarWhereWithAggregatesInput = {
   backdropUrl?: Prisma.StringNullableWithAggregatesFilter<"Media"> | string | null
   trailerUrl?: Prisma.StringNullableWithAggregatesFilter<"Media"> | string | null
   streamingUrl?: Prisma.StringNullableWithAggregatesFilter<"Media"> | string | null
+  rentalPrice?: Prisma.DecimalNullableWithAggregatesFilter<"Media"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.DecimalNullableWithAggregatesFilter<"Media"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.IntNullableWithAggregatesFilter<"Media"> | number | null
   seasons?: Prisma.IntNullableWithAggregatesFilter<"Media"> | number | null
   pricing?: Prisma.EnumPricingWithAggregatesFilter<"Media"> | $Enums.Pricing
@@ -516,6 +551,8 @@ export type MediaCreateInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -536,6 +573,7 @@ export type MediaCreateInput = {
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutMediaInput
 }
 
 export type MediaUncheckedCreateInput = {
@@ -550,6 +588,8 @@ export type MediaUncheckedCreateInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -570,6 +610,7 @@ export type MediaUncheckedCreateInput = {
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberUncheckedCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutMediaInput
 }
 
 export type MediaUpdateInput = {
@@ -584,6 +625,8 @@ export type MediaUpdateInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -604,6 +647,7 @@ export type MediaUpdateInput = {
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaUncheckedUpdateInput = {
@@ -618,6 +662,8 @@ export type MediaUncheckedUpdateInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -638,6 +684,7 @@ export type MediaUncheckedUpdateInput = {
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUncheckedUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaCreateManyInput = {
@@ -652,6 +699,8 @@ export type MediaCreateManyInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -676,6 +725,8 @@ export type MediaUpdateManyMutationInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -700,6 +751,8 @@ export type MediaUncheckedUpdateManyInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -744,6 +797,8 @@ export type MediaCountOrderByAggregateInput = {
   backdropUrl?: Prisma.SortOrder
   trailerUrl?: Prisma.SortOrder
   streamingUrl?: Prisma.SortOrder
+  rentalPrice?: Prisma.SortOrder
+  buyPrice?: Prisma.SortOrder
   runtimeMinutes?: Prisma.SortOrder
   seasons?: Prisma.SortOrder
   pricing?: Prisma.SortOrder
@@ -758,6 +813,8 @@ export type MediaCountOrderByAggregateInput = {
 
 export type MediaAvgOrderByAggregateInput = {
   releaseYear?: Prisma.SortOrder
+  rentalPrice?: Prisma.SortOrder
+  buyPrice?: Prisma.SortOrder
   runtimeMinutes?: Prisma.SortOrder
   seasons?: Prisma.SortOrder
   avgRating?: Prisma.SortOrder
@@ -777,6 +834,8 @@ export type MediaMaxOrderByAggregateInput = {
   backdropUrl?: Prisma.SortOrder
   trailerUrl?: Prisma.SortOrder
   streamingUrl?: Prisma.SortOrder
+  rentalPrice?: Prisma.SortOrder
+  buyPrice?: Prisma.SortOrder
   runtimeMinutes?: Prisma.SortOrder
   seasons?: Prisma.SortOrder
   pricing?: Prisma.SortOrder
@@ -801,6 +860,8 @@ export type MediaMinOrderByAggregateInput = {
   backdropUrl?: Prisma.SortOrder
   trailerUrl?: Prisma.SortOrder
   streamingUrl?: Prisma.SortOrder
+  rentalPrice?: Prisma.SortOrder
+  buyPrice?: Prisma.SortOrder
   runtimeMinutes?: Prisma.SortOrder
   seasons?: Prisma.SortOrder
   pricing?: Prisma.SortOrder
@@ -815,6 +876,8 @@ export type MediaMinOrderByAggregateInput = {
 
 export type MediaSumOrderByAggregateInput = {
   releaseYear?: Prisma.SortOrder
+  rentalPrice?: Prisma.SortOrder
+  buyPrice?: Prisma.SortOrder
   runtimeMinutes?: Prisma.SortOrder
   seasons?: Prisma.SortOrder
   avgRating?: Prisma.SortOrder
@@ -894,6 +957,14 @@ export type IntFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type NullableDecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type NullableIntFieldUpdateOperationsInput = {
@@ -986,6 +1057,20 @@ export type MediaUpdateOneRequiredWithoutFavoritesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MediaUpdateToOneWithWhereWithoutFavoritesInput, Prisma.MediaUpdateWithoutFavoritesInput>, Prisma.MediaUncheckedUpdateWithoutFavoritesInput>
 }
 
+export type MediaCreateNestedOneWithoutRentalsInput = {
+  create?: Prisma.XOR<Prisma.MediaCreateWithoutRentalsInput, Prisma.MediaUncheckedCreateWithoutRentalsInput>
+  connectOrCreate?: Prisma.MediaCreateOrConnectWithoutRentalsInput
+  connect?: Prisma.MediaWhereUniqueInput
+}
+
+export type MediaUpdateOneRequiredWithoutRentalsNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaCreateWithoutRentalsInput, Prisma.MediaUncheckedCreateWithoutRentalsInput>
+  connectOrCreate?: Prisma.MediaCreateOrConnectWithoutRentalsInput
+  upsert?: Prisma.MediaUpsertWithoutRentalsInput
+  connect?: Prisma.MediaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaUpdateToOneWithWhereWithoutRentalsInput, Prisma.MediaUpdateWithoutRentalsInput>, Prisma.MediaUncheckedUpdateWithoutRentalsInput>
+}
+
 export type MediaCreateNestedOneWithoutReviewsInput = {
   create?: Prisma.XOR<Prisma.MediaCreateWithoutReviewsInput, Prisma.MediaUncheckedCreateWithoutReviewsInput>
   connectOrCreate?: Prisma.MediaCreateOrConnectWithoutReviewsInput
@@ -1026,6 +1111,8 @@ export type MediaCreateWithoutCommentsInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -1045,6 +1132,7 @@ export type MediaCreateWithoutCommentsInput = {
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutMediaInput
 }
 
 export type MediaUncheckedCreateWithoutCommentsInput = {
@@ -1059,6 +1147,8 @@ export type MediaUncheckedCreateWithoutCommentsInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -1078,6 +1168,7 @@ export type MediaUncheckedCreateWithoutCommentsInput = {
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberUncheckedCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutMediaInput
 }
 
 export type MediaCreateOrConnectWithoutCommentsInput = {
@@ -1108,6 +1199,8 @@ export type MediaUpdateWithoutCommentsInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -1127,6 +1220,7 @@ export type MediaUpdateWithoutCommentsInput = {
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaUncheckedUpdateWithoutCommentsInput = {
@@ -1141,6 +1235,8 @@ export type MediaUncheckedUpdateWithoutCommentsInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -1160,6 +1256,7 @@ export type MediaUncheckedUpdateWithoutCommentsInput = {
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUncheckedUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaCreateWithoutLikesInput = {
@@ -1174,6 +1271,8 @@ export type MediaCreateWithoutLikesInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -1193,6 +1292,7 @@ export type MediaCreateWithoutLikesInput = {
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutMediaInput
 }
 
 export type MediaUncheckedCreateWithoutLikesInput = {
@@ -1207,6 +1307,8 @@ export type MediaUncheckedCreateWithoutLikesInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -1226,6 +1328,7 @@ export type MediaUncheckedCreateWithoutLikesInput = {
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberUncheckedCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutMediaInput
 }
 
 export type MediaCreateOrConnectWithoutLikesInput = {
@@ -1256,6 +1359,8 @@ export type MediaUpdateWithoutLikesInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -1275,6 +1380,7 @@ export type MediaUpdateWithoutLikesInput = {
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaUncheckedUpdateWithoutLikesInput = {
@@ -1289,6 +1395,8 @@ export type MediaUncheckedUpdateWithoutLikesInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -1308,6 +1416,7 @@ export type MediaUncheckedUpdateWithoutLikesInput = {
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUncheckedUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaCreateWithoutGenresInput = {
@@ -1322,6 +1431,8 @@ export type MediaCreateWithoutGenresInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -1341,6 +1452,7 @@ export type MediaCreateWithoutGenresInput = {
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutMediaInput
 }
 
 export type MediaUncheckedCreateWithoutGenresInput = {
@@ -1355,6 +1467,8 @@ export type MediaUncheckedCreateWithoutGenresInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -1374,6 +1488,7 @@ export type MediaUncheckedCreateWithoutGenresInput = {
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberUncheckedCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutMediaInput
 }
 
 export type MediaCreateOrConnectWithoutGenresInput = {
@@ -1412,6 +1527,8 @@ export type MediaScalarWhereInput = {
   backdropUrl?: Prisma.StringNullableFilter<"Media"> | string | null
   trailerUrl?: Prisma.StringNullableFilter<"Media"> | string | null
   streamingUrl?: Prisma.StringNullableFilter<"Media"> | string | null
+  rentalPrice?: Prisma.DecimalNullableFilter<"Media"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.DecimalNullableFilter<"Media"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.IntNullableFilter<"Media"> | number | null
   seasons?: Prisma.IntNullableFilter<"Media"> | number | null
   pricing?: Prisma.EnumPricingFilter<"Media"> | $Enums.Pricing
@@ -1436,6 +1553,8 @@ export type MediaCreateWithoutCastInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -1455,6 +1574,7 @@ export type MediaCreateWithoutCastInput = {
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutMediaInput
 }
 
 export type MediaUncheckedCreateWithoutCastInput = {
@@ -1469,6 +1589,8 @@ export type MediaUncheckedCreateWithoutCastInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -1488,6 +1610,7 @@ export type MediaUncheckedCreateWithoutCastInput = {
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutMediaInput
 }
 
 export type MediaCreateOrConnectWithoutCastInput = {
@@ -1518,6 +1641,8 @@ export type MediaUpdateWithoutCastInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -1537,6 +1662,7 @@ export type MediaUpdateWithoutCastInput = {
   bookmarks?: Prisma.BookmarkUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaUncheckedUpdateWithoutCastInput = {
@@ -1551,6 +1677,8 @@ export type MediaUncheckedUpdateWithoutCastInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -1570,6 +1698,7 @@ export type MediaUncheckedUpdateWithoutCastInput = {
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaCreateWithoutPlatformsInput = {
@@ -1584,6 +1713,8 @@ export type MediaCreateWithoutPlatformsInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -1603,6 +1734,7 @@ export type MediaCreateWithoutPlatformsInput = {
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutMediaInput
 }
 
 export type MediaUncheckedCreateWithoutPlatformsInput = {
@@ -1617,6 +1749,8 @@ export type MediaUncheckedCreateWithoutPlatformsInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -1636,6 +1770,7 @@ export type MediaUncheckedCreateWithoutPlatformsInput = {
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberUncheckedCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutMediaInput
 }
 
 export type MediaCreateOrConnectWithoutPlatformsInput = {
@@ -1666,6 +1801,8 @@ export type MediaUpdateWithoutPlatformsInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -1685,6 +1822,7 @@ export type MediaUpdateWithoutPlatformsInput = {
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaUncheckedUpdateWithoutPlatformsInput = {
@@ -1699,6 +1837,8 @@ export type MediaUncheckedUpdateWithoutPlatformsInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -1718,6 +1858,7 @@ export type MediaUncheckedUpdateWithoutPlatformsInput = {
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUncheckedUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaCreateWithoutPurchasesInput = {
@@ -1732,6 +1873,8 @@ export type MediaCreateWithoutPurchasesInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -1751,6 +1894,7 @@ export type MediaCreateWithoutPurchasesInput = {
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutMediaInput
 }
 
 export type MediaUncheckedCreateWithoutPurchasesInput = {
@@ -1765,6 +1909,8 @@ export type MediaUncheckedCreateWithoutPurchasesInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -1784,6 +1930,7 @@ export type MediaUncheckedCreateWithoutPurchasesInput = {
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutMediaInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberUncheckedCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutMediaInput
 }
 
 export type MediaCreateOrConnectWithoutPurchasesInput = {
@@ -1814,6 +1961,8 @@ export type MediaUpdateWithoutPurchasesInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -1833,6 +1982,7 @@ export type MediaUpdateWithoutPurchasesInput = {
   bookmarks?: Prisma.BookmarkUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaUncheckedUpdateWithoutPurchasesInput = {
@@ -1847,6 +1997,8 @@ export type MediaUncheckedUpdateWithoutPurchasesInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -1866,6 +2018,7 @@ export type MediaUncheckedUpdateWithoutPurchasesInput = {
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutMediaNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUncheckedUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaCreateWithoutBookmarksInput = {
@@ -1880,6 +2033,8 @@ export type MediaCreateWithoutBookmarksInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -1899,6 +2054,7 @@ export type MediaCreateWithoutBookmarksInput = {
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutMediaInput
 }
 
 export type MediaUncheckedCreateWithoutBookmarksInput = {
@@ -1913,6 +2069,8 @@ export type MediaUncheckedCreateWithoutBookmarksInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -1932,6 +2090,7 @@ export type MediaUncheckedCreateWithoutBookmarksInput = {
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberUncheckedCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutMediaInput
 }
 
 export type MediaCreateOrConnectWithoutBookmarksInput = {
@@ -1962,6 +2121,8 @@ export type MediaUpdateWithoutBookmarksInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -1981,6 +2142,7 @@ export type MediaUpdateWithoutBookmarksInput = {
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaUncheckedUpdateWithoutBookmarksInput = {
@@ -1995,6 +2157,8 @@ export type MediaUncheckedUpdateWithoutBookmarksInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -2014,6 +2178,7 @@ export type MediaUncheckedUpdateWithoutBookmarksInput = {
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUncheckedUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaCreateWithoutFavoritesInput = {
@@ -2028,6 +2193,8 @@ export type MediaCreateWithoutFavoritesInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -2047,6 +2214,7 @@ export type MediaCreateWithoutFavoritesInput = {
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutMediaInput
 }
 
 export type MediaUncheckedCreateWithoutFavoritesInput = {
@@ -2061,6 +2229,8 @@ export type MediaUncheckedCreateWithoutFavoritesInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -2080,6 +2250,7 @@ export type MediaUncheckedCreateWithoutFavoritesInput = {
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberUncheckedCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutMediaInput
 }
 
 export type MediaCreateOrConnectWithoutFavoritesInput = {
@@ -2110,6 +2281,8 @@ export type MediaUpdateWithoutFavoritesInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -2129,6 +2302,7 @@ export type MediaUpdateWithoutFavoritesInput = {
   bookmarks?: Prisma.BookmarkUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaUncheckedUpdateWithoutFavoritesInput = {
@@ -2143,6 +2317,8 @@ export type MediaUncheckedUpdateWithoutFavoritesInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -2162,6 +2338,167 @@ export type MediaUncheckedUpdateWithoutFavoritesInput = {
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUncheckedUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutMediaNestedInput
+}
+
+export type MediaCreateWithoutRentalsInput = {
+  id?: string
+  title: string
+  slug: string
+  type: string
+  synopsis: string
+  releaseYear: number
+  director: string
+  posterUrl?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
+  pricing?: $Enums.Pricing
+  isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  viewCount?: number
+  genres?: Prisma.GenreCreateNestedManyWithoutMediaInput
+  platforms?: Prisma.MediaPlatformCreateNestedManyWithoutMediaInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutMediaInput
+  watchlistItems?: Prisma.WatchlistCreateNestedManyWithoutMediaInput
+  likes?: Prisma.LikeCreateNestedManyWithoutMediaInput
+  comments?: Prisma.CommentCreateNestedManyWithoutMediaInput
+  bookmarks?: Prisma.BookmarkCreateNestedManyWithoutMediaInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
+  purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutMediaInput
+  cast?: Prisma.CastMemberCreateNestedManyWithoutMediaInput
+}
+
+export type MediaUncheckedCreateWithoutRentalsInput = {
+  id?: string
+  title: string
+  slug: string
+  type: string
+  synopsis: string
+  releaseYear: number
+  director: string
+  posterUrl?: string | null
+  backdropUrl?: string | null
+  trailerUrl?: string | null
+  streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  runtimeMinutes?: number | null
+  seasons?: number | null
+  pricing?: $Enums.Pricing
+  isPublished?: boolean
+  isFeatured?: boolean
+  avgRating?: number | null
+  reviewCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  viewCount?: number
+  genres?: Prisma.GenreUncheckedCreateNestedManyWithoutMediaInput
+  platforms?: Prisma.MediaPlatformUncheckedCreateNestedManyWithoutMediaInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMediaInput
+  watchlistItems?: Prisma.WatchlistUncheckedCreateNestedManyWithoutMediaInput
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutMediaInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutMediaInput
+  bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutMediaInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
+  purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutMediaInput
+  cast?: Prisma.CastMemberUncheckedCreateNestedManyWithoutMediaInput
+}
+
+export type MediaCreateOrConnectWithoutRentalsInput = {
+  where: Prisma.MediaWhereUniqueInput
+  create: Prisma.XOR<Prisma.MediaCreateWithoutRentalsInput, Prisma.MediaUncheckedCreateWithoutRentalsInput>
+}
+
+export type MediaUpsertWithoutRentalsInput = {
+  update: Prisma.XOR<Prisma.MediaUpdateWithoutRentalsInput, Prisma.MediaUncheckedUpdateWithoutRentalsInput>
+  create: Prisma.XOR<Prisma.MediaCreateWithoutRentalsInput, Prisma.MediaUncheckedCreateWithoutRentalsInput>
+  where?: Prisma.MediaWhereInput
+}
+
+export type MediaUpdateToOneWithWhereWithoutRentalsInput = {
+  where?: Prisma.MediaWhereInput
+  data: Prisma.XOR<Prisma.MediaUpdateWithoutRentalsInput, Prisma.MediaUncheckedUpdateWithoutRentalsInput>
+}
+
+export type MediaUpdateWithoutRentalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
+  director?: Prisma.StringFieldUpdateOperationsInput | string
+  posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  genres?: Prisma.GenreUpdateManyWithoutMediaNestedInput
+  platforms?: Prisma.MediaPlatformUpdateManyWithoutMediaNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutMediaNestedInput
+  watchlistItems?: Prisma.WatchlistUpdateManyWithoutMediaNestedInput
+  likes?: Prisma.LikeUpdateManyWithoutMediaNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutMediaNestedInput
+  bookmarks?: Prisma.BookmarkUpdateManyWithoutMediaNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
+  purchases?: Prisma.MediaPurchaseUpdateManyWithoutMediaNestedInput
+  cast?: Prisma.CastMemberUpdateManyWithoutMediaNestedInput
+}
+
+export type MediaUncheckedUpdateWithoutRentalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  synopsis?: Prisma.StringFieldUpdateOperationsInput | string
+  releaseYear?: Prisma.IntFieldUpdateOperationsInput | number
+  director?: Prisma.StringFieldUpdateOperationsInput | string
+  posterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  avgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  genres?: Prisma.GenreUncheckedUpdateManyWithoutMediaNestedInput
+  platforms?: Prisma.MediaPlatformUncheckedUpdateManyWithoutMediaNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMediaNestedInput
+  watchlistItems?: Prisma.WatchlistUncheckedUpdateManyWithoutMediaNestedInput
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutMediaNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutMediaNestedInput
+  bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutMediaNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
+  purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutMediaNestedInput
+  cast?: Prisma.CastMemberUncheckedUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaCreateWithoutReviewsInput = {
@@ -2176,6 +2513,8 @@ export type MediaCreateWithoutReviewsInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -2195,6 +2534,7 @@ export type MediaCreateWithoutReviewsInput = {
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutMediaInput
 }
 
 export type MediaUncheckedCreateWithoutReviewsInput = {
@@ -2209,6 +2549,8 @@ export type MediaUncheckedCreateWithoutReviewsInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -2228,6 +2570,7 @@ export type MediaUncheckedCreateWithoutReviewsInput = {
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberUncheckedCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutMediaInput
 }
 
 export type MediaCreateOrConnectWithoutReviewsInput = {
@@ -2258,6 +2601,8 @@ export type MediaUpdateWithoutReviewsInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -2277,6 +2622,7 @@ export type MediaUpdateWithoutReviewsInput = {
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaUncheckedUpdateWithoutReviewsInput = {
@@ -2291,6 +2637,8 @@ export type MediaUncheckedUpdateWithoutReviewsInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -2310,6 +2658,7 @@ export type MediaUncheckedUpdateWithoutReviewsInput = {
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUncheckedUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaCreateWithoutWatchlistItemsInput = {
@@ -2324,6 +2673,8 @@ export type MediaCreateWithoutWatchlistItemsInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -2343,6 +2694,7 @@ export type MediaCreateWithoutWatchlistItemsInput = {
   favorites?: Prisma.FavoriteCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutMediaInput
 }
 
 export type MediaUncheckedCreateWithoutWatchlistItemsInput = {
@@ -2357,6 +2709,8 @@ export type MediaUncheckedCreateWithoutWatchlistItemsInput = {
   backdropUrl?: string | null
   trailerUrl?: string | null
   streamingUrl?: string | null
+  rentalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: number | null
   seasons?: number | null
   pricing?: $Enums.Pricing
@@ -2376,6 +2730,7 @@ export type MediaUncheckedCreateWithoutWatchlistItemsInput = {
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMediaInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutMediaInput
   cast?: Prisma.CastMemberUncheckedCreateNestedManyWithoutMediaInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutMediaInput
 }
 
 export type MediaCreateOrConnectWithoutWatchlistItemsInput = {
@@ -2406,6 +2761,8 @@ export type MediaUpdateWithoutWatchlistItemsInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -2425,6 +2782,7 @@ export type MediaUpdateWithoutWatchlistItemsInput = {
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaUncheckedUpdateWithoutWatchlistItemsInput = {
@@ -2439,6 +2797,8 @@ export type MediaUncheckedUpdateWithoutWatchlistItemsInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -2458,6 +2818,7 @@ export type MediaUncheckedUpdateWithoutWatchlistItemsInput = {
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUncheckedUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaUpdateWithoutGenresInput = {
@@ -2472,6 +2833,8 @@ export type MediaUpdateWithoutGenresInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -2491,6 +2854,7 @@ export type MediaUpdateWithoutGenresInput = {
   favorites?: Prisma.FavoriteUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaUncheckedUpdateWithoutGenresInput = {
@@ -2505,6 +2869,8 @@ export type MediaUncheckedUpdateWithoutGenresInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -2524,6 +2890,7 @@ export type MediaUncheckedUpdateWithoutGenresInput = {
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMediaNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutMediaNestedInput
   cast?: Prisma.CastMemberUncheckedUpdateManyWithoutMediaNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutMediaNestedInput
 }
 
 export type MediaUncheckedUpdateManyWithoutGenresInput = {
@@ -2538,6 +2905,8 @@ export type MediaUncheckedUpdateManyWithoutGenresInput = {
   backdropUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trailerUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streamingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rentalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  buyPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   runtimeMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seasons?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pricing?: Prisma.EnumPricingFieldUpdateOperationsInput | $Enums.Pricing
@@ -2566,6 +2935,7 @@ export type MediaCountOutputType = {
   favorites: number
   purchases: number
   cast: number
+  rentals: number
 }
 
 export type MediaCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2579,6 +2949,7 @@ export type MediaCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   favorites?: boolean | MediaCountOutputTypeCountFavoritesArgs
   purchases?: boolean | MediaCountOutputTypeCountPurchasesArgs
   cast?: boolean | MediaCountOutputTypeCountCastArgs
+  rentals?: boolean | MediaCountOutputTypeCountRentalsArgs
 }
 
 /**
@@ -2661,6 +3032,13 @@ export type MediaCountOutputTypeCountCastArgs<ExtArgs extends runtime.Types.Exte
   where?: Prisma.CastMemberWhereInput
 }
 
+/**
+ * MediaCountOutputType without action
+ */
+export type MediaCountOutputTypeCountRentalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RentalWhereInput
+}
+
 
 export type MediaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2674,6 +3052,8 @@ export type MediaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   backdropUrl?: boolean
   trailerUrl?: boolean
   streamingUrl?: boolean
+  rentalPrice?: boolean
+  buyPrice?: boolean
   runtimeMinutes?: boolean
   seasons?: boolean
   pricing?: boolean
@@ -2694,6 +3074,7 @@ export type MediaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   favorites?: boolean | Prisma.Media$favoritesArgs<ExtArgs>
   purchases?: boolean | Prisma.Media$purchasesArgs<ExtArgs>
   cast?: boolean | Prisma.Media$castArgs<ExtArgs>
+  rentals?: boolean | Prisma.Media$rentalsArgs<ExtArgs>
   _count?: boolean | Prisma.MediaCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["media"]>
 
@@ -2709,6 +3090,8 @@ export type MediaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   backdropUrl?: boolean
   trailerUrl?: boolean
   streamingUrl?: boolean
+  rentalPrice?: boolean
+  buyPrice?: boolean
   runtimeMinutes?: boolean
   seasons?: boolean
   pricing?: boolean
@@ -2733,6 +3116,8 @@ export type MediaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   backdropUrl?: boolean
   trailerUrl?: boolean
   streamingUrl?: boolean
+  rentalPrice?: boolean
+  buyPrice?: boolean
   runtimeMinutes?: boolean
   seasons?: boolean
   pricing?: boolean
@@ -2757,6 +3142,8 @@ export type MediaSelectScalar = {
   backdropUrl?: boolean
   trailerUrl?: boolean
   streamingUrl?: boolean
+  rentalPrice?: boolean
+  buyPrice?: boolean
   runtimeMinutes?: boolean
   seasons?: boolean
   pricing?: boolean
@@ -2769,7 +3156,7 @@ export type MediaSelectScalar = {
   viewCount?: boolean
 }
 
-export type MediaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "type" | "synopsis" | "releaseYear" | "director" | "posterUrl" | "backdropUrl" | "trailerUrl" | "streamingUrl" | "runtimeMinutes" | "seasons" | "pricing" | "isPublished" | "isFeatured" | "avgRating" | "reviewCount" | "createdAt" | "updatedAt" | "viewCount", ExtArgs["result"]["media"]>
+export type MediaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "type" | "synopsis" | "releaseYear" | "director" | "posterUrl" | "backdropUrl" | "trailerUrl" | "streamingUrl" | "rentalPrice" | "buyPrice" | "runtimeMinutes" | "seasons" | "pricing" | "isPublished" | "isFeatured" | "avgRating" | "reviewCount" | "createdAt" | "updatedAt" | "viewCount", ExtArgs["result"]["media"]>
 export type MediaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   genres?: boolean | Prisma.Media$genresArgs<ExtArgs>
   platforms?: boolean | Prisma.Media$platformsArgs<ExtArgs>
@@ -2781,6 +3168,7 @@ export type MediaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   favorites?: boolean | Prisma.Media$favoritesArgs<ExtArgs>
   purchases?: boolean | Prisma.Media$purchasesArgs<ExtArgs>
   cast?: boolean | Prisma.Media$castArgs<ExtArgs>
+  rentals?: boolean | Prisma.Media$rentalsArgs<ExtArgs>
   _count?: boolean | Prisma.MediaCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MediaIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2799,6 +3187,7 @@ export type $MediaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     favorites: Prisma.$FavoritePayload<ExtArgs>[]
     purchases: Prisma.$MediaPurchasePayload<ExtArgs>[]
     cast: Prisma.$CastMemberPayload<ExtArgs>[]
+    rentals: Prisma.$RentalPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2812,6 +3201,8 @@ export type $MediaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     backdropUrl: string | null
     trailerUrl: string | null
     streamingUrl: string | null
+    rentalPrice: runtime.Decimal | null
+    buyPrice: runtime.Decimal | null
     runtimeMinutes: number | null
     seasons: number | null
     pricing: $Enums.Pricing
@@ -3226,6 +3617,7 @@ export interface Prisma__MediaClient<T, Null = never, ExtArgs extends runtime.Ty
   favorites<T extends Prisma.Media$favoritesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   purchases<T extends Prisma.Media$purchasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$purchasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MediaPurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   cast<T extends Prisma.Media$castArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$castArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CastMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  rentals<T extends Prisma.Media$rentalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Media$rentalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3266,6 +3658,8 @@ export interface MediaFieldRefs {
   readonly backdropUrl: Prisma.FieldRef<"Media", 'String'>
   readonly trailerUrl: Prisma.FieldRef<"Media", 'String'>
   readonly streamingUrl: Prisma.FieldRef<"Media", 'String'>
+  readonly rentalPrice: Prisma.FieldRef<"Media", 'Decimal'>
+  readonly buyPrice: Prisma.FieldRef<"Media", 'Decimal'>
   readonly runtimeMinutes: Prisma.FieldRef<"Media", 'Int'>
   readonly seasons: Prisma.FieldRef<"Media", 'Int'>
   readonly pricing: Prisma.FieldRef<"Media", 'Pricing'>
@@ -3906,6 +4300,30 @@ export type Media$castArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.CastMemberScalarFieldEnum | Prisma.CastMemberScalarFieldEnum[]
+}
+
+/**
+ * Media.rentals
+ */
+export type Media$rentalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Rental
+   */
+  select?: Prisma.RentalSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Rental
+   */
+  omit?: Prisma.RentalOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RentalInclude<ExtArgs> | null
+  where?: Prisma.RentalWhereInput
+  orderBy?: Prisma.RentalOrderByWithRelationInput | Prisma.RentalOrderByWithRelationInput[]
+  cursor?: Prisma.RentalWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RentalScalarFieldEnum | Prisma.RentalScalarFieldEnum[]
 }
 
 /**

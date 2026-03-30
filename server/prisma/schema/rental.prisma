@@ -1,0 +1,21 @@
+model Rental {
+    id        String       @id @default(uuid())
+    userId    String
+    user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+    mediaId   String
+    media     Media        @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+    status    RentalStatus @default(ACTIVE)
+    expiresAt DateTime
+    price     Decimal      @db.Decimal(10, 2)
+    createdAt DateTime     @default(now())
+    updatedAt DateTime     @updatedAt
+    payments  Payment[]
+
+    @@unique([userId, mediaId])
+    @@index([userId])
+    @@index([mediaId])
+    @@index([expiresAt])
+    @@map("rentals")
+}
+
+

@@ -127,3 +127,29 @@ export const PurchaseType = {
 } as const
 
 export type PurchaseType = (typeof PurchaseType)[keyof typeof PurchaseType]
+
+
+export const RentalStatus = {
+  ACTIVE: 'ACTIVE',
+  EXPIRED: 'EXPIRED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type RentalStatus = (typeof RentalStatus)[keyof typeof RentalStatus]
+
+
+export const MediaPurchaseType = {
+  RENTAL: 'RENTAL',
+  BUY: 'BUY'
+} as const
+
+export type MediaPurchaseType = (typeof MediaPurchaseType)[keyof typeof MediaPurchaseType]
+
+
+export const MediaPurchaseStatus = {
+  ACTIVE: 'ACTIVE',
+  EXPIRED: 'EXPIRED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type MediaPurchaseStatus = (typeof MediaPurchaseStatus)[keyof typeof MediaPurchaseStatus]

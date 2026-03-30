@@ -83,6 +83,11 @@ export type Bookmark = Prisma.BookmarkModel
  */
 export type Favorite = Prisma.FavoriteModel
 /**
+ * Model Rental
+ * 
+ */
+export type Rental = Prisma.RentalModel
+/**
  * Model Review
  * 
  */

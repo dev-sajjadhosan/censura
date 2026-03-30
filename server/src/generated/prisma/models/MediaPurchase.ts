@@ -27,81 +27,105 @@ export type AggregateMediaPurchase = {
 }
 
 export type MediaPurchaseAvgAggregateOutputType = {
-  amount: number | null
+  price: runtime.Decimal | null
 }
 
 export type MediaPurchaseSumAggregateOutputType = {
-  amount: number | null
+  price: runtime.Decimal | null
 }
 
 export type MediaPurchaseMinAggregateOutputType = {
   id: string | null
   userId: string | null
   mediaId: string | null
-  amount: number | null
-  type: $Enums.PurchaseType | null
-  expiryDate: Date | null
+  type: $Enums.MediaPurchaseType | null
+  status: $Enums.MediaPurchaseStatus | null
+  price: runtime.Decimal | null
+  expiresAt: Date | null
+  stripePaymentId: string | null
   createdAt: Date | null
+  updatedAt: Date | null
+  paymentId: string | null
 }
 
 export type MediaPurchaseMaxAggregateOutputType = {
   id: string | null
   userId: string | null
   mediaId: string | null
-  amount: number | null
-  type: $Enums.PurchaseType | null
-  expiryDate: Date | null
+  type: $Enums.MediaPurchaseType | null
+  status: $Enums.MediaPurchaseStatus | null
+  price: runtime.Decimal | null
+  expiresAt: Date | null
+  stripePaymentId: string | null
   createdAt: Date | null
+  updatedAt: Date | null
+  paymentId: string | null
 }
 
 export type MediaPurchaseCountAggregateOutputType = {
   id: number
   userId: number
   mediaId: number
-  amount: number
   type: number
-  expiryDate: number
+  status: number
+  price: number
+  expiresAt: number
+  stripePaymentId: number
   createdAt: number
+  updatedAt: number
+  paymentId: number
   _all: number
 }
 
 
 export type MediaPurchaseAvgAggregateInputType = {
-  amount?: true
+  price?: true
 }
 
 export type MediaPurchaseSumAggregateInputType = {
-  amount?: true
+  price?: true
 }
 
 export type MediaPurchaseMinAggregateInputType = {
   id?: true
   userId?: true
   mediaId?: true
-  amount?: true
   type?: true
-  expiryDate?: true
+  status?: true
+  price?: true
+  expiresAt?: true
+  stripePaymentId?: true
   createdAt?: true
+  updatedAt?: true
+  paymentId?: true
 }
 
 export type MediaPurchaseMaxAggregateInputType = {
   id?: true
   userId?: true
   mediaId?: true
-  amount?: true
   type?: true
-  expiryDate?: true
+  status?: true
+  price?: true
+  expiresAt?: true
+  stripePaymentId?: true
   createdAt?: true
+  updatedAt?: true
+  paymentId?: true
 }
 
 export type MediaPurchaseCountAggregateInputType = {
   id?: true
   userId?: true
   mediaId?: true
-  amount?: true
   type?: true
-  expiryDate?: true
+  status?: true
+  price?: true
+  expiresAt?: true
+  stripePaymentId?: true
   createdAt?: true
+  updatedAt?: true
+  paymentId?: true
   _all?: true
 }
 
@@ -195,10 +219,14 @@ export type MediaPurchaseGroupByOutputType = {
   id: string
   userId: string
   mediaId: string
-  amount: number
-  type: $Enums.PurchaseType
-  expiryDate: Date | null
+  type: $Enums.MediaPurchaseType
+  status: $Enums.MediaPurchaseStatus
+  price: runtime.Decimal
+  expiresAt: Date | null
+  stripePaymentId: string | null
   createdAt: Date
+  updatedAt: Date
+  paymentId: string | null
   _count: MediaPurchaseCountAggregateOutputType | null
   _avg: MediaPurchaseAvgAggregateOutputType | null
   _sum: MediaPurchaseSumAggregateOutputType | null
@@ -228,49 +256,69 @@ export type MediaPurchaseWhereInput = {
   id?: Prisma.StringFilter<"MediaPurchase"> | string
   userId?: Prisma.StringFilter<"MediaPurchase"> | string
   mediaId?: Prisma.StringFilter<"MediaPurchase"> | string
-  amount?: Prisma.FloatFilter<"MediaPurchase"> | number
-  type?: Prisma.EnumPurchaseTypeFilter<"MediaPurchase"> | $Enums.PurchaseType
-  expiryDate?: Prisma.DateTimeNullableFilter<"MediaPurchase"> | Date | string | null
+  type?: Prisma.EnumMediaPurchaseTypeFilter<"MediaPurchase"> | $Enums.MediaPurchaseType
+  status?: Prisma.EnumMediaPurchaseStatusFilter<"MediaPurchase"> | $Enums.MediaPurchaseStatus
+  price?: Prisma.DecimalFilter<"MediaPurchase"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Prisma.DateTimeNullableFilter<"MediaPurchase"> | Date | string | null
+  stripePaymentId?: Prisma.StringNullableFilter<"MediaPurchase"> | string | null
   createdAt?: Prisma.DateTimeFilter<"MediaPurchase"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"MediaPurchase"> | Date | string
+  paymentId?: Prisma.StringNullableFilter<"MediaPurchase"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   media?: Prisma.XOR<Prisma.MediaScalarRelationFilter, Prisma.MediaWhereInput>
+  payment?: Prisma.XOR<Prisma.PaymentNullableScalarRelationFilter, Prisma.PaymentWhereInput> | null
 }
 
 export type MediaPurchaseOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   mediaId?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
   type?: Prisma.SortOrder
-  expiryDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  price?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  stripePaymentId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  paymentId?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   media?: Prisma.MediaOrderByWithRelationInput
+  payment?: Prisma.PaymentOrderByWithRelationInput
 }
 
 export type MediaPurchaseWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  userId_mediaId_type?: Prisma.MediaPurchaseUserIdMediaIdTypeCompoundUniqueInput
   AND?: Prisma.MediaPurchaseWhereInput | Prisma.MediaPurchaseWhereInput[]
   OR?: Prisma.MediaPurchaseWhereInput[]
   NOT?: Prisma.MediaPurchaseWhereInput | Prisma.MediaPurchaseWhereInput[]
   userId?: Prisma.StringFilter<"MediaPurchase"> | string
   mediaId?: Prisma.StringFilter<"MediaPurchase"> | string
-  amount?: Prisma.FloatFilter<"MediaPurchase"> | number
-  type?: Prisma.EnumPurchaseTypeFilter<"MediaPurchase"> | $Enums.PurchaseType
-  expiryDate?: Prisma.DateTimeNullableFilter<"MediaPurchase"> | Date | string | null
+  type?: Prisma.EnumMediaPurchaseTypeFilter<"MediaPurchase"> | $Enums.MediaPurchaseType
+  status?: Prisma.EnumMediaPurchaseStatusFilter<"MediaPurchase"> | $Enums.MediaPurchaseStatus
+  price?: Prisma.DecimalFilter<"MediaPurchase"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Prisma.DateTimeNullableFilter<"MediaPurchase"> | Date | string | null
+  stripePaymentId?: Prisma.StringNullableFilter<"MediaPurchase"> | string | null
   createdAt?: Prisma.DateTimeFilter<"MediaPurchase"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"MediaPurchase"> | Date | string
+  paymentId?: Prisma.StringNullableFilter<"MediaPurchase"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   media?: Prisma.XOR<Prisma.MediaScalarRelationFilter, Prisma.MediaWhereInput>
-}, "id">
+  payment?: Prisma.XOR<Prisma.PaymentNullableScalarRelationFilter, Prisma.PaymentWhereInput> | null
+}, "id" | "userId_mediaId_type">
 
 export type MediaPurchaseOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   mediaId?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
   type?: Prisma.SortOrder
-  expiryDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  price?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  stripePaymentId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  paymentId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.MediaPurchaseCountOrderByAggregateInput
   _avg?: Prisma.MediaPurchaseAvgOrderByAggregateInput
   _max?: Prisma.MediaPurchaseMaxOrderByAggregateInput
@@ -285,78 +333,109 @@ export type MediaPurchaseScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"MediaPurchase"> | string
   userId?: Prisma.StringWithAggregatesFilter<"MediaPurchase"> | string
   mediaId?: Prisma.StringWithAggregatesFilter<"MediaPurchase"> | string
-  amount?: Prisma.FloatWithAggregatesFilter<"MediaPurchase"> | number
-  type?: Prisma.EnumPurchaseTypeWithAggregatesFilter<"MediaPurchase"> | $Enums.PurchaseType
-  expiryDate?: Prisma.DateTimeNullableWithAggregatesFilter<"MediaPurchase"> | Date | string | null
+  type?: Prisma.EnumMediaPurchaseTypeWithAggregatesFilter<"MediaPurchase"> | $Enums.MediaPurchaseType
+  status?: Prisma.EnumMediaPurchaseStatusWithAggregatesFilter<"MediaPurchase"> | $Enums.MediaPurchaseStatus
+  price?: Prisma.DecimalWithAggregatesFilter<"MediaPurchase"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"MediaPurchase"> | Date | string | null
+  stripePaymentId?: Prisma.StringNullableWithAggregatesFilter<"MediaPurchase"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"MediaPurchase"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"MediaPurchase"> | Date | string
+  paymentId?: Prisma.StringNullableWithAggregatesFilter<"MediaPurchase"> | string | null
 }
 
 export type MediaPurchaseCreateInput = {
   id?: string
-  amount: number
-  type: $Enums.PurchaseType
-  expiryDate?: Date | string | null
+  type?: $Enums.MediaPurchaseType
+  status?: $Enums.MediaPurchaseStatus
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Date | string | null
+  stripePaymentId?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutPurchasesInput
   media: Prisma.MediaCreateNestedOneWithoutPurchasesInput
+  payment?: Prisma.PaymentCreateNestedOneWithoutMediaPurchasesInput
 }
 
 export type MediaPurchaseUncheckedCreateInput = {
   id?: string
   userId: string
   mediaId: string
-  amount: number
-  type: $Enums.PurchaseType
-  expiryDate?: Date | string | null
+  type?: $Enums.MediaPurchaseType
+  status?: $Enums.MediaPurchaseStatus
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Date | string | null
+  stripePaymentId?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  paymentId?: string | null
 }
 
 export type MediaPurchaseUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
-  expiryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  type?: Prisma.EnumMediaPurchaseTypeFieldUpdateOperationsInput | $Enums.MediaPurchaseType
+  status?: Prisma.EnumMediaPurchaseStatusFieldUpdateOperationsInput | $Enums.MediaPurchaseStatus
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutPurchasesNestedInput
   media?: Prisma.MediaUpdateOneRequiredWithoutPurchasesNestedInput
+  payment?: Prisma.PaymentUpdateOneWithoutMediaPurchasesNestedInput
 }
 
 export type MediaPurchaseUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   mediaId?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
-  expiryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  type?: Prisma.EnumMediaPurchaseTypeFieldUpdateOperationsInput | $Enums.MediaPurchaseType
+  status?: Prisma.EnumMediaPurchaseStatusFieldUpdateOperationsInput | $Enums.MediaPurchaseStatus
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MediaPurchaseCreateManyInput = {
   id?: string
   userId: string
   mediaId: string
-  amount: number
-  type: $Enums.PurchaseType
-  expiryDate?: Date | string | null
+  type?: $Enums.MediaPurchaseType
+  status?: $Enums.MediaPurchaseStatus
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Date | string | null
+  stripePaymentId?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  paymentId?: string | null
 }
 
 export type MediaPurchaseUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
-  expiryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  type?: Prisma.EnumMediaPurchaseTypeFieldUpdateOperationsInput | $Enums.MediaPurchaseType
+  status?: Prisma.EnumMediaPurchaseStatusFieldUpdateOperationsInput | $Enums.MediaPurchaseStatus
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type MediaPurchaseUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   mediaId?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
-  expiryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  type?: Prisma.EnumMediaPurchaseTypeFieldUpdateOperationsInput | $Enums.MediaPurchaseType
+  status?: Prisma.EnumMediaPurchaseStatusFieldUpdateOperationsInput | $Enums.MediaPurchaseStatus
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MediaPurchaseListRelationFilter = {
@@ -369,42 +448,60 @@ export type MediaPurchaseOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type MediaPurchaseUserIdMediaIdTypeCompoundUniqueInput = {
+  userId: string
+  mediaId: string
+  type: $Enums.MediaPurchaseType
+}
+
 export type MediaPurchaseCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   mediaId?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
   type?: Prisma.SortOrder
-  expiryDate?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  price?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
+  stripePaymentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  paymentId?: Prisma.SortOrder
 }
 
 export type MediaPurchaseAvgOrderByAggregateInput = {
-  amount?: Prisma.SortOrder
+  price?: Prisma.SortOrder
 }
 
 export type MediaPurchaseMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   mediaId?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
   type?: Prisma.SortOrder
-  expiryDate?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  price?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
+  stripePaymentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  paymentId?: Prisma.SortOrder
 }
 
 export type MediaPurchaseMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   mediaId?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
   type?: Prisma.SortOrder
-  expiryDate?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  price?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
+  stripePaymentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  paymentId?: Prisma.SortOrder
 }
 
 export type MediaPurchaseSumOrderByAggregateInput = {
-  amount?: Prisma.SortOrder
+  price?: Prisma.SortOrder
 }
 
 export type MediaPurchaseCreateNestedManyWithoutMediaInput = {
@@ -449,16 +546,62 @@ export type MediaPurchaseUncheckedUpdateManyWithoutMediaNestedInput = {
   deleteMany?: Prisma.MediaPurchaseScalarWhereInput | Prisma.MediaPurchaseScalarWhereInput[]
 }
 
-export type FloatFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
+export type EnumMediaPurchaseTypeFieldUpdateOperationsInput = {
+  set?: $Enums.MediaPurchaseType
 }
 
-export type EnumPurchaseTypeFieldUpdateOperationsInput = {
-  set?: $Enums.PurchaseType
+export type EnumMediaPurchaseStatusFieldUpdateOperationsInput = {
+  set?: $Enums.MediaPurchaseStatus
+}
+
+export type DecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
+export type MediaPurchaseCreateNestedManyWithoutPaymentInput = {
+  create?: Prisma.XOR<Prisma.MediaPurchaseCreateWithoutPaymentInput, Prisma.MediaPurchaseUncheckedCreateWithoutPaymentInput> | Prisma.MediaPurchaseCreateWithoutPaymentInput[] | Prisma.MediaPurchaseUncheckedCreateWithoutPaymentInput[]
+  connectOrCreate?: Prisma.MediaPurchaseCreateOrConnectWithoutPaymentInput | Prisma.MediaPurchaseCreateOrConnectWithoutPaymentInput[]
+  createMany?: Prisma.MediaPurchaseCreateManyPaymentInputEnvelope
+  connect?: Prisma.MediaPurchaseWhereUniqueInput | Prisma.MediaPurchaseWhereUniqueInput[]
+}
+
+export type MediaPurchaseUncheckedCreateNestedManyWithoutPaymentInput = {
+  create?: Prisma.XOR<Prisma.MediaPurchaseCreateWithoutPaymentInput, Prisma.MediaPurchaseUncheckedCreateWithoutPaymentInput> | Prisma.MediaPurchaseCreateWithoutPaymentInput[] | Prisma.MediaPurchaseUncheckedCreateWithoutPaymentInput[]
+  connectOrCreate?: Prisma.MediaPurchaseCreateOrConnectWithoutPaymentInput | Prisma.MediaPurchaseCreateOrConnectWithoutPaymentInput[]
+  createMany?: Prisma.MediaPurchaseCreateManyPaymentInputEnvelope
+  connect?: Prisma.MediaPurchaseWhereUniqueInput | Prisma.MediaPurchaseWhereUniqueInput[]
+}
+
+export type MediaPurchaseUpdateManyWithoutPaymentNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaPurchaseCreateWithoutPaymentInput, Prisma.MediaPurchaseUncheckedCreateWithoutPaymentInput> | Prisma.MediaPurchaseCreateWithoutPaymentInput[] | Prisma.MediaPurchaseUncheckedCreateWithoutPaymentInput[]
+  connectOrCreate?: Prisma.MediaPurchaseCreateOrConnectWithoutPaymentInput | Prisma.MediaPurchaseCreateOrConnectWithoutPaymentInput[]
+  upsert?: Prisma.MediaPurchaseUpsertWithWhereUniqueWithoutPaymentInput | Prisma.MediaPurchaseUpsertWithWhereUniqueWithoutPaymentInput[]
+  createMany?: Prisma.MediaPurchaseCreateManyPaymentInputEnvelope
+  set?: Prisma.MediaPurchaseWhereUniqueInput | Prisma.MediaPurchaseWhereUniqueInput[]
+  disconnect?: Prisma.MediaPurchaseWhereUniqueInput | Prisma.MediaPurchaseWhereUniqueInput[]
+  delete?: Prisma.MediaPurchaseWhereUniqueInput | Prisma.MediaPurchaseWhereUniqueInput[]
+  connect?: Prisma.MediaPurchaseWhereUniqueInput | Prisma.MediaPurchaseWhereUniqueInput[]
+  update?: Prisma.MediaPurchaseUpdateWithWhereUniqueWithoutPaymentInput | Prisma.MediaPurchaseUpdateWithWhereUniqueWithoutPaymentInput[]
+  updateMany?: Prisma.MediaPurchaseUpdateManyWithWhereWithoutPaymentInput | Prisma.MediaPurchaseUpdateManyWithWhereWithoutPaymentInput[]
+  deleteMany?: Prisma.MediaPurchaseScalarWhereInput | Prisma.MediaPurchaseScalarWhereInput[]
+}
+
+export type MediaPurchaseUncheckedUpdateManyWithoutPaymentNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaPurchaseCreateWithoutPaymentInput, Prisma.MediaPurchaseUncheckedCreateWithoutPaymentInput> | Prisma.MediaPurchaseCreateWithoutPaymentInput[] | Prisma.MediaPurchaseUncheckedCreateWithoutPaymentInput[]
+  connectOrCreate?: Prisma.MediaPurchaseCreateOrConnectWithoutPaymentInput | Prisma.MediaPurchaseCreateOrConnectWithoutPaymentInput[]
+  upsert?: Prisma.MediaPurchaseUpsertWithWhereUniqueWithoutPaymentInput | Prisma.MediaPurchaseUpsertWithWhereUniqueWithoutPaymentInput[]
+  createMany?: Prisma.MediaPurchaseCreateManyPaymentInputEnvelope
+  set?: Prisma.MediaPurchaseWhereUniqueInput | Prisma.MediaPurchaseWhereUniqueInput[]
+  disconnect?: Prisma.MediaPurchaseWhereUniqueInput | Prisma.MediaPurchaseWhereUniqueInput[]
+  delete?: Prisma.MediaPurchaseWhereUniqueInput | Prisma.MediaPurchaseWhereUniqueInput[]
+  connect?: Prisma.MediaPurchaseWhereUniqueInput | Prisma.MediaPurchaseWhereUniqueInput[]
+  update?: Prisma.MediaPurchaseUpdateWithWhereUniqueWithoutPaymentInput | Prisma.MediaPurchaseUpdateWithWhereUniqueWithoutPaymentInput[]
+  updateMany?: Prisma.MediaPurchaseUpdateManyWithWhereWithoutPaymentInput | Prisma.MediaPurchaseUpdateManyWithWhereWithoutPaymentInput[]
+  deleteMany?: Prisma.MediaPurchaseScalarWhereInput | Prisma.MediaPurchaseScalarWhereInput[]
 }
 
 export type MediaPurchaseCreateNestedManyWithoutUserInput = {
@@ -505,20 +648,28 @@ export type MediaPurchaseUncheckedUpdateManyWithoutUserNestedInput = {
 
 export type MediaPurchaseCreateWithoutMediaInput = {
   id?: string
-  amount: number
-  type: $Enums.PurchaseType
-  expiryDate?: Date | string | null
+  type?: $Enums.MediaPurchaseType
+  status?: $Enums.MediaPurchaseStatus
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Date | string | null
+  stripePaymentId?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutPurchasesInput
+  payment?: Prisma.PaymentCreateNestedOneWithoutMediaPurchasesInput
 }
 
 export type MediaPurchaseUncheckedCreateWithoutMediaInput = {
   id?: string
   userId: string
-  amount: number
-  type: $Enums.PurchaseType
-  expiryDate?: Date | string | null
+  type?: $Enums.MediaPurchaseType
+  status?: $Enums.MediaPurchaseStatus
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Date | string | null
+  stripePaymentId?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  paymentId?: string | null
 }
 
 export type MediaPurchaseCreateOrConnectWithoutMediaInput = {
@@ -554,28 +705,92 @@ export type MediaPurchaseScalarWhereInput = {
   id?: Prisma.StringFilter<"MediaPurchase"> | string
   userId?: Prisma.StringFilter<"MediaPurchase"> | string
   mediaId?: Prisma.StringFilter<"MediaPurchase"> | string
-  amount?: Prisma.FloatFilter<"MediaPurchase"> | number
-  type?: Prisma.EnumPurchaseTypeFilter<"MediaPurchase"> | $Enums.PurchaseType
-  expiryDate?: Prisma.DateTimeNullableFilter<"MediaPurchase"> | Date | string | null
+  type?: Prisma.EnumMediaPurchaseTypeFilter<"MediaPurchase"> | $Enums.MediaPurchaseType
+  status?: Prisma.EnumMediaPurchaseStatusFilter<"MediaPurchase"> | $Enums.MediaPurchaseStatus
+  price?: Prisma.DecimalFilter<"MediaPurchase"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Prisma.DateTimeNullableFilter<"MediaPurchase"> | Date | string | null
+  stripePaymentId?: Prisma.StringNullableFilter<"MediaPurchase"> | string | null
   createdAt?: Prisma.DateTimeFilter<"MediaPurchase"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"MediaPurchase"> | Date | string
+  paymentId?: Prisma.StringNullableFilter<"MediaPurchase"> | string | null
+}
+
+export type MediaPurchaseCreateWithoutPaymentInput = {
+  id?: string
+  type?: $Enums.MediaPurchaseType
+  status?: $Enums.MediaPurchaseStatus
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Date | string | null
+  stripePaymentId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutPurchasesInput
+  media: Prisma.MediaCreateNestedOneWithoutPurchasesInput
+}
+
+export type MediaPurchaseUncheckedCreateWithoutPaymentInput = {
+  id?: string
+  userId: string
+  mediaId: string
+  type?: $Enums.MediaPurchaseType
+  status?: $Enums.MediaPurchaseStatus
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Date | string | null
+  stripePaymentId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type MediaPurchaseCreateOrConnectWithoutPaymentInput = {
+  where: Prisma.MediaPurchaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.MediaPurchaseCreateWithoutPaymentInput, Prisma.MediaPurchaseUncheckedCreateWithoutPaymentInput>
+}
+
+export type MediaPurchaseCreateManyPaymentInputEnvelope = {
+  data: Prisma.MediaPurchaseCreateManyPaymentInput | Prisma.MediaPurchaseCreateManyPaymentInput[]
+  skipDuplicates?: boolean
+}
+
+export type MediaPurchaseUpsertWithWhereUniqueWithoutPaymentInput = {
+  where: Prisma.MediaPurchaseWhereUniqueInput
+  update: Prisma.XOR<Prisma.MediaPurchaseUpdateWithoutPaymentInput, Prisma.MediaPurchaseUncheckedUpdateWithoutPaymentInput>
+  create: Prisma.XOR<Prisma.MediaPurchaseCreateWithoutPaymentInput, Prisma.MediaPurchaseUncheckedCreateWithoutPaymentInput>
+}
+
+export type MediaPurchaseUpdateWithWhereUniqueWithoutPaymentInput = {
+  where: Prisma.MediaPurchaseWhereUniqueInput
+  data: Prisma.XOR<Prisma.MediaPurchaseUpdateWithoutPaymentInput, Prisma.MediaPurchaseUncheckedUpdateWithoutPaymentInput>
+}
+
+export type MediaPurchaseUpdateManyWithWhereWithoutPaymentInput = {
+  where: Prisma.MediaPurchaseScalarWhereInput
+  data: Prisma.XOR<Prisma.MediaPurchaseUpdateManyMutationInput, Prisma.MediaPurchaseUncheckedUpdateManyWithoutPaymentInput>
 }
 
 export type MediaPurchaseCreateWithoutUserInput = {
   id?: string
-  amount: number
-  type: $Enums.PurchaseType
-  expiryDate?: Date | string | null
+  type?: $Enums.MediaPurchaseType
+  status?: $Enums.MediaPurchaseStatus
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Date | string | null
+  stripePaymentId?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   media: Prisma.MediaCreateNestedOneWithoutPurchasesInput
+  payment?: Prisma.PaymentCreateNestedOneWithoutMediaPurchasesInput
 }
 
 export type MediaPurchaseUncheckedCreateWithoutUserInput = {
   id?: string
   mediaId: string
-  amount: number
-  type: $Enums.PurchaseType
-  expiryDate?: Date | string | null
+  type?: $Enums.MediaPurchaseType
+  status?: $Enums.MediaPurchaseStatus
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Date | string | null
+  stripePaymentId?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  paymentId?: string | null
 }
 
 export type MediaPurchaseCreateOrConnectWithoutUserInput = {
@@ -607,73 +822,157 @@ export type MediaPurchaseUpdateManyWithWhereWithoutUserInput = {
 export type MediaPurchaseCreateManyMediaInput = {
   id?: string
   userId: string
-  amount: number
-  type: $Enums.PurchaseType
-  expiryDate?: Date | string | null
+  type?: $Enums.MediaPurchaseType
+  status?: $Enums.MediaPurchaseStatus
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Date | string | null
+  stripePaymentId?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  paymentId?: string | null
 }
 
 export type MediaPurchaseUpdateWithoutMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
-  expiryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  type?: Prisma.EnumMediaPurchaseTypeFieldUpdateOperationsInput | $Enums.MediaPurchaseType
+  status?: Prisma.EnumMediaPurchaseStatusFieldUpdateOperationsInput | $Enums.MediaPurchaseStatus
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutPurchasesNestedInput
+  payment?: Prisma.PaymentUpdateOneWithoutMediaPurchasesNestedInput
 }
 
 export type MediaPurchaseUncheckedUpdateWithoutMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
-  expiryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  type?: Prisma.EnumMediaPurchaseTypeFieldUpdateOperationsInput | $Enums.MediaPurchaseType
+  status?: Prisma.EnumMediaPurchaseStatusFieldUpdateOperationsInput | $Enums.MediaPurchaseStatus
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MediaPurchaseUncheckedUpdateManyWithoutMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
-  expiryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  type?: Prisma.EnumMediaPurchaseTypeFieldUpdateOperationsInput | $Enums.MediaPurchaseType
+  status?: Prisma.EnumMediaPurchaseStatusFieldUpdateOperationsInput | $Enums.MediaPurchaseStatus
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type MediaPurchaseCreateManyPaymentInput = {
+  id?: string
+  userId: string
+  mediaId: string
+  type?: $Enums.MediaPurchaseType
+  status?: $Enums.MediaPurchaseStatus
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Date | string | null
+  stripePaymentId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type MediaPurchaseUpdateWithoutPaymentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumMediaPurchaseTypeFieldUpdateOperationsInput | $Enums.MediaPurchaseType
+  status?: Prisma.EnumMediaPurchaseStatusFieldUpdateOperationsInput | $Enums.MediaPurchaseStatus
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutPurchasesNestedInput
+  media?: Prisma.MediaUpdateOneRequiredWithoutPurchasesNestedInput
+}
+
+export type MediaPurchaseUncheckedUpdateWithoutPaymentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  mediaId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumMediaPurchaseTypeFieldUpdateOperationsInput | $Enums.MediaPurchaseType
+  status?: Prisma.EnumMediaPurchaseStatusFieldUpdateOperationsInput | $Enums.MediaPurchaseStatus
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type MediaPurchaseUncheckedUpdateManyWithoutPaymentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  mediaId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumMediaPurchaseTypeFieldUpdateOperationsInput | $Enums.MediaPurchaseType
+  status?: Prisma.EnumMediaPurchaseStatusFieldUpdateOperationsInput | $Enums.MediaPurchaseStatus
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type MediaPurchaseCreateManyUserInput = {
   id?: string
   mediaId: string
-  amount: number
-  type: $Enums.PurchaseType
-  expiryDate?: Date | string | null
+  type?: $Enums.MediaPurchaseType
+  status?: $Enums.MediaPurchaseStatus
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Date | string | null
+  stripePaymentId?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  paymentId?: string | null
 }
 
 export type MediaPurchaseUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
-  expiryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  type?: Prisma.EnumMediaPurchaseTypeFieldUpdateOperationsInput | $Enums.MediaPurchaseType
+  status?: Prisma.EnumMediaPurchaseStatusFieldUpdateOperationsInput | $Enums.MediaPurchaseStatus
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   media?: Prisma.MediaUpdateOneRequiredWithoutPurchasesNestedInput
+  payment?: Prisma.PaymentUpdateOneWithoutMediaPurchasesNestedInput
 }
 
 export type MediaPurchaseUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mediaId?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
-  expiryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  type?: Prisma.EnumMediaPurchaseTypeFieldUpdateOperationsInput | $Enums.MediaPurchaseType
+  status?: Prisma.EnumMediaPurchaseStatusFieldUpdateOperationsInput | $Enums.MediaPurchaseStatus
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MediaPurchaseUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mediaId?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
-  expiryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  type?: Prisma.EnumMediaPurchaseTypeFieldUpdateOperationsInput | $Enums.MediaPurchaseType
+  status?: Prisma.EnumMediaPurchaseStatusFieldUpdateOperationsInput | $Enums.MediaPurchaseStatus
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -682,60 +981,82 @@ export type MediaPurchaseSelect<ExtArgs extends runtime.Types.Extensions.Interna
   id?: boolean
   userId?: boolean
   mediaId?: boolean
-  amount?: boolean
   type?: boolean
-  expiryDate?: boolean
+  status?: boolean
+  price?: boolean
+  expiresAt?: boolean
+  stripePaymentId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  paymentId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
+  payment?: boolean | Prisma.MediaPurchase$paymentArgs<ExtArgs>
 }, ExtArgs["result"]["mediaPurchase"]>
 
 export type MediaPurchaseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
   mediaId?: boolean
-  amount?: boolean
   type?: boolean
-  expiryDate?: boolean
+  status?: boolean
+  price?: boolean
+  expiresAt?: boolean
+  stripePaymentId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  paymentId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
+  payment?: boolean | Prisma.MediaPurchase$paymentArgs<ExtArgs>
 }, ExtArgs["result"]["mediaPurchase"]>
 
 export type MediaPurchaseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
   mediaId?: boolean
-  amount?: boolean
   type?: boolean
-  expiryDate?: boolean
+  status?: boolean
+  price?: boolean
+  expiresAt?: boolean
+  stripePaymentId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  paymentId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
+  payment?: boolean | Prisma.MediaPurchase$paymentArgs<ExtArgs>
 }, ExtArgs["result"]["mediaPurchase"]>
 
 export type MediaPurchaseSelectScalar = {
   id?: boolean
   userId?: boolean
   mediaId?: boolean
-  amount?: boolean
   type?: boolean
-  expiryDate?: boolean
+  status?: boolean
+  price?: boolean
+  expiresAt?: boolean
+  stripePaymentId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  paymentId?: boolean
 }
 
-export type MediaPurchaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "mediaId" | "amount" | "type" | "expiryDate" | "createdAt", ExtArgs["result"]["mediaPurchase"]>
+export type MediaPurchaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "mediaId" | "type" | "status" | "price" | "expiresAt" | "stripePaymentId" | "createdAt" | "updatedAt" | "paymentId", ExtArgs["result"]["mediaPurchase"]>
 export type MediaPurchaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
+  payment?: boolean | Prisma.MediaPurchase$paymentArgs<ExtArgs>
 }
 export type MediaPurchaseIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
+  payment?: boolean | Prisma.MediaPurchase$paymentArgs<ExtArgs>
 }
 export type MediaPurchaseIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   media?: boolean | Prisma.MediaDefaultArgs<ExtArgs>
+  payment?: boolean | Prisma.MediaPurchase$paymentArgs<ExtArgs>
 }
 
 export type $MediaPurchasePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -743,15 +1064,20 @@ export type $MediaPurchasePayload<ExtArgs extends runtime.Types.Extensions.Inter
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
     media: Prisma.$MediaPayload<ExtArgs>
+    payment: Prisma.$PaymentPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
     mediaId: string
-    amount: number
-    type: $Enums.PurchaseType
-    expiryDate: Date | null
+    type: $Enums.MediaPurchaseType
+    status: $Enums.MediaPurchaseStatus
+    price: runtime.Decimal
+    expiresAt: Date | null
+    stripePaymentId: string | null
     createdAt: Date
+    updatedAt: Date
+    paymentId: string | null
   }, ExtArgs["result"]["mediaPurchase"]>
   composites: {}
 }
@@ -1148,6 +1474,7 @@ export interface Prisma__MediaPurchaseClient<T, Null = never, ExtArgs extends ru
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   media<T extends Prisma.MediaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MediaDefaultArgs<ExtArgs>>): Prisma.Prisma__MediaClient<runtime.Types.Result.GetResult<Prisma.$MediaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  payment<T extends Prisma.MediaPurchase$paymentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MediaPurchase$paymentArgs<ExtArgs>>): Prisma.Prisma__PaymentClient<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1180,10 +1507,14 @@ export interface MediaPurchaseFieldRefs {
   readonly id: Prisma.FieldRef<"MediaPurchase", 'String'>
   readonly userId: Prisma.FieldRef<"MediaPurchase", 'String'>
   readonly mediaId: Prisma.FieldRef<"MediaPurchase", 'String'>
-  readonly amount: Prisma.FieldRef<"MediaPurchase", 'Float'>
-  readonly type: Prisma.FieldRef<"MediaPurchase", 'PurchaseType'>
-  readonly expiryDate: Prisma.FieldRef<"MediaPurchase", 'DateTime'>
+  readonly type: Prisma.FieldRef<"MediaPurchase", 'MediaPurchaseType'>
+  readonly status: Prisma.FieldRef<"MediaPurchase", 'MediaPurchaseStatus'>
+  readonly price: Prisma.FieldRef<"MediaPurchase", 'Decimal'>
+  readonly expiresAt: Prisma.FieldRef<"MediaPurchase", 'DateTime'>
+  readonly stripePaymentId: Prisma.FieldRef<"MediaPurchase", 'String'>
   readonly createdAt: Prisma.FieldRef<"MediaPurchase", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"MediaPurchase", 'DateTime'>
+  readonly paymentId: Prisma.FieldRef<"MediaPurchase", 'String'>
 }
     
 
@@ -1582,6 +1913,25 @@ export type MediaPurchaseDeleteManyArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many MediaPurchases to delete.
    */
   limit?: number
+}
+
+/**
+ * MediaPurchase.payment
+ */
+export type MediaPurchase$paymentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Payment
+   */
+  select?: Prisma.PaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Payment
+   */
+  omit?: Prisma.PaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentInclude<ExtArgs> | null
+  where?: Prisma.PaymentWhereInput
 }
 
 /**

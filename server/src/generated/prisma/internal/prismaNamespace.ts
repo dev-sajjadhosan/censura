@@ -397,6 +397,7 @@ export const ModelName = {
   Profile: 'Profile',
   Bookmark: 'Bookmark',
   Favorite: 'Favorite',
+  Rental: 'Rental',
   Review: 'Review',
   Subscription: 'Subscription',
   User: 'User',
@@ -419,7 +420,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "comment" | "like" | "genre" | "media" | "castMember" | "mediaPlatform" | "mediaPurchase" | "payment" | "platform" | "profile" | "bookmark" | "favorite" | "review" | "subscription" | "user" | "session" | "account" | "verification" | "watchlist"
+    modelProps: "admin" | "comment" | "like" | "genre" | "media" | "castMember" | "mediaPlatform" | "mediaPurchase" | "payment" | "platform" | "profile" | "bookmark" | "favorite" | "rental" | "review" | "subscription" | "user" | "session" | "account" | "verification" | "watchlist"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1385,6 +1386,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Rental: {
+      payload: Prisma.$RentalPayload<ExtArgs>
+      fields: Prisma.RentalFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RentalFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RentalPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RentalFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RentalPayload>
+        }
+        findFirst: {
+          args: Prisma.RentalFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RentalPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RentalFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RentalPayload>
+        }
+        findMany: {
+          args: Prisma.RentalFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RentalPayload>[]
+        }
+        create: {
+          args: Prisma.RentalCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RentalPayload>
+        }
+        createMany: {
+          args: Prisma.RentalCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RentalCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RentalPayload>[]
+        }
+        delete: {
+          args: Prisma.RentalDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RentalPayload>
+        }
+        update: {
+          args: Prisma.RentalUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RentalPayload>
+        }
+        deleteMany: {
+          args: Prisma.RentalDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RentalUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RentalUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RentalPayload>[]
+        }
+        upsert: {
+          args: Prisma.RentalUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RentalPayload>
+        }
+        aggregate: {
+          args: Prisma.RentalAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRental>
+        }
+        groupBy: {
+          args: Prisma.RentalGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RentalGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RentalCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RentalCountAggregateOutputType> | number
+        }
+      }
+    }
     Review: {
       payload: Prisma.$ReviewPayload<ExtArgs>
       fields: Prisma.ReviewFieldRefs
@@ -2012,6 +2087,8 @@ export const MediaScalarFieldEnum = {
   backdropUrl: 'backdropUrl',
   trailerUrl: 'trailerUrl',
   streamingUrl: 'streamingUrl',
+  rentalPrice: 'rentalPrice',
+  buyPrice: 'buyPrice',
   runtimeMinutes: 'runtimeMinutes',
   seasons: 'seasons',
   pricing: 'pricing',
@@ -2051,10 +2128,14 @@ export const MediaPurchaseScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   mediaId: 'mediaId',
-  amount: 'amount',
   type: 'type',
-  expiryDate: 'expiryDate',
-  createdAt: 'createdAt'
+  status: 'status',
+  price: 'price',
+  expiresAt: 'expiresAt',
+  stripePaymentId: 'stripePaymentId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  paymentId: 'paymentId'
 } as const
 
 export type MediaPurchaseScalarFieldEnum = (typeof MediaPurchaseScalarFieldEnum)[keyof typeof MediaPurchaseScalarFieldEnum]
@@ -2067,7 +2148,8 @@ export const PaymentScalarFieldEnum = {
   currency: 'currency',
   stripePaymentId: 'stripePaymentId',
   status: 'status',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  rentalId: 'rentalId'
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
@@ -2128,6 +2210,20 @@ export const FavoriteScalarFieldEnum = {
 } as const
 
 export type FavoriteScalarFieldEnum = (typeof FavoriteScalarFieldEnum)[keyof typeof FavoriteScalarFieldEnum]
+
+
+export const RentalScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  mediaId: 'mediaId',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  price: 'price',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RentalScalarFieldEnum = (typeof RentalScalarFieldEnum)[keyof typeof RentalScalarFieldEnum]
 
 
 export const ReviewScalarFieldEnum = {
@@ -2344,6 +2440,20 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
  * Reference to a field of type 'Pricing'
  */
 export type EnumPricingFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Pricing'>
@@ -2372,16 +2482,44 @@ export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMode
 
 
 /**
- * Reference to a field of type 'PurchaseType'
+ * Reference to a field of type 'MediaPurchaseType'
  */
-export type EnumPurchaseTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PurchaseType'>
+export type EnumMediaPurchaseTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MediaPurchaseType'>
     
 
 
 /**
- * Reference to a field of type 'PurchaseType[]'
+ * Reference to a field of type 'MediaPurchaseType[]'
  */
-export type ListEnumPurchaseTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PurchaseType[]'>
+export type ListEnumMediaPurchaseTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MediaPurchaseType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MediaPurchaseStatus'
+ */
+export type EnumMediaPurchaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MediaPurchaseStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'MediaPurchaseStatus[]'
+ */
+export type ListEnumMediaPurchaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MediaPurchaseStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'RentalStatus'
+ */
+export type EnumRentalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RentalStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'RentalStatus[]'
+ */
+export type ListEnumRentalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RentalStatus[]'>
     
 
 
@@ -2562,6 +2700,7 @@ export type GlobalOmitConfig = {
   profile?: Prisma.ProfileOmit
   bookmark?: Prisma.BookmarkOmit
   favorite?: Prisma.FavoriteOmit
+  rental?: Prisma.RentalOmit
   review?: Prisma.ReviewOmit
   subscription?: Prisma.SubscriptionOmit
   user?: Prisma.UserOmit

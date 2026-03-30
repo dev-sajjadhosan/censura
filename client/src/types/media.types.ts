@@ -1,5 +1,6 @@
 import { User } from "./auth.types";
 import { PlatformName, ReviewStatus } from "./enum.types";
+import { Payment } from "./payment.types";
 import { Like } from "./reaction.types";
 
 /**
@@ -95,9 +96,36 @@ export interface MediaPurchase {
   id: string;
   userId: string;
   mediaId: string;
-  amount: number;
+  paymentId: string;
   type: string;
-  expiryDate: string;
+  status: string;
+  price: number;
+  expiresAt: string;
+  stripePaymentId: string;
+
+  user: User;
+  media: Media;
+  payment: Payment;
+
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Rental {
+
+  id: string;
+  userId: string;
+  mediaId: string;
+  paymentId: string;
+  type: string;
+  status: string;
+  price: number;
+  expiresAt: string;
+  stripePaymentId: string;
+
+  user: User;
+  media: Media;
+  payments: Payment;
 
   createdAt: string;
   updatedAt: string;

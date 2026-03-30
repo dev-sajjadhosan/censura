@@ -3,10 +3,23 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight, DollarSign, Play, Star } from "lucide-react";
+import { ChevronRight, Crown, DollarSign, Play, Star } from "lucide-react";
 import { Media } from "@/types/media.types";
+import { getUserMediaAccess } from "@/lib/access";
+import { IProfileResponse } from "@/types/auth.types";
 
-export default function MediaCard({ media }: { media: Media }) {
+export default function MediaCard({
+  media,
+  user,
+}: {
+  media: Media;
+  user?: IProfileResponse;
+}) {
+  const { hasAccess } = getUserMediaAccess(
+    media,
+    user?.subscription || null,
+    user?.purchases || null,
+  );
   return (
     <Card>
       <CardHeader className="flex items-center justify-between">
@@ -31,19 +44,39 @@ export default function MediaCard({ media }: { media: Media }) {
             <span>{media.releaseYear}</span>
           </div>
           <div className="flex items-center gap-3 mt-3">
-            {media.pricing === "FREE" ? (
-              <Button size="sm">
-                {" "}
-                <Play /> Watch Now
-              </Button>
+            {user ? (
+              hasAccess ? (
+                <Button size="lg" disabled={!user}>
+                  <Play /> Watch Now
+                </Button>
+              ) : media.pricing === "PREMIUM" ? (
+                <Button size="lg" variant="secondary" asChild disabled={!user}>
+                  <Link href="/subscription">
+                    <Crown />{" "}
+                    {user && user?.subscription.status === "active"
+                      ? "Subscribed"
+                      : "Subscribe"}
+                  </Link>
+                </Button>
+              ) : media.pricing === "RENTAL" ? (
+                <Button size="lg" variant="outline" asChild disabled={!user}>
+                  <Link
+                    href={`/payment/media-checkout?mediaId=${media.id}&type=RENTAL`}
+                  >
+                    <DollarSign /> Rent Now
+                  </Link>
+                </Button>
+              ) : null
             ) : (
-              <Button size="sm">
-                {" "}
-                <DollarSign /> Buy Now
+              <Button size="lg" variant="secondary" asChild>
+                <Link href="/login">
+                  <Crown /> Login to Watch
+                </Link>
               </Button>
             )}
+
             <Link href={`/media/${media.slug}`}>
-              <Button size="sm">
+              <Button size="lg">
                 View
                 <ChevronRight />
               </Button>

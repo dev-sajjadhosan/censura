@@ -6,10 +6,14 @@ model Payment {
   currency        String       @default("usd")
   stripePaymentId String?      @unique
   status          String
-  createdAt       DateTime     @default(now())
 
-  @@map("payments")
+  createdAt      DateTime        @default(now())
+  rental         Rental?         @relation(fields: [rentalId], references: [id])
+  rentalId       String?
+  mediaPurchases MediaPurchase[]
+
   @@index([subscriptionId])
   @@index([status])
   @@index([createdAt])
+  @@map("payments")
 }

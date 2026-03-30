@@ -4,7 +4,12 @@ import { prisma } from "../../lib/prisma";
 import AppError from "../../error-helpers/AppError";
 import httpStatus from "http-status";
 import { envVars } from "../../config/env";
-import { SubscriptionPlan, SubscriptionStatus } from "../../../generated/prisma/enums";
+import {
+  MediaPurchaseStatus,
+  MediaPurchaseType,
+  SubscriptionPlan,
+  SubscriptionStatus,
+} from "../../../generated/prisma/enums";
 import { sendEmail } from "../../utils/email";
 
 const getPlans = async () => {
@@ -12,17 +17,46 @@ const getPlans = async () => {
     {
       name: SubscriptionPlan.FREE,
       price: 0,
-      features: ["Basic Access", "Limited Quality"],
+      badge: null,
+      features: [
+        "Access to free titles only",
+        "480p streaming quality",
+        "1 device at a time",
+        "Ad-supported experience",
+        "Limited new releases",
+        "Community reviews & ratings",
+      ],
     },
     {
       name: SubscriptionPlan.MONTHLY,
       price: 9.99,
-      features: ["Premium Access", "HD Streaming", "Cancel Anytime"],
+      badge: "Most Popular",
+      features: [
+        "Access to all premium titles",
+        "Full HD 1080p streaming",
+        "2 devices simultaneously",
+        "Ad-free experience",
+        "New releases on day one",
+        "Download for offline viewing",
+        "Community reviews & ratings",
+        "Cancel anytime",
+      ],
     },
     {
       name: SubscriptionPlan.YEARLY,
       price: 99.99,
-      features: ["Premium Access", "4K Streaming", "Save 16%"],
+      badge: "Best Value",
+      features: [
+        "Everything in Monthly",
+        "4K Ultra HD + HDR streaming",
+        "4 devices simultaneously",
+        "Ad-free experience",
+        "Early access to new releases",
+        "Download for offline viewing",
+        "Priority customer support",
+        "Exclusive member-only content",
+        "Save 16% vs monthly billing",
+      ],
     },
   ];
 };
@@ -30,12 +64,12 @@ const getPlans = async () => {
 const createCheckoutSession = async (
   userId: string,
   userEmail: string,
-  plan: SubscriptionPlan
+  plan: SubscriptionPlan,
 ) => {
   if (plan === SubscriptionPlan.FREE) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      "Free plan does not require a checkout session."
+      "Free plan does not require a checkout session.",
     );
   }
 
@@ -81,88 +115,121 @@ const handleWebhook = async (body: Buffer, signature: string) => {
   let event: Stripe.Event;
 
   try {
-    // 3. Verify signature to ensure the request is actually from Stripe
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      envVars.STRIPE.STRIPE_WEBHOOK_SECRET
+      envVars.STRIPE.STRIPE_WEBHOOK_SECRET,
     );
   } catch (err: any) {
     throw new AppError(httpStatus.BAD_REQUEST, `Webhook Error: ${err.message}`);
   }
 
-  // 4. Handle successful payment event
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
-    
-    // Read the metadata we attached during checkout
-    const userId = session.metadata?.userId;
-    const plan = session.metadata?.plan as SubscriptionPlan;
+    const { userId, plan, mediaId, type } = session.metadata || {};
 
-    if (!userId || !plan) {
-      throw new AppError(httpStatus.BAD_REQUEST, "Missing metadata in session");
+    // --- Subscription flow ---
+    if (userId && plan) {
+      const currentPeriodStart = new Date();
+      const currentPeriodEnd = new Date();
+      if (plan === SubscriptionPlan.MONTHLY) {
+        currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1);
+      } else if (plan === SubscriptionPlan.YEARLY) {
+        currentPeriodEnd.setFullYear(currentPeriodEnd.getFullYear() + 1);
+      }
+
+      const updatedSubscription = await prisma.subscription.upsert({
+        where: { userId },
+        update: {
+          plan: plan as SubscriptionPlan,
+          status: SubscriptionStatus.ACTIVE,
+          stripeCustomerId:
+            typeof session.customer === "string" ? session.customer : null,
+          currentPeriodStart,
+          currentPeriodEnd,
+        },
+        create: {
+          userId,
+          plan: plan as SubscriptionPlan,
+          status: SubscriptionStatus.ACTIVE,
+          stripeCustomerId:
+            typeof session.customer === "string" ? session.customer : null,
+          currentPeriodStart,
+          currentPeriodEnd,
+        },
+      });
+
+      await prisma.payment.create({
+        data: {
+          subscriptionId: updatedSubscription.id,
+          amount: (session.amount_total || 0) / 100,
+          currency: session.currency || "usd",
+          stripePaymentId: session.payment_intent as string,
+          status: "COMPLETED",
+        },
+      });
+
+      const user = await prisma.user.findUnique({ where: { id: userId } });
+      if (user) {
+        try {
+          await sendEmail({
+            to: user.email,
+            subject: "Your Censura Subscription is Active!",
+            templateName: "subscription-success",
+            templateData: {
+              userName: user.name,
+              plan,
+              startDate: currentPeriodStart.toLocaleDateString(),
+              endDate: currentPeriodEnd.toLocaleDateString(),
+              loginUrl: `${envVars.FRONTEND_URL}/login`,
+            },
+          });
+        } catch (emailError) {
+          console.error(
+            "Failed to send subscription success email",
+            emailError,
+          );
+        }
+      }
     }
 
-    const currentPeriodStart = new Date();
-    const currentPeriodEnd = new Date();
-    if (plan === SubscriptionPlan.MONTHLY) {
-      currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1);
-    } else if (plan === SubscriptionPlan.YEARLY) {
-      currentPeriodEnd.setFullYear(currentPeriodEnd.getFullYear() + 1);
-    }
+    // --- Media purchase / rental flow ---
+    if (userId && mediaId && type) {
+      const RENTAL_DURATION_HOURS = 48;
+      const expiresAt =
+        type === MediaPurchaseType.RENTAL
+          ? new Date(Date.now() + RENTAL_DURATION_HOURS * 60 * 60 * 1000)
+          : null;
 
-    // 5. Update Database to activate the user's subscription!
-    const updatedSubscription = await prisma.subscription.upsert({
-      where: { userId },
-      update: {
-        plan,
-        status: SubscriptionStatus.ACTIVE,
-        stripeCustomerId:
-          typeof session.customer === "string" ? session.customer : null,
-        currentPeriodStart,
-        currentPeriodEnd,
-      },
-      create: {
-        userId,
-        plan,
-        status: SubscriptionStatus.ACTIVE,
-        stripeCustomerId:
-          typeof session.customer === "string" ? session.customer : null,
-        currentPeriodStart,
-        currentPeriodEnd,
-      },
-    });
+      await prisma.mediaPurchase.create({
+        data: {
+          userId,
+          mediaId,
+          type: type as MediaPurchaseType,
+          status: MediaPurchaseStatus.ACTIVE,
+          price: (session.amount_total || 0) / 100,
+          expiresAt,
+          stripePaymentId: session.payment_intent as string,
+        },
+      });
 
-    // 6. Create a Payment record for history
-    await prisma.payment.create({
-      data: {
-        subscriptionId: updatedSubscription.id,
-        amount: (session.amount_total || 0) / 100,
-        currency: session.currency || "usd",
-        stripePaymentId: session.payment_intent as string,
-        status: "COMPLETED",
-      },
-    });
-
-    // Fetch user details for the email
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-    if (user) {
-      try {
-        await sendEmail({
-          to: user.email,
-          subject: "Your Censura Subscription is Active!",
-          templateName: "subscription-success",
-          templateData: {
-            userName: user.name,
-            plan,
-            startDate: currentPeriodStart.toLocaleDateString(),
-            endDate: currentPeriodEnd.toLocaleDateString(),
-            loginUrl: `${envVars.FRONTEND_URL}/login`,
-          },
-        });
-        console.log(`Success email sent to ${user.email}`);
-      } catch (emailError) {
-        console.error("Failed to send subscription success email", emailError);
+      const user = await prisma.user.findUnique({ where: { id: userId } });
+      if (user) {
+        try {
+          await sendEmail({
+            to: user.email,
+            subject: `Your ${type === MediaPurchaseType.RENTAL ? "Rental" : "Purchase"} is Confirmed!`,
+            templateName: "media-purchase-success",
+            templateData: {
+              userName: user.name,
+              type,
+              expiresAt: expiresAt?.toLocaleDateString() ?? "Never (Permanent)",
+              loginUrl: `${envVars.FRONTEND_URL}/login`,
+            },
+          });
+        } catch (emailError) {
+          console.error("Failed to send media purchase email", emailError);
+        }
       }
     }
   }
@@ -179,7 +246,11 @@ const getSubscriptionStatus = async (userId: string) => {
     return { status: SubscriptionStatus.EXPIRED, plan: SubscriptionPlan.FREE };
   }
 
-  if (subscription.currentPeriodEnd && new Date() > subscription.currentPeriodEnd && subscription.status === SubscriptionStatus.ACTIVE) {
+  if (
+    subscription.currentPeriodEnd &&
+    new Date() > subscription.currentPeriodEnd &&
+    subscription.status === SubscriptionStatus.ACTIVE
+  ) {
     const updated = await prisma.subscription.update({
       where: { id: subscription.id },
       data: { status: SubscriptionStatus.EXPIRED },

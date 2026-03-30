@@ -3,12 +3,14 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Play, Info, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { IProfileResponse } from "@/types/auth.types";
 
 interface HeroSectionProps {
   featuredMedia: any;
+  user: IProfileResponse;
 }
 
-export default function HeroSection({ featuredMedia }: HeroSectionProps) {
+export default function HeroSection({ featuredMedia, user }: HeroSectionProps) {
   if (!featuredMedia)
     return <div className="h-96 w-full bg-neutral-900 animate-pulse"></div>;
 
@@ -72,6 +74,11 @@ export default function HeroSection({ featuredMedia }: HeroSectionProps) {
           <div className="flex items-center gap-4 pt-4">
             <Link href={`/media/${featuredMedia.slug}`}>
               <Button
+                disabled={
+                  !user ||
+                  user.subscription.status !== "active" ||
+                  user.role === "ADMIN"
+                }
                 size="lg"
                 className="rounded-full px-8 gap-2 text-md font-semibold h-14"
               >

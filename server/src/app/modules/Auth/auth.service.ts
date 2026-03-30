@@ -399,6 +399,8 @@ const getMe = async (user: IRequestUser) => {
       bookmarks: true,
       favorites: true,
       watchlists: true,
+      subscription: true,
+      purchases: true,
       _count: {
         select: {
           bookmarks: true,

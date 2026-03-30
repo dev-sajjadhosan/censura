@@ -250,6 +250,7 @@ export type UserWhereInput = {
   favorites?: Prisma.FavoriteListRelationFilter
   admin?: Prisma.XOR<Prisma.AdminNullableScalarRelationFilter, Prisma.AdminWhereInput> | null
   purchases?: Prisma.MediaPurchaseListRelationFilter
+  rentals?: Prisma.RentalListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -277,6 +278,7 @@ export type UserOrderByWithRelationInput = {
   favorites?: Prisma.FavoriteOrderByRelationAggregateInput
   admin?: Prisma.AdminOrderByWithRelationInput
   purchases?: Prisma.MediaPurchaseOrderByRelationAggregateInput
+  rentals?: Prisma.RentalOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -307,6 +309,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   favorites?: Prisma.FavoriteListRelationFilter
   admin?: Prisma.XOR<Prisma.AdminNullableScalarRelationFilter, Prisma.AdminWhereInput> | null
   purchases?: Prisma.MediaPurchaseListRelationFilter
+  rentals?: Prisma.RentalListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -370,6 +373,7 @@ export type UserCreateInput = {
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -397,6 +401,7 @@ export type UserUncheckedCreateInput = {
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminUncheckedCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -424,6 +429,7 @@ export type UserUpdateInput = {
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -451,6 +457,7 @@ export type UserUncheckedUpdateInput = {
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUncheckedUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -646,6 +653,20 @@ export type UserUpdateOneRequiredWithoutFavoritesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFavoritesInput, Prisma.UserUpdateWithoutFavoritesInput>, Prisma.UserUncheckedUpdateWithoutFavoritesInput>
 }
 
+export type UserCreateNestedOneWithoutRentalsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRentalsInput, Prisma.UserUncheckedCreateWithoutRentalsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRentalsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutRentalsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRentalsInput, Prisma.UserUncheckedCreateWithoutRentalsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRentalsInput
+  upsert?: Prisma.UserUpsertWithoutRentalsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRentalsInput, Prisma.UserUpdateWithoutRentalsInput>, Prisma.UserUncheckedUpdateWithoutRentalsInput>
+}
+
 export type UserCreateNestedOneWithoutReviewsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutReviewsInput, Prisma.UserUncheckedCreateWithoutReviewsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewsInput
@@ -748,6 +769,7 @@ export type UserCreateWithoutAdminInput = {
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAdminInput = {
@@ -774,6 +796,7 @@ export type UserUncheckedCreateWithoutAdminInput = {
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAdminInput = {
@@ -816,6 +839,7 @@ export type UserUpdateWithoutAdminInput = {
   bookmarks?: Prisma.BookmarkUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAdminInput = {
@@ -842,6 +866,7 @@ export type UserUncheckedUpdateWithoutAdminInput = {
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCommentsInput = {
@@ -868,6 +893,7 @@ export type UserCreateWithoutCommentsInput = {
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCommentsInput = {
@@ -894,6 +920,7 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminUncheckedCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCommentsInput = {
@@ -936,6 +963,7 @@ export type UserUpdateWithoutCommentsInput = {
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -962,6 +990,7 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUncheckedUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutLikesInput = {
@@ -988,6 +1017,7 @@ export type UserCreateWithoutLikesInput = {
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLikesInput = {
@@ -1014,6 +1044,7 @@ export type UserUncheckedCreateWithoutLikesInput = {
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminUncheckedCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLikesInput = {
@@ -1056,6 +1087,7 @@ export type UserUpdateWithoutLikesInput = {
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLikesInput = {
@@ -1082,6 +1114,7 @@ export type UserUncheckedUpdateWithoutLikesInput = {
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUncheckedUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPurchasesInput = {
@@ -1108,6 +1141,7 @@ export type UserCreateWithoutPurchasesInput = {
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminCreateNestedOneWithoutUserInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPurchasesInput = {
@@ -1134,6 +1168,7 @@ export type UserUncheckedCreateWithoutPurchasesInput = {
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminUncheckedCreateNestedOneWithoutUserInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPurchasesInput = {
@@ -1176,6 +1211,7 @@ export type UserUpdateWithoutPurchasesInput = {
   bookmarks?: Prisma.BookmarkUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUpdateOneWithoutUserNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPurchasesInput = {
@@ -1202,6 +1238,7 @@ export type UserUncheckedUpdateWithoutPurchasesInput = {
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUncheckedUpdateOneWithoutUserNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProfileInput = {
@@ -1228,6 +1265,7 @@ export type UserCreateWithoutProfileInput = {
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
@@ -1254,6 +1292,7 @@ export type UserUncheckedCreateWithoutProfileInput = {
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminUncheckedCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -1296,6 +1335,7 @@ export type UserUpdateWithoutProfileInput = {
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
@@ -1322,6 +1362,7 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUncheckedUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBookmarksInput = {
@@ -1348,6 +1389,7 @@ export type UserCreateWithoutBookmarksInput = {
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBookmarksInput = {
@@ -1374,6 +1416,7 @@ export type UserUncheckedCreateWithoutBookmarksInput = {
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminUncheckedCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBookmarksInput = {
@@ -1416,6 +1459,7 @@ export type UserUpdateWithoutBookmarksInput = {
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBookmarksInput = {
@@ -1442,6 +1486,7 @@ export type UserUncheckedUpdateWithoutBookmarksInput = {
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUncheckedUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFavoritesInput = {
@@ -1468,6 +1513,7 @@ export type UserCreateWithoutFavoritesInput = {
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFavoritesInput = {
@@ -1494,6 +1540,7 @@ export type UserUncheckedCreateWithoutFavoritesInput = {
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminUncheckedCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFavoritesInput = {
@@ -1536,6 +1583,7 @@ export type UserUpdateWithoutFavoritesInput = {
   bookmarks?: Prisma.BookmarkUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFavoritesInput = {
@@ -1560,6 +1608,131 @@ export type UserUncheckedUpdateWithoutFavoritesInput = {
   watchlists?: Prisma.WatchlistUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutUserNestedInput
+  admin?: Prisma.AdminUncheckedUpdateOneWithoutUserNestedInput
+  purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutRentalsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: $Enums.Role
+  status?: $Enums.UserStatus
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  comments?: Prisma.CommentCreateNestedManyWithoutUserInput
+  likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  watchlists?: Prisma.WatchlistCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  bookmarks?: Prisma.BookmarkCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
+  admin?: Prisma.AdminCreateNestedOneWithoutUserInput
+  purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutRentalsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: $Enums.Role
+  status?: $Enums.UserStatus
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutUserInput
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  watchlists?: Prisma.WatchlistUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
+  admin?: Prisma.AdminUncheckedCreateNestedOneWithoutUserInput
+  purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutRentalsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRentalsInput, Prisma.UserUncheckedCreateWithoutRentalsInput>
+}
+
+export type UserUpsertWithoutRentalsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRentalsInput, Prisma.UserUncheckedUpdateWithoutRentalsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRentalsInput, Prisma.UserUncheckedCreateWithoutRentalsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutRentalsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRentalsInput, Prisma.UserUncheckedUpdateWithoutRentalsInput>
+}
+
+export type UserUpdateWithoutRentalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutUserNestedInput
+  likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  watchlists?: Prisma.WatchlistUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  bookmarks?: Prisma.BookmarkUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
+  admin?: Prisma.AdminUpdateOneWithoutUserNestedInput
+  purchases?: Prisma.MediaPurchaseUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRentalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutUserNestedInput
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  watchlists?: Prisma.WatchlistUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUncheckedUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1588,6 +1761,7 @@ export type UserCreateWithoutReviewsInput = {
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReviewsInput = {
@@ -1614,6 +1788,7 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminUncheckedCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReviewsInput = {
@@ -1656,6 +1831,7 @@ export type UserUpdateWithoutReviewsInput = {
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsInput = {
@@ -1682,6 +1858,7 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUncheckedUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSubscriptionInput = {
@@ -1708,6 +1885,7 @@ export type UserCreateWithoutSubscriptionInput = {
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSubscriptionInput = {
@@ -1734,6 +1912,7 @@ export type UserUncheckedCreateWithoutSubscriptionInput = {
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminUncheckedCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSubscriptionInput = {
@@ -1776,6 +1955,7 @@ export type UserUpdateWithoutSubscriptionInput = {
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSubscriptionInput = {
@@ -1802,6 +1982,7 @@ export type UserUncheckedUpdateWithoutSubscriptionInput = {
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUncheckedUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -1828,6 +2009,7 @@ export type UserCreateWithoutSessionsInput = {
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1854,6 +2036,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminUncheckedCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1896,6 +2079,7 @@ export type UserUpdateWithoutSessionsInput = {
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1922,6 +2106,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUncheckedUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -1948,6 +2133,7 @@ export type UserCreateWithoutAccountsInput = {
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -1974,6 +2160,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminUncheckedCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -2016,6 +2203,7 @@ export type UserUpdateWithoutAccountsInput = {
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -2042,6 +2230,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUncheckedUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutWatchlistsInput = {
@@ -2068,6 +2257,7 @@ export type UserCreateWithoutWatchlistsInput = {
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutWatchlistsInput = {
@@ -2094,6 +2284,7 @@ export type UserUncheckedCreateWithoutWatchlistsInput = {
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   admin?: Prisma.AdminUncheckedCreateNestedOneWithoutUserInput
   purchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutUserInput
+  rentals?: Prisma.RentalUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutWatchlistsInput = {
@@ -2136,6 +2327,7 @@ export type UserUpdateWithoutWatchlistsInput = {
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWatchlistsInput = {
@@ -2162,6 +2354,7 @@ export type UserUncheckedUpdateWithoutWatchlistsInput = {
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   admin?: Prisma.AdminUncheckedUpdateOneWithoutUserNestedInput
   purchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  rentals?: Prisma.RentalUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -2179,6 +2372,7 @@ export type UserCountOutputType = {
   bookmarks: number
   favorites: number
   purchases: number
+  rentals: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2191,6 +2385,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   bookmarks?: boolean | UserCountOutputTypeCountBookmarksArgs
   favorites?: boolean | UserCountOutputTypeCountFavoritesArgs
   purchases?: boolean | UserCountOutputTypeCountPurchasesArgs
+  rentals?: boolean | UserCountOutputTypeCountRentalsArgs
 }
 
 /**
@@ -2266,6 +2461,13 @@ export type UserCountOutputTypeCountPurchasesArgs<ExtArgs extends runtime.Types.
   where?: Prisma.MediaPurchaseWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRentalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RentalWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2292,6 +2494,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   favorites?: boolean | Prisma.User$favoritesArgs<ExtArgs>
   admin?: boolean | Prisma.User$adminArgs<ExtArgs>
   purchases?: boolean | Prisma.User$purchasesArgs<ExtArgs>
+  rentals?: boolean | Prisma.User$rentalsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2354,6 +2557,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   favorites?: boolean | Prisma.User$favoritesArgs<ExtArgs>
   admin?: boolean | Prisma.User$adminArgs<ExtArgs>
   purchases?: boolean | Prisma.User$purchasesArgs<ExtArgs>
+  rentals?: boolean | Prisma.User$rentalsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2374,6 +2578,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     favorites: Prisma.$FavoritePayload<ExtArgs>[]
     admin: Prisma.$AdminPayload<ExtArgs> | null
     purchases: Prisma.$MediaPurchasePayload<ExtArgs>[]
+    rentals: Prisma.$RentalPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2794,6 +2999,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   favorites<T extends Prisma.User$favoritesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   admin<T extends Prisma.User$adminArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$adminArgs<ExtArgs>>): Prisma.Prisma__AdminClient<runtime.Types.Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   purchases<T extends Prisma.User$purchasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$purchasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MediaPurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  rentals<T extends Prisma.User$rentalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$rentalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3498,6 +3704,30 @@ export type User$purchasesArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.MediaPurchaseScalarFieldEnum | Prisma.MediaPurchaseScalarFieldEnum[]
+}
+
+/**
+ * User.rentals
+ */
+export type User$rentalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Rental
+   */
+  select?: Prisma.RentalSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Rental
+   */
+  omit?: Prisma.RentalOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RentalInclude<ExtArgs> | null
+  where?: Prisma.RentalWhereInput
+  orderBy?: Prisma.RentalOrderByWithRelationInput | Prisma.RentalOrderByWithRelationInput[]
+  cursor?: Prisma.RentalWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RentalScalarFieldEnum | Prisma.RentalScalarFieldEnum[]
 }
 
 /**

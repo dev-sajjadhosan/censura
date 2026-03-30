@@ -64,6 +64,7 @@ export const ModelName = {
   Profile: 'Profile',
   Bookmark: 'Bookmark',
   Favorite: 'Favorite',
+  Rental: 'Rental',
   Review: 'Review',
   Subscription: 'Subscription',
   User: 'User',
@@ -159,6 +160,8 @@ export const MediaScalarFieldEnum = {
   backdropUrl: 'backdropUrl',
   trailerUrl: 'trailerUrl',
   streamingUrl: 'streamingUrl',
+  rentalPrice: 'rentalPrice',
+  buyPrice: 'buyPrice',
   runtimeMinutes: 'runtimeMinutes',
   seasons: 'seasons',
   pricing: 'pricing',
@@ -198,10 +201,14 @@ export const MediaPurchaseScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   mediaId: 'mediaId',
-  amount: 'amount',
   type: 'type',
-  expiryDate: 'expiryDate',
-  createdAt: 'createdAt'
+  status: 'status',
+  price: 'price',
+  expiresAt: 'expiresAt',
+  stripePaymentId: 'stripePaymentId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  paymentId: 'paymentId'
 } as const
 
 export type MediaPurchaseScalarFieldEnum = (typeof MediaPurchaseScalarFieldEnum)[keyof typeof MediaPurchaseScalarFieldEnum]
@@ -214,7 +221,8 @@ export const PaymentScalarFieldEnum = {
   currency: 'currency',
   stripePaymentId: 'stripePaymentId',
   status: 'status',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  rentalId: 'rentalId'
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
@@ -275,6 +283,20 @@ export const FavoriteScalarFieldEnum = {
 } as const
 
 export type FavoriteScalarFieldEnum = (typeof FavoriteScalarFieldEnum)[keyof typeof FavoriteScalarFieldEnum]
+
+
+export const RentalScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  mediaId: 'mediaId',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  price: 'price',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RentalScalarFieldEnum = (typeof RentalScalarFieldEnum)[keyof typeof RentalScalarFieldEnum]
 
 
 export const ReviewScalarFieldEnum = {

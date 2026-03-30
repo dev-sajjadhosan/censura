@@ -1,8 +1,9 @@
 "use server";
 import { axiosClient } from "@/lib/axiosClient";
+import { SubscriptionPlan } from "@/types/payment.types";
 
 export const getSubscriptionPlans = async () => {
-  return await axiosClient.get("/subscriptions/plans");
+  return await axiosClient.get<SubscriptionPlan[]>("/subscriptions/plans");
 };
 
 export const createCheckoutSession = async (payload: { plan: string }) => {

@@ -65,7 +65,7 @@ export const PlatformsClient = ({
 
   const queryString = queryStringFromUrl || initialQueryString || "";
 
-  const { searchTermFromUrl, handleDebouncedSearchChange } =
+  const { searchFromUrl, handleDebouncedSearchChange } =
     useServerManagedDataTableSearch({
       searchParams,
       updateParams,
@@ -202,7 +202,7 @@ export const PlatformsClient = ({
             onPaginationChange: handlePaginationChange,
           }}
           search={{
-            initialValue: searchTermFromUrl,
+            initialValue: searchFromUrl,
             placeholder: "Search platform by name or slug...", // Updated
             onDebouncedChange: handleDebouncedSearchChange,
           }}

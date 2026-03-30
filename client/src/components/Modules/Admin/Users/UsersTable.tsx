@@ -55,7 +55,7 @@ const UsersTable = ({
 
   const queryString = queryStringFromUrl || initialQueryString || "";
 
-  const { searchTermFromUrl, handleDebouncedSearchChange } =
+  const { searchFromUrl, handleDebouncedSearchChange } =
     useServerManagedDataTableSearch({
       searchParams,
       updateParams,
@@ -127,7 +127,7 @@ const UsersTable = ({
           onPaginationChange: handlePaginationChange,
         }}
         search={{
-          initialValue: searchTermFromUrl,
+          initialValue: searchFromUrl,
           placeholder: "Search user by name or email...",
           onDebouncedChange: handleDebouncedSearchChange,
         }}

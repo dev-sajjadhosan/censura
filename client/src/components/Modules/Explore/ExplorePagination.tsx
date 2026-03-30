@@ -127,7 +127,8 @@ export default function Pagination({
     <div
       className={cn(
         "flex flex-col gap-3 px-4 py-4 mt-8",
-        "md:flex-row md:items-center md:justify-between",
+        "md:flex-row md:items-center ",
+        isSummary ? "md:justify-between" : "md:justify-center",
         className,
       )}
     >
@@ -135,7 +136,7 @@ export default function Pagination({
       <div className="flex flex-wrap items-center gap-2">
         <Button
           variant="secondary"
-          size="sm"
+          size="icon-lg"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={!canPrev || isLoading}
           className="rounded-md"
@@ -150,7 +151,7 @@ export default function Pagination({
               <Button
                 key="start-ellipsis"
                 variant="secondary"
-                size="sm"
+                size="icon-lg"
                 className="min-w-9 px-2"
                 onClick={() => onPageChange(jumpBackwardTarget)}
                 disabled={isLoading}
@@ -164,7 +165,7 @@ export default function Pagination({
               <Button
                 key="end-ellipsis"
                 variant="secondary"
-                size="sm"
+                size="icon-lg"
                 className="min-w-9 px-2"
                 onClick={() => onPageChange(jumpForwardTarget)}
                 disabled={isLoading}
@@ -177,8 +178,8 @@ export default function Pagination({
           return (
             <Button
               key={item}
-              variant={isActive ? "default" : "secondary"}
-              size="sm"
+              variant={isActive ? "default" : "ghost"}
+              size="icon-lg"
               className={cn("min-w-9", isActive && "pointer-events-none")}
               onClick={() => onPageChange(item as number)}
               disabled={isLoading}
@@ -190,7 +191,7 @@ export default function Pagination({
 
         <Button
           variant="secondary"
-          size="sm"
+          size="icon-lg"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={!canNext || isLoading}
           className="rounded-md"

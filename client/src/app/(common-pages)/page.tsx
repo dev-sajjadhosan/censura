@@ -13,7 +13,9 @@ export default function Home() {
     queryFn: () => getAllMedia(),
   });
   const mediaList = data?.data.data || ([] as any);
-  const totalPages = data?.data.meta?.totalPages;
+  // const totalPages = data?.data.meta?.totalPages;
+
+  console.log(mediaList);
 
   const featuredMedia = mediaList?.length > 0 ? mediaList[0] : null;
 

@@ -81,12 +81,12 @@ export function ExploreSidebar({
 
   const { data: genresData, isLoading: genreLoading } = useQuery({
     queryKey: ["genres"],
-    queryFn: () => getAllGenres(),
+    queryFn: () => getAllGenres({page:1,limit:100}),
   });
 
   const { data: platformsData, isLoading: platformLoading } = useQuery({
     queryKey: ["platforms"],
-    queryFn: () => getAllPlatforms(),
+    queryFn: () => getAllPlatforms({page:1,limit:100}),
   });
 
   const genres = genresData?.data?.data;
@@ -104,7 +104,7 @@ export function ExploreSidebar({
     current.type || current.genre || current.platform || current.minRating;
 
   const clearAll = () => {
-    router.push(`/explore?sort=${current.sort}&page=1`);
+    router.push(`/explore?page=1`);
   };
 
   return (
@@ -202,12 +202,12 @@ export function ExploreSidebar({
                       <Badge
                         key={genre.id}
                         variant={
-                          current.genre === genre.id ? "default" : "outline"
+                          current.genre === genre.slug ? "default" : "outline"
                         }
-                        className="cursor-pointer hover:bg-primary/90 transition-colors"
+                        className="cursor-pointer py-3"
                         onClick={() =>
                           push({
-                            genre: current.genre === genre.id ? null : genre.id,
+                            genre: current.genre === genre.slug ? null : genre.slug,
                           })
                         }
                       >
@@ -288,17 +288,17 @@ export function ExploreSidebar({
                       <Badge
                         key={platform.id}
                         variant={
-                          current.platform === platform.name
+                          current.platform === platform.slug
                             ? "default"
                             : "outline"
                         }
-                        className="cursor-pointer hover:bg-primary/90 transition-colors"
+                        className="cursor-pointer py-3"
                         onClick={() =>
                           push({
                             platform:
-                              current.platform === platform.name
+                              current.platform === platform.slug
                                 ? null
-                                : platform.name,
+                                : platform.slug,
                           })
                         }
                       >

@@ -58,7 +58,7 @@ const MediaTable = ({
 
   const queryString = queryStringFromUrl || initialQueryString || "";
 
-  const { searchTermFromUrl, handleDebouncedSearchChange } =
+  const { searchFromUrl, handleDebouncedSearchChange } =
     useServerManagedDataTableSearch({
       searchParams,
       updateParams,
@@ -130,7 +130,7 @@ const MediaTable = ({
           onPaginationChange: handlePaginationChange,
         }}
         search={{
-          initialValue: searchTermFromUrl,
+          initialValue: searchFromUrl,
           placeholder: "Search title or director...",
           onDebouncedChange: handleDebouncedSearchChange,
         }}

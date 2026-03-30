@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import { Search, Film, Tv } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-export default function SearchBar() {
+export default function SearchBar({ className }: { className?: string }) {
   const [query, setQuery] = useState("");
   const router = useRouter();
 
@@ -25,7 +26,7 @@ export default function SearchBar() {
       <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
         <form
           onSubmit={handleSearch}
-          className="flex items-center gap-1 w-lg bg-secondary/45 px-5 rounded-xl"
+          className={cn("flex items-center gap-1 w-xl bg-secondary/45 px-5 rounded-xl", className)}
         >
           <Search className="size-5" />
           <Input
@@ -36,7 +37,7 @@ export default function SearchBar() {
             className="bg-transparent border-0"
           />
         </form>
-
+{/* 
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
@@ -52,7 +53,7 @@ export default function SearchBar() {
           >
             <Tv className="w-4 h-4 mr-2" /> Series
           </Button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

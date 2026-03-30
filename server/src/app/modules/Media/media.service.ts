@@ -5,32 +5,52 @@ import { prisma } from "../../lib/prisma";
 import { IRequestUser } from "../../interfaces";
 import { QueryBuilder } from "../../utils/QueryBuilder";
 import { normalizeIds, parseNullableNumber } from "../../utils/serviceHelpers";
+import { mediaIncludeConfig } from "./media.constant";
+import { IQueryParams } from "../../interfaces/query.interface";
 
-const getAllMedia = async (
-  user: IRequestUser,
-  query: Record<string, unknown>,
-) => {
-  const mediaQuery = new QueryBuilder(prisma.media, query as any, {
-    searchableFields: ["title", "synopsis", "director"],
-    filterableFields: [
-      "type",
-      "genres.some.id",
-      "platforms.some.platformId",
-      "releaseYear",
-      "pricing",
-      "avgRating",
-      "isFeatured",
-      "isPublished",
-    ],
+const getAllMedia = async (query: IQueryParams) => {
+  const { genre, platform, minRating, ...remainingQuery } = query;
+  const whereConditions: Prisma.MediaWhereInput = { isPublished: true };
+
+  if (genre) {
+    whereConditions.genres = {
+      some: {
+        slug: genre as string,
+      },
+    };
+  }
+
+  if (platform) {
+    whereConditions.platforms = {
+      some: {
+        platform: { slug: platform as string },
+      },
+    };
+  }
+
+  if (minRating) {
+    whereConditions.avgRating = {
+      gte: Number(minRating),
+    };
+  }
+
+  const mediaQuery = new QueryBuilder(prisma.media, remainingQuery, {
+    searchableFields: ["title", "synopsis"],
+    filterableFields: ["type", "releaseYear"],
   })
     .search()
     .filter()
     .sort()
     .paginate()
-    .fields();
+    .where(whereConditions)
+    .include({
+      genres: true,
+      cast: true,
+      platforms: { include: { platform: true } },
+    })
+    .dynamicInclude(mediaIncludeConfig)
 
-  const result = await mediaQuery.execute();
-  return result;
+  return await mediaQuery.execute();
 };
 
 const getSingleMedia = async (id: string) => {
@@ -446,7 +466,7 @@ const createManyMedia = async (payload: any[]) => {
 
       createdMedia.push(media);
     }
-    
+
     return createdMedia;
   });
 

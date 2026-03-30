@@ -5,10 +5,8 @@ import { IRequestUser } from "../../interfaces";
 import status from "http-status";
 
 const getAllMedia = catchAsync(async (req, res) => {
-  const user = req.user as IRequestUser;
   const query = req.query;
-
-  const result = await MediaService.getAllMedia(user, query);
+  const result = await MediaService.getAllMedia(query);
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
@@ -41,7 +39,7 @@ const getMediaBySlug = catchAsync(async (req, res) => {
 
 const createMedia = catchAsync(async (req, res) => {
   const user = req.user as IRequestUser;
-  const data = req.body
+  const data = req.body;
   const result = await MediaService.createMedia(user, data);
 
   sendResponse(res, {

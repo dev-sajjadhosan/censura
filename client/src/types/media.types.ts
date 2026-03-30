@@ -129,8 +129,11 @@ export interface Media {
   bookmarks: Bookmark[];
   favorites: Favorite[];
   reviews: Review[];
-  platforms: MediaPlatform[];
+  mediaPlatforms: MediaPlatform[];
   purchases: MediaPurchase[];
+
+  genres: Genre[];
+  platforms: Platform[];
 
   createdAt: string;
   updatedAt: string;

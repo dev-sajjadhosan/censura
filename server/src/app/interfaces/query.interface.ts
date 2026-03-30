@@ -30,14 +30,14 @@ export interface PrismaModelDelegate {
 }
 
 export interface IQueryParams {
-  searchTerm?: string;
+  search?: string;
   page?: string;
   limit?: string;
   sortBy?: string;
   sortOrder?: "asc" | "desc";
   fields?: string;
-  includes?: string;
-  [key: string]: string | undefined;
+  include?: string;
+  [key: string]: any;
 }
 
 export interface IQueryConfig {

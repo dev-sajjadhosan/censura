@@ -40,7 +40,7 @@ const ReviewsTable = ({ initialQueryString }: { initialQueryString?: string }) =
 
   const queryString = queryStringFromUrl || initialQueryString || "";
 
-  const { searchTermFromUrl, handleDebouncedSearchChange } = useServerManagedDataTableSearch({
+  const { searchFromUrl, handleDebouncedSearchChange } = useServerManagedDataTableSearch({
     searchParams,
     updateParams,
   });
@@ -106,7 +106,7 @@ const ReviewsTable = ({ initialQueryString }: { initialQueryString?: string }) =
           onPaginationChange: handlePaginationChange,
         }}
         search={{
-          initialValue: searchTermFromUrl,
+          initialValue: searchFromUrl,
           placeholder: "Search user or content...",
           onDebouncedChange: handleDebouncedSearchChange,
         }}

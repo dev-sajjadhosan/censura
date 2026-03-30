@@ -25,7 +25,7 @@ export default async function Navbar() {
 
   return (
     <NavbarVisibilityWrapper>
-      <header className="flex items-center justify-between h-17 rounded-xl w-9/12 mx-auto sticky top-1 z-50 backdrop-blur-sm bg-secondary/50 px-7">
+      <header className="flex items-center justify-between h-17 rounded-xl w-7/12 mx-auto sticky top-1 z-50 backdrop-blur-sm bg-secondary/50 px-7">
         <div>
           <h1 className="text-xl font-sans">Censura</h1>
         </div>

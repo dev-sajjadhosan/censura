@@ -65,7 +65,7 @@ export const GenresClient = ({
 
   const queryString = queryStringFromUrl || initialQueryString || "";
 
-  const { searchTermFromUrl, handleDebouncedSearchChange } =
+  const { searchFromUrl, handleDebouncedSearchChange } =
     useServerManagedDataTableSearch({
       searchParams,
       updateParams,
@@ -179,7 +179,7 @@ export const GenresClient = ({
             onPaginationChange: handlePaginationChange,
           }}
           search={{
-            initialValue: searchTermFromUrl,
+            initialValue: searchFromUrl,
             placeholder: "Search genre by name...", // Updated
             onDebouncedChange: handleDebouncedSearchChange,
           }}

@@ -1,10 +1,10 @@
 "use server";
 import { axiosClient } from "@/lib/axiosClient";
-import { ApiResponse } from "@/types/api.types";
+import { ApiResponse, ApiResult } from "@/types/api.types";
 import { Media } from "@/types/media.types";
 
 export const getAllMedia = async (params?: any) => {
-  return await axiosClient.get("/media", { params });
+  return await axiosClient.get<ApiResult<Media[]>>("/media", { params });
 };
 
 export const getMediaBySlug = async (slug: string) => {

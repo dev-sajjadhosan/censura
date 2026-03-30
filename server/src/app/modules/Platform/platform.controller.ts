@@ -51,9 +51,23 @@ const updatePlatform = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+
+const createManyPlatfrom = catchAsync(async (req: Request, res: Response) => {
+  const data = req.body;
+  const result = await PlatformService.createManyPlatfrom(data);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "All Platforms created successfully",
+    data: result,
+  });
+});
+
 export const PlatformController = {
   createPlatform,
   getAllPlatforms,
   updatePlatform,
   deletePlatform,
+  createManyPlatfrom,
 };

@@ -6,6 +6,7 @@ import { validateRequest } from "../../middleware/validateRequest";
 import { MediaValidation } from "./media.validation";
 
 const router = Router();
+router.post("/bulk", checkAuth(Role.ADMIN), MediaController.createManyMedia); 
 
 router.post(
   "/",

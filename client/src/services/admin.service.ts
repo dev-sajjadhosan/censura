@@ -3,6 +3,10 @@ import { axiosClient } from "@/lib/axiosClient";
 import { ApiResult } from "@/types/api.types";
 import { Genre, Platform } from "@/types/media.types";
 
+export const adminCreateMediaBulk = async (payload: any) => {
+  return await axiosClient.post("/media/bulk", payload);
+};
+
 // ─── Media CRUD ────────────────────────────────────────────────
 export const adminGetAllMedia = async (params?: any) => {
   return await axiosClient.get<any[]>("/media", { params });

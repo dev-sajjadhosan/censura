@@ -65,9 +65,20 @@ const deleteGenre = async (id: string) => {
   return result;
 };
 
+// -------------
+
+const createManyGenre = async (payload: any) => {
+  const result = await prisma.genre.createMany({
+    data: payload,
+    skipDuplicates: true,
+  });
+  return result;
+};
+
 export const GenreService = {
   createGenre,
   getAllGenres,
   updateGenre,
   deleteGenre,
+  createManyGenre,
 };

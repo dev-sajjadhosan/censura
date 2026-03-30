@@ -107,6 +107,18 @@ const changePublishStatus = catchAsync(async (req, res) => {
   });
 });
 
+const createManyMedia = catchAsync(async (req, res) => {
+  const data = req.body;
+  const result = await MediaService.createManyMedia(data);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "All Media created successfully",
+    data: result,
+  });
+});
+
 export const MediaController = {
   getAllMedia,
   getSingleMedia,
@@ -116,4 +128,5 @@ export const MediaController = {
   deleteMedia,
   changeFeaturedStatus,
   changePublishStatus,
+  createManyMedia,
 };

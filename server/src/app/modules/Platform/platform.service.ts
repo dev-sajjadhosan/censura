@@ -68,9 +68,20 @@ const deletePlatform = async (id: string) => {
   return result;
 };
 
+// -----------------
+
+const createManyPlatfrom = async (payload: any) => {
+  const res = await prisma.platform.createMany({
+    data: payload,
+    skipDuplicates: true,
+  });
+  return res;
+}
+
 export const PlatformService = {
   createPlatform,
   getAllPlatforms,
   updatePlatform,
   deletePlatform,
+  createManyPlatfrom,
 };

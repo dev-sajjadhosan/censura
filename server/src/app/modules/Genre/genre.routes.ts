@@ -7,6 +7,8 @@ import { Role } from "../../../generated/prisma/enums";
 
 const router = Router();
 
+router.post("/bulk", checkAuth(Role.ADMIN), GenreController.createManyGenre);
+
 router.post(
   "/",
   checkAuth(Role.ADMIN),

@@ -54,9 +54,22 @@ const updateGenre = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const createManyGenre = catchAsync(async (req: Request, res: Response) => {
+  const data = req.body;
+  const result = await GenreService.createManyGenre(data);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "All Genres created successfully",
+    data: result,
+  });
+});
+
 export const GenreController = {
   createGenre,
   getAllGenres,
   updateGenre,
   deleteGenre,
+  createManyGenre,
 };

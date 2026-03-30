@@ -375,6 +375,16 @@ const getMediaBySlug = async (slug: string) => {
   return result;
 };
 
+// -----------------
+
+const createManyMedia = async (payload: any) => {
+  const result = await prisma.media.createMany({
+    data: payload,
+    skipDuplicates: true,
+  });
+  return result;
+};
+
 export const MediaService = {
   getAllMedia,
   getSingleMedia,
@@ -384,4 +394,5 @@ export const MediaService = {
   deleteMedia,
   changeFeaturedStatus,
   changePublishStatus,
+  createManyMedia,
 };

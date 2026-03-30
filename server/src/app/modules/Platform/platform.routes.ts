@@ -8,6 +8,12 @@ import { Role } from "../../../generated/prisma/enums";
 const router = Router();
 
 router.post(
+  "/bulk",
+  checkAuth(Role.ADMIN),
+  PlatformController.createManyPlatfrom,
+);
+
+router.post(
   "/",
   checkAuth(Role.ADMIN),
   validateRequest(PlatformValidation.createPlatformSchema),
@@ -23,10 +29,6 @@ router.patch(
   PlatformController.updatePlatform,
 );
 
-router.delete(
-  "/:id",
-  checkAuth(Role.ADMIN),
-  PlatformController.deletePlatform,
-);
+router.delete("/:id", checkAuth(Role.ADMIN), PlatformController.deletePlatform);
 
 export const PlatformRoutes = router;

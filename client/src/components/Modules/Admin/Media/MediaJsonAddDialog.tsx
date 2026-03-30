@@ -2,26 +2,27 @@
 
 import { JsonImportModal } from "@/components/Shared/JsonEditor/JsonImportModal";
 import { Button } from "@/components/ui/button";
+import { adminCreateMediaBulk } from "@/services/admin.service";
 import { useMutation } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
 export default function MediaJsonAddDialog() {
-  // 1. Setup toggle state
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
-  // const {} = useMutation({
-  //     mutationKey: ["media-bulk-import"],
-  //     mutationFn: (data: any) => createMediaBulk(data),
-  //     onSuccess: () => {
-  //         setIsImportModalOpen(false);
-  //     }
-  // })
+  const { mutateAsync: createMediaBulk, isPending: isCreatingMediaBulk } =
+    useMutation({
+      mutationKey: ["media-bulk-import"],
+      mutationFn: (data: any) => adminCreateMediaBulk(data),
+      onSuccess: () => {
+        setIsImportModalOpen(false);
+      },
+    });
 
   // 2. Define the import action
   const handleBulkImport = async (data: any) => {
-    // data will be the parsed object or array
     console.log("Importing:", data);
-    // your logic with createMutation.mutateAsync(data)
+    const res = await createMediaBulk(data);
+    console.log("Bulk Import Response:", res);
   };
 
   return (

@@ -13,17 +13,20 @@ export const isAuthRoute = (pathname: string) => {
 
 export const commonProtectedRoutes: RouteConfig = {
   exact: ["/profile", "/change-password", "/logout"],
-  pattern: [],
+  pattern: [/^\/profile\/.*/], // ✅ covers /profile/subscription, /profile/settings etc
+};
+
+export const userProtectedRoutes: RouteConfig = {
+  exact: ["/profile", "/watchlist", "/settings"],
+  pattern: [
+    /^\/profile\/.*/, // /profile/subscription, /profile/settings
+    /^\/payment\/.*/, // /payment/success, /payment/cancel
+  ],
 };
 
 export const adminProtectedRoutes: RouteConfig = {
   pattern: [/^\/admin/], // Matches any path that starts with /admin
   exact: [],
-};
-
-export const userProtectedRoutes: RouteConfig = {
-  exact: ["/profile", "/watchlist", "/settings"],
-  pattern: [],
 };
 
 export const isRouteMatch = (pathname: string, routes: RouteConfig) => {

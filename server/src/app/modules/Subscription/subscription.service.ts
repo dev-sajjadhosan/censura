@@ -270,10 +270,109 @@ const getPaymentHistory = async (userId: string) => {
   return subscriptions;
 };
 
+const cancelSubscription = async (userId: string) => {
+  const subscription = await prisma.subscription.findUnique({
+    where: { userId },
+  });
+
+  if (!subscription) {
+    throw new AppError(httpStatus.NOT_FOUND, "No active subscription found");
+  }
+
+  if (subscription.status !== SubscriptionStatus.ACTIVE) {
+    throw new AppError(httpStatus.BAD_REQUEST, "Subscription is not active");
+  }
+
+  if (!subscription.stripeCustomerId) {
+    throw new AppError(httpStatus.BAD_REQUEST, "No Stripe customer found");
+  }
+
+  // 1. Find the Stripe subscription ID from the customer
+  const stripeSubscriptions = await stripe.subscriptions.list({
+    customer: subscription.stripeCustomerId,
+    status: "active",
+    limit: 1,
+  });
+
+  if (!stripeSubscriptions.data.length) {
+    throw new AppError(httpStatus.NOT_FOUND, "No active Stripe subscription found");
+  }
+
+  const stripeSubscriptionId = stripeSubscriptions.data[0].id;
+
+  // 2. Find the latest payment for refund
+  const latestPayment = await prisma.payment.findFirst({
+    where: { subscriptionId: subscription.id },
+    orderBy: { createdAt: "desc" },
+  });
+
+  // 3. Cancel the Stripe subscription immediately
+  await stripe.subscriptions.cancel(stripeSubscriptionId);
+
+  // 4. Issue refund if there's a payment
+  let refund = null;
+  if (latestPayment?.stripePaymentId) {
+    try {
+      // Get the payment intent to find the charge
+      const paymentIntent = await stripe.paymentIntents.retrieve(
+        latestPayment.stripePaymentId
+      );
+
+      if (paymentIntent.latest_charge) {
+        refund = await stripe.refunds.create({
+          charge: paymentIntent.latest_charge as string,
+          // Remove amount for full refund, or specify partial:
+          // amount: Math.round(latestPayment.amount * 100),
+        });
+      }
+    } catch (refundError) {
+      console.error("Refund failed:", refundError);
+      // Don't throw — still cancel the subscription even if refund fails
+    }
+  }
+
+  // 5. Update DB
+  const updated = await prisma.subscription.update({
+    where: { userId },
+    data: {
+      status: SubscriptionStatus.CANCELLED,
+      cancelAtPeriodEnd: false,
+      plan: SubscriptionPlan.FREE,
+    },
+  });
+
+  // 6. Send cancellation email
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  if (user) {
+    try {
+      await sendEmail({
+        to: user.email,
+        subject: "Your Censura Subscription Has Been Cancelled",
+        templateName: "subscription-cancelled",
+        templateData: {
+          userName: user.name,
+          refunded: !!refund,
+          loginUrl: `${envVars.FRONTEND_URL}/login`,
+        },
+      });
+    } catch (emailError) {
+      console.error("Failed to send cancellation email", emailError);
+    }
+  }
+
+  return {
+    cancelled: true,
+    refunded: !!refund,
+    refundId: refund?.id ?? null,
+  };
+};
+
+
 export const SubscriptionService = {
   getPlans,
   createCheckoutSession,
   handleWebhook,
   getSubscriptionStatus,
   getPaymentHistory,
+  cancelSubscription,
 };

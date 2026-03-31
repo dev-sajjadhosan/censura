@@ -2,6 +2,8 @@
 
 import { usePathname } from "next/navigation";
 
+const NotToShowNavbar = ["/payment/success", "/payment/cancel", "/subscription", "/profile"]
+
 export default function NavbarVisibilityWrapper({
   children,
 }: {
@@ -9,7 +11,7 @@ export default function NavbarVisibilityWrapper({
 }) {
   const pathname = usePathname();
   
-  if (pathname?.includes("/profile")) return null;
+  if (NotToShowNavbar.includes(pathname)) return null;
   
   return <>{children}</>;
 }

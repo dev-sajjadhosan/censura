@@ -53,7 +53,7 @@ export default function MediaCard({
                 <Button size="lg" variant="secondary" asChild disabled={!user}>
                   <Link href="/subscription">
                     <Crown />{" "}
-                    {user && user?.subscription.status === "active"
+                    {user && user?.subscription?.status === "active"
                       ? "Subscribed"
                       : "Subscribe"}
                   </Link>

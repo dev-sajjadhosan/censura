@@ -10,6 +10,7 @@ import { SubscriptionPlan } from "@/types/payment.types";
 import PricingCard from "../Subscription/PricingCard";
 import { PricingSkeleton } from "../Subscription/PricingSkeleton";
 import { IProfileResponse } from "@/types/auth.types";
+import { useRouter } from "next/navigation";
 
 interface PricingSectionProps {
   className?: string;
@@ -20,6 +21,7 @@ export default function PricingSection({
   className = "",
   user,
 }: PricingSectionProps) {
+  const router = useRouter()
   const [processingPlan, setProcessingPlan] = useState<string | null>(null);
 
   const { data, isLoading } = useQuery({
@@ -29,10 +31,14 @@ export default function PricingSection({
 
   const handleSubscribe = async (planName: string) => {
     try {
+      console.log("check plan name: ",planName)
       setProcessingPlan(planName);
       const res = (await createCheckoutSession({ plan: planName })) as any;
-      if (res?.data?.data?.session_url) {
-        window.location.href = res.data.data.session_url;
+      
+      console.log("check res of subscription: ",res)
+
+      if (res?.data?.session_url) {
+        return router.push(res.data.session_url);
       } else {
         toast.error("Failed to initiate checkout");
       }

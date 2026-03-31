@@ -76,8 +76,8 @@ export default function HeroSection({ featuredMedia, user }: HeroSectionProps) {
               <Button
                 disabled={
                   !user ||
-                  user.subscription.status !== "active" ||
-                  user.role === "ADMIN"
+                  user?.subscription?.status !== "active" ||
+                  user?.role === "ADMIN"
                 }
                 size="lg"
                 className="rounded-full px-8 gap-2 text-md font-semibold h-14"

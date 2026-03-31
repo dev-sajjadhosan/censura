@@ -15,18 +15,6 @@ export const getMediaReviews = async (mediaId: string) => {
   return await axiosClient.get(`/reviews/media/${mediaId}`);
 };
 
-export const addToWatchlist = async (mediaId: string) => {
-  return await axiosClient.post(`/watchlist/${mediaId}`, {});
-};
-
-export const removeFromWatchlist = async (mediaId: string) => {
-  return await axiosClient.delete(`/watchlist/${mediaId}`);
-};
-
-export const getMyWatchlist = async () => {
-  return await axiosClient.get("/watchlist");
-};
-
 export const createReview = async (payload: any) => {
   return await axiosClient.post("/reviews", payload);
 };

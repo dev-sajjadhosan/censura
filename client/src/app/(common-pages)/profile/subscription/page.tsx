@@ -1,0 +1,180 @@
+// app/(common-pages)/profile/subscription/page.tsx
+import {
+  Crown,
+  CreditCard,
+  Calendar,
+  CheckCircle,
+  XCircle,
+  Clock,
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import PricingSection from "@/components/Modules/Home/PricingSection";
+import { getCurrentUser } from "@/services/user.service";
+import { Subscription } from "@/types/payment.types";
+import { cancelSubscription } from "@/services/subscription.service";
+import { toast } from "sonner";
+
+export default async function SubscriptionPage() {
+  const user = await getCurrentUser();
+  const subscription = user?.subscription as Subscription;
+
+  const isActive =
+    subscription?.status === "ACTIVE" && subscription?.plan !== "FREE";
+
+  const planLabel: Record<string, string> = {
+    FREE: "Free",
+    MONTHLY: "Monthly",
+    YEARLY: "Yearly",
+  };
+
+  const formatDate = (date: string | null) =>
+    date
+      ? new Date(date).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
+      : "—";
+
+  const handleCancel = async () => {
+    try {
+      await cancelSubscription();
+      toast.success("Subscription cancelled and refund initiated");
+      // router.refresh();
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to cancel");
+    }
+  };
+  return (
+    <div className="container mx-auto  px-4 py-12 space-y-10">
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl font-bold text-white flex items-center gap-3">
+          <Crown className="size-5 text-primary" />
+          Subscription
+        </h1>
+        <p className="text-sm text-muted-foreground mt-1">
+          Manage your plan and billing details.
+        </p>
+      </div>
+
+      {/* Current Plan Card */}
+      <Card className="bg-transparent  p-7">
+        <CardHeader>
+          <CardTitle className="text-lg text-neutral-300">
+            Current Plan
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6 mt-5">
+          {/* Plan + Status */}
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-3">
+              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <Crown className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <p className="text-xl font-bold text-white">
+                  {planLabel[subscription?.plan ?? "FREE"] ?? "Free"}
+                </p>
+                <p className="text-sm text-neutral-400">
+                  {subscription?.plan === "FREE"
+                    ? "Basic access"
+                    : subscription?.plan === "MONTHLY"
+                      ? "Billed monthly"
+                      : "Billed yearly"}
+                </p>
+              </div>
+            </div>
+
+            <Badge
+              className={
+                isActive
+                  ? "bg-green-500/10 text-green-400 border-green-500/20 px-3 py-4"
+                  : "bg-neutral-700/40 text-neutral-400 border-neutral-600/20 px-4 py-1"
+              }
+            >
+              {isActive ? (
+                <CheckCircle className="w-3 h-3 mr-1" />
+              ) : (
+                <XCircle className="w-3 h-3 mr-1" />
+              )}
+              {subscription?.status ?? "FREE"}
+            </Badge>
+          </div>
+
+          <Separator className="bg-secondary/40" />
+
+          {/* Billing Details */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="flex items-start gap-3">
+              <Calendar className="w-5 h-5 text-neutral-500 mt-0.5" />
+              <div>
+                <p className="text-sm text-neutral-400">Current period start</p>
+                <p className="text-white font-medium">
+                  {formatDate(subscription?.currentPeriodStart)}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <Clock className="w-5 h-5 text-neutral-500 mt-0.5" />
+              <div>
+                <p className="text-sm text-neutral-400">Renews / Expires on</p>
+                <p className="text-white font-medium">
+                  {formatDate(subscription?.currentPeriodEnd)}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <CreditCard className="w-5 h-5 text-neutral-500 mt-0.5" />
+              <div>
+                <p className="text-sm text-neutral-400">Payment method</p>
+                <p className="text-white font-medium">
+                  {subscription?.stripeCustomerId ? "Card on file" : "None"}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <Crown className="w-5 h-5 text-neutral-500 mt-0.5" />
+              <div>
+                <p className="text-sm text-neutral-400">Auto renew</p>
+                <p className="text-white font-medium">
+                  {subscription?.cancelAtPeriodEnd
+                    ? "Cancelled at period end"
+                    : "Enabled"}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Cancel button if active */}
+          {isActive && (
+            <>
+              <Separator className="bg-secondary/40" />
+              <div className="flex justify-end">
+                <Button variant="secondary" size="lg" onClick={handleCancel}>
+                  Cancel Subscription
+                </Button>
+              </div>
+            </>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Upgrade section if FREE */}
+      {!isActive && (
+        <div>
+          <h2 className="text-xl font-bold text-white mb-2">
+            Upgrade Your Plan
+          </h2>
+          <p className="text-neutral-400 mb-6">
+            Get access to premium content, HD/4K streaming, and more.
+          </p>
+          <PricingSection user={user!} />
+        </div>
+      )}
+    </div>
+  );
+}

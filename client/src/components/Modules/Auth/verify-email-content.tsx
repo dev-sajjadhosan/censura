@@ -25,21 +25,8 @@ import {
   MailPlus,
   X,
 } from "lucide-react";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import EmailResendContext from "./email-resend-context";
-
-/**
- * State definitions for the verification flow
- */
-type VerificationUIState =
-  | "EXPIRED"
-  | "LOADING"
-  | "SUCCESS"
-  | "RESEND"
-  | "OTP_INPUT";
 
 export default function VerifyEmailContent() {
   const router = useRouter();
@@ -50,6 +37,22 @@ export default function VerifyEmailContent() {
     mutationFn: async (payload: IVerifyEmailProps) => {
       const res = await verifyEmailAction(payload);
       return res;
+    },
+  });
+
+  const { mutateAsync: resendOtp, isPending: isResendPending } = useMutation({
+    mutationFn: async () => {
+      const res = await resendOtpAction({
+        email: email || "",
+        type: "email-verification",
+      });
+      return res;
+    },
+    onSuccess: () => {
+      toast.success("OTP resent successfully!");
+    },
+    onError: (error: any) => {
+      toast.error(error?.message);
     },
   });
 
@@ -167,12 +170,14 @@ export default function VerifyEmailContent() {
 
         <p className="text-sm text-muted-foreground w-full mt-9">
           If you don't receive a verification code, click{" "}
-          <Link
-            href={`/verify-email?email=${email}&resend=true`}
+          <Button
+            variant={"ghost"}
+            size={"lg"}
+            onClick={() => resendOtp()}
             className="text-orange-500"
           >
-            here
-          </Link>{" "}
+            {isResendPending ? <Loader className="animate-spin" /> : "here"}
+          </Button>{" "}
           to resend the code.
         </p>
       </div>

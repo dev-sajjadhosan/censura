@@ -6,7 +6,7 @@ export const getSubscriptionPlans = async () => {
   return await axiosClient.get<SubscriptionPlan[]>("/subscriptions/plans");
 };
 
-export const createCheckoutSession = async (payload: { plan: string }) => {
+export const createCheckoutSession = async (payload: any) => {
   return await axiosClient.post("/subscriptions/checkout", payload);
 };
 
@@ -16,4 +16,9 @@ export const getSubscriptionStatus = async () => {
 
 export const getPaymentHistory = async () => {
   return await axiosClient.get("/subscriptions/history");
+};
+
+export const cancelSubscription = async () => {
+  const res = await axiosClient.delete("/subscription/cancel");
+  return res;
 };

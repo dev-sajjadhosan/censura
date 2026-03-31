@@ -63,11 +63,21 @@ const getPaymentHistory = catchAsync(async (req, res) => {
     data: result,
   });
 });
-
+const cancelSubscription = catchAsync(async (req, res) => {
+  const user = req.user as any;
+  const result = await SubscriptionService.cancelSubscription(user.userId);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Subscription cancelled and refund initiated",
+    data: result,
+  });
+});
 export const SubscriptionController = {
   getPlans,
   createCheckoutSession,
   webhook,
   getSubscriptionStatus,
   getPaymentHistory,
+  cancelSubscription,
 };

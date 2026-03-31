@@ -8,23 +8,23 @@ export function getUserMediaAccess(
     | Pick<MediaPurchase, "mediaId" | "type" | "status" | "expiresAt">[]
     | null,
 ): { hasAccess: boolean; reason: string } {
-  if (media.pricing === "FREE") return { hasAccess: true, reason: "FREE" };
+  if (media?.pricing === "FREE") return { hasAccess: true, reason: "FREE" };
 
-  if (media.pricing === "PREMIUM") {
+  if (media?.pricing === "PREMIUM") {
     const hasAccess =
       subscription?.status === "ACTIVE" &&
-      (subscription.plan === "MONTHLY" || subscription.plan === "YEARLY");
+      (subscription?.plan === "MONTHLY" || subscription?.plan === "YEARLY");
     return { hasAccess, reason: "PREMIUM" };
   }
 
-  if (media.pricing === "RENTAL") {
+  if (media?.pricing === "RENTAL") {
     const hasAccess = purchases?.some(
       (p) =>
-        p.mediaId === media.id &&
-        p.type === "RENTAL" &&
-        p.status === "ACTIVE" &&
-        p.expiresAt !== null &&
-        new Date(p.expiresAt) > new Date(),
+        p?.mediaId === media?.id &&
+        p?.type === "RENTAL" &&
+        p?.status === "ACTIVE" &&
+        p?.expiresAt !== null &&
+        new Date(p?.expiresAt) > new Date(),
     );
     return { hasAccess: hasAccess || false, reason: "RENTAL" };
   }

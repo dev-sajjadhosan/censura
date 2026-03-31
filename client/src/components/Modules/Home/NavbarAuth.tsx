@@ -1,16 +1,17 @@
-// components/Modules/Home/navbar-auth.tsx
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { IProfileResponse } from "@/types/auth.types";
 import { ArrowUpRightFromCircle } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+
 
 type Props = {
-  user: any; // your user type
+  user: IProfileResponse | null;
 };
 
 export default function NavbarAuth({ user }: Props) {
+
   return user ? (
     <div className="flex items-center gap-1">
       <Link href="/profile">

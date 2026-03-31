@@ -37,7 +37,7 @@ const deleteWatchlist = catchAsync(async (req: Request, res: Response) => {
   const { mediaId } = req.params;
   const user = req.user as IRequestUser;
 
-  const result = await WatchlistService.deleteWatchlist(mediaId, user);
+  const result = await WatchlistService.deleteWatchlist(mediaId as string, user);
 
   sendResponse(res, {
     statusCode: status.OK,

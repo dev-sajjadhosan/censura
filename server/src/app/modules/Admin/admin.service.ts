@@ -1,4 +1,8 @@
+import { Prisma } from "../../../generated/prisma/client";
+import { IQueryConfig, IQueryParams } from "../../interfaces/query.interface";
 import { prisma } from "../../lib/prisma";
+import { QueryBuilder } from "../../utils/QueryBuilder";
+import { mediaIncludeConfig } from "../Media/media.constant";
 
 const getStats = async () => {
   const [
@@ -49,39 +53,44 @@ const getStats = async () => {
 };
 
 const getSales = async () => {
-  const [totalSales, revenueAggregate, monthlyRevenue, yearlyRevenue, rawSalesOverTime] =
-    await Promise.all([
-      prisma.payment.count({
-        where: { status: "succeeded" },
-      }),
+  const [
+    totalSales,
+    revenueAggregate,
+    monthlyRevenue,
+    yearlyRevenue,
+    rawSalesOverTime,
+  ] = await Promise.all([
+    prisma.payment.count({
+      where: { status: "succeeded" },
+    }),
 
-      prisma.payment.aggregate({
-        where: { status: "succeeded" },
-        _sum: { amount: true },
-      }),
+    prisma.payment.aggregate({
+      where: { status: "succeeded" },
+      _sum: { amount: true },
+    }),
 
-      prisma.payment.aggregate({
-        where: {
-          status: "succeeded",
-          subscription: { plan: "MONTHLY" },
-        },
-        _sum: { amount: true },
-      }),
+    prisma.payment.aggregate({
+      where: {
+        status: "succeeded",
+        subscription: { plan: "MONTHLY" },
+      },
+      _sum: { amount: true },
+    }),
 
-      prisma.payment.aggregate({
-        where: {
-          status: "succeeded",
-          subscription: { plan: "YEARLY" },
-        },
-        _sum: { amount: true },
-      }),
+    prisma.payment.aggregate({
+      where: {
+        status: "succeeded",
+        subscription: { plan: "YEARLY" },
+      },
+      _sum: { amount: true },
+    }),
 
-      prisma.payment.findMany({
-        where: { status: "succeeded" },
-        select: { amount: true, createdAt: true },
-        orderBy: { createdAt: "asc" },
-      }),
-    ]);
+    prisma.payment.findMany({
+      where: { status: "succeeded" },
+      select: { amount: true, createdAt: true },
+      orderBy: { createdAt: "asc" },
+    }),
+  ]);
 
   const totalRevenue = revenueAggregate._sum.amount ?? 0;
   const subscriptionRevenue =
@@ -104,8 +113,8 @@ const getSales = async () => {
   return {
     totalSales,
     totalRevenue,
-    purchaseRevenue: 0,       // ready for when MediaPurchase is wired up
-    rentalRevenue: 0,         // ready for when MediaPurchase is wired up
+    purchaseRevenue: 0, // ready for when MediaPurchase is wired up
+    rentalRevenue: 0, // ready for when MediaPurchase is wired up
     subscriptionRevenue,
     salesOverTime,
   };
@@ -138,30 +147,47 @@ const getReviews = async () => {
   ]);
 
   return {
-    byRating: reviewsData,  // [{rating, _count: {id}}]
-    recentReviews,          // matches frontend review list exactly
+    byRating: reviewsData, // [{rating, _count: {id}}]
+    recentReviews, // matches frontend review list exactly
   };
 };
 
-const getAllMedia = async ({ limit = 10, sortBy = "avgRating", sortOrder = "desc" }: {
-  limit?: number;
-  sortBy?: string;
-  sortOrder?: "asc" | "desc";
-}) => {
-  const media = await prisma.media.findMany({
-    take: limit,
-    orderBy: { [sortBy]: sortOrder },
-    select: {
-      id: true,
-      title: true,
-      type: true,
-      releaseYear: true,
-      avgRating: true,
-      reviewCount: true,
-    },
-  });
+const getAllMedia = async (query: IQueryParams) => {
+  const { genre, platform, minRating } = query;
+  
+  const whereConditions: Prisma.MediaWhereInput = { isPublished: true };
 
-  return media;
+  if (genre) {
+    whereConditions.genres = { some: { slug: genre as string } };
+  }
+
+  if (platform) {
+    whereConditions.platforms = { some: { platform: { slug: platform as string } } };
+  }
+
+  if (minRating) {
+    whereConditions.avgRating = { gte: Number(minRating) };
+  }
+
+  // 2. Pass the FULL query object to QueryBuilder 
+  // so it can find 'page' and 'limit' inside paginate()
+  const mediaQuery = new QueryBuilder(prisma.media, query, {
+    searchableFields: ["title", "synopsis"],
+    filterableFields: ["type", "releaseYear"],
+  })
+    .where(whereConditions) // Apply custom manual filters first
+    .search()               // Apply text search
+    .filter()               // Apply automated filters (type, releaseYear)
+    .sort()                 // Apply sorting
+    .paginate()             // Apply skip/take LAST
+    .include({
+      genres: true,
+      cast: true,
+      platforms: { include: { platform: true } },
+    })
+    .dynamicInclude(mediaIncludeConfig);
+
+  return await mediaQuery.execute();
 };
 
 export const AdminService = {

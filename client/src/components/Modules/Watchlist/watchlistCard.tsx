@@ -52,7 +52,6 @@ export default function WatchlistCard({
             </Link>
             <WatchlistButton
               mediaId={item.media.id}
-              initialIsBookmarked={true}
               user={user}
               removeOnly={true}
             />

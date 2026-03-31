@@ -21,6 +21,7 @@ export const addComment = async (payload: Like) => {
 };
 
 
+
 export const getComments = async (reviewId: string) => {
   try {
     const res = await axiosClient.get<Comment[]>(`/reactions/comment/${reviewId}`);

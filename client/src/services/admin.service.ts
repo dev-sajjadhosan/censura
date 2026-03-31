@@ -45,18 +45,18 @@ export const adminToggleMediaPublish = async (
 
 // ─── Review Moderation ─────────────────────────────────────────
 export const adminGetAllReviews = async (params?: any) => {
-  return await axiosClient.get<any[]>("/reviews", { params });
+  return await axiosClient.get<any[]>("/reviews/admin", { params });
 };
 
 export const adminUpdateReviewStatus = async (
   id: string,
   status: "APPROVED" | "UNPUBLISHED" | "PENDING",
 ) => {
-  return await axiosClient.patch(`/reviews/${id}/status`, { status });
+  return await axiosClient.patch(`/reviews/admin/status/${id}`, { status });
 };
 
 export const adminDeleteReview = async (id: string) => {
-  return await axiosClient.delete(`/reviews/${id}`);
+  return await axiosClient.delete(`/reviews/admin/delete/${id}`);
 };
 
 // ─── User Management ──────────────────────────────────────────

@@ -19,6 +19,6 @@ export const getPaymentHistory = async () => {
 };
 
 export const cancelSubscription = async () => {
-  const res = await axiosClient.delete("/subscription/cancel");
+  const res = await axiosClient.delete("/subscriptions/cancel");
   return res;
 };

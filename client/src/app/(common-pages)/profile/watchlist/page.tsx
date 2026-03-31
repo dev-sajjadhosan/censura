@@ -1,4 +1,4 @@
-import { getMyWatchlist } from "@/services/media.service";
+import { getMyWatchlist } from "@/services/collections.service";
 import { getCurrentUser } from "@/services/user.service";
 import { Button } from "@/components/ui/button";
 import { History } from "lucide-react";

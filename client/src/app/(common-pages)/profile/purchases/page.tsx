@@ -1,115 +1,114 @@
-import { getMyMediaPurchases } from "@/services/media.service";
-import { Button } from "@/components/ui/button";
-import { Play, PlayCircle, Grid, List } from "lucide-react";
+
+import { ShoppingCart, Clock, CheckCircle, Film } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import Image from "next/image";
 import Link from "next/link";
-import PurchasesCard from "@/components/Modules/Purchases/purchasesCard";
+import { Button } from "@/components/ui/button";
+import { getMyMediaPurchases } from "@/services/media.service";
 
 export default async function PurchasesPage() {
-  let purchases: any[] = [];
-  try {
-    const res = (await getMyMediaPurchases()) as any;
-    purchases = res?.data || [];
-  } catch (error) {
-    console.error("Failed to fetch purchases:", error);
-  }
+  const res = await getMyMediaPurchases();
+  const purchases = res?.data.data ?? [];
 
-  const mockPurchases = [
-    {
-      id: "mock-pur-1",
-      type: "PURCHASE",
-      amount: 14.99,
-      expiryDate: new Date(
-        Date.now() + 100 * 365 * 24 * 60 * 60 * 1000,
-      ).toISOString(),
-      createdAt: new Date().toISOString(),
-      mediaId: "mock-1",
-      media: {
-        id: "mock-1",
-        title: "The Silent Shadows",
-        slug: "silent-shadows",
-        posterUrl:
-          "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&q=80",
-        avgRating: 8.5,
-        releaseYear: 2023,
-        type: "MOVIE",
-        streamingUrl: "#",
-      },
-    },
-    {
-      id: "mock-pur-2",
-      type: "RENTAL",
-      amount: 4.99,
-      expiryDate: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString(), // Active rental
-      createdAt: new Date().toISOString(),
-      mediaId: "mock-2",
-      media: {
-        id: "mock-2",
-        title: "Nightfall Chronicles",
-        slug: "nightfall-chronicles",
-        posterUrl:
-          "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&q=80",
-        avgRating: 7.9,
-        releaseYear: 2024,
-        type: "SERIES",
-        streamingUrl: "#",
-      },
-    },
-    {
-      id: "mock-pur-3",
-      type: "RENTAL",
-      amount: 4.99,
-      expiryDate: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(), // Expired rental
-      createdAt: new Date(Date.now() - 60 * 60 * 60 * 1000).toISOString(),
-      mediaId: "mock-3",
-      media: {
-        id: "mock-3",
-        title: "Beyond the Horizon",
-        slug: "beyond-horizon",
-        posterUrl:
-          "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=400&q=80",
-        avgRating: 9.2,
-        releaseYear: 2022,
-        type: "MOVIE",
-        streamingUrl: "#",
-      },
-    },
-  ];
+  const formatDate = (date: string) =>
+    new Date(date).toLocaleDateString("en-US", {
+      year: "numeric", month: "short", day: "numeric",
+    });
 
-  const displayPurchases = [...purchases];
+  const isExpired = (expiresAt: string | null) =>
+    expiresAt ? new Date(expiresAt) < new Date() : false;
 
   return (
-    <div className="container mx-auto py-10 px-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl mb-8">My Purchases</h1>
+    <div className="container mx-auto py-10 px-4 max-w-4xl">
+      <h1 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
+        <ShoppingCart className="w-6 h-6 text-primary" />
+        Purchase History
+      </h1>
+      <p className="text-neutral-400 mb-8">Your rented and purchased titles</p>
 
-        <div className="flex items-center gap-1">
-          <Button size="icon-lg" variant="secondary">
-            <Grid />
-          </Button>
-          <Button size="icon-lg" variant="ghost" disabled>
-            <List />
+      {purchases.length === 0 ? (
+        <div className="h-72 rounded-xl bg-secondary/20 border border-secondary/30 flex flex-col items-center justify-center gap-4">
+          <Film className="w-10 h-10 text-neutral-600" />
+          <p className="text-neutral-500">No purchases yet</p>
+          <Button asChild size="sm">
+            <Link href="/explore">Browse titles</Link>
           </Button>
         </div>
-      </div>
+      ) : (
+        <div className="space-y-4">
+          {purchases.map((purchase: any) => {
+            const expired = isExpired(purchase.expiresAt);
+            const isRental = purchase.type === "RENTAL";
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5">
-        {displayPurchases.map((item: any) => {
-          return <PurchasesCard key={item.id} item={item} />;
-        })}
-      </div>
+            return (
+              <Card key={purchase.id} className="border-secondary/30 bg-secondary/10">
+                <CardContent className="flex items-center gap-5 p-5">
+                  {/* Poster */}
+                  <div className="w-16 h-24 rounded-lg overflow-hidden shrink-0">
+                    <Image
+                      src={purchase.media?.posterUrl || "https://placehold.co/64x96"}
+                      alt={purchase.media?.title}
+                      width={64}
+                      height={96}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
 
-      {displayPurchases.length === 0 && (
-        <div className="w-9/12 h-96 mt-15 mx-auto py-20 text-center bg-neutral-900/60 rounded-2xl flex flex-col items-center justify-center">
-          <Play className="size-11 text-muted-foreground mb-4" />
-          <p className="text-muted-foreground mb-4 text-lg">
-            You haven't purchased or rented any media yet.
-          </p>
-          <Link href="/explore">
-            <Button size="xl">
-              <PlayCircle />
-              Explore Movies & Shows
-            </Button>
-          </Link>
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-bold text-white truncate">
+                        {purchase.media?.title}
+                      </h3>
+                      <Badge
+                        className={
+                          isRental
+                            ? "bg-blue-500/20 text-blue-300 border-blue-500/20"
+                            : "bg-green-500/20 text-green-300 border-green-500/20"
+                        }
+                      >
+                        {isRental ? "Rental" : "Purchased"}
+                      </Badge>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-neutral-400 mt-2">
+                      <span>Paid ${Number(purchase.price).toFixed(2)}</span>
+                      <span>•</span>
+                      <span>Bought on {formatDate(purchase.createdAt)}</span>
+                      {isRental && purchase.expiresAt && (
+                        <>
+                          <span>•</span>
+                          <span className={expired ? "text-red-400" : "text-green-400"}>
+                            {expired
+                              ? `Expired ${formatDate(purchase.expiresAt)}`
+                              : `Expires ${formatDate(purchase.expiresAt)}`}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Action */}
+                  <div className="shrink-0">
+                    {!expired || purchase.type === "BUY" ? (
+                      <Button size="sm" asChild>
+                        <Link href={`/media/${purchase.media?.slug}`}>
+                          Watch
+                        </Link>
+                      </Button>
+                    ) : (
+                      <Button size="sm" variant="outline" asChild>
+                        <Link href={`/media/${purchase.media?.slug}`}>
+                          Rent Again
+                        </Link>
+                      </Button>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       )}
     </div>

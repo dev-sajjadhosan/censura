@@ -6,33 +6,29 @@ import ExplorePagePagination from "@/components/Modules/Explore/ExplorePagePagin
 import { Search as SearchIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import SearchBar from "../Home/SearchBar";
+import { IProfileResponse } from "@/types/auth.types";
 
 type Params = { [key: string]: string | string[] | undefined };
 
-export default function MediaGrid({ params }: { params: Params }) {
-  // 1. Setup API Query Params (Matching your Backend QueryBuilder keys)
+export default function MediaGrid({ params , user }: { params: Params , user?: IProfileResponse | null }) {
   const queryParams = {
     page: params.page || "1",
     limit: params.limit || "10",
-    searchTerm: params.search, // Map 'search' from URL to 'searchTerm' for Backend
+    searchTerm: params.search, 
     sortBy: params.sort === "recent" ? "createdAt" : params.sort,
     sortOrder: "desc",
-    // These keys must match your filterableFields in the backend config
     type: params.type,
     genre: params.genre,
     platform: params.platform,
     minRating: params.minRating,
   };
 
-  // 2. Fetch data from server
   const { data, isLoading } = useQuery({
-    // Important: Include params in queryKey so it refetches when filters change
+
     queryKey: ["media", queryParams], 
     queryFn: () => getAllMedia(queryParams),
   });
 
-  // 3. Extract data and meta from your Backend Response
-  // Adjusted based on IQueryResult<T> structure: { data: [], meta: { total, page, etc } }
   const mediaList = data?.data?.data || [];
   const meta = data?.data?.meta;
 
@@ -58,9 +54,9 @@ export default function MediaGrid({ params }: { params: Params }) {
 
   return (
     <>
-      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
         {mediaList.map((item: any) => (
-          <MediaCard key={item.id} media={item} />
+          <MediaCard key={item.id} media={item} user={user} />
         ))}
       </div>
 

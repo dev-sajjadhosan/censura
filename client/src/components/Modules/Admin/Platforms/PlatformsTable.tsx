@@ -161,8 +161,8 @@ export const PlatformsClient = ({
   }, [filterValues]);
 
   const columns = useMemo(
-    () => getPlatformColumns(tableActions.onEdit, tableActions.onDelete),
-    [tableActions.onEdit, tableActions.onDelete],
+    () => getPlatformColumns(setEditingPlatform, setDeletingPlatform),
+    [setEditingPlatform, setDeletingPlatform],
   );
   return (
     <div className="space-y-6">

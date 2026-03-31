@@ -3,49 +3,62 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Star, CheckCircle2 } from "lucide-react";
-import { createReview } from "@/services/media.service";
+import { createReview, updateReview } from "@/services/media.service";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Label } from "@/components/ui/label";
-import {
-  CreateReviewValidation,
-  CreateReviewValidationType,
-} from "@/zod/review.validation";
-import { IProfileResponse, User } from "@/types/auth.types";
-import ReviewSection from "./ReviewSection";
+import { CreateReviewValidation } from "@/zod/review.validation";
+import { IProfileResponse } from "@/types/auth.types";
 import { Review } from "@/types/media.types";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function ReviewForm({
   mediaId,
   user,
-  initialReviews = [],
+  initialReview,
+  isEdit,
 }: {
   mediaId: string;
   user: IProfileResponse | null;
-  initialReviews?: Review[];
+  initialReview?: Review;
+  isEdit?: boolean;
 }) {
+  const router = useRouter();
   const queryClient = useQueryClient();
+  const isEditMode = !!initialReview;
+
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: (payload: CreateReviewValidationType) => createReview(payload),
+    mutationFn: (payload: any) =>
+      isEditMode
+        ? updateReview(initialReview.id, payload)
+        : createReview(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reviews", mediaId] });
+      toast.success(
+        isEditMode ? "Review updated!" : "Review submitted for approval!",
+      );
+    },
+    onError: (error: any) => {
+      toast.error(
+        isEditMode ? "Failed to update review" : "Failed to submit review",
+      );
     },
   });
 
   const form = useForm({
     defaultValues: {
-      content: "",
-      rating: 0,
-      hasSpoiler: false,
-      tags: "",
+      content: initialReview?.content || "",
+      rating: initialReview?.rating || 0,
+      hasSpoiler: initialReview?.hasSpoiler || false,
+      tags: initialReview?.tags?.join(", ") || "", // Join tags array back to string
     },
     onSubmit: async ({ value }) => {
       try {
-        const data = {
+        const payload = {
           mediaId,
           content: value.content,
           rating: value.rating,
@@ -54,25 +67,30 @@ export default function ReviewForm({
             .split(",")
             .map((t) => t.trim())
             .filter(Boolean),
-          status: "PENDING", // Default on backend
           userId: user?.id,
+          
         };
-        const res = (await mutateAsync(data)) as any;
-        toast.success("Review submitted for approval!");
-        form.reset();
-        console.log("Review submitted successfully:", res);
+
+        await mutateAsync(payload);
+        if (!isEditMode) form.reset();
+        router.refresh();
       } catch (error: any) {
-        console.error("Error submitting review:", error);
-        toast.error(error.message || "Failed to submit review");
+        console.log(error);
       }
     },
   });
 
   return (
-    <div className="space-y-12 mt-7">
+    <div className="space-y-12">
       {user ? (
-        <section className="bg-secondary/35 p-7 rounded-xl">
-          <h3 className="text-lg text-muted-foreground mb-6">Write a Review</h3>
+        <section
+          className={`p-7 ${isEdit ? "" : "bg-secondary/35 rounded-xl"}`}
+        >
+          {!isEdit && (
+            <h3 className="text-lg text-muted-foreground mb-6">
+              Write a Review
+            </h3>
+          )}
           <form
             noValidate
             onSubmit={(e) => {
@@ -185,18 +203,15 @@ export default function ReviewForm({
             </div>
             <Button
               type="submit"
-              disabled={form.state.isSubmitting || isPending}
-              className="rounded-lg"
+              disabled={isPending}
+              className="w-full md:w-auto rounded-lg"
               size={"xl"}
             >
-              {form.state.isSubmitting || isPending ? (
-                "Submitting..."
-              ) : (
-                <>
-                  <Star className="fill-secondary" />
-                  Post Review
-                </>
-              )}
+              {isPending
+                ? "Saving..."
+                : isEditMode
+                  ? "Update Review"
+                  : "Post Review"}
             </Button>
           </form>
         </section>
@@ -220,8 +235,6 @@ export default function ReviewForm({
           </div>
         </div>
       )}
-
-      <ReviewSection initialReviews={initialReviews} user={user} />
     </div>
   );
 }

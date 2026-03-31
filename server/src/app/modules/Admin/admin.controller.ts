@@ -35,12 +35,8 @@ const getReviews = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllMedia = catchAsync(async (req: Request, res: Response) => {
-  const { limit, sortBy, sortOrder } = req.query;
-  const result = await AdminService.getAllMedia({
-    limit: limit ? Number(limit) : undefined,
-    sortBy: sortBy as string,
-    sortOrder: sortOrder as "asc" | "desc",
-  });
+  const query = req.query;
+  const result = await AdminService.getAllMedia(query);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

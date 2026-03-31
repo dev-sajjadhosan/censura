@@ -1,3 +1,5 @@
+"use server"
+
 import { axiosClient } from "@/lib/axiosClient";
 
 export const addToWatchlist = async (mediaId: string) => {
@@ -12,7 +14,7 @@ export const getMyWatchlist = async () => {
   return await axiosClient.get("/watchlist");
 };
 
-export const getBookmarkedReviews = async () => {
+export const getBookmarked = async () => {
   return await axiosClient.get("/bookmarks");
 };
 

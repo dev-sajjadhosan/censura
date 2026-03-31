@@ -6,6 +6,7 @@ import status from "http-status";
 
 const getAllMedia = catchAsync(async (req, res) => {
   const query = req.query;
+  
   const result = await MediaService.getAllMedia(query);
   sendResponse(res, {
     statusCode: status.OK,

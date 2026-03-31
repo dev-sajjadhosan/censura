@@ -2,7 +2,7 @@ import { IProfileResponse } from "@/types/auth.types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Send, MessageCircle } from "lucide-react";
+import { Send, MessageCircle, Loader2 } from "lucide-react";
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -12,6 +12,7 @@ import {
 } from "@/zod/reaction.validation";
 import { addComment, getComments } from "@/services/reaction.service";
 import { Comment as ReviewComment } from "@/types/reaction.types";
+import { useRouter } from "next/navigation";
 
 interface CommentSectionProps {
   showComments: boolean;
@@ -26,18 +27,20 @@ export default function CommentSection({
   mediaId,
   currentUser,
 }: CommentSectionProps) {
+  const router = useRouter();
   const queryclient = useQueryClient();
   const { mutateAsync, isPending } = useMutation({
     mutationFn: (payload: CommentValidationType) => addComment(payload),
     onSuccess: () => {
+      router.refresh();
       queryclient.invalidateQueries({
-        queryKey: ["comments", reviewId],
+        queryKey: ["reviews", reviewId],
       });
     },
   });
 
-  const { data: comments } = useQuery({
-    queryKey: ["comments", reviewId],
+  const { data: comments, isLoading } = useQuery({
+    queryKey: ["reviews", reviewId],
     queryFn: () => getComments(reviewId),
   });
 
@@ -129,27 +132,35 @@ export default function CommentSection({
           </div>
 
           <div className="space-y-3 pt-2">
-            {comments?.map((comment: any) => (
-              <div key={comment.id} className="flex gap-3">
-                <Avatar className="size-8 shrink-0">
-                  <AvatarImage src={comment.user?.image || ""} />
-                  <AvatarFallback>
-                    {comment.user?.name?.[0] || "U"}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="bg-secondary/20 rounded-2xl rounded-tl-sm px-4 py-3 flex-1">
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-sm font-semibold text-neutral-200">
-                      {comment.user?.name || "Unknown"}
-                    </span>
-                    <span className="text-[10px] text-neutral-500">
-                      {new Date(comment.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <p className="text-sm text-neutral-300">{comment.content}</p>
-                </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center py-10">
+                <Loader2 className="size-7 animate-spin text-primary" />
               </div>
-            ))}
+            ) : (
+              comments?.map((comment: any) => (
+                <div key={comment.id} className="flex gap-3">
+                  <Avatar className="size-8 shrink-0">
+                    <AvatarImage src={comment.user?.image || ""} />
+                    <AvatarFallback>
+                      {comment.user?.name?.[0] || "U"}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="bg-secondary/20 rounded-2xl rounded-tl-sm px-4 py-3 flex-1">
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-sm font-semibold text-neutral-200">
+                        {comment.user?.name || "Unknown"}
+                      </span>
+                      <span className="text-[10px] text-neutral-500">
+                        {new Date(comment.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <p className="text-sm text-neutral-300">
+                      {comment.content}
+                    </p>
+                  </div>
+                </div>
+              ))
+            )}
             {comments?.length === 0 && (
               <div className="flex flex-col items-center justify-center my-11">
                 <MessageCircle className="size-7 mb-3 text-muted-foreground" />

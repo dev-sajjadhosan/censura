@@ -8,7 +8,7 @@ model Comment {
   status    CommentStatus @default(APPROVED)
 
   user    User      @relation(fields: [userId], references: [id])
-  review  Review    @relation(fields: [reviewId], references: [id])
+  review  Review    @relation(fields: [reviewId], references: [id], onDelete: Cascade)
   parent  Comment?  @relation("replies", fields: [parentId], references: [id])
   replies Comment[] @relation("replies")
 
@@ -31,11 +31,11 @@ model Like {
   createdAt DateTime @default(now())
 
   user      User     @relation(fields: [userId], references: [id])
-  review    Review?  @relation(fields: [reviewId], references: [id])
+  review    Review?  @relation(fields: [reviewId], references: [id], onDelete: Cascade)
   mediaId   String
-  media     Media    @relation(fields: [mediaId], references: [id])
+  media     Media    @relation(fields: [mediaId], references: [id], onDelete: Cascade)
   commentId String?
-  comment   Comment? @relation(fields: [commentId], references: [id])
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
   @@unique([userId, reviewId, commentId]) // one like per user per review
   @@index([userId])

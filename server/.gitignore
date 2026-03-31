@@ -5,3 +5,5 @@ dist
 email-previews
 preview-emails.ts
 plan.md
+
+.vercel

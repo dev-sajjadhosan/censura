@@ -44,6 +44,14 @@ export default async function Navbar() {
           </ul>
         </div>
         <NavbarAuth user={user} />
+        {user?.status === "ADMIN" && (
+          <Link
+            href="/admin/dashboard"
+            className="hover:text-primary transition-colors text-sm"
+          >
+            Dashboard
+          </Link>
+        )}
       </header>
     </NavbarVisibilityWrapper>
   );

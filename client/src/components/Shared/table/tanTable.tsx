@@ -33,9 +33,10 @@ import {
   Edit,
   Eye,
   MoreHorizontal,
+  Trash,
   Trash2,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import TanTableFilters, {
   TanTableFilterConfig,
   TanTableFilterValue,
@@ -103,52 +104,59 @@ const TanTable = <TData,>({
   }, []);
 
   const showLoadingOverlay = Boolean(isLoading) && hasHydrated;
+  const tableColumns = useMemo(() => {
+    const cols: ColumnDef<TData>[] = actions
+      ? [
+          {
+            id: "actions",
+            header: "Actions",
+            enableSorting: false,
+            cell: ({ row }) => {
+              const rowData = row.original;
+              return (
+                <>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant={"ghost"} size={"icon-lg"}>
+                        <MoreHorizontal />
+                      </Button>
+                    </DropdownMenuTrigger>
 
-  const tableColumns: ColumnDef<TData>[] = actions
-    ? [
-        {
-          id: "actions", // Unique id for the column
-          header: "Actions",
-          enableSorting: false,
-          cell: ({ row }) => {
-            const rowData = row.original;
+                    <DropdownMenuContent align="end" className="w-40 p-3">
+                      {actions.onView && (
+                        <DropdownMenuItem
+                          onClick={() => actions.onView?.(rowData)}
+                        >
+                          <Eye className="mr-2" /> View
+                        </DropdownMenuItem>
+                      )}
 
-            return (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant={"ghost"} size={"icon-lg"}>
-                    <MoreHorizontal />
-                  </Button>
-                </DropdownMenuTrigger>
+                      {actions.onEdit && (
+                        <DropdownMenuItem
+                          onClick={() => actions.onEdit?.(rowData)}
+                        >
+                          <Edit className="mr-2" /> Edit
+                        </DropdownMenuItem>
+                      )}
 
-                <DropdownMenuContent align="end" className="w-40 p-3">
-                  {actions.onView && (
-                    <DropdownMenuItem onClick={() => actions.onView?.(rowData)}>
-                      <Eye className="mr-2" /> View
-                    </DropdownMenuItem>
-                  )}
-
-                  {actions.onEdit && (
-                    <DropdownMenuItem onClick={() => actions.onEdit?.(rowData)}>
-                      <Edit className="mr-2" /> Edit
-                    </DropdownMenuItem>
-                  )}
-
-                  {actions.onDelete && (
-                    <DropdownMenuItem
-                      onClick={() => actions.onDelete?.(rowData)}
-                    >
-                      <Trash2 className="mr-2" /> Delete
-                    </DropdownMenuItem>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            );
+                      {actions.onDelete && (
+                        <DropdownMenuItem
+                          onClick={() => actions.onDelete?.(rowData)}
+                        >
+                          <Trash2 className="mr-2" /> Delete
+                        </DropdownMenuItem>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </>
+              );
+            },
           },
-        },
-        ...columns,
-      ]
-    : columns;
+          ...columns,
+        ]
+      : columns;
+    return cols;
+  }, [columns, actions]);
 
   // eslint-disable-next-line react-hooks/incompatible-library -- TanStack Table is intentionally used here and React Compiler already skips memoization for this hook.
   const table = useReactTable({
@@ -159,6 +167,7 @@ const TanTable = <TData,>({
     getPaginationRowModel: getPaginationRowModel(),
     manualSorting: !!sorting,
     manualPagination: !!pagination,
+    autoResetPageIndex: false,
     pageCount: pagination ? Math.max(meta?.totalPages ?? 0, 0) : undefined,
     state: {
       ...(sorting ? { sorting: sorting.state } : {}),

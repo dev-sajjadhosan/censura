@@ -10,6 +10,8 @@ import { SubscriptionRouter } from "../modules/Subscription/subscription.routes"
 import { WatchlistRouter } from "../modules/Watchlist/watchlist.router";
 import { AdminRoutes } from "../modules/Admin/admin.routes";
 import { PlatformRoutes } from "../modules/Platform/platform.routes";
+import { BookmarkRouter } from "../modules/Bookmark/bookmark.routes";
+import { FavoriteRouter } from "../modules/Favourite/favourite.routes";
 
 const router = Router();
 
@@ -23,6 +25,8 @@ router.use("/payments", PaymentRoutes);
 router.use("/reactions", ReactionRoutes);
 router.use("/subscriptions", SubscriptionRouter);
 router.use("/watchlist", WatchlistRouter);
+router.use("/bookmark", BookmarkRouter);
+router.use("/favorite", FavoriteRouter);
 router.use("/admin", AdminRoutes);
 
 export const AppRoutes = router;

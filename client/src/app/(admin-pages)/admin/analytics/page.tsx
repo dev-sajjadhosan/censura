@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import AnalyticsClient from "@/components/Modules/Admin/AnalyticsClient";
 
 export const metadata = {

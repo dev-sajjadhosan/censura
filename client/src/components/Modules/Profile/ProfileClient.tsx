@@ -8,7 +8,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { getIconComponent } from "@/lib/iconMapper";
 import { IProfileResponse } from "@/types/auth.types";
 import { ProfileMenu } from "@/types/default.types";
-import { Clapperboard } from "lucide-react";
+import { Clapperboard, Eye, Home } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -42,7 +42,7 @@ const ProfileMenus: ProfileMenu[] = [
   },
   {
     title: "Subscription",
-    href: "/subscription",
+    href: "/profile/subscription",
     icon: "CreditCard",
   },
   {
@@ -61,13 +61,23 @@ export default function ProfileClient({
   user: IProfileResponse | null;
 }) {
   const [tab, setTab] = useState<ProfileTab>("bookmarks");
+
+  console.log(user);
+
   return (
     <div className="flex h-screen w-full gap-10 p-7">
       <div className="flex flex-col justify-between gap-5 w-md h-full bg-secondary/40 p-5 rounded-xl">
-        <div className="flex flex-col">
-          <span className="w-10 h-px bg-primary/20 mt-1" />
-          <span className="w-20 h-px bg-primary/30 mt-1" />
-          <span className="w-30 h-px bg-primary/40 mt-1" />
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col">
+            <span className="w-10 h-px bg-primary/20 mt-1" />
+            <span className="w-20 h-px bg-primary/30 mt-1" />
+            <span className="w-30 h-px bg-primary/40 mt-1" />
+          </div>
+          <Link href={"/"}>
+            <Button size={"icon-lg"} variant={"ghost"} className="rounded-full">
+              <Home />
+            </Button>
+          </Link>
         </div>
 
         <SubscriptionBadge subscription={user?.subscription ?? null} />
@@ -148,15 +158,28 @@ export default function ProfileClient({
                   <Card key={i} className="w-40 p-0 shrink-0 overflow-hidden">
                     <CardContent className="p-0 relative">
                       <img
-                        src={item?.poster || "https://github.com/shadcn.png"}
+                        src={
+                          item?.media?.poster || "https://github.com/shadcn.png"
+                        }
                         alt="Movie Poster"
                         width={300}
                         height={300}
                         className="aspect-square object-cover"
                       />
-                      <Badge className="absolute bottom-1 left-2">
-                        {item?.title}
-                      </Badge>
+                      <div className="flex items-center gap-5 absolute bottom-1 left-2">
+                        <Badge>
+                          {item?.media?.title}
+                        </Badge>
+                        <Link href={`/media/${item?.media?.slug}`}>
+                          <Button
+                            size={"icon-sm"}
+                            variant={"ghost"}
+                            className="rounded-full"
+                          >
+                            <Eye />
+                          </Button>
+                        </Link>
+                      </div>
                     </CardContent>
                   </Card>
                 ))

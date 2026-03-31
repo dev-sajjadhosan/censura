@@ -10,13 +10,17 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { addToWatchlist, removeFromWatchlist } from "@/services/media.service";
+import {
+  addToWatchlist,
+  removeFromWatchlist,
+} from "@/services/collections.service";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { ILoginResponse, IProfileResponse } from "@/types/auth.types";
 
 interface WatchlistButtonProps {
   mediaId: string;
-  initialIsBookmarked: boolean;
+  initialIsWatchlisted?: boolean;
   variant?:
     | "default"
     | "outline"
@@ -36,13 +40,13 @@ interface WatchlistButtonProps {
     | "icon-lg";
   className?: string;
   showText?: boolean;
-  user?: any;
+  user?: IProfileResponse;
   removeOnly?: boolean;
 }
 
 export default function WatchlistButton({
   mediaId,
-  initialIsBookmarked,
+  initialIsWatchlisted,
   variant = "secondary",
   size = "lg",
   className,
@@ -50,9 +54,12 @@ export default function WatchlistButton({
   user,
   removeOnly = false,
 }: WatchlistButtonProps) {
-  const [isBookmarked, setIsBookmarked] = useState(initialIsBookmarked);
+  const [isWatchlisted, setIsWatchlisted] = useState(initialIsWatchlisted);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const watchlist = user?.watchlists.find((w) => w.mediaId === mediaId);
+
+  console.log(watchlist)
 
   const handleToggleWatchlist = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -65,13 +72,13 @@ export default function WatchlistButton({
 
     try {
       setIsLoading(true);
-      if (isBookmarked || removeOnly) {
-        await removeFromWatchlist(mediaId);
-        setIsBookmarked(false);
+      if (isWatchlisted || removeOnly) {
+        await removeFromWatchlist(watchlist?.mediaId);
+        setIsWatchlisted(false);
         toast.success("Removed from watchlist");
       } else {
         await addToWatchlist(mediaId);
-        setIsBookmarked(true);
+        setIsWatchlisted(true);
         toast.success("Added to watchlist");
       }
       router.refresh();
@@ -116,7 +123,7 @@ export default function WatchlistButton({
             size.includes("icon") ? "size-5" : "w-5 h-5",
           )}
         />
-      ) : isBookmarked ? (
+      ) : isWatchlisted ? (
         <BookmarkCheck
           className={cn(
             "text-primary fill-primary",
@@ -130,7 +137,7 @@ export default function WatchlistButton({
       )}
 
       {showText && !size.includes("icon") && (
-        <span>{isBookmarked ? "In Watchlist" : "Add to Watchlist"}</span>
+        <span>{isWatchlisted ? "In Watchlist" : "Add to Watchlist"}</span>
       )}
     </Button>
   );

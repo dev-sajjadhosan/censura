@@ -4,6 +4,8 @@ import { ExploreSidebar } from "@/components/Modules/Explore/ExploreSidebar";
 import MediaGrid from "@/components/Modules/Media/MediaGrid";
 import { MediaGridSkeleton } from "@/components/Modules/Media/MediaGridSkeleton";
 import SearchBar from "@/components/Modules/Home/SearchBar";
+import { getCurrentUser } from "@/services/user.service";
+import { IProfileResponse } from "@/types/auth.types";
 
 type Params = { [key: string]: string | string[] | undefined };
 
@@ -13,6 +15,7 @@ export default async function ExplorePage({
   searchParams: Promise<Params>;
 }) {
   const params = await searchParams;
+const user = await getCurrentUser()
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -38,7 +41,7 @@ export default async function ExplorePage({
                 <MediaGridSkeleton count={Number(params?.limit) || 8} />
               }
             >
-              <MediaGrid params={params} />
+              <MediaGrid params={params} user={user} />
             </Suspense>
           </main>
         </SidebarInset>

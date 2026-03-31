@@ -1,32 +1,34 @@
-import { MediaPurchase } from "@/types/media.types";
-import { Subscription } from "@/types/payment.types";
-
 export function getUserMediaAccess(
   media: { id: string; pricing: string },
-  subscription: Pick<Subscription, "plan" | "status"> | null,
-  purchases:
-    | Pick<MediaPurchase, "mediaId" | "type" | "status" | "expiresAt">[]
-    | null,
+  subscription: { plan: string; status: string } | null,
+  purchases: any[] | null,
 ): { hasAccess: boolean; reason: string } {
-  if (media?.pricing === "FREE") return { hasAccess: true, reason: "FREE" };
+  const pricing = media?.pricing?.toUpperCase();
+  const subStatus = subscription?.status?.toUpperCase();
+  const subPlan = subscription?.plan?.toUpperCase();
 
-  if (media?.pricing === "PREMIUM") {
-    const hasAccess =
-      subscription?.status === "ACTIVE" &&
-      (subscription?.plan === "MONTHLY" || subscription?.plan === "YEARLY");
-    return { hasAccess, reason: "PREMIUM" };
+  // 1. Public Content
+  if (pricing === "FREE") return { hasAccess: true, reason: "FREE" };
+
+  // 2. Subscription Content
+  if (pricing === "PREMIUM") {
+    // Check if status is active AND plan matches your allowed list
+    const hasActiveSub = subStatus === "ACTIVE" && 
+      ["MONTHLY", "YEARLY", "1_MONTH"].includes(subPlan || ""); 
+    
+    return { hasAccess: !!hasActiveSub, reason: "PREMIUM" };
   }
 
-  if (media?.pricing === "RENTAL") {
-    const hasAccess = purchases?.some(
+  // 3. Rental Content
+  if (pricing === "RENTAL") {
+    const activeRental = purchases?.some(
       (p) =>
         p?.mediaId === media?.id &&
-        p?.type === "RENTAL" &&
-        p?.status === "ACTIVE" &&
-        p?.expiresAt !== null &&
-        new Date(p?.expiresAt) > new Date(),
+        p?.type?.toUpperCase() === "RENTAL" &&
+        p?.status?.toUpperCase() === "ACTIVE" &&
+        p?.expiresAt && new Date(p.expiresAt) > new Date(),
     );
-    return { hasAccess: hasAccess || false, reason: "RENTAL" };
+    return { hasAccess: !!activeRental, reason: "RENTAL" };
   }
 
   return { hasAccess: false, reason: "UNKNOWN" };

@@ -17,10 +17,10 @@ export const commonProtectedRoutes: RouteConfig = {
 };
 
 export const userProtectedRoutes: RouteConfig = {
-  exact: ["/profile", "/watchlist", "/settings"],
+  exact: ["/profile", "/settings"],
   pattern: [
-    /^\/profile\/.*/, // /profile/subscription, /profile/settings
-    /^\/payment\/.*/, // /payment/success, /payment/cancel
+    /^\/profile\/.*/,
+    /^\/payment\/.*/,
   ],
 };
 

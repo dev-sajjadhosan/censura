@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Save, Loader2, Image as ImageIcon } from "lucide-react";
+import { Save, Loader2, Image as ImageIcon, DollarSign } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -31,7 +31,6 @@ import CastInMediaDialog from "./CastInMediaDialog";
 import PlatfromInMedia from "./PlatfromInMedia";
 import ViewMediaLink from "./ViewMediaLink";
 import { MEDIA_TYPES } from "@/Constant/media.const";
-
 
 const PRICING_OPTIONS = ["FREE", "PREMIUM", "RENTAL"];
 
@@ -64,15 +63,17 @@ export default function MediaForm({
       slug: initialData?.slug || "",
       synopsis: initialData?.synopsis || "",
       type: initialData?.type || "MOVIE",
-      releaseYear: String(initialData?.releaseYear) || "",
+      releaseYear: String(initialData?.releaseYear || ""),
       director: initialData?.director || "",
       posterUrl: initialData?.posterUrl || "",
       backdropUrl: initialData?.backdropUrl || "",
       trailerUrl: initialData?.trailerUrl || "",
       streamingUrl: initialData?.streamingUrl || "",
-      runtimeMinutes: String(initialData?.runtimeMinutes) || "",
-      seasons: String(initialData?.seasons) || "",
+      runtimeMinutes: String(initialData?.runtimeMinutes || ""),
+      seasons: String(initialData?.seasons || ""),
       pricing: initialData?.pricing || "FREE",
+      rentalPrice: String(initialData?.rentalPrice || ""), // Added
+      buyPrice: String(initialData?.buyPrice || ""), // Added
       isPublished: initialData?.isPublished ?? false,
       isFeatured: initialData?.isFeatured ?? false,
       cast: initialData?.cast || [],
@@ -279,6 +280,52 @@ export default function MediaForm({
               )}
             />
           </div>
+          <form.Subscribe selector={(state) => state.values.pricing}>
+            {(pricing) =>
+              pricing === "RENTAL" && (
+                <div className="flex items-center gap-5 ">
+                  <div className="space-y-2 w-full">
+                    <form.Field
+                      name="rentalPrice"
+                      children={(field) => (
+                        <>
+                          <Label className="flex items-center gap-1">
+                            <DollarSign className="size-3" /> Rental Price
+                            (BDT/USD)
+                          </Label>
+                          <Input
+                            type="number"
+                            value={field.state.value}
+                            onChange={(e) => field.handleChange(e.target.value)}
+                            placeholder="e.target 3.99"
+                          />
+                        </>
+                      )}
+                    />
+                  </div>
+                  <div className="space-y-2 w-full">
+                    <form.Field
+                      name="buyPrice"
+                      children={(field) => (
+                        <>
+                          <Label className="flex items-center gap-1">
+                            <DollarSign className="size-3" /> Buy Price
+                            (BDT/USD)
+                          </Label>
+                          <Input
+                            type="number"
+                            value={field.state.value}
+                            onChange={(e) => field.handleChange(e.target.value)}
+                            placeholder="e.target 14.99"
+                          />
+                        </>
+                      )}
+                    />
+                  </div>
+                </div>
+              )
+            }
+          </form.Subscribe>
 
           <div className="space-y-2">
             <form.Field

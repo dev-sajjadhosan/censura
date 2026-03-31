@@ -68,6 +68,8 @@ const updateReview = catchAsync(async (req: Request, res: Response) => {
 });
 
 const deleteReview = catchAsync(async (req: Request, res: Response) => {
+  console.log(req.params.id);
+
   const result = await ReviewsService.deleteReview(req.params.id as string);
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -102,6 +104,16 @@ const deleteReviewByAdmin = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAllReviewAdmin = catchAsync(async (req: Request, res: Response) => {
+  const result = await ReviewsService.getAllReviewAdmin(req.query);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Reviews fetched successfully",
+    data: result,
+  });
+});
+
 export const ReviewsController = {
   getAllReview,
   getSingleReview,
@@ -111,4 +123,5 @@ export const ReviewsController = {
   deleteReview,
   updateReviewStatus,
   deleteReviewByAdmin,
+  getAllReviewAdmin,
 };

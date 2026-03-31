@@ -396,9 +396,21 @@ const getMe = async (user: IRequestUser) => {
     },
     include: {
       profile: true,
-      bookmarks: true,
-      favorites: true,
-      watchlists: true,
+      bookmarks: {
+        include: {
+          media: true,
+        },
+      },
+      favorites: {
+        include: {
+          media: true,
+        },
+      },
+      watchlists: {
+        include: {
+          media: true,
+        },
+      },
       subscription: true,
       purchases: true,
       _count: {

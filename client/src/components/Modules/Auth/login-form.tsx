@@ -135,7 +135,7 @@ export default function LoginForm({ redirectPath }: LoginFormProps) {
               </Link>
             </div>
 
-            {serverError && (
+            {process.env.NODE_ENV === "development" && serverError && (
               <p className="text-sm text-red-500">{serverError}</p>
             )}
 

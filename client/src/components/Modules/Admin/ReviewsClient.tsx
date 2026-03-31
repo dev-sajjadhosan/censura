@@ -3,8 +3,9 @@
 import ReviewsTable from "./Reviews/ReviewsTable";
 import { Suspense } from "react";
 import { Loader2 } from "lucide-react";
+import { TabStatus } from "@/app/(admin-pages)/admin/reviews/page";
 
-export default function ReviewsClient() {
+export default function ReviewsClient({initialStatus}: {initialStatus: TabStatus}) {
   return (
     <div className="space-y-6">
       <div>
@@ -21,7 +22,7 @@ export default function ReviewsClient() {
           </div>
         }
       >
-        <ReviewsTable />
+        <ReviewsTable initialQueryString={initialStatus} />
       </Suspense>
     </div>
   );

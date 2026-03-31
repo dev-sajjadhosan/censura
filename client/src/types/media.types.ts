@@ -112,7 +112,6 @@ export interface MediaPurchase {
 }
 
 export interface Rental {
-
   id: string;
   userId: string;
   mediaId: string;
@@ -147,6 +146,8 @@ export interface Media {
   runtimeMinutes: number;
   seasons: number;
   pricing: string;
+  rentalPrice: number;
+  buyPrice: number;
   isPublished: boolean;
   isFeatured: boolean;
   avgRating: number;
@@ -177,9 +178,11 @@ export interface Review {
   title: string;
   content: string;
   rating: number;
-  user: User;
   likes: Like[];
   comments: Comment[];
+
+  user: User;
+  media: Media;
 
   createdAt: string;
   updatedAt: string;

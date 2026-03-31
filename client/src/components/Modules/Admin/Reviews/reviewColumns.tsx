@@ -6,9 +6,14 @@ import DateCeil from "@/components/Shared/ceil/DateCeil";
 import StatusBadgeCell from "@/components/Shared/ceil/StatusBadgeCell";
 import { Badge } from "@/components/ui/badge";
 import RatingCeil from "@/components/Shared/ceil/RatingCeil";
-import { MessageSquare, AlertTriangle } from "lucide-react";
+import { MessageSquare, AlertTriangle, Check, X } from "lucide-react";
+import { Review } from "@/types/media.types";
 
-export const reviewColumns: ColumnDef<any>[] = [
+export const reviewColumns = (
+  onView: (review: Review) => void,
+  onDelete: (review: Review) => void,
+  onEdit: (review: Review) => void,
+): ColumnDef<Review>[] => [
   {
     id: "user",
     header: "User",
@@ -54,14 +59,17 @@ export const reviewColumns: ColumnDef<any>[] = [
     id: "hasSpoiler",
     header: "Spoiler",
     accessorKey: "hasSpoiler",
-    cell: ({ row }) => row.original.hasSpoiler ? (
-      <Badge variant="destructive" className="h-5 px-1.5 text-[10px] gap-1">
-        <AlertTriangle className="size-2.5" />
-        Yes
-      </Badge>
-    ) : (
-      <span className="text-muted-foreground text-xs">—</span>
-    ),
+    cell: ({ row }) =>
+      row.original.hasSpoiler ? (
+        <Badge variant="destructive" className="py-3">
+          <AlertTriangle />
+          Yes
+        </Badge>
+      ) : (
+        <Badge variant="secondary" className="py-3">
+          <Check /> No
+        </Badge>
+      ),
   },
   {
     id: "createdAt",

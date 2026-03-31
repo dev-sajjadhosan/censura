@@ -15,7 +15,6 @@ model Review {
   comments Comment[]
   likes    Like[]
 
-  @@unique([userId, mediaId])
   @@index([userId])
   @@index([mediaId])
   @@index([status])

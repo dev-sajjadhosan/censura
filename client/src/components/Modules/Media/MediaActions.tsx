@@ -1,10 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Coins, History, ShoppingCart, Video } from "lucide-react";
+import { Coins, Crown, Loader2, Play, ShoppingCart, Video } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { purchaseMedia } from "@/services/media.service";
 import { useRouter } from "next/navigation";
 import {
   Dialog,
@@ -17,165 +16,212 @@ import {
 import { Media } from "@/types/media.types";
 import Image from "next/image";
 import WatchlistButton from "./WatchlistButton";
+import { getUserMediaAccess } from "@/lib/access";
+import Link from "next/link";
+import { createMediaCheckoutSession } from "@/services/payment.service";
 
 export default function MediaActions({
   media,
   hasPurchasedInitial,
   user,
-  initialIsBookmarked,
+  initialIsWatchlisted,
 }: {
   media: Media;
   hasPurchasedInitial: boolean;
   user: any;
-  initialIsBookmarked: boolean;
+  initialIsWatchlisted: boolean;
 }) {
-  const [hasPurchased, setHasPurchased] = useState(hasPurchasedInitial);
-  const [isPurchasing, setIsPurchasing] = useState(false);
-  const [showPurchaseDialog, setShowPurchaseDialog] = useState(false);
+  const [loading, setLoading] = useState<"RENTAL" | "BUY" | null>(null);
+  const [showDialog, setShowDialog] = useState(false);
+  const [selectedType, setSelectedType] = useState<"RENTAL" | "BUY" | null>(
+    null,
+  );
   const router = useRouter();
 
-  const handlePurchase = async () => {
+  const { hasAccess } = getUserMediaAccess(
+    media,
+    user?.subscription ?? null,
+    user?.purchases ?? null,
+  );
+
+  // first available platform URL = media?.mediaPlatforms[0]?.platform?.url
+  const watchUrl = "";
+
+  const openDialog = (type: "RENTAL" | "BUY") => {
     if (!user) {
-      toast.error("Please log in to make a purchase");
+      toast.error("Please login to continue");
+      router.push("/login");
       return;
     }
+    setSelectedType(type);
+    setShowDialog(true);
+  };
 
+  const handleCheckout = async () => {
+    if (!selectedType) return;
     try {
-      setIsPurchasing(true);
-
-      const payload = {
+      setLoading(selectedType);
+      const res = (await createMediaCheckoutSession({
         mediaId: media.id,
-        amount: media.pricing === "RENTAL" ? 4.99 : 14.99,
-        type: media.pricing === "RENTAL" ? "RENTAL" : "BUY",
-        expiryDate:
-          media.pricing === "RENTAL"
-            ? new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString() // 48 hours
-            : new Date(
-                Date.now() + 100 * 365 * 24 * 60 * 60 * 1000,
-              ).toISOString(), // 100 years
-      };
+        type: selectedType,
+      })) as any;
 
-      await purchaseMedia(payload);
-
-      toast.success(
-        media.pricing === "RENTAL"
-          ? "Rented successfully!"
-          : "Purchased successfully!",
-      );
-      setHasPurchased(true);
-      setShowPurchaseDialog(false);
-      router.refresh();
+      if (res?.data?.data?.session_url) {
+        window.location.href = res.data.data.session_url;
+      } else {
+        toast.error("Failed to initiate checkout");
+      }
     } catch (error: any) {
-      toast.error(error?.message || "Purchase failed. Please try again.");
+      toast.error(error?.response?.data?.message || "Something went wrong");
     } finally {
-      setIsPurchasing(false);
+      setLoading(null);
+      setShowDialog(false);
     }
   };
 
   const isFree = media.pricing === "FREE";
-  const canWatch = isFree || hasPurchased;
-  const actionText = media.pricing === "RENTAL" ? "Rent" : "Buy";
-  const actionPrice = media.pricing === "RENTAL" ? "$4.99" : "$14.99";
+  const actionPrice =
+    selectedType === "RENTAL"
+      ? `$${Number(media.rentalPrice ?? 0.0).toFixed(2)}`
+      : `$${Number(media.buyPrice ?? 0.0).toFixed(2)}`;
 
   return (
     <>
       <div className="flex flex-wrap gap-4 pt-4">
-        {canWatch ? (
+        {/* Watch Now — free or has access */}
+        {(isFree || hasAccess) && (
           <Button
             size="lg"
-            className="gap-2 bg-primary text-black hover:bg-primary/90 font-semibold"
+            className="gap-2 font-semibold rounded-full px-8 h-12"
             onClick={() => {
-              if (media.streamingUrl) {
-                window.open(media.streamingUrl, "_blank");
+              if (watchUrl) {
+                window.open(watchUrl, "_blank");
               } else {
-                toast.info("Streaming URL will be available soon.");
+                toast.info("No streaming platform linked yet.");
               }
             }}
           >
-            Watch Now
-            <Video className="w-5 h-5" />
+            <Play className="w-5 h-5 fill-current" /> Watch Now
           </Button>
-        ) : (
-          <Button size="lg" onClick={() => setShowPurchaseDialog(true)}>
-            <ShoppingCart className="w-5 h-5 mr-2" />
-            {actionText} {actionPrice}
+        )}
+
+        {/* PREMIUM — not subscribed */}
+        {media.pricing === "PREMIUM" && !hasAccess && (
+          <Button size="lg" className="gap-2 rounded-full px-8 h-12" asChild>
+            <Link href="/subscription">
+              <Crown className="w-5 h-5" /> Subscribe to Watch
+            </Link>
+          </Button>
+        )}
+
+        {/* RENTAL — not purchased */}
+        {media.pricing === "RENTAL" && !hasAccess && (
+          <div className="flex items-center gap-3">
+            {media.rentalPrice && (
+              <Button
+                size="lg"
+                variant="outline"
+                className="gap-2 rounded-full px-8 h-12"
+                onClick={() => openDialog("RENTAL")}
+                disabled={!!loading}
+              >
+                {loading === "RENTAL" ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Video className="w-5 h-5" />
+                )}
+                Rent ${Number(media.rentalPrice).toFixed(2)}
+                <span className="text-xs text-neutral-400">(48hrs)</span>
+              </Button>
+            )}
+            {media.buyPrice && (
+              <Button
+                size="lg"
+                className="gap-2 rounded-full px-8 h-12"
+                onClick={() => openDialog("BUY")}
+                disabled={!!loading}
+              >
+                {loading === "BUY" ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <ShoppingCart className="w-5 h-5" />
+                )}
+                Buy ${Number(media.buyPrice).toFixed(2)}
+              </Button>
+            )}
+          </div>
+        )}
+
+        {/* Not logged in */}
+        {!user && !isFree && (
+          <Button size="lg" className="rounded-full px-8 h-12" asChild>
+            <Link href="/login">Login to Watch</Link>
           </Button>
         )}
 
         <WatchlistButton
           mediaId={media.id}
-          initialIsBookmarked={initialIsBookmarked}
+          initialIsWatchlisted={initialIsWatchlisted}
           user={user}
         />
       </div>
 
-      <Dialog open={showPurchaseDialog} onOpenChange={setShowPurchaseDialog}>
-        <DialogContent className="sm:max-w-3xl bg-neutral-900 border-neutral-800 text-white p-9">
+      {/* Confirm Purchase Dialog */}
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent className="sm:max-w-lg bg-neutral-900 border-neutral-800 text-white">
           <DialogHeader>
-            <DialogTitle>Confirm Purchase</DialogTitle>
-            <DialogDescription className="text-muted-foreground">
-              You are about to {actionText.toLowerCase()}{" "}
-              <strong>{media.title}</strong>.
+            <DialogTitle>
+              Confirm {selectedType === "RENTAL" ? "Rental" : "Purchase"}
+            </DialogTitle>
+            <DialogDescription className="text-neutral-400">
+              You are about to {selectedType === "RENTAL" ? "rent" : "buy"}{" "}
+              <strong className="text-white">{media.title}</strong>
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="flex justify-around items-center  px-5 py-7 rounded-lg">
-              <div className="space-y-2">
-                <Image
-                  width={130}
-                  height={130}
-                  src={
-                    media.posterUrl ||
-                    "https://placehold.co/400x600?text=No+Poster"
-                  }
-                  alt={media.title}
-                  className="object-cover w-full h-full rounded-xl"
-                />
-                <h3 className="text-muted-foreground text-center">
-                  {media.title}
-                </h3>
+
+          <div className="flex items-center gap-6 py-4">
+            <Image
+              width={80}
+              height={120}
+              src={media.posterUrl || "https://placehold.co/80x120"}
+              alt={media.title}
+              className="rounded-xl object-cover w-20 h-28 shrink-0"
+            />
+            <div className="space-y-2">
+              <h3 className="font-bold text-lg text-white">{media.title}</h3>
+              <p className="text-neutral-400 text-sm">{media.releaseYear}</p>
+              <div className="flex items-center gap-2 mt-3">
+                <Coins className="w-5 h-5 text-yellow-500" />
+                <span className="text-2xl font-bold text-white">
+                  {actionPrice}
+                </span>
               </div>
-              <div className="flex flex-col items-center gap-1 bg-secondary/45 py-14 px-21 rounded-xl">
-                <Coins className="size-10 mb-3 text-muted-foreground" />
-                <h3 className="text-lg">
-                  <span className="text-orange-500">{actionText}</span> Price
-                </h3>
-                <span className="font-bold text-3xl">{actionPrice}</span>
-              </div>
+              {selectedType === "RENTAL" && (
+                <p className="text-xs text-neutral-500">
+                  48-hour access after payment
+                </p>
+              )}
+              {selectedType === "BUY" && (
+                <p className="text-xs text-neutral-500">Permanent access</p>
+              )}
             </div>
-            {media.pricing === "RENTAL" && (
-              <p className="text-sm text-neutral-500">
-                You will have 48 hours to watch this content after purchase.
-              </p>
-            )}
           </div>
 
-          <div className="flex justify-between items-center w-full">
-            {user ? (
-              <span />
-            ) : (
-              <p className="text-sm text-red-500">
-                Please Login/Register to make a purchase.
-              </p>
-            )}
-            <div className="flex justify-end gap-3">
-              <Button
-                size={"lg"}
-                variant="ghost"
-                onClick={() => setShowPurchaseDialog(false)}
-              >
-                Cancel
-              </Button>
-              <Button
-                size={"lg"}
-                disabled={isPurchasing || !user}
-                onClick={handlePurchase}
-                className="bg-primary text-black hover:bg-primary/90"
-              >
-                {isPurchasing ? "Processing..." : "Confirm Payment"}
-              </Button>
-            </div>
-          </div>
+          <DialogFooter className="gap-3">
+            <Button variant="ghost" onClick={() => setShowDialog(false)}>
+              Cancel
+            </Button>
+            <Button
+              disabled={!!loading}
+              onClick={handleCheckout}
+              className="px-8"
+            >
+              {loading ? (
+                <Loader2 className="w-4 h-4 animate-spin mr-2" />
+              ) : null}
+              Pay with Stripe
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>

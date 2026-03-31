@@ -1,20 +1,23 @@
 import express, { Request, Response } from "express";
 import path from "path";
-import { envVars } from "./config/env";
+
 import cors from "cors";
 import { toNodeHandler } from "better-auth/node";
 
 import cookieParser from "cookie-parser";
-import { AppRoutes } from "./routes/routes";
-import { auth } from "./lib/auth";
-import { globalErrorHandler } from "./middleware/globalErrorHandler";
-import { notFound } from "./middleware/notFound";
-import { startSubscriptionCronJobs } from "./utils/subscription.cron";
+import { startSubscriptionCronJobs } from "./app/utils/subscription.cron";
+import { envVars } from "./app/config/env";
+import { auth } from "./app/lib/auth";
+import { SubscriptionController } from "./app/modules/Subscription/subscription.controller";
+import { AppRoutes } from "./app/routes/routes";
+import { globalErrorHandler } from "./app/middleware/globalErrorHandler";
+import { notFound } from "./app/middleware/notFound";
+
 
 const app = express();
 
 // Initialize cron jobs
-startSubscriptionCronJobs();
+// startSubscriptionCronJobs();
 
 app.set("view engine", "ejs"); // for email templates
 app.set("views", path.resolve(process.cwd(), "src/app/templates")); // email templates location
@@ -28,14 +31,12 @@ app.use(
       "http://localhost:4000",
     ],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    // methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    // allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 
-import { SubscriptionController } from "./modules/Subscription/subscription.controller";
-
-app.use("/api/auth", toNodeHandler(auth));
+app.use("/api/auth/*splat", toNodeHandler(auth));
 
 // Mount webhook before express.json() so it retains the raw body as a buffer
 app.post(
@@ -66,4 +67,4 @@ app.get("/", async (req: Request, res: Response) => {
 app.use(globalErrorHandler);
 app.use(notFound);
 
-export default app;
+export const appServer = app; 

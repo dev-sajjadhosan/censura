@@ -4,8 +4,12 @@ import { IRequestUser } from "../../interfaces";
 import AppError from "../../error-helpers/AppError";
 import { prisma } from "../../lib/prisma";
 import { QueryBuilder } from "../../utils/QueryBuilder";
+import { reviewIncludeConfig } from "./review.constant";
 
-const getAllReview = async (user: IRequestUser, query: Record<string, unknown>) => {
+const getAllReview = async (
+  user: IRequestUser,
+  query: Record<string, unknown>,
+) => {
   const reviewQuery = new QueryBuilder(prisma.review, query as any, {
     searchableFields: ["content", "rating"],
     filterableFields: ["status", "mediaId", "userId", "rating"],
@@ -76,7 +80,6 @@ const updateReview = async (id: string, data: any) => {
   const result = await prisma.review.update({
     where: {
       id,
-      status: "UNPUBLISHED",
     },
     data: {
       ...data,
@@ -96,10 +99,16 @@ const deleteReview = async (id: string) => {
     throw new AppError(status.NOT_FOUND, "Review not found");
   }
 
+  if (isReviewExist.status === ReviewStatus.APPROVED) {
+    throw new AppError(
+      status.NOT_FOUND,
+      "You can only delete pending or unpublished review",
+    );
+  }
+
   const result = await prisma.review.delete({
     where: {
       id,
-      status: "UNPUBLISHED",
     },
   });
   return result;
@@ -180,6 +189,26 @@ const deleteReviewByAdmin = async (id: string) => {
   return result;
 };
 
+const getAllReviewAdmin = async (query: Record<string, unknown>) => {
+  const reviewQuery = new QueryBuilder(prisma.review, query as any, {
+    searchableFields: ["content", "rating"],
+    filterableFields: ["status", "mediaId", "userId", "rating"],
+  })
+    .search()
+    .filter()
+    .include({
+      user: true,
+      media: true,
+    })
+    .dynamicInclude(reviewIncludeConfig)
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await reviewQuery.execute();
+  return result;
+};
+
 export const ReviewsService = {
   getAllReview,
   getSingleReview,
@@ -189,4 +218,5 @@ export const ReviewsService = {
   deleteReview,
   updateReviewStatus,
   deleteReviewByAdmin,
+  getAllReviewAdmin,
 };

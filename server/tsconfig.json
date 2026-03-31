@@ -12,10 +12,8 @@
     // "ignoreDeprecations": "6.0"
   },
   "include": [
-    "src",
-    "prisma.config.ts",
-    "src/app/interfaces/index.d.ts"
-, "DoctorSchedule"  ],
+    "src/**/*"
+  ],
   "exclude": [
     "node_modules",
     "dist"

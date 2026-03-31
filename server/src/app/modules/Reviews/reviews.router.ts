@@ -8,6 +8,7 @@ import { ReviewsValidation } from "./reviews.validation";
 const router = Router();
 
 router.get("/", ReviewsController.getAllReview); // Public
+router.get("/admin", checkAuth(Role.ADMIN), ReviewsController.getAllReviewAdmin); // Public
 router.get("/media/:mediaId", ReviewsController.getReviewByMediaId); // Public
 router.get("/:id", ReviewsController.getSingleReview); // Public
 router.post(
@@ -25,7 +26,6 @@ router.patch(
 router.delete(
   "/:id",
   checkAuth(Role.USER),
-  validateRequest(ReviewsValidation.updateReviewValidation),
   ReviewsController.deleteReview,
 );
 router.patch(

@@ -30,6 +30,10 @@ import {
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import CommentSection from "../Media/CommentSection";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteReview } from "@/services/media.service";
+import EditReviewModal from "./EditReviewModal";
+import DeleteReviewDialog from "./DeleteReviewDialog";
 
 export default function ReviewCard({
   review,
@@ -46,17 +50,47 @@ export default function ReviewCard({
       review.likes?.some((like) => like.userId === currentUser?.id) || false
     );
   });
-  const [likesCount, setLikesCount] = useState<number>(
-    review.likes?.length || 0,
-  );
+
+  const queryClient = useQueryClient();
+  const { mutateAsync: createLikeMutation, isPending: isCreatingLike } =
+    useMutation({
+      mutationFn: async (payload: any) => {
+        return await createLike(payload);
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["reviews", review.mediaId],
+        });
+        toast.success("Review liked successfully");
+      },
+      onError: () => {
+        toast.error("Failed to like review");
+      },
+    });
+
+  const { mutateAsync: deleteLikeMutation, isPending: isDeletingLike } =
+    useMutation({
+      mutationFn: async ({
+        likeId,
+        payload,
+      }: {
+        likeId: string;
+        payload: any;
+      }) => {
+        return await deleteLike(likeId, payload);
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["reviews", review.mediaId],
+        });
+        toast.success("Review unliked successfully");
+      },
+      onError: () => {
+        toast.error("Failed to unlike review");
+      },
+    });
 
   const [showComments, setShowComments] = useState<boolean>(false);
-  const [commentContent, setCommentContent] = useState<string>("");
-  const [commentsList, setCommentsList] = useState<any[]>(
-    review.comments || [],
-  );
-  const [isSubmittingComment, setIsSubmittingComment] = useState(false);
-  const [isLiking, setIsLiking] = useState(false);
 
   const handleToggleLike = async () => {
     if (!currentUser) {
@@ -65,46 +99,31 @@ export default function ReviewCard({
     }
 
     try {
-      setIsLiking(true);
       if (isLiked) {
-        // Optimistic update
-        setIsLiked(false);
-        setLikesCount((prev) => prev - 1);
-
-        // Find my like id
         const myLike = review.likes?.find((l) => l.userId === currentUser.id);
         if (myLike) {
-          await deleteLike(myLike?.id!, {
-            reviewId: review.id,
-            mediaId: review.mediaId,
-            userId: currentUser.id,
-            type: "LIKE",
+          await deleteLikeMutation({
+            likeId: myLike?.id!,
+            payload: {
+              reviewId: review.id,
+              mediaId: review.mediaId,
+              userId: currentUser.id,
+              type: "LIKE",
+            },
           });
         }
       } else {
-        // Optimistic update
-        setIsLiked(true);
-        setLikesCount((prev) => prev + 1);
-
-        const resLike = await createLike({
+        const resLike = await createLikeMutation({
           reviewId: review.id,
           mediaId: review.mediaId,
           userId: currentUser.id,
           type: "LIKE",
         });
-        console.log("like response", resLike);
       }
     } catch (e) {
-      // Revert optimistic update
-      setIsLiked(!isLiked);
-      setLikesCount((prev) => (isLiked ? prev + 1 : prev - 1));
       toast.error("Failed to update like status");
-    } finally {
-      setIsLiking(false);
     }
   };
-
-  const handleAddComment = async () => {};
 
   return (
     <>
@@ -158,24 +177,17 @@ export default function ReviewCard({
                     {review.status}
                   </Badge>
                 )}
-                {isOwn && review.status === "PENDING" && (
-                  <div className="flex gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="w-8 h-8 text-neutral-400 hover:text-white"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="w-8 h-8 text-neutral-400 hover:text-red-500"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                )}
+                {isOwn &&
+                  (review.status === "UNPUBLISHED" ||
+                    review.status === "PENDING") && (
+                    <div className="flex gap-2">
+                      <EditReviewModal
+                        initialReview={review}
+                        user={currentUser!}
+                      />
+                      <DeleteReviewDialog review={review} />
+                    </div>
+                  )}
               </div>
             </div>
           </CardHeader>
@@ -201,7 +213,7 @@ export default function ReviewCard({
                 size={"lg"}
                 variant={"ghost"}
                 className={isLiked ? "text-primary bg-primary/10" : ""}
-                disabled={isLiking || !currentUser}
+                disabled={isCreatingLike || isDeletingLike || !currentUser}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleToggleLike();

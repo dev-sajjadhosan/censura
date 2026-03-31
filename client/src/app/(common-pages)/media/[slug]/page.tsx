@@ -1,10 +1,9 @@
 import {
   getMediaBySlug,
   getMediaReviews,
-  addToWatchlist,
-  removeFromWatchlist,
   getMyMediaPurchases,
 } from "@/services/media.service";
+
 import MediaActions from "@/components/Modules/Media/MediaActions";
 import { getCurrentUser } from "@/services/user.service";
 import { Button } from "@/components/ui/button";
@@ -28,12 +27,14 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import ReviewSection from "@/components/Modules/Media/ReviewForm";
+
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import DialogShowPlatfroms from "@/components/Modules/Media/DialogShowPlatfroms";
 import { Cast, MediaPlatform, Platform } from "@/types/media.types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import ReviewSection from "@/components/Modules/Media/ReviewSection";
+import ReviewForm from "@/components/Modules/Review/ReviewForm";
 
 export default async function MediaDetailPage({
   params,
@@ -42,10 +43,11 @@ export default async function MediaDetailPage({
 }) {
   const { slug } = await params;
   const { data: media } = await getMediaBySlug(slug);
-  const reviews = media.reviews;
-  console.log("response of single media: ", media);
+
+  console.log("media", media);
 
   const user = await getCurrentUser();
+  const reviews = media.reviews;
 
   let hasPurchased = false;
   if (user && media.pricing !== "FREE") {
@@ -56,8 +58,8 @@ export default async function MediaDetailPage({
     } catch (e) {}
   }
 
-  const initialIsBookmarked =
-    media?.bookmarks?.some((b: any) => b.userId === user?.id) || false;
+  const initialIsWatchlisted =
+    user?.watchlists?.some((b: any) => b.mediaId === media.id) || false;
 
   return (
     <div className="min-h-screen bg-black text-white mt-10">
@@ -137,7 +139,7 @@ export default async function MediaDetailPage({
                 media={media}
                 hasPurchasedInitial={hasPurchased}
                 user={user}
-                initialIsBookmarked={initialIsBookmarked}
+                initialIsWatchlisted={initialIsWatchlisted}
               />
             </div>
           </div>
@@ -226,22 +228,20 @@ export default async function MediaDetailPage({
             <section className="space-y-4">
               <h3 className="text-xl font-bold">Available On</h3>
               <div className="flex flex-wrap gap-3">
-                {media.platforms?.slice(0, 5)?.map((p: MediaPlatform) => (
+                {media.platforms?.slice(0, 5)?.map((p: Platform) => (
                   <div
                     key={p.id}
                     className="bg-secondary/15 hover:bg-secondary/65 px-4 py-4 flex items-center gap-3 rounded-xl"
                   >
                     <Clapperboard className="size-5 text-orange-500" />
                     <div className="flex flex-col">
-                      <span className="text-sm font-medium">
-                        {p.platform.name}
-                      </span>
+                      <span className="text-sm font-medium">{p.name}</span>
                       <span className="text-xs text-muted-foreground">
-                        {p.platform.type}
+                        {p.type}
                       </span>
                     </div>
                     <Link
-                      href={p.platform.url || "#"}
+                      href={p.url || "#"}
                       target="_blank"
                       className="ml-auto"
                     >
@@ -253,7 +253,7 @@ export default async function MediaDetailPage({
                 ))}
                 {media.platforms?.length > 5 && (
                   <DialogShowPlatfroms
-                    platforms={media.platforms.map((p) => p.platform)}
+                    platforms={media.platforms}
                     title={
                       <div className="bg-secondary/65 px-6 py-4 flex items-center gap-3 rounded-xl [&_svg]:size-4 hover:[&_svg]:translate-x-2 [&_svg]:duration-100">
                         <div className="flex flex-col">
@@ -277,12 +277,9 @@ export default async function MediaDetailPage({
           <p className="text-sm text-muted-foreground">
             Share your thoughts and help others decide
           </p>
-          <ReviewSection
-            mediaId={media.id}
-            initialReviews={reviews}
-            user={user}
-          />
+          <ReviewForm mediaId={media.id} user={user} isEdit={false} />
         </section>
+        <ReviewSection initialReviews={reviews} user={user} />
       </div>
     </div>
   );

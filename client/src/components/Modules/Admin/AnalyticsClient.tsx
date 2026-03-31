@@ -22,6 +22,7 @@ import {
   adminGetAllReviews,
 } from "@/services/admin.service";
 import StatsCard from "@/components/Modules/Admin/StatsCard";
+import { Media } from "@/types/media.types";
 
 export default function AnalyticsClient() {
   const [loading, setLoading] = useState(true);
@@ -39,7 +40,7 @@ export default function AnalyticsClient() {
           adminGetSalesAnalytics(),
           adminGetAllMedia({
             limit: 10,
-            sortBy: "avgRating",
+            sortBy: "rating",
             sortOrder: "desc",
           }),
           adminGetAllReviews({
@@ -53,10 +54,22 @@ export default function AnalyticsClient() {
           setStats((results[0].value as any)?.data);
         if (results[1].status === "fulfilled")
           setSalesData((results[1].value as any)?.data);
-        if (results[2].status === "fulfilled")
-          setTopMedia((results[2].value as any)?.data || []);
+        if (results[2].status === "fulfilled") {
+          const response = (results[2].value as any)?.data;
+
+          if (response && Array.isArray(response.data)) {
+            setTopMedia(response.data);
+          } else if (Array.isArray(response)) {
+            setTopMedia(response);
+          } else {
+            setTopMedia([]);
+          }
+        }
+
         if (results[3].status === "fulfilled")
-          setRecentReviews((results[3].value as any)?.data?.recentReviews || []);
+          setRecentReviews(
+            (results[3].value as any)?.data?.recentReviews || [],
+          );
       } finally {
         setLoading(false);
       }
@@ -76,7 +89,7 @@ export default function AnalyticsClient() {
     {
       title: "Total Revenue",
       value: salesData?.totalRevenue
-        ? `$${Number(salesData.totalRevenue).toLocaleString()}`
+        ? `$${Number(salesData?.totalRevenue).toLocaleString()}`
         : stats?.totalRevenue
           ? `$${Number(stats.totalRevenue).toLocaleString()}`
           : "—",
@@ -151,7 +164,7 @@ export default function AnalyticsClient() {
             </div>
           ) : (
             <div className="divide-y divide-border">
-              {topMedia.slice(0, 8).map((item: any, idx: number) => (
+              {topMedia?.map((item: Media, idx: number) => (
                 <div
                   key={item.id}
                   className="flex items-center gap-3 px-5 py-3 hover:bg-muted/30 transition-colors"
@@ -173,7 +186,7 @@ export default function AnalyticsClient() {
                   <div className="flex items-center gap-3 shrink-0">
                     <span className="text-xs text-muted-foreground flex items-center gap-1">
                       <Eye className="size-3" />
-                      {item.reviewCount || 0}
+                      {item.reviews?.length || 0}
                     </span>
                     <div className="flex items-center gap-1 bg-amber-500/10 text-amber-500 px-2 py-1 rounded-md">
                       <Star className="size-3 fill-amber-500" />
@@ -201,48 +214,49 @@ export default function AnalyticsClient() {
             </div>
           ) : (
             <div className="divide-y divide-border">
-              {Array.isArray(recentReviews) && recentReviews.slice(0, 8).map((review: any) => (
-                <div
-                  key={review.id}
-                  className="flex items-start gap-3 px-5 py-3 hover:bg-muted/30 transition-colors"
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="text-sm font-medium truncate">
-                        {review.user?.name || "Unknown"}
+              {Array.isArray(recentReviews) &&
+                recentReviews.slice(0, 8).map((review: any) => (
+                  <div
+                    key={review.id}
+                    className="flex items-start gap-3 px-5 py-3 hover:bg-muted/30 transition-colors"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium truncate">
+                          {review.user?.name || "Unknown"}
+                        </p>
+                        <Badge variant="secondary" className="text-xs gap-1">
+                          <Star className="size-2.5 fill-amber-500 text-amber-500" />
+                          {review.rating}/10
+                        </Badge>
+                      </div>
+                      {review.media && (
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          on{" "}
+                          <span className="text-foreground font-medium">
+                            {review.media.title}
+                          </span>
+                        </p>
+                      )}
+                      <p className="text-xs text-muted-foreground line-clamp-1 mt-1">
+                        {review.content}
                       </p>
-                      <Badge variant="secondary" className="text-xs gap-1">
-                        <Star className="size-2.5 fill-amber-500 text-amber-500" />
-                        {review.rating}/10
+                    </div>
+                    <div className="shrink-0">
+                      <Badge
+                        className={`text-xs ${
+                          review.status === "APPROVED"
+                            ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
+                            : review.status === "PENDING"
+                              ? "bg-amber-500/10 text-amber-600 border-amber-500/20"
+                              : "bg-red-500/10 text-red-500 border-red-500/20"
+                        }`}
+                      >
+                        {review.status}
                       </Badge>
                     </div>
-                    {review.media && (
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        on{" "}
-                        <span className="text-foreground font-medium">
-                          {review.media.title}
-                        </span>
-                      </p>
-                    )}
-                    <p className="text-xs text-muted-foreground line-clamp-1 mt-1">
-                      {review.content}
-                    </p>
                   </div>
-                  <div className="shrink-0">
-                    <Badge
-                      className={`text-xs ${
-                        review.status === "APPROVED"
-                          ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
-                          : review.status === "PENDING"
-                            ? "bg-amber-500/10 text-amber-600 border-amber-500/20"
-                            : "bg-red-500/10 text-red-500 border-red-500/20"
-                      }`}
-                    >
-                      {review.status}
-                    </Badge>
-                  </div>
-                </div>
-              ))}
+                ))}
             </div>
           )}
         </section>

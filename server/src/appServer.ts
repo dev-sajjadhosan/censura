@@ -39,11 +39,11 @@ app.use(
 app.use("/api/auth/*splat", toNodeHandler(auth));
 
 // Mount webhook before express.json() so it retains the raw body as a buffer
-app.post(
-  "/webhook",
-  express.raw({ type: "application/json" }),
-  SubscriptionController.webhook
-);
+// app.post(
+//   "/webhook",
+//   express.raw({ type: "application/json" }),
+//   SubscriptionController.webhook
+// );
 
 app.use(express.json());
 app.use(cookieParser());

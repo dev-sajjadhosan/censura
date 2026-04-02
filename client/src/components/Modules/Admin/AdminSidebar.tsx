@@ -114,21 +114,25 @@ export default function AdminSidebar({ user }: { user: IProfileResponse }) {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navItems.map((item) => {
+              {navItems.map((item, index) => {
+                // Handle Dividers with a unique key
+                if (item.type === "divider") {
+                  return <Separator key={`divider-${index}`} className="my-5" />;
+                }
+
                 const hasChildren = item.children && item.children.length > 0;
                 const isActive =
                   pathname === item.href ||
                   (item.href !== "/admin/dashboard" &&
                     pathname.startsWith(item?.href || ""));
 
-                if (item.type === "divider") {
-                  return <Separator key={item.label} className="my-5" />;
-                }
+                // Unique key for map items
+                const itemKey = item.href || item.label || `nav-${index}`;
 
                 if (hasChildren) {
                   return (
                     <Collapsible
-                      key={item.label}
+                      key={itemKey}
                       asChild
                       defaultOpen={isActive}
                       className="group/collapsible"
@@ -142,12 +146,10 @@ export default function AdminSidebar({ user }: { user: IProfileResponse }) {
                               "h-10 transition-all duration-200 mt-1",
                               isActive
                                 ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground shadow-sm"
-                                : "text-muted-foreground hover:bg-muted/80 hover:text-foreground",
+                                : "text-muted-foreground hover:bg-muted/80 hover:text-foreground"
                             )}
                           >
-                            {item.icon && (
-                              <item.icon className="size-4 shrink-0" />
-                            )}
+                            {item.icon && <item.icon className="size-4 shrink-0" />}
                             <span>{item.label}</span>
                             <ChevronRight className="ml-auto size-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                           </SidebarMenuButton>
@@ -155,7 +157,7 @@ export default function AdminSidebar({ user }: { user: IProfileResponse }) {
                         <CollapsibleContent>
                           <SidebarMenuSub>
                             {item.children?.map((subItem) => (
-                              <SidebarMenuSubItem key={subItem.label}>
+                              <SidebarMenuSubItem key={subItem.href}>
                                 <SidebarMenuSubButton
                                   asChild
                                   isActive={pathname === subItem.href}
@@ -173,8 +175,9 @@ export default function AdminSidebar({ user }: { user: IProfileResponse }) {
                   );
                 }
 
+                // Standard Menu Item
                 return (
-                  <SidebarMenuItem key={item.href}>
+                  <SidebarMenuItem key={itemKey}>
                     <SidebarMenuButton
                       asChild
                       isActive={isActive}
@@ -183,15 +186,11 @@ export default function AdminSidebar({ user }: { user: IProfileResponse }) {
                         "h-10 transition-all duration-200 mt-1",
                         isActive
                           ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground shadow-sm"
-                          : "text-muted-foreground hover:bg-muted/80 hover:text-foreground",
+                          : "text-muted-foreground hover:bg-muted/80 hover:text-foreground"
                       )}
                     >
                       <Link href={item?.href || "#"}>
-                        {item.icon &&
-                          (() => {
-                            const Icon = item.icon;
-                            return <Icon className="size-4 shrink-0" />;
-                          })()}
+                        {item.icon && <item.icon className="size-4 shrink-0" />}
                         <span>{item.label}</span>
                       </Link>
                     </SidebarMenuButton>

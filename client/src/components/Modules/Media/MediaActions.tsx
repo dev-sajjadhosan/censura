@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Coins, Crown, Loader2, Play, ShoppingCart, Video } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
   Dialog,
   DialogContent,
@@ -20,37 +20,41 @@ import { getUserMediaAccess } from "@/lib/access";
 import Link from "next/link";
 import { createMediaCheckoutSession } from "@/services/payment.service";
 
-export default function MediaActions({
-  media,
-  hasPurchasedInitial,
-  user,
-  initialIsWatchlisted,
-}: {
+interface MediaActionsProps {
   media: Media;
   hasPurchasedInitial: boolean;
   user: any;
   initialIsWatchlisted: boolean;
-}) {
+}
+
+export default function MediaActions({
+  media,
+  user,
+  initialIsWatchlisted,
+}: MediaActionsProps) {
   const [loading, setLoading] = useState<"RENTAL" | "BUY" | null>(null);
   const [showDialog, setShowDialog] = useState(false);
   const [selectedType, setSelectedType] = useState<"RENTAL" | "BUY" | null>(
     null,
   );
-  const router = useRouter();
 
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Determine access based on user data
   const { hasAccess } = getUserMediaAccess(
     media,
     user?.subscription ?? null,
     user?.purchases ?? null,
   );
 
-  // first available platform URL = media?.mediaPlatforms[0]?.platform?.url
-  const watchUrl = "";
+  // Get the first available streaming link
+  const watchUrl = media.streamingUrl || "";
 
   const openDialog = (type: "RENTAL" | "BUY") => {
     if (!user) {
       toast.error("Please login to continue");
-      router.push("/login");
+      router.push(`/login?callbackUrl=${pathname}`);
       return;
     }
     setSelectedType(type);
@@ -67,7 +71,7 @@ export default function MediaActions({
       })) as any;
 
       if (res?.data?.data?.session_url) {
-        window.location.href = res.data.data.session_url;
+        router.push(res.data.data.session_url);
       } else {
         toast.error("Failed to initiate checkout");
       }
@@ -88,16 +92,16 @@ export default function MediaActions({
   return (
     <>
       <div className="flex flex-wrap gap-4 pt-4">
-        {/* Watch Now — free or has access */}
-        {(isFree || hasAccess) && (
+        {/* CASE 1: User can watch (Free content or User has paid/subscribed) */}
+        {(isFree || (user && hasAccess)) && (
           <Button
             size="lg"
-            className="gap-2 font-semibold rounded-full px-8 h-12"
+            className="gap-2 font-semibold rounded-full px-8 h-12 bg-primary hover:bg-primary/90"
             onClick={() => {
               if (watchUrl) {
-                window.open(watchUrl, "_blank");
+                router.push(`/watch/${media.slug}?v=${media.trailerUrl}`);
               } else {
-                toast.info("No streaming platform linked yet.");
+                toast.info("No streaming link available for this media.");
               }
             }}
           >
@@ -105,23 +109,27 @@ export default function MediaActions({
           </Button>
         )}
 
-        {/* PREMIUM — not subscribed */}
-        {media.pricing === "PREMIUM" && !hasAccess && (
-          <Button size="lg" className="gap-2 rounded-full px-8 h-12" asChild>
+        {/* CASE 2: Content is PREMIUM and user is logged in but has no access */}
+        {user && !hasAccess && media.pricing === "PREMIUM" && (
+          <Button
+            size="lg"
+            className="gap-2 rounded-full px-8 h-12 bg-amber-600 hover:bg-amber-700"
+            asChild
+          >
             <Link href="/subscription">
               <Crown className="w-5 h-5" /> Subscribe to Watch
             </Link>
           </Button>
         )}
 
-        {/* RENTAL — not purchased */}
-        {media.pricing === "RENTAL" && !hasAccess && (
+        {/* CASE 3: Content is RENTAL/BUY and user is logged in but hasn't purchased */}
+        {user && !hasAccess && media.pricing === "RENTAL" && (
           <div className="flex items-center gap-3">
             {media.rentalPrice && (
               <Button
                 size="lg"
                 variant="outline"
-                className="gap-2 rounded-full px-8 h-12"
+                className="gap-2 rounded-full px-8 h-12 border-neutral-700 hover:bg-neutral-800"
                 onClick={() => openDialog("RENTAL")}
                 disabled={!!loading}
               >
@@ -131,7 +139,9 @@ export default function MediaActions({
                   <Video className="w-5 h-5" />
                 )}
                 Rent ${Number(media.rentalPrice).toFixed(2)}
-                <span className="text-xs text-neutral-400">(48hrs)</span>
+                <span className="text-[10px] text-neutral-400 ml-1">
+                  (48hrs)
+                </span>
               </Button>
             )}
             {media.buyPrice && (
@@ -152,10 +162,10 @@ export default function MediaActions({
           </div>
         )}
 
-        {/* Not logged in */}
+        {/* CASE 4: Not logged in and content is not free */}
         {!user && !isFree && (
-          <Button size="lg" className="rounded-full px-8 h-12" asChild>
-            <Link href="/login">Login to Watch</Link>
+          <Button size="lg" className="px-8 font-medium" asChild>
+            <Link href={`/login?callbackUrl=${pathname}`}>Login to Watch</Link>
           </Button>
         )}
 
@@ -170,51 +180,55 @@ export default function MediaActions({
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
         <DialogContent className="sm:max-w-lg bg-neutral-900 border-neutral-800 text-white">
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="text-xl">
               Confirm {selectedType === "RENTAL" ? "Rental" : "Purchase"}
             </DialogTitle>
             <DialogDescription className="text-neutral-400">
               You are about to {selectedType === "RENTAL" ? "rent" : "buy"}{" "}
-              <strong className="text-white">{media.title}</strong>
+              <span className="text-white font-medium">{media.title}</span>.
             </DialogDescription>
           </DialogHeader>
 
-          <div className="flex items-center gap-6 py-4">
-            <Image
-              width={80}
-              height={120}
-              src={media.posterUrl || "https://placehold.co/80x120"}
-              alt={media.title}
-              className="rounded-xl object-cover w-20 h-28 shrink-0"
-            />
-            <div className="space-y-2">
-              <h3 className="font-bold text-lg text-white">{media.title}</h3>
-              <p className="text-neutral-400 text-sm">{media.releaseYear}</p>
-              <div className="flex items-center gap-2 mt-3">
+          <div className="flex items-center gap-6 py-6 border-y border-neutral-800 my-2">
+            <div className="relative w-20 h-28 shrink-0">
+              <Image
+                fill
+                src={media.posterUrl || "https://placehold.co/80x120"}
+                alt={media.title}
+                className="rounded-lg object-cover"
+              />
+            </div>
+            <div className="space-y-1">
+              <h3 className="font-bold text-lg leading-tight">{media.title}</h3>
+              <p className="text-neutral-400 text-sm">
+                {media.releaseYear} • {media.director}
+              </p>
+              <div className="flex items-center gap-2 pt-2">
                 <Coins className="w-5 h-5 text-yellow-500" />
                 <span className="text-2xl font-bold text-white">
                   {actionPrice}
                 </span>
               </div>
-              {selectedType === "RENTAL" && (
-                <p className="text-xs text-neutral-500">
-                  48-hour access after payment
-                </p>
-              )}
-              {selectedType === "BUY" && (
-                <p className="text-xs text-neutral-500">Permanent access</p>
-              )}
+              <p className="text-xs text-neutral-500 italic mt-1">
+                {selectedType === "RENTAL"
+                  ? "✓ 48-hour viewing window starts after first play."
+                  : "✓ Permanent access to your library."}
+              </p>
             </div>
           </div>
 
-          <DialogFooter className="gap-3">
-            <Button variant="ghost" onClick={() => setShowDialog(false)}>
+          <DialogFooter className="gap-3 sm:gap-0">
+            <Button
+              variant="ghost"
+              onClick={() => setShowDialog(false)}
+              className="text-neutral-400 hover:text-white hover:bg-neutral-800"
+            >
               Cancel
             </Button>
             <Button
               disabled={!!loading}
               onClick={handleCheckout}
-              className="px-8"
+              className="px-8 bg-white text-black hover:bg-neutral-200"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin mr-2" />

@@ -216,9 +216,9 @@ export default function ReviewForm({
           </form>
         </section>
       ) : (
-        <div className="bg-secondary/35 p-17 rounded-xl flex items-center justify-between">
-          <div className="flex flex-col">
-            <h3 className=" text-muted-foreground mb-1">To Write a Review</h3>
+        <div className="bg-secondary/35 p-17 rounded-xl flex flex-col md:flex-row gap-5 items-center justify-between">
+          <div className="flex flex-col text-center md:text-left">
+            <h3 className="text-muted-foreground mb-1">To Write a Review</h3>
             <p className="text-muted-foreground">Please login or register.</p>
           </div>
           <div className="flex items-center gap-5">

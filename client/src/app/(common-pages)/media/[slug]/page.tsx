@@ -106,9 +106,9 @@ export default async function MediaDetailPage({
                   <Button size={"icon-lg"} variant={"ghost"}>
                     <Share2 />
                   </Button>
-                  <Button size={"icon-lg"} variant={"ghost"}>
+                  {/* <Button size={"icon-lg"} variant={"ghost"}>
                     <BookmarkPlus />
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
               <h1 className="text-4xl md:text-6xl font-bold">{media.title}</h1>
@@ -274,7 +274,7 @@ export default async function MediaDetailPage({
         {/* Reviews Section */}
         <section className="pt-8">
           <h3 className="text-lg">Write Your Review Here</h3>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground mb-3">
             Share your thoughts and help others decide
           </p>
           <ReviewForm mediaId={media.id} user={user} isEdit={false} />

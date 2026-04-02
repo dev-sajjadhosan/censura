@@ -19,19 +19,19 @@ export const isAuthRoute = (pathname: string) => {
 export const commonProtectedRoutes: RouteConfig = {
   exact: ["/profile", "/change-password", "/logout", "/settings"],
   pattern: [
-    /^\/profile\/.*/, // ✅ Both Admin and User can access /profile/details, etc.
+    /^\/profile(\/.*)?$/, 
   ],
 };
 
 export const userProtectedRoutes: RouteConfig = {
-  exact: ["/dashboard"], // Specific to standard users
+  exact: ["/dashboard"], 
   pattern: [
-    /^\/payment\/.*/, // Specific to standard users
+    /^\/payment\/.*/, 
   ],
 };
 
 export const adminProtectedRoutes: RouteConfig = {
-  pattern: [/^\/admin/], // Only Admins
+  pattern: [/^\/admin/], 
   exact: [],
 };
 

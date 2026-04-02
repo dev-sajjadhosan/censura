@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserService } from "./user.service";
-import sendResponse from "../../shared/sendRes";
+import { sendResponse } from "../../shared/sendRes";
 import status from "http-status";
 import catchAsync from "../../shared/catchAsync";
 
@@ -28,7 +28,7 @@ const getUserById = catchAsync(async (req: Request, res: Response) => {
 
 const updateProfile = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.updateProfile(
-    req.params.id as string,
+    req.user?.userId as string,
     req.body,
   );
 
@@ -54,7 +54,21 @@ const deleteUser = catchAsync(async (req: Request, res: Response) => {
 const changeStatus = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.changeStatus(
     req.params.id as string,
-    req.body,
+    req.body as any,
+  );
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Status changed successfully",
+    data: result,
+  });
+});
+
+const toggleDeactivateUser = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserService.toggleDeactivateUser(
+    req.params.id as string,
+    req.body as any,
   );
 
   sendResponse(res, {
@@ -71,4 +85,5 @@ export const UserController = {
   updateProfile,
   deleteUser,
   changeStatus,
+  toggleDeactivateUser,
 };

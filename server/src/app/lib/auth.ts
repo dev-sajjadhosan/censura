@@ -3,7 +3,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma";
 import { Role, UserStatus } from "../../generated/prisma/enums";
 import { envVars } from "../config/env";
-import { bearer, emailOTP } from "better-auth/plugins";
+import { bearer, emailOTP, oAuthProxy } from "better-auth/plugins";
 import { sendEmail } from "../utils/email";
 // import { sendEmail } from "../utils/email";
 
@@ -68,13 +68,54 @@ export const auth = betterAuth({
       },
     },
   },
-
+  trustedOrigins: [
+    envVars.BETTER_AUTH_URL || "http://localhost:5000",
+    "http://localhost:3000",
+    "http://localhost:4000",
+    envVars.FRONTEND_URL,
+  ],
+  advanced: {
+    // disableCSRFCheck: true,
+    useSecureCookies: false,
+    cookies: {
+      state: {
+        attributes: {
+          sameSite: "none",
+          secure: true,
+          httpOnly: true,
+          path: "/",
+        },
+      },
+      sessionToken: {
+        attributes: {
+          sameSite: "none",
+          secure: true,
+          httpOnly: true,
+          path: "/",
+        },
+      },
+    },
+  },
+  redirect: {
+    signIn: `${envVars.BETTER_AUTH_URL}/api/v1/auth/google/success`,
+  },
+  session: {
+    expiresIn: 60 * 60 * 60 * 24,
+    updateAge: 60 * 60 * 60 * 24,
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 60 * 60 * 24,
+    },
+  },
   plugins: [
-    bearer(), 
+    bearer(),
+    oAuthProxy(),
     emailOTP({
       overrideDefaultEmailVerification: true,
       async sendVerificationOTP({ email, otp, type }) {
-        console.log(`[sendVerificationOTP] Hook triggered for ${email} with type: ${type}`);
+        console.log(
+          `[sendVerificationOTP] Hook triggered for ${email} with type: ${type}`,
+        );
         if (type === "email-verification") {
           const user = await prisma.user.findUnique({
             where: {
@@ -130,44 +171,4 @@ export const auth = betterAuth({
       otpLength: 6,
     }),
   ],
-
-  trustedOrigins: [
-    envVars.BETTER_AUTH_URL || "http://localhost:5000",
-    "http://localhost:3000",
-    "http://localhost:4000",
-    envVars.FRONTEND_URL,
-  ],
-  advanced: {
-    // disableCSRFCheck: true,
-    useSecureCookies: false,
-    cookies: {
-      state: {
-        attributes: {
-          sameSite: "none",
-          secure: true,
-          httpOnly: true,
-          path: "/",
-        },
-      },
-      sessionToken: {
-        attributes: {
-          sameSite: "none",
-          secure: true,
-          httpOnly: true,
-          path: "/",
-        },
-      },
-    },
-  },
-  redirect: {
-    signIn: `${envVars.BETTER_AUTH_URL}/api/v1/auth/google/success`,
-  },
-  session: {
-    expiresIn: 60 * 60 * 60 * 24,
-    updateAge: 60 * 60 * 60 * 24,
-    cookieCache: {
-      enabled: true,
-      maxAge: 60 * 60 * 60 * 24,
-    },
-  },
 });

@@ -26,6 +26,7 @@ model User {
   admin        Admin?
   purchases    MediaPurchase[]
   rentals      Rental[]
+  payments     Payment[]
 
   @@unique([email])
   @@map("user")

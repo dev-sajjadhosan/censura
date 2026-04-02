@@ -24,7 +24,7 @@ export default function PricingSection({
   const router = useRouter()
   const [processingPlan, setProcessingPlan] = useState<string | null>(null);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading ,isPending} = useQuery({
     queryKey: ["plans"],
     queryFn: () => getSubscriptionPlans(),
   });
@@ -66,7 +66,7 @@ export default function PricingSection({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-          {isLoading ? (
+          {isLoading || isPending ? (
             <>
               <PricingSkeleton featureCount={6} />
               <PricingSkeleton featureCount={8} isPopular />

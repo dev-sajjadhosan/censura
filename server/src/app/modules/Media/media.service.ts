@@ -8,9 +8,9 @@ import { normalizeIds, parseNullableNumber } from "../../utils/serviceHelpers";
 import { mediaIncludeConfig } from "./media.constant";
 import { IQueryParams } from "../../interfaces/query.interface";
 
-const getAllMedia = async (query: IQueryParams) => {
+export const getAllMedia = async (query: IQueryParams) => {
   const { genre, platform, minRating, ...remainingQuery } = query;
-  const whereConditions: Prisma.MediaWhereInput = { isPublished: true };
+  const whereConditions: Prisma.MediaWhereInput = {};
 
   if (genre) {
     whereConditions.genres = {
@@ -48,12 +48,12 @@ const getAllMedia = async (query: IQueryParams) => {
       cast: true,
       platforms: { include: { platform: true } },
     })
-    .dynamicInclude(mediaIncludeConfig)
+    .dynamicInclude(mediaIncludeConfig);
 
   return await mediaQuery.execute();
 };
 
-const getSingleMedia = async (id: string) => {
+export const getSingleMedia = async (id: string) => {
   const result = await prisma.media.findUnique({
     where: { id },
     include: {
@@ -70,7 +70,7 @@ const getSingleMedia = async (id: string) => {
   return result;
 };
 
-const createMedia = async (user: IRequestUser, payload: any) => {
+export const createMedia = async (user: IRequestUser, payload: any) => {
   const {
     genres,
     platforms,
@@ -169,7 +169,11 @@ const createMedia = async (user: IRequestUser, payload: any) => {
 
   return result;
 };
-const updateMedia = async (id: string, user: IRequestUser, payload: any) => {
+export const updateMedia = async (
+  id: string,
+  user: IRequestUser,
+  payload: any,
+) => {
   const {
     genres,
     platforms,
@@ -284,7 +288,7 @@ const updateMedia = async (id: string, user: IRequestUser, payload: any) => {
   return result;
 };
 
-const deleteMedia = async (id: string) => {
+export const deleteMedia = async (id: string) => {
   const media = await prisma.media.findUniqueOrThrow({
     where: {
       id,
@@ -307,7 +311,7 @@ const deleteMedia = async (id: string) => {
   return result;
 };
 
-const changeFeaturedStatus = async (
+export const changeFeaturedStatus = async (
   id: string,
   payload: { isFeatured: boolean },
 ) => {
@@ -335,7 +339,7 @@ const changeFeaturedStatus = async (
   return result;
 };
 
-const changePublishStatus = async (
+export const changePublishStatus = async (
   id: string,
   payload: { isPublished: boolean },
 ) => {
@@ -366,7 +370,7 @@ const changePublishStatus = async (
   return result;
 };
 
-const getMediaBySlug = async (slug: string) => {
+export const getMediaBySlug = async (slug: string) => {
   await prisma.media.update({
     where: { slug },
     data: {
@@ -397,7 +401,7 @@ const getMediaBySlug = async (slug: string) => {
 
 // -----------------
 
-const createManyMedia = async (payload: any[]) => {
+export const createManyMedia = async (payload: any[]) => {
   const results = await prisma.$transaction(async (tx) => {
     const createdMedia = [];
 
@@ -471,15 +475,4 @@ const createManyMedia = async (payload: any[]) => {
   });
 
   return results;
-};
-export const MediaService = {
-  getAllMedia,
-  getSingleMedia,
-  getMediaBySlug,
-  createMedia,
-  updateMedia,
-  deleteMedia,
-  changeFeaturedStatus,
-  changePublishStatus,
-  createManyMedia,
 };

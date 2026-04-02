@@ -1,40 +1,40 @@
 import { Router } from "express";
-import { MediaController } from "./media.controller";
 import { checkAuth } from "../../middleware/checkAuth";
 import { Role } from "../../../generated/prisma/enums";
 import { validateRequest } from "../../middleware/validateRequest";
 import { MediaValidation } from "./media.validation";
+import { createManyMedia, createMedia, deleteMedia, updateMedia, getAllMedia, getSingleMedia, getMediaBySlug, changeFeaturedStatus, changePublishStatus } from "./media.controller";
 
 const router = Router();
-router.post("/bulk", checkAuth(Role.ADMIN), MediaController.createManyMedia); 
+router.post("/bulk", checkAuth(Role.ADMIN), createManyMedia); 
 
 router.post(
   "/",
   checkAuth(Role.ADMIN),
   validateRequest(MediaValidation.createMediaValidationSchema),
-  MediaController.createMedia,
+  createMedia,
 );
-router.get("/", MediaController.getAllMedia); // Public
-router.get("/:id", MediaController.getSingleMedia); // Public
-router.get("/slug/:slug", MediaController.getMediaBySlug); // Public
+router.get("/", getAllMedia); // Public
+router.get("/:id", getSingleMedia); // Public
+router.get("/slug/:slug", getMediaBySlug); // Public
 router.patch(
   "/:id",
   checkAuth(Role.ADMIN),
   validateRequest(MediaValidation.updateMediaValidation),
-  MediaController.updateMedia,
+  updateMedia,
 );
-router.delete("/:id", checkAuth(Role.ADMIN), MediaController.deleteMedia);
+router.delete("/:id", checkAuth(Role.ADMIN), deleteMedia);
 router.patch(
   "/featured/status/:id",
   checkAuth(Role.ADMIN),
   validateRequest(MediaValidation.changeFeaturedStatusValidation),
-  MediaController.changeFeaturedStatus,
+  changeFeaturedStatus,
 );
 router.patch(
   "/publish/status/:id",
   checkAuth(Role.ADMIN),
   validateRequest(MediaValidation.changePublishStatusValidation),
-  MediaController.changePublishStatus,
+  changePublishStatus,
 );
 
 export const MediaRoutes = router;

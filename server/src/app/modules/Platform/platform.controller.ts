@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import catchAsync from "../../shared/catchAsync";
-import sendResponse from "../../shared/sendRes";
+import { sendResponse } from "../../shared/sendRes";
 import status from "http-status";
 import { PlatformService } from "./platform.service";
 
@@ -53,7 +53,6 @@ const updatePlatform = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
-
 
 const createManyPlatfrom = catchAsync(async (req: Request, res: Response) => {
   const data = req.body;

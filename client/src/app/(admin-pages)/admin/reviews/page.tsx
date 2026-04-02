@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import ReviewsClient from "@/components/Modules/Admin/ReviewsClient";
 export type TabStatus = "PENDING" | "APPROVED" | "UNPUBLISHED";
 

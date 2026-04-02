@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import LoginForm from "@/components/Modules/Auth/login-form";
 import AsideContent from "@/components/Shared/aside-content";
 

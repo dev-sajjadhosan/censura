@@ -8,7 +8,7 @@ import GenreJsonAddDialog from "@/components/Modules/Admin/Genres/GenreJsonAddDi
 
 export default function CreateGenrePage() {
   return (
-    <div className="  px-4 space-y-8">
+    <div className="px-4 space-y-8">
       <div className="flex justify-between items-center gap-4">
         <div className="flex items-center gap-4">
           <div className="p-2">
@@ -24,7 +24,7 @@ export default function CreateGenrePage() {
         <GenreJsonAddDialog />
       </div>
 
-      <div className="w-9/12 mx-auto mt-22">
+      <div className="md:w-9/12 mx-auto mt-22">
         <GenreForm onSuccess={() => {}} onCancel={() => {}} />
       </div>
     </div>

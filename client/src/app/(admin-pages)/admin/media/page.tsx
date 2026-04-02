@@ -1,5 +1,5 @@
+export const dynamic = "force-dynamic";
 import MediaListClient from "@/components/Modules/Admin/Media/MediaListClient";
-
 
 export const metadata = {
   title: "Media Library | Censura Admin",

@@ -23,7 +23,7 @@ router.post("/logout", checkAuth(Role.USER, Role.ADMIN), AuthController.logout);
 router.get("/me", checkAuth(Role.USER, Role.ADMIN), AuthController.getMe);
 router.post("/refresh-token", AuthController.getNewToken);
 
-router.post(
+router.patch(
   "/change-password",
   checkAuth(Role.USER, Role.ADMIN),
   validateRequest(AuthValidation.changePasswordSchema),

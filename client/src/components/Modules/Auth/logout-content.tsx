@@ -39,7 +39,7 @@ export default function LogoutContent() {
   }, []);
   return (
     <>
-      <div className="flex w-11/12 mx-auto h-screen">
+      <div className="flex flex-col-reverse md:flex-row w-11/12 mx-auto md:h-screen">
         {/* <h3 className="text-lg">Logout</h3> */}
         <div className="flex flex-col items-start justify-center w-full h-full">
           <div className="flex flex-col items-start gap-3">

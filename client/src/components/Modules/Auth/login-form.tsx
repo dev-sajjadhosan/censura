@@ -45,6 +45,12 @@ export default function LoginForm({ redirectPath }: LoginFormProps) {
           toast.warning("User not found! Please register first.");
           return router.push("/register");
         }
+        if (
+          res?.message ===
+          "Login failed: User deleted. Please contact support team."
+        ) {
+          return router.push("/account-deleted");
+        }
         // if (!res.success) {
         //   setServerError(res.message || "Login failed. Please try again.");
         //   return;

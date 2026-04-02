@@ -99,7 +99,7 @@ const createCheckoutSession = async (
         quantity: 1,
       },
     ],
-    // 2. Attach user ID and Plan in metadata to read it back during webhook!
+
     metadata: {
       userId,
       plan,
@@ -121,116 +121,98 @@ const handleWebhook = async (body: Buffer, signature: string) => {
       envVars.STRIPE.STRIPE_WEBHOOK_SECRET,
     );
   } catch (err: any) {
-    throw new AppError(httpStatus.BAD_REQUEST, `Webhook Error: ${err.message}`);
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      `Webhook Signature Error: ${err.message}`,
+    );
   }
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
     const { userId, plan, mediaId, type } = session.metadata || {};
 
-    // --- Subscription flow ---
-    if (userId && plan) {
+    if (!userId) {
+      console.error("❌ Webhook Error: No userId in metadata", session.id);
+      return { received: true };
+    }
+
+    if (plan) {
       const currentPeriodStart = new Date();
       const currentPeriodEnd = new Date();
       if (plan === SubscriptionPlan.MONTHLY) {
         currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1);
-      } else if (plan === SubscriptionPlan.YEARLY) {
+      } else {
         currentPeriodEnd.setFullYear(currentPeriodEnd.getFullYear() + 1);
       }
 
-      const updatedSubscription = await prisma.subscription.upsert({
-        where: { userId },
-        update: {
-          plan: plan as SubscriptionPlan,
-          status: SubscriptionStatus.ACTIVE,
-          stripeCustomerId:
-            typeof session.customer === "string" ? session.customer : null,
-          currentPeriodStart,
-          currentPeriodEnd,
-        },
-        create: {
-          userId,
-          plan: plan as SubscriptionPlan,
-          status: SubscriptionStatus.ACTIVE,
-          stripeCustomerId:
-            typeof session.customer === "string" ? session.customer : null,
-          currentPeriodStart,
-          currentPeriodEnd,
-        },
-      });
+      await prisma.$transaction(async (tx) => {
+        const updatedSubscription = await tx.subscription.upsert({
+          where: { userId },
+          update: {
+            plan: plan as SubscriptionPlan,
+            status: SubscriptionStatus.ACTIVE,
+            stripeCustomerId:
+              typeof session.customer === "string" ? session.customer : null,
+            currentPeriodStart,
+            currentPeriodEnd,
+          },
+          create: {
+            userId,
+            plan: plan as SubscriptionPlan,
+            status: SubscriptionStatus.ACTIVE,
+            stripeCustomerId:
+              typeof session.customer === "string" ? session.customer : null,
+            currentPeriodStart,
+            currentPeriodEnd,
+          },
+        });
 
-      await prisma.payment.create({
-        data: {
-          subscriptionId: updatedSubscription.id,
-          amount: (session.amount_total || 0) / 100,
-          currency: session.currency || "usd",
-          stripePaymentId: session.payment_intent as string,
-          status: "COMPLETED",
-        },
+        await tx.payment.create({
+          data: {
+            subscriptionId: updatedSubscription.id,
+            amount: (session.amount_total || 0) / 100,
+            currency: session.currency || "usd",
+            stripePaymentId: (session.payment_intent as string) || session.id,
+            status: "COMPLETED",
+            userId
+          },
+        });
       });
-
-      const user = await prisma.user.findUnique({ where: { id: userId } });
-      if (user) {
-        try {
-          await sendEmail({
-            to: user.email,
-            subject: "Your Censura Subscription is Active!",
-            templateName: "subscription-success",
-            templateData: {
-              userName: user.name,
-              plan,
-              startDate: currentPeriodStart.toLocaleDateString(),
-              endDate: currentPeriodEnd.toLocaleDateString(),
-              loginUrl: `${envVars.FRONTEND_URL}/login`,
-            },
-          });
-        } catch (emailError) {
-          console.error(
-            "Failed to send subscription success email",
-            emailError,
-          );
-        }
-      }
+      console.log(`✅ Subscription activated for User: ${userId}`);
     }
 
-    // --- Media purchase / rental flow ---
-    if (userId && mediaId && type) {
-      const RENTAL_DURATION_HOURS = 48;
+    if (mediaId && type) {
       const expiresAt =
         type === MediaPurchaseType.RENTAL
-          ? new Date(Date.now() + RENTAL_DURATION_HOURS * 60 * 60 * 1000)
+          ? new Date(Date.now() + 48 * 60 * 60 * 1000)
           : null;
 
-      await prisma.mediaPurchase.create({
-        data: {
-          userId,
-          mediaId,
-          type: type as MediaPurchaseType,
-          status: MediaPurchaseStatus.ACTIVE,
-          price: (session.amount_total || 0) / 100,
-          expiresAt,
-          stripePaymentId: session.payment_intent as string,
-        },
-      });
+      await prisma.$transaction(async (tx) => {
+        await tx.mediaPurchase.create({
+          data: {
+            userId,
+            mediaId,
+            type: type as MediaPurchaseType,
+            status: MediaPurchaseStatus.ACTIVE,
+            price: (session.amount_total || 0) / 100,
+            expiresAt,
+            stripePaymentId: (session.payment_intent as string) || session.id,
+          },
+        });
 
-      const user = await prisma.user.findUnique({ where: { id: userId } });
-      if (user) {
-        try {
-          await sendEmail({
-            to: user.email,
-            subject: `Your ${type === MediaPurchaseType.RENTAL ? "Rental" : "Purchase"} is Confirmed!`,
-            templateName: "media-purchase-success",
-            templateData: {
-              userName: user.name,
-              type,
-              expiresAt: expiresAt?.toLocaleDateString() ?? "Never (Permanent)",
-              loginUrl: `${envVars.FRONTEND_URL}/login`,
-            },
-          });
-        } catch (emailError) {
-          console.error("Failed to send media purchase email", emailError);
-        }
-      }
+        await tx.payment.create({
+          data: {
+            amount: (session.amount_total || 0) / 100,
+            currency: session.currency || "usd",
+            stripePaymentId: (session.payment_intent as string) || session.id,
+            status: "COMPLETED",
+            userId,
+          },
+        });
+      });
+      console.log(
+        `✅ Media ${type} successful for User: ${userId}, Media: ${mediaId}`,
+      );
     }
   }
 
@@ -295,7 +277,10 @@ const cancelSubscription = async (userId: string) => {
   });
 
   if (!stripeSubscriptions.data.length) {
-    throw new AppError(httpStatus.NOT_FOUND, "No active Stripe subscription found");
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      "No active Stripe subscription found",
+    );
   }
 
   const stripeSubscriptionId = stripeSubscriptions.data[0].id;
@@ -315,7 +300,7 @@ const cancelSubscription = async (userId: string) => {
     try {
       // Get the payment intent to find the charge
       const paymentIntent = await stripe.paymentIntents.retrieve(
-        latestPayment.stripePaymentId
+        latestPayment.stripePaymentId,
       );
 
       if (paymentIntent.latest_charge) {
@@ -366,7 +351,6 @@ const cancelSubscription = async (userId: string) => {
     refundId: refund?.id ?? null,
   };
 };
-
 
 export const SubscriptionService = {
   getPlans,

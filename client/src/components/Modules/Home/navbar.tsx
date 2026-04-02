@@ -1,7 +1,9 @@
 import { getCurrentUser } from "@/services/user.service";
 import Link from "next/link";
 import NavbarAuth from "./NavbarAuth";
-import NavbarVisibilityWrapper from "@/components/Providers/NavbarHideProvider";
+import VisibilityWrapper from "@/components/Providers/VisibilityWrapper";
+import { Menu } from "lucide-react";
+import MobileNavbar from "./MobileNavbar";
 const navMenus = [
   {
     title: "Home",
@@ -12,24 +14,31 @@ const navMenus = [
     href: "/explore",
   },
   {
-    title: "Movies",
-    href: "/explore?type=MOVIE",
+    title: "Subscription",
+    href: "/subscription",
   },
   {
-    title: "TV Shows",
-    href: "/explore?type=SERIES",
+    title: "About Us",
+    href: "/about",
   },
+  {
+    title: "Contact Us",
+    href: "/contact-us",
+  }
 ];
 export default async function Navbar() {
   const user = await getCurrentUser();
 
   return (
-    <NavbarVisibilityWrapper>
-      <header className="flex items-center justify-between h-17 rounded-xl w-7/12 mx-auto sticky top-1 z-50 backdrop-blur-sm bg-secondary/50 px-7">
-        <div>
+    <VisibilityWrapper>
+      <header className="flex items-center justify-between h-17 rounded-xl w-11/12 md:w-7/12 mx-auto sticky top-1 z-50 backdrop-blur-sm bg-secondary/50 px-7">
+        <div className="flex items-center gap-2">
+        <div className="block md:hidden">
+          <MobileNavbar navMenus={navMenus} />
+        </div>
           <h1 className="text-xl font-sans">Censura</h1>
         </div>
-        <div>
+        <div className="hidden md:block">
           <ul className="flex items-center gap-5">
             {navMenus.map((menu) => (
               <li key={menu.href}>
@@ -53,6 +62,6 @@ export default async function Navbar() {
           </Link>
         )}
       </header>
-    </NavbarVisibilityWrapper>
+    </VisibilityWrapper>
   );
 }

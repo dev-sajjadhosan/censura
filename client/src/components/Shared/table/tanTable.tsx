@@ -212,7 +212,7 @@ const TanTable = <TData,>({
         <div className="mb-4 flex flex-wrap items-center gap-3">
           {search && (
             <TanTableSearch
-              key={search.initialValue ?? ""}
+              key={search.initialValue}
               initialValue={search.initialValue}
               placeholder={search.placeholder}
               debounceMs={search.debounceMs}

@@ -29,8 +29,8 @@ export default function MediaGrid({ params , user }: { params: Params , user?: I
     queryFn: () => getAllMedia(queryParams),
   });
 
-  const mediaList = data?.data?.data || [];
-  const meta = data?.data?.meta;
+  const mediaList = data?.data || [];
+  const meta = data?.meta;
 
   if (isLoading) {
     return <div className="py-32 text-center text-neutral-400">Loading media...</div>;

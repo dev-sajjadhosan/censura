@@ -86,7 +86,7 @@ export default function VerifyEmailContent() {
 
   return (
     <div className="h-full flex items-center">
-      <div className="flex flex-col items-start justify-center gap-1 w-2xl">
+      <div className="flex flex-col items-start justify-center gap-1 md:w-2xl">
         <Badge variant="outline" className="px-4 py-4">
           UNVERIFIED EMAIL
         </Badge>

@@ -43,8 +43,8 @@ export default async function MediaDetailPage({
 }) {
   const { slug } = await params;
   const { data: media } = await getMediaBySlug(slug);
-
-  console.log("media", media);
+  const platfroms = []
+  console.log("media", media.platforms[0].platform);
 
   const user = await getCurrentUser();
   const reviews = media.reviews;
@@ -228,20 +228,20 @@ export default async function MediaDetailPage({
             <section className="space-y-4">
               <h3 className="text-xl font-bold">Available On</h3>
               <div className="flex flex-wrap gap-3">
-                {media.platforms?.slice(0, 5)?.map((p: Platform) => (
+                {media.platforms?.slice(0, 5)?.map((p: MediaPlatform) => (
                   <div
                     key={p.id}
                     className="bg-secondary/15 hover:bg-secondary/65 px-4 py-4 flex items-center gap-3 rounded-xl"
                   >
                     <Clapperboard className="size-5 text-orange-500" />
                     <div className="flex flex-col">
-                      <span className="text-sm font-medium">{p.name}</span>
+                      <span className="text-sm font-medium">{p?.platform?.name}</span>
                       <span className="text-xs text-muted-foreground">
-                        {p.type}
+                        {p?.platform?.type}
                       </span>
                     </div>
                     <Link
-                      href={p.url || "#"}
+                      href={p?.platform?.url || "#"}
                       target="_blank"
                       className="ml-auto"
                     >
@@ -253,7 +253,7 @@ export default async function MediaDetailPage({
                 ))}
                 {media.platforms?.length > 5 && (
                   <DialogShowPlatfroms
-                    platforms={media.platforms}
+                    platforms={media.platforms.map((mp: MediaPlatform) => mp.platform)}
                     title={
                       <div className="bg-secondary/65 px-6 py-4 flex items-center gap-3 rounded-xl [&_svg]:size-4 hover:[&_svg]:translate-x-2 [&_svg]:duration-100">
                         <div className="flex flex-col">

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import catchAsync from "../../shared/catchAsync";
-import sendResponse from "../../shared/sendRes";
+import { sendResponse } from "../../shared/sendRes";
 import httpStatus from "http-status";
 import { PaymentService } from "./payment.service";
 import { IRequestUser } from "../../interfaces";
@@ -27,7 +27,9 @@ const getAllPayments = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getMyMediaPurchases = catchAsync(async (req: Request, res: Response) => {
-  const result = await PaymentService.getMyMediaPurchases(req.user as IRequestUser);
+  const result = await PaymentService.getMyMediaPurchases(
+    req.user as IRequestUser,
+  );
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -36,21 +38,23 @@ const getMyMediaPurchases = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const createMediaCheckoutSession = catchAsync(async (req: Request, res: Response) => {
-  const user = req.user as IRequestUser;
-  const { mediaId, type } = req.body;
-  const result = await PaymentService.createMediaCheckoutSession(
-    user,
-    mediaId,
-    type as MediaPurchaseType
-  );
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Media checkout session created successfully",
-    data: result,
-  });
-});
+const createMediaCheckoutSession = catchAsync(
+  async (req: Request, res: Response) => {
+    const user = req.user as IRequestUser;
+    const { mediaId, type } = req.body;
+    const result = await PaymentService.createMediaCheckoutSession(
+      user,
+      mediaId,
+      type as MediaPurchaseType,
+    );
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Media checkout session created successfully",
+      data: result,
+    });
+  },
+);
 
 const checkMediaAccess = catchAsync(async (req: Request, res: Response) => {
   const user = req.user as IRequestUser;

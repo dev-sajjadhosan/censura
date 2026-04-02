@@ -14,6 +14,8 @@ export const createMediaValidationSchema = z.object({
   runtimeMinutes: z.string().optional(),
   seasons: z.string().optional(),
   pricing: z.enum(["FREE", "PREMIUM", "RENTAL"]),
+  rentalPrice: z.coerce.number().nonnegative().optional().nullable(),
+  buyPrice: z.coerce.number().nonnegative().optional().nullable(),
   isPublished: z.boolean().default(false),
   isFeatured: z.boolean().default(false),
   cast: z
@@ -43,6 +45,8 @@ const updateMediaValidation = z.object({
   runtimeMinutes: z.string().optional(),
   seasons: z.string().optional(),
   pricing: z.enum(["FREE", "PREMIUM", "RENTAL"]).optional(),
+  rentalPrice: z.coerce.number().nonnegative().optional().nullable(),
+  buyPrice: z.coerce.number().nonnegative().optional().nullable(),
   isPublished: z.boolean().optional(),
   isFeatured: z.boolean().optional(),
   cast: z

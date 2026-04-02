@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Play, Info, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { IProfileResponse } from "@/types/auth.types";
+import HeroSkeleton from "./HeroSkeleton";
 
 interface HeroSectionProps {
   featuredMedia: any;
@@ -11,9 +12,7 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ featuredMedia, user }: HeroSectionProps) {
-  if (!featuredMedia)
-    return <div className="h-96 w-full bg-neutral-900 animate-pulse"></div>;
-
+  if (!featuredMedia) return <HeroSkeleton />;
   const title = featuredMedia.title || "Featured Media";
   const desc =
     featuredMedia.description ||
@@ -24,7 +23,7 @@ export default function HeroSection({ featuredMedia, user }: HeroSectionProps) {
     "https://images.unsplash.com/photo-1542204172-658a09b60509?w=1600&q=80";
 
   return (
-    <div className="relative w-full h-[70vh] min-h-[500px] flex items-enc overflow-hidden mb-12">
+    <div className="relative w-full h-[70vh] min-h-[500px] flex items-enc overflow-hidden mb-12 ">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image

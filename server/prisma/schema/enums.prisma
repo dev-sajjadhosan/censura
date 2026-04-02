@@ -61,7 +61,8 @@ enum UserStatus {
   BLOCKED // suspended indefinitely
   PENDING // if new admin or moderator not approved by admin
   UNVERIFIED // if email not verified
-  DELETED // soft delete
+  DELETED // permanently delete
+  DEACTIVATED // temporarily deactivate
 }
 
 enum CommentStatus {

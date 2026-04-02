@@ -1,5 +1,5 @@
 import catchAsync from "../../shared/catchAsync";
-import sendResponse from "../../shared/sendRes";
+import { sendResponse } from "../../shared/sendRes";
 import { SubscriptionService } from "./subscription.service";
 import httpStatus from "http-status";
 
@@ -15,13 +15,13 @@ const getPlans = catchAsync(async (req, res) => {
 
 const createCheckoutSession = catchAsync(async (req, res) => {
   // Using user metadata attached to the request (from authentication middleware)
-  const user = req.user as any; 
+  const user = req.user as any;
   const { plan } = req.body;
 
   const result = await SubscriptionService.createCheckoutSession(
     user.userId,
     user.email,
-    plan
+    plan,
   );
 
   sendResponse(res, {

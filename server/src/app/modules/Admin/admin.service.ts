@@ -31,7 +31,7 @@ const getStats = async () => {
     }),
 
     prisma.payment.aggregate({
-      where: { status: "succeeded" },
+      where: { status: "COMPLETED" },
       _sum: { amount: true },
     }),
 
@@ -56,45 +56,65 @@ const getSales = async () => {
   const [
     totalSales,
     revenueAggregate,
-    monthlyRevenue,
-    yearlyRevenue,
+    subRevenueAggregate,
+    purchaseRevenueAggregate, // New: Revenue for type BUY
+    rentalRevenueAggregate, // New: Revenue for type RENTAL
     rawSalesOverTime,
   ] = await Promise.all([
+    // 1. Count all completed payments
     prisma.payment.count({
-      where: { status: "succeeded" },
+      where: { status: "COMPLETED" },
     }),
 
+    // 2. Total Gross Revenue
     prisma.payment.aggregate({
-      where: { status: "succeeded" },
+      where: { status: "COMPLETED" },
       _sum: { amount: true },
     }),
 
+    // 3. Subscription Revenue (Linked to a subscriptionId)
     prisma.payment.aggregate({
       where: {
-        status: "succeeded",
-        subscription: { plan: "MONTHLY" },
+        status: "COMPLETED",
+        subscriptionId: { not: null },
       },
       _sum: { amount: true },
     }),
 
+    // 4. Purchase Revenue (Linked to MediaPurchase with type BUY)
     prisma.payment.aggregate({
       where: {
-        status: "succeeded",
-        subscription: { plan: "YEARLY" },
+        status: "COMPLETED",
+        mediaPurchase: {
+          type: "BUY",
+        },
       },
       _sum: { amount: true },
     }),
 
+    // 5. Rental Revenue (Linked to MediaPurchase with type RENTAL)
+    prisma.payment.aggregate({
+      where: {
+        status: "COMPLETED",
+        mediaPurchase: {
+          type: "RENTAL",
+        },
+      },
+      _sum: { amount: true },
+    }),
+
+    // 6. Data for Charts
     prisma.payment.findMany({
-      where: { status: "succeeded" },
+      where: { status: "COMPLETED" },
       select: { amount: true, createdAt: true },
       orderBy: { createdAt: "asc" },
     }),
   ]);
 
   const totalRevenue = revenueAggregate._sum.amount ?? 0;
-  const subscriptionRevenue =
-    (monthlyRevenue._sum.amount ?? 0) + (yearlyRevenue._sum.amount ?? 0);
+  const subscriptionRevenue = subRevenueAggregate._sum.amount ?? 0;
+  const purchaseRevenue = purchaseRevenueAggregate._sum.amount ?? 0;
+  const rentalRevenue = rentalRevenueAggregate._sum.amount ?? 0;
 
   // Group by date for charts
   const salesOverTime = Object.values(
@@ -113,8 +133,8 @@ const getSales = async () => {
   return {
     totalSales,
     totalRevenue,
-    purchaseRevenue: 0, // ready for when MediaPurchase is wired up
-    rentalRevenue: 0, // ready for when MediaPurchase is wired up
+    purchaseRevenue,
+    rentalRevenue,
     subscriptionRevenue,
     salesOverTime,
   };
@@ -154,7 +174,7 @@ const getReviews = async () => {
 
 const getAllMedia = async (query: IQueryParams) => {
   const { genre, platform, minRating } = query;
-  
+
   const whereConditions: Prisma.MediaWhereInput = { isPublished: true };
 
   if (genre) {
@@ -162,24 +182,26 @@ const getAllMedia = async (query: IQueryParams) => {
   }
 
   if (platform) {
-    whereConditions.platforms = { some: { platform: { slug: platform as string } } };
+    whereConditions.platforms = {
+      some: { platform: { slug: platform as string } },
+    };
   }
 
   if (minRating) {
     whereConditions.avgRating = { gte: Number(minRating) };
   }
 
-  // 2. Pass the FULL query object to QueryBuilder 
+  // 2. Pass the FULL query object to QueryBuilder
   // so it can find 'page' and 'limit' inside paginate()
   const mediaQuery = new QueryBuilder(prisma.media, query, {
     searchableFields: ["title", "synopsis"],
     filterableFields: ["type", "releaseYear"],
   })
     .where(whereConditions) // Apply custom manual filters first
-    .search()               // Apply text search
-    .filter()               // Apply automated filters (type, releaseYear)
-    .sort()                 // Apply sorting
-    .paginate()             // Apply skip/take LAST
+    .search() // Apply text search
+    .filter() // Apply automated filters (type, releaseYear)
+    .sort() // Apply sorting
+    .paginate() // Apply skip/take LAST
     .include({
       genres: true,
       cast: true,

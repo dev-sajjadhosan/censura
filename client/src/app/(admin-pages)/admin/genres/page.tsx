@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic'
+
+
 import { GenresClient } from "@/components/Modules/Admin/Genres/GenresTable";
 import { Metadata } from "next";
 

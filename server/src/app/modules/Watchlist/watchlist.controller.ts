@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import status from "http-status";
 import catchAsync from "../../shared/catchAsync";
-import sendResponse from "../../shared/sendRes";
+import { sendResponse } from "../../shared/sendRes";
 import { WatchlistService } from "./watchlist.service";
 import { IRequestUser } from "../../interfaces";
 
@@ -37,7 +37,10 @@ const deleteWatchlist = catchAsync(async (req: Request, res: Response) => {
   const { mediaId } = req.params;
   const user = req.user as IRequestUser;
 
-  const result = await WatchlistService.deleteWatchlist(mediaId as string, user);
+  const result = await WatchlistService.deleteWatchlist(
+    mediaId as string,
+    user,
+  );
 
   sendResponse(res, {
     statusCode: status.OK,

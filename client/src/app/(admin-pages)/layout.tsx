@@ -1,4 +1,7 @@
+export const dynamic = "force-dynamic";
+
 import AdminSidebar from "@/components/Modules/Admin/AdminSidebar";
+import { MobileSidebarTrigger } from "@/components/Shared/MobileSidebarTrigger";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
@@ -25,6 +28,7 @@ export default async function AdminLayout({
       <SidebarInset className="bg-background/95">
         <div className="p-5">{children}</div>
       </SidebarInset>
+      <MobileSidebarTrigger />
     </SidebarProvider>
   );
 }

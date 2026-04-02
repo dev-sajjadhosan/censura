@@ -47,7 +47,7 @@ export default function MediaStrip({
         {/* Horizontal Scroll Container */}
         <div className="relative">
           <div className="flex overflow-x-auto gap-6 pb-6 snap-x snap-mandatory hide-scroll-indicator">
-            {isLoading ? (
+            {isLoading || !mediaList || mediaList.length === 0 ? (
               <div className="flex gap-6">
                 {[...Array(5)].map((_, i) => (
                   <div

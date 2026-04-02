@@ -44,10 +44,11 @@ export default function CheckoutContent() {
 
   const handlePayment = async () => {
     try {
-      const response = await createMediaCheckoutSession({
+      const response = (await createMediaCheckoutSession({
         mediaId: mediaId as string,
         type: type as "RENTAL" | "BUY",
-      });
+      })) as any;
+      router.push(response?.data?.session_url);
       console.log("media payment: ", response);
     } catch (error) {
       console.error("Payment Error:", error);
@@ -72,14 +73,21 @@ export default function CheckoutContent() {
 
         <div className="md:col-span-2 space-y-6">
           <div>
-            <Badge variant="outline" className="mb-2 uppercase tracking-widest text-[10px]">
+            <Badge
+              variant="outline"
+              className="mb-2 uppercase tracking-widest text-[10px]"
+            >
               Secure Checkout
             </Badge>
             <h1 className="text-3xl font-bold tracking-tight">
               Confirm Your {type}
             </h1>
             <p className="text-muted-foreground mt-2">
-              You are renting <span className="text-foreground font-medium">{media?.title}</span>. Access will be granted immediately after payment.
+              You are renting{" "}
+              <span className="text-foreground font-medium">
+                {media?.title}
+              </span>
+              . Access will be granted immediately after payment.
             </p>
           </div>
 
@@ -91,23 +99,35 @@ export default function CheckoutContent() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">{media?.title} ({type})</span>
+                <span className="text-muted-foreground">
+                  {media?.title} ({type})
+                </span>
                 <span className="font-medium">${price}</span>
               </div>
               <Separator />
               <div className="flex justify-between items-center pt-2">
                 <span className="text-lg font-bold">Total Amount</span>
-                <span className="text-2xl font-black text-primary">${price}</span>
+                <span className="text-2xl font-black text-primary">
+                  ${price}
+                </span>
               </div>
             </CardContent>
             <CardFooter className="flex flex-col gap-3">
-              <Button size="lg" className="w-full text-lg h-14" onClick={handlePayment}>
-                <Zap className="mr-2 fill-current" /> Pay with SSLCommerz
+              <Button
+                size="lg"
+                className="w-full text-lg h-14"
+                onClick={handlePayment}
+              >
+                <Zap className="mr-2 fill-current" /> Pay with Stripe
               </Button>
             </CardFooter>
           </Card>
 
-          <Button variant="ghost" onClick={() => router.back()} className="text-muted-foreground">
+          <Button
+            variant="ghost"
+            onClick={() => router.back()}
+            className="text-muted-foreground"
+          >
             ← Go Back
           </Button>
         </div>

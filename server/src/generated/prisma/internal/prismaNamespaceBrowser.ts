@@ -59,6 +59,7 @@ export const ModelName = {
   CastMember: 'CastMember',
   MediaPlatform: 'MediaPlatform',
   MediaPurchase: 'MediaPurchase',
+  Newsletter: 'Newsletter',
   Payment: 'Payment',
   Platform: 'Platform',
   Profile: 'Profile',
@@ -214,13 +215,24 @@ export const MediaPurchaseScalarFieldEnum = {
 export type MediaPurchaseScalarFieldEnum = (typeof MediaPurchaseScalarFieldEnum)[keyof typeof MediaPurchaseScalarFieldEnum]
 
 
+export const NewsletterScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  subscribedAt: 'subscribedAt'
+} as const
+
+export type NewsletterScalarFieldEnum = (typeof NewsletterScalarFieldEnum)[keyof typeof NewsletterScalarFieldEnum]
+
+
 export const PaymentScalarFieldEnum = {
   id: 'id',
   subscriptionId: 'subscriptionId',
+  userId: 'userId',
   amount: 'amount',
   currency: 'currency',
   stripePaymentId: 'stripePaymentId',
   status: 'status',
+  mediaPurchaseId: 'mediaPurchaseId',
   createdAt: 'createdAt',
   rentalId: 'rentalId'
 } as const

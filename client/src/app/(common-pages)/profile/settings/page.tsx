@@ -1,12 +1,13 @@
-export default function SettingsPage() {
+export const dynamic = "force-dynamic";
+
+import SettingsClient from "@/components/Modules/Profile/SettingClient";
+import { getCurrentUser } from "@/services/user.service";
+
+export default async function SettingsPage() {
+  const user = await getCurrentUser()
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full ">
-      <h1 className="text-4xl font-bold">Settings</h1>
-      <p className="text-muted-foreground">Cooming sOOn</p>
-      <p className="text-sm">
-        We are currently working on this project. So, you can't access this page
-        yet.
-      </p>
-    </div>
+    <>
+      <SettingsClient user={user} />
+    </>
   );
 }

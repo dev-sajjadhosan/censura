@@ -81,12 +81,12 @@ export function ExploreSidebar({
 
   const { data: genresData, isLoading: genreLoading } = useQuery({
     queryKey: ["genres"],
-    queryFn: () => getAllGenres({page:1,limit:100}),
+    queryFn: () => getAllGenres(),
   });
 
   const { data: platformsData, isLoading: platformLoading } = useQuery({
     queryKey: ["platforms"],
-    queryFn: () => getAllPlatforms({page:1,limit:100}),
+    queryFn: () => getAllPlatforms(),
   });
 
   const genres = genresData?.data?.data;

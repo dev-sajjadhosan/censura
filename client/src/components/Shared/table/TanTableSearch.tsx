@@ -24,25 +24,26 @@ const DataTableSearch = ({
   const skipNextDebounceRef = useRef(false);
 
   const isFirstRender = useRef(true);
+  // TanTableSearch
+  const onDebouncedChangeRef = useRef(onDebouncedChange);
+  useEffect(() => {
+    onDebouncedChangeRef.current = onDebouncedChange;
+  }, [onDebouncedChange]);
 
   useEffect(() => {
-    // Skip if it's the first render and value matches initialValue
     if (isFirstRender.current && value.trim() === initialValue.trim()) {
       isFirstRender.current = false;
       return;
     }
-
     if (skipNextDebounceRef.current) {
       skipNextDebounceRef.current = false;
       return;
     }
-
     const timer = setTimeout(() => {
-      onDebouncedChange(value.trim());
+      onDebouncedChangeRef.current(value.trim()); // ← use ref
     }, debounceMs);
-
     return () => clearTimeout(timer);
-  }, [value, debounceMs, onDebouncedChange, initialValue]);
+  }, [value, debounceMs, initialValue]); // ← onDebouncedChange removed
 
   const handleClear = () => {
     skipNextDebounceRef.current = true;

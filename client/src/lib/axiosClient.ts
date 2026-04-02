@@ -1,6 +1,7 @@
 import { ApiRequestOptions, ApiResponse } from "@/types/api.types";
-import axios from "axios";
+import axios, { AxiosError, AxiosInstance } from "axios";
 import { cookies } from "next/headers";
+import { getNewTokensWithRefreshToken } from "@/services/user.service";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -8,128 +9,95 @@ if (!API_BASE_URL) {
   throw new Error("NEXT_PUBLIC_API_URL is not defined");
 }
 
-async function tryRefreshToken(
-  accessToken: string,
-  refreshToken: string,
-): Promise<void> {}
-
-const axiosInstance = async () => {
+const getBaseInstance = async (): Promise<AxiosInstance> => {
   const cookieStore = await cookies();
-  const accessToken = cookieStore.get("accessToken")?.value;
-  const refreshToken = cookieStore.get("refreshToken")?.value;
-
-  if (accessToken && refreshToken) {
-    await tryRefreshToken(accessToken, refreshToken);
-  }
-
-  const cookieHeaders = await cookieStore
+  const cookieHeaders = cookieStore
     .getAll()
-    .map((cookie: any) => `${cookie.name}=${cookie.value}`)
+    .map((c) => `${c.name}=${c.value}`)
     .join("; ");
 
-  const instance = axios.create({
+  return axios.create({
     baseURL: API_BASE_URL,
     timeout: 30000,
     headers: {
       "Content-Type": "application/json",
-      cookie: cookieHeaders,
+      Cookie: cookieHeaders,
     },
   });
-  return instance;
 };
 
-const httpGet = async <TData>(
+const handleRequest = async <TData>(
+  requestFn: (instance: AxiosInstance) => Promise<{ data: ApiResponse<TData> }>,
   endPath: string,
-  options?: ApiRequestOptions,
 ): Promise<ApiResponse<TData>> => {
   try {
-    const instance = await axiosInstance();
-    const response = await instance.get<ApiResponse<TData>>(endPath, options);
+    const instance = await getBaseInstance();
+    const response = await requestFn(instance);
     return response.data;
   } catch (err: any) {
-    console.error(`HTTP GET Error: ${endPath}`, err);
-    throw err;
-  }
-};
+    const axiosError = err as AxiosError<ApiResponse<any>>;
+    const errorData = axiosError.response?.data;
 
-const httpPost = async <TData>(
-  endPath: string,
-  data: unknown,
-  options?: ApiRequestOptions,
-): Promise<ApiResponse<TData>> => {
-  try {
-    const instance = await axiosInstance();
-    const response = await instance.post<ApiResponse<TData>>(
-      endPath,
-      data,
-      options,
-    );
-    return response.data;
-  } catch (err: any) {
-    console.error(`HTTP POST Error: ${endPath}`, err);
-    throw err.response.data;
-  }
-};
+    console.error(`[API Error] ${endPath}:`, errorData || axiosError.message);
 
-const httpPut = async <TData>(
-  endPath: string,
-  data: unknown,
-  options?: ApiRequestOptions,
-): Promise<ApiResponse<TData>> => {
-  try {
-    const instance = await axiosInstance();
-    const response = await instance.put<ApiResponse<TData>>(
-      endPath,
-      data,
-      options,
-    );
-    return response.data;
-  } catch (err: any) {
-    console.error(`HTTP PUT Error: ${endPath}`, err);
-    throw err;
-  }
-};
+    // Check for 401 status
+    if (axiosError.response?.status === 401) {
+      const cookieStore = await cookies();
 
-const httpPatch = async <TData>(
-  endPath: string,
-  data: unknown,
-  options?: ApiRequestOptions,
-): Promise<ApiResponse<TData>> => {
-  try {
-    const instance = await axiosInstance();
-    const response = await instance.patch<ApiResponse<TData>>(
-      endPath,
-      data,
-      options,
-    );
-    return response.data;
-  } catch (err: any) {
-    console.error(`HTTP PATCH Error: ${endPath}`, err);
-    throw err;
-  }
-};
+      // CRITICAL: If the account is deactivated/inactive, clear cookies and stop
+      const errorMessage = errorData?.message?.toLowerCase() || "";
+      if (
+        errorMessage.includes("not active") ||
+        errorMessage.includes("deactivated")
+      ) {
+        console.warn("User inactive. Clearing session cookies.");
+        cookieStore.delete("accessToken");
+        cookieStore.delete("refreshToken");
+        cookieStore.delete("better-auth.session_token"); // If using Better-Auth
+        throw errorData;
+      }
 
-const httpDelete = async <TData>(
-  endPath: string,
-  options?: ApiRequestOptions,
-): Promise<ApiResponse<TData>> => {
-  try {
-    const instance = await axiosInstance();
-    const response = await instance.delete<ApiResponse<TData>>(
-      endPath,
-      options,
-    );
-    return response.data;
-  } catch (err: any) {
-    console.error(`HTTP DELETE Error: ${endPath}`, err);
-    throw err;
+      // Otherwise, try standard refresh logic
+      const refreshToken = cookieStore.get("refreshToken")?.value;
+      if (refreshToken) {
+        try {
+          const refreshed = await getNewTokensWithRefreshToken(refreshToken);
+          if (refreshed) {
+            const newInstance = await getBaseInstance();
+            const retryResponse = await requestFn(newInstance);
+            return retryResponse.data;
+          }
+        } catch (refreshErr) {
+          // If refresh fails, clear everything
+          cookieStore.delete("accessToken");
+          cookieStore.delete("refreshToken");
+        }
+      }
+    }
+
+    throw errorData || axiosError;
   }
 };
 
 export const axiosClient = {
-  get: httpGet,
-  post: httpPost,
-  put: httpPut,
-  patch: httpPatch,
-  delete: httpDelete,
+  get: async <TData>(url: string, options?: ApiRequestOptions) =>
+    handleRequest<TData>((i) => i.get(url, options), url),
+
+  post: async <TData>(
+    url: string,
+    data: unknown,
+    options?: ApiRequestOptions,
+  ) => handleRequest<TData>((i) => i.post(url, data, options), url),
+
+  put: async <TData>(url: string, data: unknown, options?: ApiRequestOptions) =>
+    handleRequest<TData>((i) => i.put(url, data, options), url),
+
+  patch: async <TData>(
+    url: string,
+    data: unknown,
+    options?: ApiRequestOptions,
+  ) => handleRequest<TData>((i) => i.patch(url, data, options), url),
+
+  delete: async <TData>(url: string, options?: ApiRequestOptions) =>
+    handleRequest<TData>((i) => i.delete(url, options), url),
 };

@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import MediaForm from "@/components/Modules/Admin/Media/MediaForm";
 import MediaJsonAddDialog from "@/components/Modules/Admin/Media/MediaJsonAddDialog";
 

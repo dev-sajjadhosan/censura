@@ -25,6 +25,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { IProfileResponse } from "@/types/auth.types";
+import Link from "next/link";
 
 export function NavUser({ user }: { user: IProfileResponse }) {
   const { isMobile } = useSidebar();
@@ -76,16 +77,20 @@ export function NavUser({ user }: { user: IProfileResponse }) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <UserCircle2 />
-                Profile
-              </DropdownMenuItem>
+              <Link href="/profile">
+                <DropdownMenuItem>
+                  <UserCircle2 />
+                  Profile
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             {/* <DropdownMenuSeparator /> */}
-            <DropdownMenuItem>
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
+            <Link href="/logout">
+              <DropdownMenuItem>
+                <LogOut />
+                Log out
+              </DropdownMenuItem>
+            </Link>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

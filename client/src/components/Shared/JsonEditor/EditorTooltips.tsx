@@ -64,7 +64,7 @@ export default function EditorTooltips({
   const handleResetZoom = () => setFontSize(14);
   return (
     <div>
-      <div className="flex items-center gap-1 shrink-0">
+      <div className="flex flex-wrap items-center gap-1 shrink-0">
         <TooltipButton
           tooltip="Beautify"
           children={

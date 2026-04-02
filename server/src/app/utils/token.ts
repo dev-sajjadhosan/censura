@@ -1,19 +1,19 @@
 import { JwtPayload, SignOptions } from "jsonwebtoken";
-import { jwtUtils } from "./jwt";
 import { envVars } from "../config/env";
 import { Response } from "express";
-import { CookieUtils } from "./cookie";
+import { createToken } from "./jwt";
+import { setCookie } from "./cookie";
 
 
-const getAccessToken = (payload: JwtPayload) => {
-  const token = jwtUtils.createToken(payload, envVars.ACCESS_TOKEN_SECRET, {
+export const getAccessToken = (payload: JwtPayload) => {
+  const token = createToken(payload, envVars.ACCESS_TOKEN_SECRET, {
     expiresIn: envVars.ACCESS_TOKEN_EXPIRES_IN,
   } as SignOptions);
   return token;
 };
 
-const getRefreshToken = (payload: JwtPayload) => {
-  const refreshToken = jwtUtils.createToken(
+export const getRefreshToken = (payload: JwtPayload) => {
+  const refreshToken = createToken(
     payload,
     envVars.REFRESH_TOKEN_SECRET,
     {
@@ -24,8 +24,8 @@ const getRefreshToken = (payload: JwtPayload) => {
   return refreshToken;
 };
 
-const setAccessTokenCookie = (res: Response, token: string) => {
-  CookieUtils.setCookie(res, "accessToken", token, {
+export const setAccessTokenCookie = (res: Response, token: string) => {
+  setCookie(res, "accessToken", token, {
     httpOnly: true,
     secure: true,
     sameSite: true,
@@ -34,8 +34,8 @@ const setAccessTokenCookie = (res: Response, token: string) => {
   });
 };
 
-const setRefreshTokenCookie = (res: Response, token: string) => {
-  CookieUtils.setCookie(res, "refreshToken", token, {
+export const setRefreshTokenCookie = (res: Response, token: string) => {
+  setCookie(res, "refreshToken", token, {
     httpOnly: true,
     secure: true,
     sameSite: true,
@@ -44,20 +44,12 @@ const setRefreshTokenCookie = (res: Response, token: string) => {
   });
 };
 
-const setBetterAuthSessionCookie = (res: Response, token: string) => {
-  CookieUtils.setCookie(res, "better-auth.session_token", token, {
+export const setBetterAuthSessionCookie = (res: Response, token: string) => {
+  setCookie(res, "better-auth.session_token", token, {
     httpOnly: true,
     secure: true,
     sameSite: true,
     path: "/",
     maxAge: 60 * 60  * 24 * 1000,
   });
-};
-
-export const tokenUtils = {
-  getAccessToken,
-  getRefreshToken,
-  setAccessTokenCookie,
-  setRefreshTokenCookie,
-  setBetterAuthSessionCookie,
 };

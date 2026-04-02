@@ -24,7 +24,7 @@ export default function ViewUserDialog({
           <DialogHeader>
             <DialogTitle></DialogTitle>
           </DialogHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-5">
             <div className="flex flex-col items-center gap-3">
               <Avatar
                 className={`size-35 ${user?.status === "ACTIVE" ? "ring-2 ring-orange-500" : "ring-2 ring-red-500"}`}

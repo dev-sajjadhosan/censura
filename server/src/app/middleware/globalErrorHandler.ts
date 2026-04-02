@@ -7,7 +7,6 @@ import { envVars } from "../config/env";
 import AppError from "../error-helpers/AppError";
 import { handleZodError } from "../error-helpers/handleZodError";
 
-// import { deleteUploadFileFromGlobalErrorHandler } from "../utils/deleteUploadFileFromGlobalErrorHandler";
 import {
   handlePrismaClientKnownRequestError,
   handlePrismaClientUnknownError,

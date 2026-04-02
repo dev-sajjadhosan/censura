@@ -51,8 +51,34 @@ export const sendVerifyOtpSchema = z.object({
   ),
 });
 
+export const forgotPasswordZodSchema = z.object({
+  email: z.email("Please enter a valid email address."),
+});
+
+export const profileSchema = z.object({
+  name: z.string("Name is required.").min(2, "At least 2 characters."),
+  // username: z
+  //   .string("Username is required.")
+  //   .min(3, "At least 3 characters.")
+  //   .regex(/^[a-z0-9_]+$/, "Only lowercase letters, numbers, underscores."),
+  bio: z.string("Bio is required.").max(300, "Max 300 characters.").optional(),
+});
+
+export const passwordSchema = z
+  .object({
+    oldPassword: z.string("Current password is required.").min(1, "Required."),
+    newPassword: z.string("New password is required.").min(8, "At least 8 characters."),
+    confirmPassword: z.string("Confirm password is required.").min(1, "Required."),
+  })
+  .refine((d) => d.newPassword === d.confirmPassword, {
+    message: "Passwords do not match.",
+    path: ["confirmPassword"],
+  });
+
 export type ILoginProps = z.infer<typeof loginZodSchema>;
 export type IRegisterProps = z.infer<typeof registerZodSchema>;
 export type IVerifyEmailProps = z.infer<typeof verifyEmailZodSchema>;
 export type ISendVerifyOtpProps = z.infer<typeof sendVerifyOtpSchema>;
-
+export type IProfileProps = z.infer<typeof profileSchema>;
+export type IPasswordProps = z.infer<typeof passwordSchema>;
+export type IForgotPasswordProps = z.infer<typeof forgotPasswordZodSchema>;

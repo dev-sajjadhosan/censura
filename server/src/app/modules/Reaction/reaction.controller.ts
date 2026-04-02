@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { IRequestUser } from "../../interfaces";
 import catchAsync from "../../shared/catchAsync";
-import sendResponse from "../../shared/sendRes";
+import { sendResponse } from "../../shared/sendRes";
 import { LikesService } from "./reaction.service";
 import status from "http-status";
 
@@ -18,17 +18,19 @@ const getAllComments = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getCommentsByReviewId = catchAsync(async (req: Request, res: Response) => {
-  const reviewId = req.params.reviewId as string;
-  const result = await LikesService.getCommentsByReviewId(reviewId);
+const getCommentsByReviewId = catchAsync(
+  async (req: Request, res: Response) => {
+    const reviewId = req.params.reviewId as string;
+    const result = await LikesService.getCommentsByReviewId(reviewId);
 
-  sendResponse(res, {
-    statusCode: status.OK,
-    success: true,
-    message: "Comments fetched successfully",
-    data: result,
-  });
-});
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
+      message: "Comments fetched successfully",
+      data: result,
+    });
+  },
+);
 
 const createLike = catchAsync(async (req: Request, res: Response) => {
   const result = await LikesService.createReviewLike(

@@ -1,24 +1,25 @@
 import catchAsync from "../../shared/catchAsync";
-import sendResponse from "../../shared/sendRes";
-import { MediaService } from "./media.service";
+import { getAllMedia as getAllMediaService, getSingleMedia as getSingleMediaService, getMediaBySlug as getMediaBySlugService, createMedia as createMediaService, updateMedia as updateMediaService, deleteMedia as deleteMediaService, changeFeaturedStatus as changeFeaturedStatusService, changePublishStatus as changePublishStatusService, createManyMedia as createManyMediaService } from "./media.service";
 import { IRequestUser } from "../../interfaces";
 import status from "http-status";
+import { sendResponse } from "../../shared/sendRes";
 
-const getAllMedia = catchAsync(async (req, res) => {
+export const getAllMedia = catchAsync(async (req, res) => {
   const query = req.query;
-  
-  const result = await MediaService.getAllMedia(query);
+
+  const result = await getAllMediaService(query);
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
     message: "Media fetched successfully",
-    data: result,
+    data: result.data,
+    meta: result.meta,
   });
 });
 
-const getSingleMedia = catchAsync(async (req, res) => {
+export const getSingleMedia = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const result = await MediaService.getSingleMedia(id as string);
+  const result = await getSingleMediaService(id as string);
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
@@ -27,21 +28,21 @@ const getSingleMedia = catchAsync(async (req, res) => {
   });
 });
 
-const getMediaBySlug = catchAsync(async (req, res) => {
+export const getMediaBySlug = catchAsync(async (req, res) => {
   const { slug } = req.params;
-  const result = await MediaService.getMediaBySlug(slug as string);
+  const result = await getMediaBySlugService(slug as string);
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
-    message: "Media fetched successfully",
+    message: "Media fetched by slug successfully",
     data: result,
   });
 });
 
-const createMedia = catchAsync(async (req, res) => {
+export const createMedia = catchAsync(async (req, res) => {
   const user = req.user as IRequestUser;
   const data = req.body;
-  const result = await MediaService.createMedia(user, data);
+  const result = await createMediaService(user, data);
 
   sendResponse(res, {
     statusCode: status.OK,
@@ -51,12 +52,12 @@ const createMedia = catchAsync(async (req, res) => {
   });
 });
 
-const updateMedia = catchAsync(async (req, res) => {
+export const updateMedia = catchAsync(async (req, res) => {
   const user = req.user as IRequestUser;
   const { id } = req.params;
   const data = req.body;
 
-  const result = await MediaService.updateMedia(id as string, user, data);
+  const result = await updateMediaService(id as string, user, data);
 
   sendResponse(res, {
     statusCode: status.OK,
@@ -66,9 +67,9 @@ const updateMedia = catchAsync(async (req, res) => {
   });
 });
 
-const deleteMedia = catchAsync(async (req, res) => {
+export const deleteMedia = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const result = await MediaService.deleteMedia(id as string);
+  const result = await deleteMediaService(id as string);
 
   sendResponse(res, {
     statusCode: status.OK,
@@ -78,11 +79,11 @@ const deleteMedia = catchAsync(async (req, res) => {
   });
 });
 
-const changeFeaturedStatus = catchAsync(async (req, res) => {
+export const changeFeaturedStatus = catchAsync(async (req, res) => {
   const { id } = req.params;
   const data = req.body;
 
-  const result = await MediaService.changeFeaturedStatus(id as string, data);
+  const result = await changeFeaturedStatusService(id as string, data);
 
   sendResponse(res, {
     statusCode: status.OK,
@@ -92,11 +93,11 @@ const changeFeaturedStatus = catchAsync(async (req, res) => {
   });
 });
 
-const changePublishStatus = catchAsync(async (req, res) => {
+export const changePublishStatus = catchAsync(async (req, res) => {
   const { id } = req.params;
   const data = req.body;
 
-  const result = await MediaService.changePublishStatus(id as string, data);
+  const result = await changePublishStatusService(id as string, data);
 
   sendResponse(res, {
     statusCode: status.OK,
@@ -106,9 +107,9 @@ const changePublishStatus = catchAsync(async (req, res) => {
   });
 });
 
-const createManyMedia = catchAsync(async (req, res) => {
+export const createManyMedia = catchAsync(async (req, res) => {
   const data = req.body;
-  const result = await MediaService.createManyMedia(data);
+  const result = await createManyMediaService(data);
 
   sendResponse(res, {
     statusCode: status.OK,
@@ -117,15 +118,3 @@ const createManyMedia = catchAsync(async (req, res) => {
     data: result,
   });
 });
-
-export const MediaController = {
-  getAllMedia,
-  getSingleMedia,
-  getMediaBySlug,
-  createMedia,
-  updateMedia,
-  deleteMedia,
-  changeFeaturedStatus,
-  changePublishStatus,
-  createManyMedia,
-};

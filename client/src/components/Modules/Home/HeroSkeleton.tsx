@@ -1,7 +1,7 @@
 // components/Home/HeroSkeleton.tsx
 export default function HeroSkeleton() {
   return (
-    <div className="relative w-full h-[70vh] min-h-[500px] overflow-hidden mb-12">
+    <div className="relative w-full h-[70vh] min-h-[500px] overflow-hidden mb-12 my-10">
       {/* Background shimmer */}
       <div className="absolute inset-0 bg-neutral-900 animate-pulse" />
       <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent" />

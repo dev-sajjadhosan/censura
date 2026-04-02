@@ -101,8 +101,9 @@ const TanTablePagination = <TData,>({
 
     setIsCustomMode(!isDefaultPageSize(parsed));
 
+    const newPageIndex = Math.min(pagination.pageIndex, Math.ceil((totalRows || 0) / parsed) - 1);
     table.setPagination({
-      pageIndex: 0,
+      pageIndex: Math.max(0, newPageIndex),
       pageSize: parsed,
     });
   };
@@ -122,8 +123,9 @@ const TanTablePagination = <TData,>({
     setIsCustomMode(false);
     setCustomPageSize(String(parsed));
 
+    const newPageIndex = Math.min(pagination.pageIndex, Math.ceil((totalRows || 0) / parsed) - 1);
     table.setPagination({
-      pageIndex: 0,
+      pageIndex: Math.max(0, newPageIndex),
       pageSize: parsed,
     });
   };

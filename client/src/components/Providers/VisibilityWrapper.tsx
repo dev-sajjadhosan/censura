@@ -2,9 +2,9 @@
 
 import { usePathname } from "next/navigation";
 
-const NotToShowNavbar = ["/payment/success", "/payment/cancel", "/subscription", "/profile"]
+const NotToShowNavbar = ["/payment/success", "/payment/cancel", "/subscription", "/profile", "/profile/collections", "/profile/settings"]
 
-export default function NavbarVisibilityWrapper({
+export default function VisibilityWrapper({
   children,
 }: {
   children: React.ReactNode;

@@ -63,10 +63,10 @@ export default function MediaCard({
           <h3 className="font-bold text-lg truncate">{media.title}</h3>
           <p className="text-sm text-muted-foreground">{media.releaseYear}</p>
 
-          <div className="flex flex-wrap items-center gap-2 mt-4">
+          <div className="flex items-center gap-2 mt-4">
             {/* 1. WATCH ACCESS (The Priority Action) */}
             {hasAccess ? (
-              <Button asChild className="flex-1 bg-primary">
+              <Button asChild className=" bg-primary">
                 <Link href={`/watch/${media.slug}`}>
                   <Play className="mr-2 size-4 fill-current" /> Watch Now
                 </Link>
@@ -75,7 +75,7 @@ export default function MediaCard({
               <>
                 {/* 2. PREMIUM/SUBSCRIPTION BLOCK */}
                 {media.pricing === "PREMIUM" && (
-                  <Button variant="secondary" asChild className="flex-1">
+                  <Button variant="secondary" asChild>
                     <Link href="/subscription">
                       <Crown className="mr-2 size-4" /> Subscribe
                     </Link>
@@ -85,12 +85,7 @@ export default function MediaCard({
                 {/* 3. TRANSACTIONAL BLOCK (Rental/Buy) */}
                 {media.pricing === "RENTAL" && !hasPurchased && (
                   <div className="flex gap-2 w-full">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      asChild
-                      className="flex-1"
-                    >
+                    <Button variant="outline" size="sm" asChild>
                       <Link
                         href={`/payment/media-checkout?mediaId=${media.id}&type=RENTAL`}
                       >
@@ -99,12 +94,7 @@ export default function MediaCard({
                     </Button>
                     {/* Added Buy option to satisfy assignment requirement */}
                     {media.buyPrice && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        asChild
-                        className="flex-1"
-                      >
+                      <Button variant="outline" size="sm" asChild>
                         <Link
                           href={`/payment/media-checkout?mediaId=${media.id}&type=BUY`}
                         >
@@ -118,8 +108,15 @@ export default function MediaCard({
             )}
 
             {/* 4. ALWAYS SHOW VIEW DETAILS */}
-            <Button size="icon" variant="ghost" asChild title="View Details">
+            <Button
+              // size="lg"
+              variant="ghost"
+              asChild
+              title="View Details"
+              className="ml-auto gap-3"
+            >
               <Link href={`/media/${media.slug}`}>
+                View
                 <ChevronRight className="size-5" />
               </Link>
             </Button>

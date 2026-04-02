@@ -5,27 +5,33 @@ export type RouteConfig = {
 
 export type Role = "USER" | "ADMIN";
 
-export const authRoles = ["/login", "/register", "/forgot-password"];
+export const authRoles = [
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/account-deleted",
+];
 
 export const isAuthRoute = (pathname: string) => {
   return authRoles.some((route) => route === pathname);
 };
 
 export const commonProtectedRoutes: RouteConfig = {
-  exact: ["/profile", "/change-password", "/logout"],
-  pattern: [/^\/profile\/.*/], // ✅ covers /profile/subscription, /profile/settings etc
+  exact: ["/profile", "/change-password", "/logout", "/settings"],
+  pattern: [
+    /^\/profile\/.*/, // ✅ Both Admin and User can access /profile/details, etc.
+  ],
 };
 
 export const userProtectedRoutes: RouteConfig = {
-  exact: ["/profile", "/settings"],
+  exact: ["/dashboard"], // Specific to standard users
   pattern: [
-    /^\/profile\/.*/,
-    /^\/payment\/.*/,
+    /^\/payment\/.*/, // Specific to standard users
   ],
 };
 
 export const adminProtectedRoutes: RouteConfig = {
-  pattern: [/^\/admin/], // Matches any path that starts with /admin
+  pattern: [/^\/admin/], // Only Admins
   exact: [],
 };
 

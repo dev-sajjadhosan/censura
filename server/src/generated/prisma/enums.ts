@@ -93,7 +93,8 @@ export const UserStatus = {
   BLOCKED: 'BLOCKED',
   PENDING: 'PENDING',
   UNVERIFIED: 'UNVERIFIED',
-  DELETED: 'DELETED'
+  DELETED: 'DELETED',
+  DEACTIVATED: 'DEACTIVATED'
 } as const
 
 export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]

@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { PlatformsClient } from "@/components/Modules/Admin/Platforms/PlatformsTable";
 import { Metadata } from "next";
 

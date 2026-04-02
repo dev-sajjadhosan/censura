@@ -4,15 +4,21 @@ import AppError from "../../error-helpers/AppError";
 import httpStatus from "http-status";
 import { stripe } from "../../config/stripe";
 import { envVars } from "../../config/env";
-import { MediaPurchaseStatus, MediaPurchaseType } from "../../../generated/prisma/enums";
+import {
+  MediaPurchaseStatus,
+  MediaPurchaseType,
+} from "../../../generated/prisma/enums";
 
 const RENTAL_DURATION_HOURS = 48;
 
 const getMyPayments = async (user: IRequestUser) => {
   return await prisma.payment.findMany({
     where: {
+      userId: user.userId,
+    },
+    include: {
       subscription: {
-        userId: user.userId,
+        include: { user: true },
       },
     },
     orderBy: { createdAt: "desc" },
@@ -41,16 +47,22 @@ const getMyMediaPurchases = async (user: IRequestUser) => {
 const createMediaCheckoutSession = async (
   user: IRequestUser,
   mediaId: string,
-  type: MediaPurchaseType
+  type: MediaPurchaseType,
 ) => {
   const media = await prisma.media.findUnique({ where: { id: mediaId } });
   if (!media) throw new AppError(httpStatus.NOT_FOUND, "Media not found");
 
   if (media.pricing === "FREE")
-    throw new AppError(httpStatus.BAD_REQUEST, "This media is free, no purchase needed");
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "This media is free, no purchase needed",
+    );
 
   if (type === MediaPurchaseType.RENTAL && media.pricing !== "RENTAL")
-    throw new AppError(httpStatus.BAD_REQUEST, "This media is not available for rental");
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "This media is not available for rental",
+    );
 
   // Check for existing active purchase
   const existing = await prisma.mediaPurchase.findFirst({
@@ -66,15 +78,19 @@ const createMediaCheckoutSession = async (
   });
 
   if (existing)
-    throw new AppError(httpStatus.CONFLICT, "You already have active access to this media");
+    throw new AppError(
+      httpStatus.CONFLICT,
+      "You already have active access to this media",
+    );
 
   const price =
-    type === MediaPurchaseType.RENTAL
-      ? media.rentalPrice
-      : media.buyPrice;
+    type === MediaPurchaseType.RENTAL ? media.rentalPrice : media.buyPrice;
 
   if (!price)
-    throw new AppError(httpStatus.BAD_REQUEST, `No ${type.toLowerCase()} price set for this media`);
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      `No ${type.toLowerCase()} price set for this media`,
+    );
 
   const unitAmount = Math.round(Number(price) * 100);
 
@@ -149,7 +165,11 @@ const checkMediaAccess = async (user: IRequestUser, mediaId: string) => {
         expiresAt: { gt: new Date() },
       },
     });
-    return { hasAccess: !!purchase, reason: "RENTAL", expiresAt: purchase?.expiresAt };
+    return {
+      hasAccess: !!purchase,
+      reason: "RENTAL",
+      expiresAt: purchase?.expiresAt,
+    };
   }
 
   return { hasAccess: false, reason: "UNKNOWN" };

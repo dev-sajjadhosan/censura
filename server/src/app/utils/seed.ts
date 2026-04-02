@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import { Role, UserStatus } from "../../generated/prisma/enums";
 import { envVars } from "../config/env";
 import { auth } from "../lib/auth";

@@ -38,7 +38,6 @@ export const GenresClient = ({
 }) => {
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
-  const tableState = useServerManagedDataTable({ searchParams });
   const [editingGenre, setEditingGenre] = useState<Genre | null>(null);
   const [deletingGenre, setDeletingGenre] = useState<Genre | null>(null);
 
@@ -143,7 +142,7 @@ export const GenresClient = ({
   );
   return (
     <div className="space-y-6 p-3">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-5">
         <div className="relative z-10 flex flex-col gap-1">
           <h1 className="text-2xl tracking-tight">Genre Management</h1>
           <p className="text-muted-foreground text-sm max-w-lg">

@@ -14,7 +14,7 @@ interface CollectionsTabsProps {
 
 function EmptyState({ icon: Icon, label }: { icon: any; label: string }) {
   return (
-    <div className="py-20 w-9/12 mx-auto h-80 flex flex-col items-center justify-center text-center bg-secondary/45 rounded-2xl">
+    <div className="py-20 md:w-9/12 mx-auto h-80 flex flex-col items-center justify-center text-center bg-secondary/45 rounded-2xl">
       <Icon className="size-7 mb-3 text-muted-foreground" />
       <p className="text-neutral-500 mb-4 text-lg">Your {label} is empty.</p>
       <Link href="/explore">
@@ -32,9 +32,11 @@ export default function CollectionsTabs({
 }: CollectionsTabsProps) {
   return (
     <Tabs defaultValue="watchlist">
-      <TabsList className="mb-8 bg-secondary/40">
-        <TabsTrigger value="watchlist" className="gap-2">
-          <History className="w-4 h-4" />
+      <TabsList
+        className="mb-8 bg-secondary/40 py-6 px-5"
+      >
+        <TabsTrigger value="watchlist" className="gap-2 py-4 px-3">
+          <History />
           Watchlist
           {watchlist.length > 0 && (
             <span className="ml-1 text-xs bg-primary/20 text-primary px-1.5 py-0.5 rounded-full">
@@ -42,8 +44,8 @@ export default function CollectionsTabs({
             </span>
           )}
         </TabsTrigger>
-        <TabsTrigger value="bookmarks" className="gap-2">
-          <Bookmark className="w-4 h-4" />
+        <TabsTrigger value="bookmarks" className="gap-2 py-4 px-3">
+          <Bookmark />
           Bookmarks
           {bookmarks.length > 0 && (
             <span className="ml-1 text-xs bg-primary/20 text-primary px-1.5 py-0.5 rounded-full">
@@ -51,8 +53,8 @@ export default function CollectionsTabs({
             </span>
           )}
         </TabsTrigger>
-        <TabsTrigger value="favorites" className="gap-2">
-          <Heart className="w-4 h-4" />
+        <TabsTrigger value="favorites" className="gap-2 py-4 px-3">
+          <Heart />
           Favorites
           {favorites.length > 0 && (
             <span className="ml-1 text-xs bg-primary/20 text-primary px-1.5 py-0.5 rounded-full">

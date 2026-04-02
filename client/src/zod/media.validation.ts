@@ -14,6 +14,8 @@ export const createMediaValidationSchema = z.object({
   runtimeMinutes: z.string().min(1, "Runtime is required"),
   seasons: z.string().min(1, "Seasons is required"),
   pricing: z.string().min(1, "Pricing is required"),
+  rentalPrice: z.string().min(1, "Rental price is required"), // Added
+  buyPrice: z.string().min(1, "Buy price is required"), // Added
   isPublished: z.boolean().default(false),
   isFeatured: z.boolean().default(false),
   // cast: z.array(z.object()).min(1, "Cast is required").optional(),

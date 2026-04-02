@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import type { Metadata } from "next";
 import { JetBrains_Mono, Ubuntu_Sans_Mono } from "next/font/google";
 import "./globals.css";

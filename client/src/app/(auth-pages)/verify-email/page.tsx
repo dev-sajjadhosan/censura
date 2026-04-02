@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import VerifyEmailContent from "@/components/Modules/Auth/verify-email-content";
 
 export default async function VerifyEmailPage() {

@@ -8,14 +8,15 @@ import PricingSection from "@/components/Modules/Home/PricingSection";
 import { useQuery } from "@tanstack/react-query";
 import { IProfileResponse } from "@/types/auth.types";
 import HeroSkeleton from "./HeroSkeleton";
+import NewsletterSection from "./Newsletter";
 
 export default function HomeClient({ user }: { user: IProfileResponse }) {
   const { data, isLoading, isPending } = useQuery({
     queryKey: ["media"],
     queryFn: () => getAllMedia(),
   });
-  const mediaList = data?.data.data || ([] as any);
-  // const totalPages = data?.data.meta?.totalPages;
+  const mediaList = data?.data || ([] as any);
+  // const totalPages = data?.meta?.totalPages;
 
   const featuredMedia = mediaList?.length > 0 ? mediaList[0] : null;
 
@@ -58,7 +59,7 @@ export default function HomeClient({ user }: { user: IProfileResponse }) {
           user={user}
         />
       </div>
-
+      <NewsletterSection />
       <div className="mt-20 border-t border-white/5 pt-10">
         <PricingSection user={user} />
       </div>

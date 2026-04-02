@@ -36,7 +36,7 @@ export const loginAction = async (
 
     // console.log("Login action response---------------------: ", res);
 
-    const { accessToken, refreshToken, token, user } = res.data;
+    const { accessToken, refreshToken, token, user } = res?.data;
 
     const { role, emailVerified, needPasswordChange, email } = user;
 

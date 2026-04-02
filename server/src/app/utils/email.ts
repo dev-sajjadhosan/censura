@@ -5,7 +5,7 @@ import path from "path";
 import ejs from "ejs";
 import AppError from "../error-helpers/AppError";
 
-const transporter = nodemailer.createTransport({
+export const transporter = nodemailer.createTransport({
     host: envVars.EMAIL_SENDER.SMTP_HOST,
     port: Number(envVars.EMAIL_SENDER.SMTP_PORT),
     secure: true,

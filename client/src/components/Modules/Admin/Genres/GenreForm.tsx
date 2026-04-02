@@ -204,7 +204,7 @@ export const GenreForm = ({
           />
         </div>
 
-        <div className="flex items-center gap-9 col-span-2">
+        <div className="flex flex-col md:flex-row items-center gap-9 col-span-2">
           <div className="flex items-center justify-between w-full">
             <div className="space-y-0.5">
               <Label className="text-sm">Visibility Status</Label>

@@ -114,7 +114,7 @@ export default function MediaForm({
         form.handleSubmit(e);
       }}
       noValidate
-      className="space-y-8 w-9/12 mx-auto mt-15"
+      className="space-y-8 md:w-9/12 mx-auto mt-15"
     >
       {/* Basic Info */}
       <section className="space-y-5">

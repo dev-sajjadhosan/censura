@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import UsersClient from "@/components/Modules/Admin/UsersClient";
 
 export const metadata = {

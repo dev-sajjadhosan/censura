@@ -1,11 +1,15 @@
+
 import { Suspense } from "react";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+} from "@/components/ui/sidebar";
 import { ExploreSidebar } from "@/components/Modules/Explore/ExploreSidebar";
 import MediaGrid from "@/components/Modules/Media/MediaGrid";
 import { MediaGridSkeleton } from "@/components/Modules/Media/MediaGridSkeleton";
 import SearchBar from "@/components/Modules/Home/SearchBar";
 import { getCurrentUser } from "@/services/user.service";
-import { IProfileResponse } from "@/types/auth.types";
+import MobileFilterTrigger from "@/components/Modules/Explore/MobileFilterTrigger";
 
 type Params = { [key: string]: string | string[] | undefined };
 
@@ -15,16 +19,20 @@ export default async function ExplorePage({
   searchParams: Promise<Params>;
 }) {
   const params = await searchParams;
-const user = await getCurrentUser()
+  const user = await getCurrentUser();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SidebarProvider>
         <ExploreSidebar />
+
+        {/* Mobile floating filter button */}
+        <MobileFilterTrigger />
+
         <SidebarInset className="bg-background/91">
           <main className="container mx-auto px-4 md:px-8">
             <div className="h-60 mt-5 w-full flex items-center justify-center">
-              <div className="w-full max-w-4xl ">
+              <div className="w-full max-w-4xl">
                 <div className="flex flex-col items-center gap-3 mb-9">
                   <h1 className="text-4xl font-bold text-neutral-200">
                     Explore
@@ -33,7 +41,7 @@ const user = await getCurrentUser()
                     Search for movies, series, or reviews.
                   </p>
                 </div>
-                <SearchBar className="w-full py-3 " />
+                <SearchBar className="w-full py-3" />
               </div>
             </div>
             <Suspense

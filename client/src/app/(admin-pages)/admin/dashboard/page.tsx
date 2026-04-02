@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import {
   adminGetAllMedia,
   adminGetAllReviews,
@@ -30,7 +32,7 @@ export const metadata = {
 async function getDashboardData() {
   const results = await Promise.allSettled([
     adminGetAllMedia({ limit: 5, sortBy: "reviewCount", sortOrder: "desc" }),
-    adminGetAllReviews({ status: "PENDING", limit: 8 }),
+    adminGetAllReviews({ status: "UNPUBLISHED", limit: 8 }),
     adminGetAllUsers({ limit: 1 }),
     adminGetDashboardStats(),
   ]);

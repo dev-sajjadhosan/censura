@@ -1,7 +1,11 @@
+export const dynamic = "force-dynamic";
+
+import ForgotPasswordContent from "@/components/Modules/Auth/forgot-password-content";
+
 export default function ForgotPasswordPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <h1>ForgotPasswordPage</h1>
+    <div className="flex items-center justify-center h-screen">
+      <ForgotPasswordContent />
     </div>
   );
 }

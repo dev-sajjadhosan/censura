@@ -4,11 +4,11 @@ import AppError from "../../error-helpers/AppError";
 import { auth } from "../../lib/auth";
 import { prisma } from "../../lib/prisma";
 import { IChangePassword, ILoginUser, IRegisterUser } from "./auth.interface";
-import { tokenUtils } from "../../utils/token";
 import { IRequestUser } from "../../interfaces";
-import { jwtUtils } from "../../utils/jwt";
 import { envVars } from "../../config/env";
 import { JwtPayload } from "jsonwebtoken";
+import { getAccessToken, getRefreshToken } from "../../utils/token";
+import { verifyToken } from "../../utils/jwt";
 
 const register = async (user: any) => {
   const { name, email, password, role, acceptTerms, rememberMe } = user;
@@ -37,7 +37,7 @@ const register = async (user: any) => {
       });
     });
 
-    const accessToken = tokenUtils.getAccessToken({
+    const accessToken = getAccessToken({
       userId: data.user.id,
       role: data.user.role,
       email: data.user.email,
@@ -47,7 +47,7 @@ const register = async (user: any) => {
       emailVerified: data.user.emailVerified,
     });
 
-    const refreshToken = tokenUtils.getRefreshToken({
+    const refreshToken = getRefreshToken({
       userId: data.user.id,
       role: data.user.role,
       email: data.user.email,
@@ -117,7 +117,7 @@ const login = async (user: ILoginUser) => {
     );
   }
 
-  const accessToken = tokenUtils.getAccessToken({
+  const accessToken = getAccessToken({
     userId: data.user.id,
     role: data.user.role,
     email: data.user.email,
@@ -127,7 +127,7 @@ const login = async (user: ILoginUser) => {
     emailVerified: data.user.emailVerified,
   });
 
-  const refreshToken = tokenUtils.getRefreshToken({
+  const refreshToken = getRefreshToken({
     userId: data.user.id,
     role: data.user.role,
     email: data.user.email,
@@ -149,7 +149,6 @@ const logout = async (sessionToken: string) => {
 
   return result;
 };
-
 const verifyEmail = async (email: string, otp: string) => {
   const result = await auth.api.verifyEmailOTP({
     body: {
@@ -173,7 +172,10 @@ const verifyEmail = async (email: string, otp: string) => {
   return result;
 };
 
-const sendVerifyOtp = async (email: string, type: "sign-in" | "email-verification" | "forget-password" | "change-email") => {
+const sendVerifyOtp = async (
+  email: string,
+  type: "sign-in" | "email-verification" | "forget-password" | "change-email",
+) => {
   const user = await prisma.user.findUnique({
     where: {
       email,
@@ -218,22 +220,13 @@ const changePassword = async (
   payload: IChangePassword,
   sessionToken: string,
 ) => {
-  const session = await auth.api.getSession({
-    headers: new Headers({
-      Authorization: `Bearer ${sessionToken}`,
-    }),
-  });
-
-  if (!session) {
-    throw new AppError(status.UNAUTHORIZED, "invalid session token!");
-  }
-
   const { confirmPassword, newPassword, oldPassword } = payload;
 
   if (newPassword !== confirmPassword) {
-    throw new AppError(status.FORBIDDEN, "Password not match");
+    throw new AppError(status.FORBIDDEN, "Passwords do not match");
   }
 
+  // 1. Change password and get the NEW session token
   const result = await auth.api.changePassword({
     body: {
       currentPassword: oldPassword,
@@ -245,38 +238,48 @@ const changePassword = async (
     }),
   });
 
-  if (session.user.needPasswordChange) {
+  // result.token is the new session token generated after revoking others
+  const newToken = result?.token;
+
+  if (!newToken) {
+    throw new AppError(status.UNAUTHORIZED, "Failed to generate new session.");
+  }
+
+  // 2. Fetch updated session using the NEW token
+  const updatedSession = await auth.api.getSession({
+    headers: { 
+      Authorization: `Bearer ${newToken}` 
+    },
+  });
+
+  if (!updatedSession) {
+    throw new AppError(status.UNAUTHORIZED, "Session invalidated. Please log in again.");
+  }
+
+  // 3. Update DB flags if necessary
+  if (updatedSession.user.needPasswordChange) {
     await prisma.user.update({
-      where: {
-        id: session.user.id,
-      },
-      data: {
-        needPasswordChange: false,
-      },
+      where: { id: updatedSession.user.id },
+      data: { needPasswordChange: false },
     });
   }
 
-  const accessToken = tokenUtils.getAccessToken({
-    userId: session.user.id,
-    role: session.user.role,
-    email: session.user.email,
-    name: session.user.name,
-    status: session.user.status,
-    isDeleted: session.user.isDeleted,
-    emailVerified: session.user.emailVerified,
-  });
+  // 4. Generate your custom JWTs using the updated user data
+  const tokenPayload = {
+    userId: updatedSession.user.id,
+    role: updatedSession.user.role,
+    email: updatedSession.user.email,
+    name: updatedSession.user.name,
+    status: updatedSession.user.status,
+    isDeleted: updatedSession.user.isDeleted,
+    emailVerified: updatedSession.user.emailVerified,
+  };
 
-  const refreshToken = tokenUtils.getRefreshToken({
-    userId: session.user.id,
-    role: session.user.role,
-    email: session.user.email,
-    name: session.user.name,
-    status: session.user.status,
-    isDeleted: session.user.isDeleted,
-    emailVerified: session.user.emailVerified,
-  });
+  const accessToken = getAccessToken(tokenPayload);
+  const refreshToken = getRefreshToken(tokenPayload);
 
-  return { ...result, accessToken, refreshToken };
+  // Return the new Better-Auth token along with your custom JWTs
+  return { ...result, accessToken, refreshToken, token: newToken };
 };
 
 const forgotPassword = async (email: string) => {
@@ -447,7 +450,7 @@ const getNewToken = async (refreshToken: string, sessionToken: string) => {
     throw new AppError(status.UNAUTHORIZED, "Invalid session token");
   }
 
-  const verifiedRefreshToken = jwtUtils.verifyToken(
+  const verifiedRefreshToken = verifyToken(
     refreshToken,
     envVars.REFRESH_TOKEN_SECRET,
   );
@@ -458,7 +461,7 @@ const getNewToken = async (refreshToken: string, sessionToken: string) => {
 
   const data = verifiedRefreshToken.data as JwtPayload;
 
-  const newAccessToken = tokenUtils.getAccessToken({
+  const newAccessToken = getAccessToken({
     userId: data.userId,
     role: data.role,
     name: data.name,
@@ -468,7 +471,7 @@ const getNewToken = async (refreshToken: string, sessionToken: string) => {
     emailVerified: data.emailVerified,
   });
 
-  const newRefreshToken = tokenUtils.getRefreshToken({
+  const newRefreshToken = getRefreshToken({
     userId: data.userId,
     role: data.role,
     name: data.name,
@@ -507,7 +510,7 @@ const googleLoginSuccess = async (session: Record<string, any>) => {
     throw new AppError(status.UNAUTHORIZED, "Invalid session token");
   }
 
-  const accessToken = tokenUtils.getAccessToken({
+  const accessToken = getAccessToken({
     userId: user.id,
     role: user.role,
     name: user.name,
@@ -517,7 +520,7 @@ const googleLoginSuccess = async (session: Record<string, any>) => {
     emailVerified: user.emailVerified,
   });
 
-  const refreshToken = tokenUtils.getRefreshToken({
+  const refreshToken = getRefreshToken({
     userId: user.id,
     role: user.role,
     name: user.name,

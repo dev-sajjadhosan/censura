@@ -97,7 +97,7 @@ export const PlatformForm = ({
 
   return (
     <form
-      className="space-y-6 w-9/12 mx-auto"
+      className="space-y-6 md:w-9/12 mx-auto"
       noValidate
       onSubmit={(e) => {
         e.preventDefault();

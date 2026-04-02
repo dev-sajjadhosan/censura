@@ -56,7 +56,7 @@ const MediaTable = ({
     defaultLimit: DEFAULT_LIMIT,
   });
 
-  const queryString = queryStringFromUrl || initialQueryString || "";
+  const queryString = queryStringFromUrl || "";
 
   const { searchFromUrl, handleDebouncedSearchChange } =
     useServerManagedDataTableSearch({
@@ -77,8 +77,12 @@ const MediaTable = ({
       adminGetAllMedia(Object.fromEntries(new URLSearchParams(queryString))),
   });
 
-  const items = (data as any)?.data?.data || [];
-  const meta = (data as any)?.data?.meta;
+  const items = (data as any)?.data || [];
+  const meta = (data as any)?.meta;
+
+
+  console.log(data?.data);
+
 
   const filterConfigs = useMemo<TanTableFilterConfig[]>(() => {
     return [

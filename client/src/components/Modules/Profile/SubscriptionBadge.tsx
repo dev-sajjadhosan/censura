@@ -61,12 +61,16 @@ export default function SubscriptionBadge({
     <div
       className={`w-full h-full p-5 rounded-xl border flex flex-col items-center justify-between gap-3 ${config.bg} ${config.border}`}
     >
-      {isActive && subscription?.currentPeriodEnd && (
+      {isActive && subscription?.currentPeriodEnd ? (
         <div className="flex items-center justify-between w-full">
           <p className="text-xs text-muted-foreground">Renews on</p>
           <p className="text-xs font-medium text-orange-500">
             {formatDate(subscription.currentPeriodEnd)}
           </p>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center w-full h-15 bg-secondary text-muted-foreground tracking-widest">
+          UPGRADE TO PREMIUM
         </div>
       )}
       <div className="flex flex-col items-center gap-2">

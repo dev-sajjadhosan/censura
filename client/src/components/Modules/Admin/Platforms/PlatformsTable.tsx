@@ -166,7 +166,7 @@ export const PlatformsClient = ({
   );
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between p-7">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-5 p-5">
         <div className="relative z-10 flex flex-col gap-2">
           <h1 className="text-2xl tracking-tight">Streaming Portals</h1>
           <p className="text-muted-foreground text-sm max-w-xl font-medium">

@@ -82,6 +82,11 @@ export type MediaPlatform = Prisma.MediaPlatformModel
  */
 export type MediaPurchase = Prisma.MediaPurchaseModel
 /**
+ * Model Newsletter
+ * 
+ */
+export type Newsletter = Prisma.NewsletterModel
+/**
  * Model Payment
  * 
  */

@@ -29,6 +29,7 @@ const registerSchema = z.object({
 const changePasswordSchema = z.object({
   oldPassword: z.string().min(6, "Password must be at least 6 characters long"),
   newPassword: z.string().min(6, "Password must be at least 6 characters long"),
+  confirmPassword: z.string().min(6, "Password must be at least 6 characters long"),
   // .regex(
   //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
   //   "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character",

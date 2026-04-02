@@ -8,11 +8,10 @@ import {
   MessageSquare,
   Users,
   BarChart3,
-  LogOut,
-  Shield,
   Clapperboard,
   Tag,
   ChevronRight,
+  Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { IProfileResponse } from "@/types/auth.types";
@@ -24,7 +23,6 @@ import {
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
@@ -42,24 +40,14 @@ import {
 import { NavUser } from "./Users/NavUser";
 
 const navItems = [
-  {
-    label: "Dashboard",
-    href: "/admin/dashboard",
-    icon: LayoutDashboard,
-  },
+  { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
   {
     label: "Media Library",
     href: "/admin/media",
     icon: Film,
     children: [
-      {
-        label: "Create Media",
-        href: "/admin/media/create",
-      },
-      {
-        label: "All Media",
-        href: "/admin/media",
-      },
+      { label: "Create Media", href: "/admin/media/create" },
+      { label: "All Media", href: "/admin/media" },
     ],
   },
   {
@@ -67,14 +55,8 @@ const navItems = [
     href: "/admin/genres",
     icon: Tag,
     children: [
-      {
-        label: "Create Genre",
-        href: "/admin/genres/create",
-      },
-      {
-        label: "All Genres",
-        href: "/admin/genres",
-      },
+      { label: "Create Genre", href: "/admin/genres/create" },
+      { label: "All Genres", href: "/admin/genres" },
     ],
   },
   {
@@ -82,31 +64,13 @@ const navItems = [
     href: "/admin/platforms",
     icon: Clapperboard,
     children: [
-      {
-        label: "Create Platform",
-        href: "/admin/platforms/create",
-      },
-      {
-        label: "All Platforms",
-        href: "/admin/platforms",
-      },
+      { label: "Create Platform", href: "/admin/platforms/create" },
+      { label: "All Platforms", href: "/admin/platforms" },
     ],
   },
-  {
-    label: "Reviews",
-    href: "/admin/reviews",
-    icon: MessageSquare,
-  },
-  {
-    label: "Users",
-    href: "/admin/users",
-    icon: Users,
-  },
-  {
-    label: "Analytics",
-    href: "/admin/analytics",
-    icon: BarChart3,
-  },
+  { label: "Reviews", href: "/admin/reviews", icon: MessageSquare },
+  { label: "Users", href: "/admin/users", icon: Users },
+  { label: "Analytics", href: "/admin/analytics", icon: BarChart3 },
 ];
 
 export default function AdminSidebar({ user }: { user: IProfileResponse }) {
@@ -116,17 +80,17 @@ export default function AdminSidebar({ user }: { user: IProfileResponse }) {
 
   return (
     <Sidebar collapsible="icon" className="border-r border-border">
-      {/* Header */}
       <SidebarHeader className="py-4 border-b border-border">
         <div className="flex items-center gap-3 px-2">
-          <div>
-            <SidebarTrigger className="-ml-1" />
-          </div>
+          <SidebarTrigger className="-ml-1" />
           {!isCollapsed && (
             <div className="flex flex-col min-w-0">
-              <span className="font-bold text-sm tracking-tight leading-none">
-                Censura
-              </span>
+              <div className="flex items-center gap-1.5">
+                <Shield className="size-3.5 text-primary" />
+                <span className="font-bold text-sm tracking-tight leading-none">
+                  Censura
+                </span>
+              </div>
               <span className="text-[10px] text-muted-foreground uppercase font-medium tracking-widest mt-0.5">
                 Admin Panel
               </span>
@@ -135,7 +99,6 @@ export default function AdminSidebar({ user }: { user: IProfileResponse }) {
         </div>
       </SidebarHeader>
 
-      {/* Main Content */}
       <SidebarContent className="py-2">
         <SidebarGroup>
           <SidebarGroupContent>
@@ -167,9 +130,7 @@ export default function AdminSidebar({ user }: { user: IProfileResponse }) {
                                 : "text-muted-foreground hover:bg-muted/80 hover:text-foreground",
                             )}
                           >
-                            {item.icon && (
-                              <item.icon className="size-4.5 shrink-0" />
-                            )}
+                            {item.icon && <item.icon className="size-4 shrink-0" />}
                             <span>{item.label}</span>
                             <ChevronRight className="ml-auto size-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                           </SidebarMenuButton>
@@ -209,7 +170,7 @@ export default function AdminSidebar({ user }: { user: IProfileResponse }) {
                       )}
                     >
                       <Link href={item.href}>
-                        <item.icon className="size-4.5 shrink-0" />
+                        <item.icon className="size-4 shrink-0" />
                         <span>{item.label}</span>
                       </Link>
                     </SidebarMenuButton>
@@ -221,8 +182,7 @@ export default function AdminSidebar({ user }: { user: IProfileResponse }) {
         </SidebarGroup>
       </SidebarContent>
 
-      {/* Footer */}
-      <SidebarFooter className="border-t border-border p-2 gap-2">
+      <SidebarFooter className="border-t border-border p-2">
         <SidebarMenu>
           <NavUser user={user} />
         </SidebarMenu>

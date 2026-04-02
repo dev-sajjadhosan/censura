@@ -1,17 +1,19 @@
 import { NextFunction, Request, Response } from "express";
 import { Role, UserStatus } from "../../generated/prisma/enums";
-import { CookieUtils } from "../utils/cookie";
+
 import status from "http-status";
 import AppError from "../error-helpers/AppError";
 import { prisma } from "../lib/prisma";
-import { jwtUtils } from "../utils/jwt";
+
 import { envVars } from "../config/env";
+import { getCookie } from "../utils/cookie";
+import { verifyToken } from "../utils/jwt";
 
 export const checkAuth = (...authRoles: Role[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       // 1. Check session token
-      const sessionToken = CookieUtils.getCookie(
+      const sessionToken = getCookie(
         req,
         "better-auth.session_token",
       );
@@ -73,23 +75,23 @@ export const checkAuth = (...authRoles: Role[]) => {
       }
 
       // 6. Check access token
-      const accessToken = CookieUtils.getCookie(req, "accessToken");
+      const accessToken = getCookie(req, "accessToken");
       if (!accessToken) {
         throw new AppError(status.UNAUTHORIZED, "No access token provided.");
       }
 
-      const verifyToken = jwtUtils.verifyToken(
+      const verifyTokenResult = verifyToken(
         accessToken,
         envVars.ACCESS_TOKEN_SECRET,
       );
-      if (!verifyToken.success) {
+      if (!verifyTokenResult.success) {
         throw new AppError(status.UNAUTHORIZED, "Invalid access token.");
       }
 
       // 7. Role check
       if (
         authRoles.length > 0 &&
-        !authRoles.includes(verifyToken.data!.role as Role)
+        !authRoles.includes(verifyTokenResult.data!.role as Role)
       ) {
         throw new AppError(
           status.FORBIDDEN,

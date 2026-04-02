@@ -37,10 +37,12 @@ export type PaymentSumAggregateOutputType = {
 export type PaymentMinAggregateOutputType = {
   id: string | null
   subscriptionId: string | null
+  userId: string | null
   amount: number | null
   currency: string | null
   stripePaymentId: string | null
   status: string | null
+  mediaPurchaseId: string | null
   createdAt: Date | null
   rentalId: string | null
 }
@@ -48,10 +50,12 @@ export type PaymentMinAggregateOutputType = {
 export type PaymentMaxAggregateOutputType = {
   id: string | null
   subscriptionId: string | null
+  userId: string | null
   amount: number | null
   currency: string | null
   stripePaymentId: string | null
   status: string | null
+  mediaPurchaseId: string | null
   createdAt: Date | null
   rentalId: string | null
 }
@@ -59,10 +63,12 @@ export type PaymentMaxAggregateOutputType = {
 export type PaymentCountAggregateOutputType = {
   id: number
   subscriptionId: number
+  userId: number
   amount: number
   currency: number
   stripePaymentId: number
   status: number
+  mediaPurchaseId: number
   createdAt: number
   rentalId: number
   _all: number
@@ -80,10 +86,12 @@ export type PaymentSumAggregateInputType = {
 export type PaymentMinAggregateInputType = {
   id?: true
   subscriptionId?: true
+  userId?: true
   amount?: true
   currency?: true
   stripePaymentId?: true
   status?: true
+  mediaPurchaseId?: true
   createdAt?: true
   rentalId?: true
 }
@@ -91,10 +99,12 @@ export type PaymentMinAggregateInputType = {
 export type PaymentMaxAggregateInputType = {
   id?: true
   subscriptionId?: true
+  userId?: true
   amount?: true
   currency?: true
   stripePaymentId?: true
   status?: true
+  mediaPurchaseId?: true
   createdAt?: true
   rentalId?: true
 }
@@ -102,10 +112,12 @@ export type PaymentMaxAggregateInputType = {
 export type PaymentCountAggregateInputType = {
   id?: true
   subscriptionId?: true
+  userId?: true
   amount?: true
   currency?: true
   stripePaymentId?: true
   status?: true
+  mediaPurchaseId?: true
   createdAt?: true
   rentalId?: true
   _all?: true
@@ -199,11 +211,13 @@ export type PaymentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type PaymentGroupByOutputType = {
   id: string
-  subscriptionId: string
+  subscriptionId: string | null
+  userId: string
   amount: number
   currency: string
   stripePaymentId: string | null
   status: string
+  mediaPurchaseId: string | null
   createdAt: Date
   rentalId: string | null
   _count: PaymentCountAggregateOutputType | null
@@ -233,30 +247,36 @@ export type PaymentWhereInput = {
   OR?: Prisma.PaymentWhereInput[]
   NOT?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[]
   id?: Prisma.StringFilter<"Payment"> | string
-  subscriptionId?: Prisma.StringFilter<"Payment"> | string
+  subscriptionId?: Prisma.StringNullableFilter<"Payment"> | string | null
+  userId?: Prisma.StringFilter<"Payment"> | string
   amount?: Prisma.FloatFilter<"Payment"> | number
   currency?: Prisma.StringFilter<"Payment"> | string
   stripePaymentId?: Prisma.StringNullableFilter<"Payment"> | string | null
   status?: Prisma.StringFilter<"Payment"> | string
+  mediaPurchaseId?: Prisma.StringNullableFilter<"Payment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
   rentalId?: Prisma.StringNullableFilter<"Payment"> | string | null
-  subscription?: Prisma.XOR<Prisma.SubscriptionScalarRelationFilter, Prisma.SubscriptionWhereInput>
+  subscription?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  mediaPurchase?: Prisma.XOR<Prisma.MediaPurchaseNullableScalarRelationFilter, Prisma.MediaPurchaseWhereInput> | null
   rental?: Prisma.XOR<Prisma.RentalNullableScalarRelationFilter, Prisma.RentalWhereInput> | null
-  mediaPurchases?: Prisma.MediaPurchaseListRelationFilter
 }
 
 export type PaymentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  subscriptionId?: Prisma.SortOrder
+  subscriptionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  userId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   stripePaymentId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  mediaPurchaseId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   rentalId?: Prisma.SortOrderInput | Prisma.SortOrder
   subscription?: Prisma.SubscriptionOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
+  mediaPurchase?: Prisma.MediaPurchaseOrderByWithRelationInput
   rental?: Prisma.RentalOrderByWithRelationInput
-  mediaPurchases?: Prisma.MediaPurchaseOrderByRelationAggregateInput
 }
 
 export type PaymentWhereUniqueInput = Prisma.AtLeast<{
@@ -265,24 +285,29 @@ export type PaymentWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[]
   OR?: Prisma.PaymentWhereInput[]
   NOT?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[]
-  subscriptionId?: Prisma.StringFilter<"Payment"> | string
+  subscriptionId?: Prisma.StringNullableFilter<"Payment"> | string | null
+  userId?: Prisma.StringFilter<"Payment"> | string
   amount?: Prisma.FloatFilter<"Payment"> | number
   currency?: Prisma.StringFilter<"Payment"> | string
   status?: Prisma.StringFilter<"Payment"> | string
+  mediaPurchaseId?: Prisma.StringNullableFilter<"Payment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
   rentalId?: Prisma.StringNullableFilter<"Payment"> | string | null
-  subscription?: Prisma.XOR<Prisma.SubscriptionScalarRelationFilter, Prisma.SubscriptionWhereInput>
+  subscription?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  mediaPurchase?: Prisma.XOR<Prisma.MediaPurchaseNullableScalarRelationFilter, Prisma.MediaPurchaseWhereInput> | null
   rental?: Prisma.XOR<Prisma.RentalNullableScalarRelationFilter, Prisma.RentalWhereInput> | null
-  mediaPurchases?: Prisma.MediaPurchaseListRelationFilter
 }, "id" | "stripePaymentId">
 
 export type PaymentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  subscriptionId?: Prisma.SortOrder
+  subscriptionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  userId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   stripePaymentId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  mediaPurchaseId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   rentalId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.PaymentCountOrderByAggregateInput
@@ -297,11 +322,13 @@ export type PaymentScalarWhereWithAggregatesInput = {
   OR?: Prisma.PaymentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PaymentScalarWhereWithAggregatesInput | Prisma.PaymentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Payment"> | string
-  subscriptionId?: Prisma.StringWithAggregatesFilter<"Payment"> | string
+  subscriptionId?: Prisma.StringNullableWithAggregatesFilter<"Payment"> | string | null
+  userId?: Prisma.StringWithAggregatesFilter<"Payment"> | string
   amount?: Prisma.FloatWithAggregatesFilter<"Payment"> | number
   currency?: Prisma.StringWithAggregatesFilter<"Payment"> | string
   stripePaymentId?: Prisma.StringNullableWithAggregatesFilter<"Payment"> | string | null
   status?: Prisma.StringWithAggregatesFilter<"Payment"> | string
+  mediaPurchaseId?: Prisma.StringNullableWithAggregatesFilter<"Payment"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Payment"> | Date | string
   rentalId?: Prisma.StringNullableWithAggregatesFilter<"Payment"> | string | null
 }
@@ -313,21 +340,23 @@ export type PaymentCreateInput = {
   stripePaymentId?: string | null
   status: string
   createdAt?: Date | string
-  subscription: Prisma.SubscriptionCreateNestedOneWithoutPaymentsInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutPaymentsInput
+  user: Prisma.UserCreateNestedOneWithoutPaymentsInput
+  mediaPurchase?: Prisma.MediaPurchaseCreateNestedOneWithoutPaymentsInput
   rental?: Prisma.RentalCreateNestedOneWithoutPaymentsInput
-  mediaPurchases?: Prisma.MediaPurchaseCreateNestedManyWithoutPaymentInput
 }
 
 export type PaymentUncheckedCreateInput = {
   id?: string
-  subscriptionId: string
+  subscriptionId?: string | null
+  userId: string
   amount: number
   currency?: string
   stripePaymentId?: string | null
   status: string
+  mediaPurchaseId?: string | null
   createdAt?: Date | string
   rentalId?: string | null
-  mediaPurchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutPaymentInput
 }
 
 export type PaymentUpdateInput = {
@@ -337,30 +366,34 @@ export type PaymentUpdateInput = {
   stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  subscription?: Prisma.SubscriptionUpdateOneRequiredWithoutPaymentsNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutPaymentsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutPaymentsNestedInput
+  mediaPurchase?: Prisma.MediaPurchaseUpdateOneWithoutPaymentsNestedInput
   rental?: Prisma.RentalUpdateOneWithoutPaymentsNestedInput
-  mediaPurchases?: Prisma.MediaPurchaseUpdateManyWithoutPaymentNestedInput
 }
 
 export type PaymentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  subscriptionId?: Prisma.StringFieldUpdateOperationsInput | string
+  subscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  mediaPurchaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rentalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mediaPurchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutPaymentNestedInput
 }
 
 export type PaymentCreateManyInput = {
   id?: string
-  subscriptionId: string
+  subscriptionId?: string | null
+  userId: string
   amount: number
   currency?: string
   stripePaymentId?: string | null
   status: string
+  mediaPurchaseId?: string | null
   createdAt?: Date | string
   rentalId?: string | null
 }
@@ -376,59 +409,15 @@ export type PaymentUpdateManyMutationInput = {
 
 export type PaymentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  subscriptionId?: Prisma.StringFieldUpdateOperationsInput | string
+  subscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  mediaPurchaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rentalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-}
-
-export type PaymentNullableScalarRelationFilter = {
-  is?: Prisma.PaymentWhereInput | null
-  isNot?: Prisma.PaymentWhereInput | null
-}
-
-export type PaymentCountOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  subscriptionId?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
-  currency?: Prisma.SortOrder
-  stripePaymentId?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  rentalId?: Prisma.SortOrder
-}
-
-export type PaymentAvgOrderByAggregateInput = {
-  amount?: Prisma.SortOrder
-}
-
-export type PaymentMaxOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  subscriptionId?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
-  currency?: Prisma.SortOrder
-  stripePaymentId?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  rentalId?: Prisma.SortOrder
-}
-
-export type PaymentMinOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  subscriptionId?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
-  currency?: Prisma.SortOrder
-  stripePaymentId?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  rentalId?: Prisma.SortOrder
-}
-
-export type PaymentSumOrderByAggregateInput = {
-  amount?: Prisma.SortOrder
 }
 
 export type PaymentListRelationFilter = {
@@ -441,20 +430,93 @@ export type PaymentOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type PaymentCreateNestedOneWithoutMediaPurchasesInput = {
-  create?: Prisma.XOR<Prisma.PaymentCreateWithoutMediaPurchasesInput, Prisma.PaymentUncheckedCreateWithoutMediaPurchasesInput>
-  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutMediaPurchasesInput
-  connect?: Prisma.PaymentWhereUniqueInput
+export type PaymentCountOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  subscriptionId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  amount?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
+  stripePaymentId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  mediaPurchaseId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  rentalId?: Prisma.SortOrder
 }
 
-export type PaymentUpdateOneWithoutMediaPurchasesNestedInput = {
-  create?: Prisma.XOR<Prisma.PaymentCreateWithoutMediaPurchasesInput, Prisma.PaymentUncheckedCreateWithoutMediaPurchasesInput>
-  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutMediaPurchasesInput
-  upsert?: Prisma.PaymentUpsertWithoutMediaPurchasesInput
-  disconnect?: Prisma.PaymentWhereInput | boolean
-  delete?: Prisma.PaymentWhereInput | boolean
-  connect?: Prisma.PaymentWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.PaymentUpdateToOneWithWhereWithoutMediaPurchasesInput, Prisma.PaymentUpdateWithoutMediaPurchasesInput>, Prisma.PaymentUncheckedUpdateWithoutMediaPurchasesInput>
+export type PaymentAvgOrderByAggregateInput = {
+  amount?: Prisma.SortOrder
+}
+
+export type PaymentMaxOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  subscriptionId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  amount?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
+  stripePaymentId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  mediaPurchaseId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  rentalId?: Prisma.SortOrder
+}
+
+export type PaymentMinOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  subscriptionId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  amount?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
+  stripePaymentId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  mediaPurchaseId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  rentalId?: Prisma.SortOrder
+}
+
+export type PaymentSumOrderByAggregateInput = {
+  amount?: Prisma.SortOrder
+}
+
+export type PaymentCreateNestedManyWithoutMediaPurchaseInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutMediaPurchaseInput, Prisma.PaymentUncheckedCreateWithoutMediaPurchaseInput> | Prisma.PaymentCreateWithoutMediaPurchaseInput[] | Prisma.PaymentUncheckedCreateWithoutMediaPurchaseInput[]
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutMediaPurchaseInput | Prisma.PaymentCreateOrConnectWithoutMediaPurchaseInput[]
+  createMany?: Prisma.PaymentCreateManyMediaPurchaseInputEnvelope
+  connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+}
+
+export type PaymentUncheckedCreateNestedManyWithoutMediaPurchaseInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutMediaPurchaseInput, Prisma.PaymentUncheckedCreateWithoutMediaPurchaseInput> | Prisma.PaymentCreateWithoutMediaPurchaseInput[] | Prisma.PaymentUncheckedCreateWithoutMediaPurchaseInput[]
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutMediaPurchaseInput | Prisma.PaymentCreateOrConnectWithoutMediaPurchaseInput[]
+  createMany?: Prisma.PaymentCreateManyMediaPurchaseInputEnvelope
+  connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+}
+
+export type PaymentUpdateManyWithoutMediaPurchaseNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutMediaPurchaseInput, Prisma.PaymentUncheckedCreateWithoutMediaPurchaseInput> | Prisma.PaymentCreateWithoutMediaPurchaseInput[] | Prisma.PaymentUncheckedCreateWithoutMediaPurchaseInput[]
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutMediaPurchaseInput | Prisma.PaymentCreateOrConnectWithoutMediaPurchaseInput[]
+  upsert?: Prisma.PaymentUpsertWithWhereUniqueWithoutMediaPurchaseInput | Prisma.PaymentUpsertWithWhereUniqueWithoutMediaPurchaseInput[]
+  createMany?: Prisma.PaymentCreateManyMediaPurchaseInputEnvelope
+  set?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  disconnect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  delete?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  update?: Prisma.PaymentUpdateWithWhereUniqueWithoutMediaPurchaseInput | Prisma.PaymentUpdateWithWhereUniqueWithoutMediaPurchaseInput[]
+  updateMany?: Prisma.PaymentUpdateManyWithWhereWithoutMediaPurchaseInput | Prisma.PaymentUpdateManyWithWhereWithoutMediaPurchaseInput[]
+  deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
+}
+
+export type PaymentUncheckedUpdateManyWithoutMediaPurchaseNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutMediaPurchaseInput, Prisma.PaymentUncheckedCreateWithoutMediaPurchaseInput> | Prisma.PaymentCreateWithoutMediaPurchaseInput[] | Prisma.PaymentUncheckedCreateWithoutMediaPurchaseInput[]
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutMediaPurchaseInput | Prisma.PaymentCreateOrConnectWithoutMediaPurchaseInput[]
+  upsert?: Prisma.PaymentUpsertWithWhereUniqueWithoutMediaPurchaseInput | Prisma.PaymentUpsertWithWhereUniqueWithoutMediaPurchaseInput[]
+  createMany?: Prisma.PaymentCreateManyMediaPurchaseInputEnvelope
+  set?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  disconnect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  delete?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  update?: Prisma.PaymentUpdateWithWhereUniqueWithoutMediaPurchaseInput | Prisma.PaymentUpdateWithWhereUniqueWithoutMediaPurchaseInput[]
+  updateMany?: Prisma.PaymentUpdateManyWithWhereWithoutMediaPurchaseInput | Prisma.PaymentUpdateManyWithWhereWithoutMediaPurchaseInput[]
+  deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
 }
 
 export type FloatFieldUpdateOperationsInput = {
@@ -549,20 +611,64 @@ export type PaymentUncheckedUpdateManyWithoutSubscriptionNestedInput = {
   deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
 }
 
-export type PaymentCreateWithoutMediaPurchasesInput = {
+export type PaymentCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutUserInput, Prisma.PaymentUncheckedCreateWithoutUserInput> | Prisma.PaymentCreateWithoutUserInput[] | Prisma.PaymentUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutUserInput | Prisma.PaymentCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.PaymentCreateManyUserInputEnvelope
+  connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+}
+
+export type PaymentUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutUserInput, Prisma.PaymentUncheckedCreateWithoutUserInput> | Prisma.PaymentCreateWithoutUserInput[] | Prisma.PaymentUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutUserInput | Prisma.PaymentCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.PaymentCreateManyUserInputEnvelope
+  connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+}
+
+export type PaymentUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutUserInput, Prisma.PaymentUncheckedCreateWithoutUserInput> | Prisma.PaymentCreateWithoutUserInput[] | Prisma.PaymentUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutUserInput | Prisma.PaymentCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.PaymentUpsertWithWhereUniqueWithoutUserInput | Prisma.PaymentUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.PaymentCreateManyUserInputEnvelope
+  set?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  disconnect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  delete?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  update?: Prisma.PaymentUpdateWithWhereUniqueWithoutUserInput | Prisma.PaymentUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.PaymentUpdateManyWithWhereWithoutUserInput | Prisma.PaymentUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
+}
+
+export type PaymentUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutUserInput, Prisma.PaymentUncheckedCreateWithoutUserInput> | Prisma.PaymentCreateWithoutUserInput[] | Prisma.PaymentUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutUserInput | Prisma.PaymentCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.PaymentUpsertWithWhereUniqueWithoutUserInput | Prisma.PaymentUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.PaymentCreateManyUserInputEnvelope
+  set?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  disconnect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  delete?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  update?: Prisma.PaymentUpdateWithWhereUniqueWithoutUserInput | Prisma.PaymentUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.PaymentUpdateManyWithWhereWithoutUserInput | Prisma.PaymentUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
+}
+
+export type PaymentCreateWithoutMediaPurchaseInput = {
   id?: string
   amount: number
   currency?: string
   stripePaymentId?: string | null
   status: string
   createdAt?: Date | string
-  subscription: Prisma.SubscriptionCreateNestedOneWithoutPaymentsInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutPaymentsInput
+  user: Prisma.UserCreateNestedOneWithoutPaymentsInput
   rental?: Prisma.RentalCreateNestedOneWithoutPaymentsInput
 }
 
-export type PaymentUncheckedCreateWithoutMediaPurchasesInput = {
+export type PaymentUncheckedCreateWithoutMediaPurchaseInput = {
   id?: string
-  subscriptionId: string
+  subscriptionId?: string | null
+  userId: string
   amount: number
   currency?: string
   stripePaymentId?: string | null
@@ -571,42 +677,46 @@ export type PaymentUncheckedCreateWithoutMediaPurchasesInput = {
   rentalId?: string | null
 }
 
-export type PaymentCreateOrConnectWithoutMediaPurchasesInput = {
+export type PaymentCreateOrConnectWithoutMediaPurchaseInput = {
   where: Prisma.PaymentWhereUniqueInput
-  create: Prisma.XOR<Prisma.PaymentCreateWithoutMediaPurchasesInput, Prisma.PaymentUncheckedCreateWithoutMediaPurchasesInput>
+  create: Prisma.XOR<Prisma.PaymentCreateWithoutMediaPurchaseInput, Prisma.PaymentUncheckedCreateWithoutMediaPurchaseInput>
 }
 
-export type PaymentUpsertWithoutMediaPurchasesInput = {
-  update: Prisma.XOR<Prisma.PaymentUpdateWithoutMediaPurchasesInput, Prisma.PaymentUncheckedUpdateWithoutMediaPurchasesInput>
-  create: Prisma.XOR<Prisma.PaymentCreateWithoutMediaPurchasesInput, Prisma.PaymentUncheckedCreateWithoutMediaPurchasesInput>
-  where?: Prisma.PaymentWhereInput
+export type PaymentCreateManyMediaPurchaseInputEnvelope = {
+  data: Prisma.PaymentCreateManyMediaPurchaseInput | Prisma.PaymentCreateManyMediaPurchaseInput[]
+  skipDuplicates?: boolean
 }
 
-export type PaymentUpdateToOneWithWhereWithoutMediaPurchasesInput = {
-  where?: Prisma.PaymentWhereInput
-  data: Prisma.XOR<Prisma.PaymentUpdateWithoutMediaPurchasesInput, Prisma.PaymentUncheckedUpdateWithoutMediaPurchasesInput>
+export type PaymentUpsertWithWhereUniqueWithoutMediaPurchaseInput = {
+  where: Prisma.PaymentWhereUniqueInput
+  update: Prisma.XOR<Prisma.PaymentUpdateWithoutMediaPurchaseInput, Prisma.PaymentUncheckedUpdateWithoutMediaPurchaseInput>
+  create: Prisma.XOR<Prisma.PaymentCreateWithoutMediaPurchaseInput, Prisma.PaymentUncheckedCreateWithoutMediaPurchaseInput>
 }
 
-export type PaymentUpdateWithoutMediaPurchasesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  subscription?: Prisma.SubscriptionUpdateOneRequiredWithoutPaymentsNestedInput
-  rental?: Prisma.RentalUpdateOneWithoutPaymentsNestedInput
+export type PaymentUpdateWithWhereUniqueWithoutMediaPurchaseInput = {
+  where: Prisma.PaymentWhereUniqueInput
+  data: Prisma.XOR<Prisma.PaymentUpdateWithoutMediaPurchaseInput, Prisma.PaymentUncheckedUpdateWithoutMediaPurchaseInput>
 }
 
-export type PaymentUncheckedUpdateWithoutMediaPurchasesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  subscriptionId?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  rentalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+export type PaymentUpdateManyWithWhereWithoutMediaPurchaseInput = {
+  where: Prisma.PaymentScalarWhereInput
+  data: Prisma.XOR<Prisma.PaymentUpdateManyMutationInput, Prisma.PaymentUncheckedUpdateManyWithoutMediaPurchaseInput>
+}
+
+export type PaymentScalarWhereInput = {
+  AND?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
+  OR?: Prisma.PaymentScalarWhereInput[]
+  NOT?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
+  id?: Prisma.StringFilter<"Payment"> | string
+  subscriptionId?: Prisma.StringNullableFilter<"Payment"> | string | null
+  userId?: Prisma.StringFilter<"Payment"> | string
+  amount?: Prisma.FloatFilter<"Payment"> | number
+  currency?: Prisma.StringFilter<"Payment"> | string
+  stripePaymentId?: Prisma.StringNullableFilter<"Payment"> | string | null
+  status?: Prisma.StringFilter<"Payment"> | string
+  mediaPurchaseId?: Prisma.StringNullableFilter<"Payment"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
+  rentalId?: Prisma.StringNullableFilter<"Payment"> | string | null
 }
 
 export type PaymentCreateWithoutRentalInput = {
@@ -616,19 +726,21 @@ export type PaymentCreateWithoutRentalInput = {
   stripePaymentId?: string | null
   status: string
   createdAt?: Date | string
-  subscription: Prisma.SubscriptionCreateNestedOneWithoutPaymentsInput
-  mediaPurchases?: Prisma.MediaPurchaseCreateNestedManyWithoutPaymentInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutPaymentsInput
+  user: Prisma.UserCreateNestedOneWithoutPaymentsInput
+  mediaPurchase?: Prisma.MediaPurchaseCreateNestedOneWithoutPaymentsInput
 }
 
 export type PaymentUncheckedCreateWithoutRentalInput = {
   id?: string
-  subscriptionId: string
+  subscriptionId?: string | null
+  userId: string
   amount: number
   currency?: string
   stripePaymentId?: string | null
   status: string
+  mediaPurchaseId?: string | null
   createdAt?: Date | string
-  mediaPurchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutPaymentInput
 }
 
 export type PaymentCreateOrConnectWithoutRentalInput = {
@@ -657,20 +769,6 @@ export type PaymentUpdateManyWithWhereWithoutRentalInput = {
   data: Prisma.XOR<Prisma.PaymentUpdateManyMutationInput, Prisma.PaymentUncheckedUpdateManyWithoutRentalInput>
 }
 
-export type PaymentScalarWhereInput = {
-  AND?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
-  OR?: Prisma.PaymentScalarWhereInput[]
-  NOT?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
-  id?: Prisma.StringFilter<"Payment"> | string
-  subscriptionId?: Prisma.StringFilter<"Payment"> | string
-  amount?: Prisma.FloatFilter<"Payment"> | number
-  currency?: Prisma.StringFilter<"Payment"> | string
-  stripePaymentId?: Prisma.StringNullableFilter<"Payment"> | string | null
-  status?: Prisma.StringFilter<"Payment"> | string
-  createdAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
-  rentalId?: Prisma.StringNullableFilter<"Payment"> | string | null
-}
-
 export type PaymentCreateWithoutSubscriptionInput = {
   id?: string
   amount: number
@@ -678,19 +776,21 @@ export type PaymentCreateWithoutSubscriptionInput = {
   stripePaymentId?: string | null
   status: string
   createdAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutPaymentsInput
+  mediaPurchase?: Prisma.MediaPurchaseCreateNestedOneWithoutPaymentsInput
   rental?: Prisma.RentalCreateNestedOneWithoutPaymentsInput
-  mediaPurchases?: Prisma.MediaPurchaseCreateNestedManyWithoutPaymentInput
 }
 
 export type PaymentUncheckedCreateWithoutSubscriptionInput = {
   id?: string
+  userId: string
   amount: number
   currency?: string
   stripePaymentId?: string | null
   status: string
+  mediaPurchaseId?: string | null
   createdAt?: Date | string
   rentalId?: string | null
-  mediaPurchases?: Prisma.MediaPurchaseUncheckedCreateNestedManyWithoutPaymentInput
 }
 
 export type PaymentCreateOrConnectWithoutSubscriptionInput = {
@@ -719,13 +819,113 @@ export type PaymentUpdateManyWithWhereWithoutSubscriptionInput = {
   data: Prisma.XOR<Prisma.PaymentUpdateManyMutationInput, Prisma.PaymentUncheckedUpdateManyWithoutSubscriptionInput>
 }
 
-export type PaymentCreateManyRentalInput = {
+export type PaymentCreateWithoutUserInput = {
   id?: string
-  subscriptionId: string
   amount: number
   currency?: string
   stripePaymentId?: string | null
   status: string
+  createdAt?: Date | string
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutPaymentsInput
+  mediaPurchase?: Prisma.MediaPurchaseCreateNestedOneWithoutPaymentsInput
+  rental?: Prisma.RentalCreateNestedOneWithoutPaymentsInput
+}
+
+export type PaymentUncheckedCreateWithoutUserInput = {
+  id?: string
+  subscriptionId?: string | null
+  amount: number
+  currency?: string
+  stripePaymentId?: string | null
+  status: string
+  mediaPurchaseId?: string | null
+  createdAt?: Date | string
+  rentalId?: string | null
+}
+
+export type PaymentCreateOrConnectWithoutUserInput = {
+  where: Prisma.PaymentWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaymentCreateWithoutUserInput, Prisma.PaymentUncheckedCreateWithoutUserInput>
+}
+
+export type PaymentCreateManyUserInputEnvelope = {
+  data: Prisma.PaymentCreateManyUserInput | Prisma.PaymentCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type PaymentUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.PaymentWhereUniqueInput
+  update: Prisma.XOR<Prisma.PaymentUpdateWithoutUserInput, Prisma.PaymentUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.PaymentCreateWithoutUserInput, Prisma.PaymentUncheckedCreateWithoutUserInput>
+}
+
+export type PaymentUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.PaymentWhereUniqueInput
+  data: Prisma.XOR<Prisma.PaymentUpdateWithoutUserInput, Prisma.PaymentUncheckedUpdateWithoutUserInput>
+}
+
+export type PaymentUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.PaymentScalarWhereInput
+  data: Prisma.XOR<Prisma.PaymentUpdateManyMutationInput, Prisma.PaymentUncheckedUpdateManyWithoutUserInput>
+}
+
+export type PaymentCreateManyMediaPurchaseInput = {
+  id?: string
+  subscriptionId?: string | null
+  userId: string
+  amount: number
+  currency?: string
+  stripePaymentId?: string | null
+  status: string
+  createdAt?: Date | string
+  rentalId?: string | null
+}
+
+export type PaymentUpdateWithoutMediaPurchaseInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subscription?: Prisma.SubscriptionUpdateOneWithoutPaymentsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutPaymentsNestedInput
+  rental?: Prisma.RentalUpdateOneWithoutPaymentsNestedInput
+}
+
+export type PaymentUncheckedUpdateWithoutMediaPurchaseInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  subscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rentalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type PaymentUncheckedUpdateManyWithoutMediaPurchaseInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  subscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rentalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type PaymentCreateManyRentalInput = {
+  id?: string
+  subscriptionId?: string | null
+  userId: string
+  amount: number
+  currency?: string
+  stripePaymentId?: string | null
+  status: string
+  mediaPurchaseId?: string | null
   createdAt?: Date | string
 }
 
@@ -736,37 +936,43 @@ export type PaymentUpdateWithoutRentalInput = {
   stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  subscription?: Prisma.SubscriptionUpdateOneRequiredWithoutPaymentsNestedInput
-  mediaPurchases?: Prisma.MediaPurchaseUpdateManyWithoutPaymentNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutPaymentsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutPaymentsNestedInput
+  mediaPurchase?: Prisma.MediaPurchaseUpdateOneWithoutPaymentsNestedInput
 }
 
 export type PaymentUncheckedUpdateWithoutRentalInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  subscriptionId?: Prisma.StringFieldUpdateOperationsInput | string
+  subscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  mediaPurchaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  mediaPurchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutPaymentNestedInput
 }
 
 export type PaymentUncheckedUpdateManyWithoutRentalInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  subscriptionId?: Prisma.StringFieldUpdateOperationsInput | string
+  subscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  mediaPurchaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PaymentCreateManySubscriptionInput = {
   id?: string
+  userId: string
   amount: number
   currency?: string
   stripePaymentId?: string | null
   status: string
+  mediaPurchaseId?: string | null
   createdAt?: Date | string
   rentalId?: string | null
 }
@@ -778,144 +984,186 @@ export type PaymentUpdateWithoutSubscriptionInput = {
   stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutPaymentsNestedInput
+  mediaPurchase?: Prisma.MediaPurchaseUpdateOneWithoutPaymentsNestedInput
   rental?: Prisma.RentalUpdateOneWithoutPaymentsNestedInput
-  mediaPurchases?: Prisma.MediaPurchaseUpdateManyWithoutPaymentNestedInput
 }
 
 export type PaymentUncheckedUpdateWithoutSubscriptionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  mediaPurchaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rentalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mediaPurchases?: Prisma.MediaPurchaseUncheckedUpdateManyWithoutPaymentNestedInput
 }
 
 export type PaymentUncheckedUpdateManyWithoutSubscriptionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  mediaPurchaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rentalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type PaymentCreateManyUserInput = {
+  id?: string
+  subscriptionId?: string | null
+  amount: number
+  currency?: string
+  stripePaymentId?: string | null
+  status: string
+  mediaPurchaseId?: string | null
+  createdAt?: Date | string
+  rentalId?: string | null
+}
+
+export type PaymentUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subscription?: Prisma.SubscriptionUpdateOneWithoutPaymentsNestedInput
+  mediaPurchase?: Prisma.MediaPurchaseUpdateOneWithoutPaymentsNestedInput
+  rental?: Prisma.RentalUpdateOneWithoutPaymentsNestedInput
+}
+
+export type PaymentUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  subscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  mediaPurchaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rentalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-
-/**
- * Count Type PaymentCountOutputType
- */
-
-export type PaymentCountOutputType = {
-  mediaPurchases: number
+export type PaymentUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  subscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  mediaPurchaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rentalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type PaymentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  mediaPurchases?: boolean | PaymentCountOutputTypeCountMediaPurchasesArgs
-}
-
-/**
- * PaymentCountOutputType without action
- */
-export type PaymentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the PaymentCountOutputType
-   */
-  select?: Prisma.PaymentCountOutputTypeSelect<ExtArgs> | null
-}
-
-/**
- * PaymentCountOutputType without action
- */
-export type PaymentCountOutputTypeCountMediaPurchasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.MediaPurchaseWhereInput
-}
 
 
 export type PaymentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   subscriptionId?: boolean
+  userId?: boolean
   amount?: boolean
   currency?: boolean
   stripePaymentId?: boolean
   status?: boolean
+  mediaPurchaseId?: boolean
   createdAt?: boolean
   rentalId?: boolean
-  subscription?: boolean | Prisma.SubscriptionDefaultArgs<ExtArgs>
+  subscription?: boolean | Prisma.Payment$subscriptionArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  mediaPurchase?: boolean | Prisma.Payment$mediaPurchaseArgs<ExtArgs>
   rental?: boolean | Prisma.Payment$rentalArgs<ExtArgs>
-  mediaPurchases?: boolean | Prisma.Payment$mediaPurchasesArgs<ExtArgs>
-  _count?: boolean | Prisma.PaymentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payment"]>
 
 export type PaymentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   subscriptionId?: boolean
+  userId?: boolean
   amount?: boolean
   currency?: boolean
   stripePaymentId?: boolean
   status?: boolean
+  mediaPurchaseId?: boolean
   createdAt?: boolean
   rentalId?: boolean
-  subscription?: boolean | Prisma.SubscriptionDefaultArgs<ExtArgs>
+  subscription?: boolean | Prisma.Payment$subscriptionArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  mediaPurchase?: boolean | Prisma.Payment$mediaPurchaseArgs<ExtArgs>
   rental?: boolean | Prisma.Payment$rentalArgs<ExtArgs>
 }, ExtArgs["result"]["payment"]>
 
 export type PaymentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   subscriptionId?: boolean
+  userId?: boolean
   amount?: boolean
   currency?: boolean
   stripePaymentId?: boolean
   status?: boolean
+  mediaPurchaseId?: boolean
   createdAt?: boolean
   rentalId?: boolean
-  subscription?: boolean | Prisma.SubscriptionDefaultArgs<ExtArgs>
+  subscription?: boolean | Prisma.Payment$subscriptionArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  mediaPurchase?: boolean | Prisma.Payment$mediaPurchaseArgs<ExtArgs>
   rental?: boolean | Prisma.Payment$rentalArgs<ExtArgs>
 }, ExtArgs["result"]["payment"]>
 
 export type PaymentSelectScalar = {
   id?: boolean
   subscriptionId?: boolean
+  userId?: boolean
   amount?: boolean
   currency?: boolean
   stripePaymentId?: boolean
   status?: boolean
+  mediaPurchaseId?: boolean
   createdAt?: boolean
   rentalId?: boolean
 }
 
-export type PaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "subscriptionId" | "amount" | "currency" | "stripePaymentId" | "status" | "createdAt" | "rentalId", ExtArgs["result"]["payment"]>
+export type PaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "subscriptionId" | "userId" | "amount" | "currency" | "stripePaymentId" | "status" | "mediaPurchaseId" | "createdAt" | "rentalId", ExtArgs["result"]["payment"]>
 export type PaymentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  subscription?: boolean | Prisma.SubscriptionDefaultArgs<ExtArgs>
+  subscription?: boolean | Prisma.Payment$subscriptionArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  mediaPurchase?: boolean | Prisma.Payment$mediaPurchaseArgs<ExtArgs>
   rental?: boolean | Prisma.Payment$rentalArgs<ExtArgs>
-  mediaPurchases?: boolean | Prisma.Payment$mediaPurchasesArgs<ExtArgs>
-  _count?: boolean | Prisma.PaymentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PaymentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  subscription?: boolean | Prisma.SubscriptionDefaultArgs<ExtArgs>
+  subscription?: boolean | Prisma.Payment$subscriptionArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  mediaPurchase?: boolean | Prisma.Payment$mediaPurchaseArgs<ExtArgs>
   rental?: boolean | Prisma.Payment$rentalArgs<ExtArgs>
 }
 export type PaymentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  subscription?: boolean | Prisma.SubscriptionDefaultArgs<ExtArgs>
+  subscription?: boolean | Prisma.Payment$subscriptionArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  mediaPurchase?: boolean | Prisma.Payment$mediaPurchaseArgs<ExtArgs>
   rental?: boolean | Prisma.Payment$rentalArgs<ExtArgs>
 }
 
 export type $PaymentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Payment"
   objects: {
-    subscription: Prisma.$SubscriptionPayload<ExtArgs>
+    subscription: Prisma.$SubscriptionPayload<ExtArgs> | null
+    user: Prisma.$UserPayload<ExtArgs>
+    mediaPurchase: Prisma.$MediaPurchasePayload<ExtArgs> | null
     rental: Prisma.$RentalPayload<ExtArgs> | null
-    mediaPurchases: Prisma.$MediaPurchasePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    subscriptionId: string
+    subscriptionId: string | null
+    userId: string
     amount: number
     currency: string
     stripePaymentId: string | null
     status: string
+    mediaPurchaseId: string | null
     createdAt: Date
     rentalId: string | null
   }, ExtArgs["result"]["payment"]>
@@ -1312,9 +1560,10 @@ readonly fields: PaymentFieldRefs;
  */
 export interface Prisma__PaymentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  subscription<T extends Prisma.SubscriptionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SubscriptionDefaultArgs<ExtArgs>>): Prisma.Prisma__SubscriptionClient<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  subscription<T extends Prisma.Payment$subscriptionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Payment$subscriptionArgs<ExtArgs>>): Prisma.Prisma__SubscriptionClient<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  mediaPurchase<T extends Prisma.Payment$mediaPurchaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Payment$mediaPurchaseArgs<ExtArgs>>): Prisma.Prisma__MediaPurchaseClient<runtime.Types.Result.GetResult<Prisma.$MediaPurchasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   rental<T extends Prisma.Payment$rentalArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Payment$rentalArgs<ExtArgs>>): Prisma.Prisma__RentalClient<runtime.Types.Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  mediaPurchases<T extends Prisma.Payment$mediaPurchasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Payment$mediaPurchasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MediaPurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1346,10 +1595,12 @@ export interface Prisma__PaymentClient<T, Null = never, ExtArgs extends runtime.
 export interface PaymentFieldRefs {
   readonly id: Prisma.FieldRef<"Payment", 'String'>
   readonly subscriptionId: Prisma.FieldRef<"Payment", 'String'>
+  readonly userId: Prisma.FieldRef<"Payment", 'String'>
   readonly amount: Prisma.FieldRef<"Payment", 'Float'>
   readonly currency: Prisma.FieldRef<"Payment", 'String'>
   readonly stripePaymentId: Prisma.FieldRef<"Payment", 'String'>
   readonly status: Prisma.FieldRef<"Payment", 'String'>
+  readonly mediaPurchaseId: Prisma.FieldRef<"Payment", 'String'>
   readonly createdAt: Prisma.FieldRef<"Payment", 'DateTime'>
   readonly rentalId: Prisma.FieldRef<"Payment", 'String'>
 }
@@ -1753,6 +2004,44 @@ export type PaymentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
+ * Payment.subscription
+ */
+export type Payment$subscriptionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Subscription
+   */
+  select?: Prisma.SubscriptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Subscription
+   */
+  omit?: Prisma.SubscriptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubscriptionInclude<ExtArgs> | null
+  where?: Prisma.SubscriptionWhereInput
+}
+
+/**
+ * Payment.mediaPurchase
+ */
+export type Payment$mediaPurchaseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MediaPurchase
+   */
+  select?: Prisma.MediaPurchaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MediaPurchase
+   */
+  omit?: Prisma.MediaPurchaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MediaPurchaseInclude<ExtArgs> | null
+  where?: Prisma.MediaPurchaseWhereInput
+}
+
+/**
  * Payment.rental
  */
 export type Payment$rentalArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1769,30 +2058,6 @@ export type Payment$rentalArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   include?: Prisma.RentalInclude<ExtArgs> | null
   where?: Prisma.RentalWhereInput
-}
-
-/**
- * Payment.mediaPurchases
- */
-export type Payment$mediaPurchasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the MediaPurchase
-   */
-  select?: Prisma.MediaPurchaseSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the MediaPurchase
-   */
-  omit?: Prisma.MediaPurchaseOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.MediaPurchaseInclude<ExtArgs> | null
-  where?: Prisma.MediaPurchaseWhereInput
-  orderBy?: Prisma.MediaPurchaseOrderByWithRelationInput | Prisma.MediaPurchaseOrderByWithRelationInput[]
-  cursor?: Prisma.MediaPurchaseWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.MediaPurchaseScalarFieldEnum | Prisma.MediaPurchaseScalarFieldEnum[]
 }
 
 /**

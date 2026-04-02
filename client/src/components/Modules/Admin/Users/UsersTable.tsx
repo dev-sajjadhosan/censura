@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import TanTable from "@/components/Shared/table/tanTable";
 import { useServerManagedDataTable } from "@/hooks/useServerManagedDataTable";
@@ -78,6 +78,15 @@ const UsersTable = ({
   const meta = (data as any)?.data?.meta;
 
   console.log("users from user-table: ", users);
+
+  useEffect(() => {
+    if (meta && meta.totalPages > 0) {
+      const currentPage = optimisticPaginationState.pageIndex + 1;
+      if (currentPage > meta.totalPages) {
+        updateParams({ page: String(meta.totalPages) });
+      }
+    }
+  }, [meta, optimisticPaginationState.pageIndex, updateParams]);
 
   const filterConfigs = useMemo<TanTableFilterConfig[]>(() => {
     return [

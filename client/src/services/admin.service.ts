@@ -154,3 +154,28 @@ export const adminDeletePlatform = async (id: string) => {
   revalidateTag("platforms", "");
   return res;
 };
+
+export const adminGetAllPayments = async (params: Record<string, any>) => {
+  const res = await axiosClient.get("/payments/all-payments", { params });
+  return res.data;
+};
+
+
+
+export const adminCommentStatusChange = async (id: string, payload: any) => {
+  const res = await axiosClient.patch(
+    `/reactions/admin/comment/status/${id}`,
+    payload,
+  );
+  return res;
+};
+
+  export const adminGetAllComments = async (params?: any) => {
+    return await axiosClient.get<ApiResult<Comment[]>>("/reactions/admin/comments", { params });
+  };
+
+
+  export const adminDeleteComment = async (id: string) => {
+    const res = await axiosClient.delete(`/reactions/admin/comment/${id}`);
+    return res;
+  }

@@ -130,6 +130,8 @@ const handleWebhook = async (body: Buffer, signature: string) => {
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
     const { userId, plan, mediaId, type } = session.metadata || {};
+    const stripePaymentId = (session.payment_intent as string) || session.id;
+    const amount = (session.amount_total || 0) / 100;
 
     if (!userId) {
       console.error("❌ Webhook Error: No userId in metadata", session.id);
@@ -151,8 +153,7 @@ const handleWebhook = async (body: Buffer, signature: string) => {
           update: {
             plan: plan as SubscriptionPlan,
             status: SubscriptionStatus.ACTIVE,
-            stripeCustomerId:
-              typeof session.customer === "string" ? session.customer : null,
+            stripeCustomerId: typeof session.customer === "string" ? session.customer : null,
             currentPeriodStart,
             currentPeriodEnd,
           },
@@ -160,8 +161,7 @@ const handleWebhook = async (body: Buffer, signature: string) => {
             userId,
             plan: plan as SubscriptionPlan,
             status: SubscriptionStatus.ACTIVE,
-            stripeCustomerId:
-              typeof session.customer === "string" ? session.customer : null,
+            stripeCustomerId: typeof session.customer === "string" ? session.customer : null,
             currentPeriodStart,
             currentPeriodEnd,
           },
@@ -169,50 +169,68 @@ const handleWebhook = async (body: Buffer, signature: string) => {
 
         await tx.payment.create({
           data: {
+            userId,
             subscriptionId: updatedSubscription.id,
-            amount: (session.amount_total || 0) / 100,
+            amount,
             currency: session.currency || "usd",
-            stripePaymentId: (session.payment_intent as string) || session.id,
+            stripePaymentId,
             status: "COMPLETED",
-            userId
           },
         });
       });
-      console.log(`✅ Subscription activated for User: ${userId}`);
     }
 
+    // ─── CASE 2: MEDIA PURCHASE (BUY OR RENTAL) ──────────────────────
     if (mediaId && type) {
-      const expiresAt =
-        type === MediaPurchaseType.RENTAL
+      await prisma.$transaction(async (tx) => {
+        const expiresAt = type === MediaPurchaseType.RENTAL
           ? new Date(Date.now() + 48 * 60 * 60 * 1000)
           : null;
 
-      await prisma.$transaction(async (tx) => {
-        await tx.mediaPurchase.create({
+        // 1. Create the MediaPurchase record
+        const mediaPurchase = await tx.mediaPurchase.create({
           data: {
             userId,
             mediaId,
             type: type as MediaPurchaseType,
             status: MediaPurchaseStatus.ACTIVE,
-            price: (session.amount_total || 0) / 100,
+            price: amount,
             expiresAt,
-            stripePaymentId: (session.payment_intent as string) || session.id,
+            stripePaymentId,
           },
         });
 
+        let rentalId = null;
+
+        // 2. If it's a rental, explicitly create the Rental record
+        if (type === MediaPurchaseType.RENTAL) {
+          const rental = await tx.rental.create({
+            data: {
+              userId,
+              mediaId,
+              expiresAt: expiresAt!,
+              price: amount,
+              status: "ACTIVE",
+            },
+          });
+          rentalId = rental.id;
+        }
+
+        // 3. Create the Payment record and LINK everything
         await tx.payment.create({
           data: {
-            amount: (session.amount_total || 0) / 100,
-            currency: session.currency || "usd",
-            stripePaymentId: (session.payment_intent as string) || session.id,
-            status: "COMPLETED",
             userId,
+            amount,
+            currency: session.currency || "usd",
+            stripePaymentId,
+            status: "COMPLETED",
+            mediaPurchaseId: mediaPurchase.id, // Links Payment to MediaPurchase
+            rentalId: rentalId,                // Links Payment to Rental
           },
         });
       });
-      console.log(
-        `✅ Media ${type} successful for User: ${userId}, Media: ${mediaId}`,
-      );
+
+      console.log(`✅ Media ${type} successful and connected for User: ${userId}`);
     }
   }
 

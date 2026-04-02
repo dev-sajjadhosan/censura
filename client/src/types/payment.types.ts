@@ -1,19 +1,21 @@
 import { User } from "./auth.types";
-import { MediaPurchase, Rental } from "./media.types";
+import { Media, MediaPurchase, Rental } from "./media.types";
 
 export interface Payment {
   id: string;
   subscriptionId: string;
-    subscription: Subscription;
   amount: number;
   currency: string;
   stripePaymentId: string;
   status: string;
 
   createdAt: string;
-  rental: Rental;
   rentalId: string;
-  mediaPurchases: MediaPurchase[];
+
+  user: User;
+  rental: Rental;
+  subscription: Subscription;
+  mediaPurchase: MediaPurchase;
 }
 
 export interface Subscription {
@@ -38,4 +40,4 @@ export interface SubscriptionPlan {
   price: number;
   badge: string | null;
   features: string[];
-};
+}

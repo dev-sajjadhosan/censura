@@ -5,16 +5,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 interface UserInfoCellProps {
   name?: string;
   email?: string;
-  profilePhoto?: string;
+  image?: string;
 }
 
-const UserInfoCell = ({ name, email, profilePhoto }: UserInfoCellProps) => {
+const UserInfoCell = ({ name, email, image }: UserInfoCellProps) => {
   const fallback = name ? name[0].toUpperCase() : "U";
 
   return (
     <div className="flex items-center gap-3">
       <Avatar className="h-9 w-9 border">
-        <AvatarImage src={profilePhoto} alt={name || "User"} />
+        <AvatarImage src={image} alt={name || "User"} />
         <AvatarFallback className="text-xs bg-muted">{fallback}</AvatarFallback>
       </Avatar>
       <div className="flex flex-col min-w-0">

@@ -22,7 +22,7 @@ export const reviewColumns = (
       <UserInfoCell
         name={row.original.user?.name}
         email={row.original.user?.email}
-        profilePhoto={row.original.user?.image}
+        image={row.original?.user?.image}
       />
     ),
   },

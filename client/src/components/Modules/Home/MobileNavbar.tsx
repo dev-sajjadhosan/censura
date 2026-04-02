@@ -11,7 +11,7 @@ export default function MobileNavbar({
   navMenus: { title: string; href: string; icon?: React.ReactNode }[];
 }) {
   const [open, setOpen] = useState(false);
-
+  navMenus = [...navMenus, { title: "Profile", href: "/profile", icon: <X /> }]; // Add profile link to mobile menu
   return (
     <div className="relative">
       {/* Trigger */}

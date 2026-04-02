@@ -107,7 +107,9 @@ export async function proxy(request: NextRequest) {
     if (routerOwner === null) {
       return NextResponse.next();
     }
-
+    if (pathname === "/payment/success") {
+      return NextResponse.next();
+    }
     // Rule-4: Not logged in + protected route -> redirect to login
     if (!accessToken || !isValidAccessToken) {
       const loginUrl = new URL("/login", request.url);

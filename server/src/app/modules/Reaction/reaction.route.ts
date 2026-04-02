@@ -8,7 +8,12 @@ import { ReactionValidation } from "./reaction.validation";
 const router = Router();
 
 router.get("/comment", ReactionController.getAllComments); // public
-router.get("/comment/:reviewId",  ReactionController.getCommentsByReviewId); // public
+router.get("/comment/:reviewId", ReactionController.getCommentsByReviewId); // public
+router.get(
+  "/admin/comments",
+  checkAuth(Role.ADMIN),
+  ReactionController.adminGetAllComments,
+);
 
 router.post(
   "/",
@@ -48,10 +53,16 @@ router.put(
   validateRequest(ReactionValidation.updateCommentValidation),
   ReactionController.updateComment,
 );
+
+router.patch(
+  "/admin/comment/status/:id",
+  checkAuth(Role.ADMIN),
+  ReactionController.adminStausComment,
+);
+
 router.delete(
   "/admin/comment/:id",
   checkAuth(Role.ADMIN),
-  validateRequest(ReactionValidation.adminDeleteCommentValidation),
   ReactionController.adminDeleteComment,
 );
 

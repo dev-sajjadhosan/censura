@@ -114,6 +114,19 @@ const updateComment = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const adminGetAllComments = catchAsync(async (req: Request, res: Response) => {
+  const query = req.query;
+  const user = req.user as IRequestUser;
+  const result = await LikesService.adminGetAllComments(query, user);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "admin Comments fetched successfully",
+    data: result,
+  });
+});
+
 const adminDeleteComment = catchAsync(async (req: Request, res: Response) => {
   const result = await LikesService.adminDeleteReviewComment(
     req.params.id as string,
@@ -123,6 +136,21 @@ const adminDeleteComment = catchAsync(async (req: Request, res: Response) => {
     statusCode: status.OK,
     success: true,
     message: "Comment deleted successfully",
+    data: result,
+  });
+});
+
+const adminStausComment = catchAsync(async (req: Request, res: Response) => {
+  const payload = req.body;
+  const result = await LikesService.adminStatusReviewComment(
+    req.params.id as string,
+    payload,
+  );
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Comment status updated successfully",
     data: result,
   });
 });
@@ -137,4 +165,7 @@ export const ReactionController = {
   createCommentReply,
   updateComment,
   adminDeleteComment,
+  adminStausComment,
+  adminGetAllComments,
+
 };

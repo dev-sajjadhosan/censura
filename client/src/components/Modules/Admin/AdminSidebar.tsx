@@ -12,6 +12,10 @@ import {
   Tag,
   ChevronRight,
   Shield,
+  Home,
+  Settings,
+  DollarSign,
+  UserStar,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { IProfileResponse } from "@/types/auth.types";
@@ -38,6 +42,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { NavUser } from "./Users/NavUser";
+import { Separator } from "@/components/ui/separator";
 
 const navItems = [
   { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
@@ -68,9 +73,15 @@ const navItems = [
       { label: "All Platforms", href: "/admin/platforms" },
     ],
   },
-  { label: "Reviews", href: "/admin/reviews", icon: MessageSquare },
+  { label: "Reviews", href: "/admin/reviews", icon: UserStar },
+  { label: "Comments", href: "/admin/comments", icon: MessageSquare },
   { label: "Users", href: "/admin/users", icon: Users },
   { label: "Analytics", href: "/admin/analytics", icon: BarChart3 },
+  { label: "Payments", href: "/admin/payments", icon: DollarSign },
+  { type: "divider" },
+  { label: "Home", href: "/", icon: Home },
+  { label: "Explore", href: "/explore", icon: Clapperboard },
+  { label: "Profile", href: "/profile/settings", icon: Settings },
 ];
 
 export default function AdminSidebar({ user }: { user: IProfileResponse }) {
@@ -108,7 +119,11 @@ export default function AdminSidebar({ user }: { user: IProfileResponse }) {
                 const isActive =
                   pathname === item.href ||
                   (item.href !== "/admin/dashboard" &&
-                    pathname.startsWith(item.href));
+                    pathname.startsWith(item?.href || ""));
+
+                if (item.type === "divider") {
+                  return <Separator key={item.label} className="my-5" />;
+                }
 
                 if (hasChildren) {
                   return (
@@ -124,13 +139,15 @@ export default function AdminSidebar({ user }: { user: IProfileResponse }) {
                             tooltip={item.label}
                             isActive={isActive}
                             className={cn(
-                              "h-10 transition-all duration-200",
+                              "h-10 transition-all duration-200 mt-1",
                               isActive
                                 ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground shadow-sm"
                                 : "text-muted-foreground hover:bg-muted/80 hover:text-foreground",
                             )}
                           >
-                            {item.icon && <item.icon className="size-4 shrink-0" />}
+                            {item.icon && (
+                              <item.icon className="size-4 shrink-0" />
+                            )}
                             <span>{item.label}</span>
                             <ChevronRight className="ml-auto size-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                           </SidebarMenuButton>
@@ -163,14 +180,18 @@ export default function AdminSidebar({ user }: { user: IProfileResponse }) {
                       isActive={isActive}
                       tooltip={item.label}
                       className={cn(
-                        "h-10 transition-all duration-200",
+                        "h-10 transition-all duration-200 mt-1",
                         isActive
                           ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground shadow-sm"
                           : "text-muted-foreground hover:bg-muted/80 hover:text-foreground",
                       )}
                     >
-                      <Link href={item.href}>
-                        <item.icon className="size-4 shrink-0" />
+                      <Link href={item?.href || "#"}>
+                        {item.icon &&
+                          (() => {
+                            const Icon = item.icon;
+                            return <Icon className="size-4 shrink-0" />;
+                          })()}
                         <span>{item.label}</span>
                       </Link>
                     </SidebarMenuButton>

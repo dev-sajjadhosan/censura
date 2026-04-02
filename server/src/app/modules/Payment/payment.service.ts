@@ -8,6 +8,7 @@ import {
   MediaPurchaseStatus,
   MediaPurchaseType,
 } from "../../../generated/prisma/enums";
+import { QueryBuilder } from "../../utils/QueryBuilder";
 
 const RENTAL_DURATION_HOURS = 48;
 
@@ -25,15 +26,29 @@ const getMyPayments = async (user: IRequestUser) => {
   });
 };
 
-const getAllPayments = async () => {
-  return await prisma.payment.findMany({
-    include: {
-      subscription: {
-        include: { user: true },
+const getAllPayments = async (query: Record<string, unknown>) => {
+  const paymentQuery = new QueryBuilder(prisma.payment, query as any, {
+    searchableFields: ["stripePaymentId", "status"],
+    filterableFields: ["status", "currency"],
+  })
+    .search()
+    .filter()
+    .sort()
+    .include({
+      user: true,
+      subscription: true,
+      mediaPurchase: {
+        include: { media: true },
       },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+      rental: {
+        include: { media: true },
+      }
+    })
+    .paginate()
+    .fields();
+
+  const result = await paymentQuery.execute();
+  return result;
 };
 
 const getMyMediaPurchases = async (user: IRequestUser) => {

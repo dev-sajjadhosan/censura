@@ -16,7 +16,7 @@ export const userColumns: ColumnDef<any>[] = [
       <UserInfoCell
         name={row.original.name}
         email={row.original.email}
-        profilePhoto={row.original.image}
+        image={row.original.image}
       />
     ),
   },

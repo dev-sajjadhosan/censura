@@ -32,7 +32,7 @@ export default function DeleteMediaDialog({
   const { mutateAsync: deleteMedia } = useMutation({
     mutationFn: (id: string) => adminDeleteMedia(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["media"] });
+      queryClient.invalidateQueries({ queryKey: ["admin-medias"] });
       toast.success(`"${media?.title}" deleted successfully`);
       onOpenChange(false);
     },

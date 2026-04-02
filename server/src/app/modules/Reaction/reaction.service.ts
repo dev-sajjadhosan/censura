@@ -3,6 +3,7 @@ import { IRequestUser } from "../../interfaces";
 import AppError from "../../error-helpers/AppError";
 import { prisma } from "../../lib/prisma";
 import { QueryBuilder } from "../../utils/QueryBuilder";
+import status from "http-status";
 
 const getAllComments = async (
   query: Record<string, unknown>,
@@ -25,6 +26,7 @@ const getAllComments = async (
   const result = await commentQuery.execute();
   return result;
 };
+
 const getCommentsByReviewId = async (reviewId: string) => {
   const result = await prisma.comment.findMany({
     where: {
@@ -76,7 +78,7 @@ const createReviewComment = async (user: IRequestUser, data: any) => {
     },
   });
   if (!review) {
-    throw new AppError(404, "Review not found");
+    throw new AppError(status.NOT_FOUND, "Review not found");
   }
 
   const media = await prisma.media.findUnique({
@@ -85,7 +87,7 @@ const createReviewComment = async (user: IRequestUser, data: any) => {
     },
   });
   if (!media) {
-    throw new AppError(404, "Media not found");
+    throw new AppError(status.NOT_FOUND, "Media not found");
   }
 
   const isCommentExist = await prisma.comment.findUnique({
@@ -94,7 +96,7 @@ const createReviewComment = async (user: IRequestUser, data: any) => {
     },
   });
   if (isCommentExist) {
-    throw new AppError(400, "Comment already exists");
+    throw new AppError(status.BAD_REQUEST, "Comment already exists");
   }
   const result = await prisma.comment.create({
     data: {
@@ -117,7 +119,7 @@ const createCommentReply = async (
     },
   });
   if (!parentComment) {
-    throw new AppError(404, "Parent comment not found");
+    throw new AppError(status.NOT_FOUND, "Parent comment not found");
   }
   const result = await prisma.comment.create({
     data: {
@@ -142,10 +144,13 @@ const updateReviewComment = async (
     },
   });
   if (!comment) {
-    throw new AppError(404, "Comment not found");
+    throw new AppError(status.NOT_FOUND, "Comment not found");
   }
   if (comment.userId !== user.userId) {
-    throw new AppError(403, "You are not authorized to update this comment");
+    throw new AppError(
+      status.FORBIDDEN,
+      "You are not authorized to update this comment",
+    );
   }
   const result = await prisma.comment.update({
     where: {
@@ -165,10 +170,13 @@ const deleteReviewComment = async (user: IRequestUser, id: string) => {
     },
   });
   if (!comment) {
-    throw new AppError(404, "Comment not found");
+    throw new AppError(status.NOT_FOUND, "Comment not found");
   }
   if (comment.userId !== user.userId) {
-    throw new AppError(403, "You are not authorized to delete this comment");
+    throw new AppError(
+      status.FORBIDDEN,
+      "You are not authorized to delete this comment",
+    );
   }
   const result = await prisma.comment.delete({
     where: {
@@ -178,6 +186,49 @@ const deleteReviewComment = async (user: IRequestUser, id: string) => {
   return result;
 };
 
+const adminGetAllComments = async (
+  query: Record<string, unknown>,
+  user: IRequestUser,
+) => {
+  const commentQuery = new QueryBuilder(prisma.comment, query as any, {
+    searchableFields: ["content"],
+    filterableFields: ["userId", "mediaId", "reviewId", "parentId"],
+  })
+    .search()
+    .filter()
+    .sort()
+    .paginate()
+    .fields()
+    .include({
+      user: true,
+      replies: true,
+      media:true
+    });
+
+  const result = await commentQuery.execute();
+  return result;
+};
+
+const adminStatusReviewComment = async (id: string, payload: any) => {
+  const comment = await prisma.comment.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!comment) {
+    throw new AppError(status.NOT_FOUND, "Comment not found");
+  }
+  const result = await prisma.comment.update({
+    where: {
+      id,
+    },
+    data: {
+      status: payload.status as any,
+    },
+  });
+  return result;
+};
 const adminDeleteReviewComment = async (id: string) => {
   const comment = await prisma.comment.findUnique({
     where: {
@@ -185,7 +236,7 @@ const adminDeleteReviewComment = async (id: string) => {
     },
   });
   if (!comment) {
-    throw new AppError(404, "Comment not found");
+    throw new AppError(status.NOT_FOUND, "Comment not found");
   }
   const result = await prisma.comment.delete({
     where: {
@@ -205,4 +256,6 @@ export const LikesService = {
   createCommentReply,
   updateReviewComment,
   adminDeleteReviewComment,
+  adminStatusReviewComment,
+  adminGetAllComments,
 };

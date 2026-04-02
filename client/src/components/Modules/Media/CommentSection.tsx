@@ -11,8 +11,9 @@ import {
   CommentValidationType,
 } from "@/zod/reaction.validation";
 import { addComment, getComments } from "@/services/reaction.service";
-import { Comment as ReviewComment } from "@/types/reaction.types";
+import { Comment, Comment as ReviewComment } from "@/types/reaction.types";
 import { useRouter } from "next/navigation";
+import { Badge } from "@/components/ui/badge";
 
 interface CommentSectionProps {
   showComments: boolean;
@@ -39,10 +40,12 @@ export default function CommentSection({
     },
   });
 
-  const { data: comments, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["reviews", reviewId],
     queryFn: () => getComments(reviewId),
   });
+
+  const comments = data?.data || [];
 
   const form = useForm({
     defaultValues: {
@@ -137,22 +140,29 @@ export default function CommentSection({
                 <Loader2 className="size-7 animate-spin text-primary" />
               </div>
             ) : (
-              comments?.map((comment: any) => (
-                <div key={comment.id} className="flex gap-3">
+              comments?.map((comment: Comment) => (
+                <div key={comment.id} className={`flex gap-3 `}>
                   <Avatar className="size-8 shrink-0">
                     <AvatarImage src={comment.user?.image || ""} />
                     <AvatarFallback>
                       {comment.user?.name?.[0] || "U"}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="bg-secondary/20 rounded-2xl rounded-tl-sm px-4 py-3 flex-1">
+                  <div
+                    className={`bg-secondary/20 rounded-2xl rounded-tl-sm px-4 py-3 flex-1 ${comment.status !== "PENDING" ? "border border-orange-500" : ""}`}
+                  >
                     <div className="flex justify-between items-center mb-1">
-                      <span className="text-sm font-semibold text-neutral-200">
+                      <span className="text-sm font-semibold text-muted-foreground">
                         {comment.user?.name || "Unknown"}
                       </span>
-                      <span className="text-[10px] text-neutral-500">
-                        {new Date(comment.createdAt).toLocaleDateString()}
-                      </span>
+                      <div className="flex items-center gap-3">
+                        {currentUser?.id === comment.userId && (
+                          <Badge>{comment.status}</Badge>
+                        )}
+                        <span className="text-[10px]">
+                          {new Date(comment.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
                     </div>
                     <p className="text-sm text-neutral-300">
                       {comment.content}

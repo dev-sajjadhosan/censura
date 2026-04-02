@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "comment" ALTER COLUMN "status" SET DEFAULT 'UNPUBLISHED';

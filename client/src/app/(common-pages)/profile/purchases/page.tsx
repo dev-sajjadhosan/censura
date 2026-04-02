@@ -9,7 +9,7 @@ import { getMyMediaPurchases } from "@/services/media.service";
 
 export default async function PurchasesPage() {
   const res = await getMyMediaPurchases();
-  const purchases = res?.data.data ?? [];
+  const purchases = res?.data ?? [];
 
   const formatDate = (date: string) =>
     new Date(date).toLocaleDateString("en-US", {

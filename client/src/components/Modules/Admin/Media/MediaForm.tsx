@@ -18,7 +18,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { adminCreateMedia, adminUpdateMedia } from "@/services/admin.service";
 import { useForm } from "@tanstack/react-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   createMediaValidationSchema,
   CreateMediaValidationType,
@@ -45,6 +45,7 @@ export default function MediaForm({
 }: MediaFormProps) {
   const router = useRouter();
 
+  const queryClient = useQueryClient();
   const { mutateAsync, isPending } = useMutation({
     mutationFn: (payload: CreateMediaValidationType) =>
       adminCreateMedia(payload),
@@ -99,6 +100,7 @@ export default function MediaForm({
           router.push("/admin/media");
           router.refresh();
         }
+        queryClient.invalidateQueries({ queryKey: ["admin-medias"] });
       } catch (err: any) {
         toast.error(
           `${isEditing ? "Failed to update" : "Failed to create"} media`,

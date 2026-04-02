@@ -29,9 +29,7 @@ export default function MediaJsonAddDialog() {
     },
   });
   const handleBulkImport = async (data: any) => {
-    console.log("Importing:", data);
     const res = await createMediaBulk(data);
-    console.log("Bulk Import Response:", res);
   };
 
   return (

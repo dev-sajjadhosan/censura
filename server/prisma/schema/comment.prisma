@@ -5,7 +5,7 @@ model Comment {
   parentId  String? // for nested replies
   content   String
   createdAt DateTime      @default(now())
-  status    CommentStatus @default(APPROVED)
+  status    CommentStatus @default(UNPUBLISHED)
 
   user    User      @relation(fields: [userId], references: [id])
   review  Review    @relation(fields: [reviewId], references: [id], onDelete: Cascade)

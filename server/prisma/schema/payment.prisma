@@ -1,20 +1,16 @@
 model Payment {
   id String @id @default(uuid())
 
-  // Make subscriptionId OPTIONAL (?) so one-time purchases can work
   subscriptionId String?
   subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
-
-  // ADD userId directly to Payment for easy "My History" queries
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
   amount          Float
   currency        String  @default("usd")
   stripePaymentId String? @unique
-  status          String // e.g., "COMPLETED", "FAILED"
+  status          String 
 
-  // Link to the specific purchase/rental
   mediaPurchaseId String?
   mediaPurchase   MediaPurchase? @relation(fields: [mediaPurchaseId], references: [id])
 

@@ -17,7 +17,8 @@ const getMyPayments = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllPayments = catchAsync(async (req: Request, res: Response) => {
-  const result = await PaymentService.getAllPayments();
+  const query = req.query;
+  const result = await PaymentService.getAllPayments(query);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

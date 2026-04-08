@@ -5,6 +5,7 @@ import VisibilityWrapper from "@/components/Providers/VisibilityWrapper";
 import { LayoutDashboard, Menu } from "lucide-react";
 import MobileNavbar from "./MobileNavbar";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/Shared/theme-toggle";
 const navMenus = [
   {
     title: "Home",
@@ -54,14 +55,15 @@ export default async function Navbar() {
           </ul>
         </div>
         <div className="flex items-center gap-3">
-        <NavbarAuth user={user} />
-        {user?.role === "ADMIN" && (
-          <Link href="/admin/dashboard">
-            <Button variant={"default"}>
-               <LayoutDashboard />
-            </Button>
-          </Link>
-        )}
+          <ThemeToggle />
+          <NavbarAuth user={user} />
+          {user?.role === "ADMIN" && (
+            <Link href="/admin/dashboard">
+              <Button variant={"default"}>
+                <LayoutDashboard />
+              </Button>
+            </Link>
+          )}
         </div>
       </header>
     </VisibilityWrapper>

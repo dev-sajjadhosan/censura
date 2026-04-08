@@ -62,35 +62,36 @@ export default function HeroSection({ featuredMedia, user }: HeroSectionProps) {
             </Badge>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-white drop-shadow-lg">
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-primary ">
             {title}
           </h1>
 
-          <p className="text-lg md:text-xl text-neutral-300 max-w-xl drop-shadow line-clamp-3">
+          <p className="text-lg md:text-xl text-primary max-w-xl drop-shadow line-clamp-3">
             {desc}
           </p>
 
           <div className="flex items-center gap-4 pt-4">
-            <Link href={`/media/${featuredMedia.slug}`}>
-              <Button
-                disabled={
-                  !user ||
-                  user?.subscription?.status !== "active" ||
-                  user?.role === "ADMIN"
-                }
-                size="lg"
-                className="rounded-full px-8 gap-2 text-md font-semibold h-14"
-              >
-                <Play className="w-5 h-5 fill-current" /> Watch Now
-              </Button>
-            </Link>
+            <Button
+              disabled={
+                !user ||
+                user?.subscription?.status !== "active" ||
+                user?.role === "ADMIN"
+              }
+              size="lg"
+              className=" rounded-full px-8 gap-2 text-md font-semibold h-14"
+              asChild
+            >
+              <Link href={`/media/${featuredMedia.slug}`}>
+                <Play /> Watch Now
+              </Link>
+            </Button>
             <Link href={`/media/${featuredMedia.slug}`}>
               <Button
                 size="lg"
                 variant="secondary"
-                className="rounded-full px-8 gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-md border-white/10 border text-md font-semibold h-14"
+                className="rounded-full px-8 gap-2 bg-primary/10 hover:bg-primary/20 backdrop-blur-md border-primary/10 border text-md font-semibold h-14"
               >
-                <Info className="w-5 h-5" /> More Info
+                <Info /> More Info
               </Button>
             </Link>
           </div>

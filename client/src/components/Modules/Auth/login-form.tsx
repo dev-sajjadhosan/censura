@@ -15,6 +15,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import DemoUserDialog from "./DemoUserDialog";
 
 interface LoginFormProps {
   redirectPath?: string;
@@ -174,6 +175,9 @@ export default function LoginForm({ redirectPath }: LoginFormProps) {
             <div className="flex-1 h-px bg-muted-foreground"></div>
           </div>
           <SocialProviders />
+        </div>
+        <div className="mt-8">
+          <DemoUserDialog form={form} />
         </div>
       </div>
     </>

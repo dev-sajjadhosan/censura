@@ -9,6 +9,12 @@ import { useQuery } from "@tanstack/react-query";
 import { IProfileResponse } from "@/types/auth.types";
 import HeroSkeleton from "./HeroSkeleton";
 import NewsletterSection from "./Newsletter";
+import CategoriesSection from "./CategoriesSection";
+import FeaturesSection from "./FeaturesSection";
+import StatisticsSection from "./StatisticsSection";
+import TestimonialsSection from "./TestimonialsSection";
+import FaqSection from "./FaqSection";
+import CTASection from "./CTASection";
 
 export default function HomeClient({ user }: { user: IProfileResponse }) {
   const { data, isLoading, isPending } = useQuery({
@@ -27,14 +33,20 @@ export default function HomeClient({ user }: { user: IProfileResponse }) {
   const editorsPicks = [...mediaList].reverse().slice(0, 10);
 
   return (
-    <div className="min-h-screen font-sans bg-background text-foreground pb-12">
+    <div className="min-h-screen font-sans bg-background text-foreground pb-12 overflow-x-hidden">
       {isLoading ? (
         <HeroSkeleton />
       ) : (
         <HeroSection featuredMedia={featuredMedia} user={user} />
       )}
-      <SearchBar />
-      <div className="space-y-4 mt-12">
+      
+      <div className="relative z-10 -mt-8 mb-20 px-4">
+        <SearchBar />
+      </div>
+
+      <CategoriesSection />
+
+      <div className="space-y-4 mt-12 bg-linear-to-b from-transparent via-secondary/5 to-transparent py-10">
         <MediaStrip
           title="Top Rated This Week"
           mediaList={topRated}
@@ -51,6 +63,8 @@ export default function HomeClient({ user }: { user: IProfileResponse }) {
           user={user}
         />
 
+        <FeaturesSection />
+
         <MediaStrip
           title="Editor's Picks"
           mediaList={editorsPicks}
@@ -59,10 +73,18 @@ export default function HomeClient({ user }: { user: IProfileResponse }) {
           user={user}
         />
       </div>
+
+      <StatisticsSection />
+      
+      <TestimonialsSection />
+
+      <PricingSection user={user} />
+
+      <FaqSection />
+
       <NewsletterSection />
-      <div className="mt-20 border-t border-white/5 pt-10">
-        <PricingSection user={user} />
-      </div>
+
+      <CTASection />
     </div>
   );
 }

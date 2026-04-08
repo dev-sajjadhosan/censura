@@ -8,9 +8,11 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import { QueryProvider } from "@/providers/Query-Provider";
 
 import { Toaster } from "@/components/ui/sonner";
+import ChatBot from "@/components/Shared/ChatBot";
+import Footer from "@/components/Modules/Home/Footer";
 
-const jetBarinMono = JetBrains_Mono({
-  variable: "--font-jet-barin-mono",
+const jetBrainsMono = JetBrains_Mono({
+  variable: "--font-jet-brains-mono",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
 });
@@ -35,7 +37,7 @@ export default function RootLayout({
     <html
       suppressHydrationWarning
       lang="en"
-      className={`${jetBarinMono.variable} ${ubuntuMono.variable} h-full antialiased`}
+      className={`${jetBrainsMono.variable} ${ubuntuMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <QueryProvider>
@@ -46,7 +48,12 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Toaster richColors position="top-right" />
-            <TooltipProvider>{children}</TooltipProvider>
+            <TooltipProvider>
+              <main className="flex-1">
+                {children}
+              </main>
+              <ChatBot />
+            </TooltipProvider>
           </ThemeProvider>
         </QueryProvider>
       </body>

@@ -45,14 +45,14 @@ export default function MediaStrip({
         </div>
 
         {/* Horizontal Scroll Container */}
-        <div className="relative">
-          <div className="flex overflow-x-auto gap-6 pb-6 snap-x snap-mandatory hide-scroll-indicator">
+        <div className="relative w-full">
+          <div className="flex overflow-x-auto gap-5 pb-6 hide-scroll-indicator w-full">
             {isLoading || !mediaList || mediaList.length === 0 ? (
               <div className="flex gap-6">
                 {[...Array(5)].map((_, i) => (
                   <div
                     key={i}
-                    className="min-w-[280px] md:min-w-[320px] snap-start shrink-0"
+                    className="min-w-[280px] md:min-w-[320px] snap-start shrink-0 flex items-stretch h-auto"
                   >
                     <MediaCardSkeleton />
                   </div>
@@ -60,10 +60,7 @@ export default function MediaStrip({
               </div>
             ) : (
               mediaList.map((media) => (
-                <div
-                  key={media.id}
-                  className="min-w-[280px] md:min-w-[320px] snap-start shrink-0"
-                >
+                <div key={media.id} className="w-sm">
                   <MediaCard media={media} user={user} />
                 </div>
               ))

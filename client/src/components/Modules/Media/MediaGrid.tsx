@@ -15,6 +15,7 @@ export default function MediaGrid({ params , user }: { params: Params , user?: I
     page: params.page || "1",
     limit: params.limit || "10",
     searchTerm: params.search, 
+    search: params.search, 
     sortBy: params.sort === "recent" ? "createdAt" : params.sort,
     sortOrder: "desc",
     type: params.type,
@@ -54,7 +55,7 @@ export default function MediaGrid({ params , user }: { params: Params , user?: I
 
   return (
     <>
-      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-6">
         {mediaList.map((item: any) => (
           <MediaCard key={item.id} media={item} user={user} />
         ))}

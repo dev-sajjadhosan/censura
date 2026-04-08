@@ -5,7 +5,7 @@ export async function setCookie(name: string, value: string, maxAge: number) {
     maxAge,
     httpOnly: true,
     secure: true,
-    sameSite: "strict",
+    sameSite: "lax",
     path: "/",
   });
 }

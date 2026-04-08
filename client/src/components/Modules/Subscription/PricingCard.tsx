@@ -34,7 +34,7 @@ export default function PricingCard({
         className={`relative flex flex-col h-full transition-transform hover:-translate-y-2 duration-150 ${
           isPopular
             ? "border-primary scale-105 z-10 bg-secondary/60"
-            : "border-secondary/45 bg-secondary/35"
+            : "border-secondary/45 dark:border-secondary/45 dark:bg-secondary/35"
         }`}
       >
         {isPopular && (
@@ -46,20 +46,20 @@ export default function PricingCard({
         )}
 
         <CardHeader className="text-center pt-8 pb-4">
-          <CardTitle className="text-2xl font-bold uppercase tracking-wide text-neutral-300">
+          <CardTitle className="text-2xl font-bold uppercase tracking-wide text-primary">
             {plan?.name}
           </CardTitle>
           <div className="mt-4 flex items-baseline justify-center gap-1">
-            <span className="text-5xl font-extrabold tracking-tight text-white animate-pulse">
+            <span className="text-5xl font-extrabold tracking-tight text-primary animate-pulse">
               ${plan?.price}
             </span>
             {!isFree && (
-              <span className="text-muted-foreground text-sm font-medium">
+              <span className="text-primary text-sm font-medium">
                 /{plan?.name === "MONTHLY" ? "mo" : "yr"}
               </span>
             )}
           </div>
-          <CardDescription className="pt-2 text-neutral-400">
+          <CardDescription className="pt-2 text-primary">
             {isFree
               ? "Basic access forever"
               : `Billed ${plan?.name.toLowerCase()}`}
@@ -72,7 +72,7 @@ export default function PricingCard({
                 <div>
                   <Check className="size-4" />
                 </div>
-                <span className="text-sm font-medium text-neutral-300">
+                <span className="text-sm font-medium text-primary">
                   {feature}
                 </span>
               </li>

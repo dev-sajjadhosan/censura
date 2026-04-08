@@ -36,91 +36,93 @@ export default function MediaCard({
   );
 
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow border-muted">
-      <CardHeader className="flex flex-row items-center justify-between p-4 space-y-0">
-        <Badge variant="secondary" className="gap-1">
-          <Star className="size-3 fill-yellow-500 text-yellow-500" />
-          {media.avgRating?.toFixed(1) || "N/A"}
-        </Badge>
-        <Badge variant="outline" className="capitalize">
-          {media.type.toLowerCase()}
-        </Badge>
-      </CardHeader>
+    <Card className="group overflow-hidden shadow flex flex-col p-0 w-full">
+      <div className="relative aspect-video overflow-hidden w-full">
+        <Image
+          src={media.posterUrl || "https://placehold.co/400x600?text=No+Poster"}
+          alt={media.title}
+          width={400}
+          height={600}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
 
-      <CardContent className="p-0">
-        <div className="relative aspect-video mx-4 overflow-hidden rounded-xl">
-          <Image
-            src={
-              media.posterUrl || "https://placehold.co/400x600?text=No+Poster"
-            }
-            alt={media.title}
-            fill
-            className="object-cover transition-transform hover:scale-105"
-          />
+        <div className="absolute top-2 right-2 flex gap-2">
+          <Badge variant="secondary" className="px-3 py-3">
+            <Star className="size-3 fill-yellow-500 text-yellow-500" />
+            {media.avgRating?.toFixed(1) || "N/A"}
+          </Badge>
+        </div>
+      </div>
+
+      <CardContent className="p-5 flex flex-col flex-1 w-full">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex flex-wrap gap-1">
+            {media.genres?.map((genre) => (
+              <Badge key={genre.id} className="uppercase py-3 px-3">
+                {genre.name}
+              </Badge>
+            ))}
+          </div>
+          <Badge variant="outline" className="text-[10px] uppercase py-3 px-3">
+            {media.type}
+          </Badge>
+        </div>
+        <div className="flex justify-between items-start mb-2">
+          <h3 className="font-bold text-xl line-clamp-1 group-hover:text-primary transition-colors">
+            {media.title}
+          </h3>
+          <span className="text-xs font-medium text-muted-foreground px-2 py-1 bg-secondary rounded">
+            {media.releaseYear}
+          </span>
         </div>
 
-        <div className="p-4">
-          <h3 className="font-bold text-lg truncate">{media.title}</h3>
-          <p className="text-sm text-muted-foreground">{media.releaseYear}</p>
+        <p className="text-sm text-muted-foreground line-clamp-2 mb-4 flex-1">
+          {media.synopsis || "No description available for this title."}
+        </p>
 
-          <div className="flex items-center gap-2 mt-4">
-            {/* 1. WATCH ACCESS (The Priority Action) */}
+        <div className="flex items-center text-4xl font-bold text-muted-foreground">
+          <DollarSign className="size-8" />
+          <span>{media.buyPrice || "0.00"}</span>
+        </div>
+
+        <div className="flex items-center justify-start gap-3 pt-4">
+          <div className="flex gap-2">
             {hasAccess ? (
-              <Button asChild className=" bg-primary">
+              <Button size="lg" asChild className="rounded-full px-4">
                 <Link href={`/watch/${media.slug}`}>
-                  <Play className="mr-2 size-4 fill-current" /> Watch Now
+                  <Play className="mr-2 size-3.5 fill-current" /> Play
                 </Link>
               </Button>
             ) : (
-              <>
-                {/* 2. PREMIUM/SUBSCRIPTION BLOCK */}
-                {media.pricing === "PREMIUM" && (
-                  <Button variant="secondary" asChild>
-                    <Link href="/subscription">
-                      <Crown className="mr-2 size-4" /> Subscribe
-                    </Link>
-                  </Button>
-                )}
-
-                {/* 3. TRANSACTIONAL BLOCK (Rental/Buy) */}
-                {media.pricing === "RENTAL" && !hasPurchased && (
-                  <div className="flex gap-2 w-full">
-                    <Button variant="outline" size="sm" asChild>
-                      <Link
-                        href={`/payment/media-checkout?mediaId=${media.id}&type=RENTAL`}
-                      >
-                        <DollarSign className="mr-1 size-3" /> Rent
-                      </Link>
-                    </Button>
-                    {/* Added Buy option to satisfy assignment requirement */}
-                    {media.buyPrice && (
-                      <Button variant="outline" size="sm" asChild>
-                        <Link
-                          href={`/payment/media-checkout?mediaId=${media.id}&type=BUY`}
-                        >
-                          <ShoppingCart className="mr-1 size-3" /> Buy
-                        </Link>
-                      </Button>
-                    )}
-                  </div>
-                )}
-              </>
+              media.pricing === "RENTAL" &&
+              !hasPurchased && (
+                <Button
+                  size="lg"
+                  variant="default"
+                  className="rounded-full px-4"
+                  asChild
+                >
+                  <Link
+                    href={`/payment/media-checkout?mediaId=${media.id}&type=RENTAL`}
+                  >
+                    <ShoppingCart className="mr-2 size-3.5" /> Get
+                  </Link>
+                </Button>
+              )
             )}
-
-            {/* 4. ALWAYS SHOW VIEW DETAILS */}
-            <Button
-              // size="lg"
-              variant="ghost"
-              asChild
-              title="View Details"
-              className="ml-auto gap-3"
-            >
-              <Link href={`/media/${media.slug}`}>
-                View
-                <ChevronRight className="size-5" />
-              </Link>
-            </Button>
           </div>
+
+          <Button
+            variant="outline"
+            size="lg"
+            asChild
+            className="rounded-full border-primary/20 hover:border-primary hover:bg-primary/5 transition-all group/btn"
+          >
+            <Link href={`/media/${media.slug}`} className="flex items-center">
+              Details
+              <ChevronRight className="ml-1 size-4 transition-transform group-hover/btn:translate-x-0.5" />
+            </Link>
+          </Button>
         </div>
       </CardContent>
     </Card>

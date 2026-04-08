@@ -185,6 +185,7 @@ const googleLogin = catchAsync(async (req: Request, res: Response) => {
 
   const callbackUrl = `${envVars.BETTER_AUTH_URL}/api/v1/auth/google/success?redirect=${encodedRedirectPath}`;
 
+  
   res.render("googleRedirect", {
     callbackURL: callbackUrl,
     betterAuthUrl: envVars.BETTER_AUTH_URL,

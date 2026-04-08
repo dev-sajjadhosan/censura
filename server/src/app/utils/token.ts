@@ -28,7 +28,7 @@ export const setAccessTokenCookie = (res: Response, token: string) => {
   setCookie(res, "accessToken", token, {
     httpOnly: true,
     secure: true,
-    sameSite: true,
+    sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 1000,
   });
@@ -38,7 +38,7 @@ export const setRefreshTokenCookie = (res: Response, token: string) => {
   setCookie(res, "refreshToken", token, {
     httpOnly: true,
     secure: true,
-    sameSite: true,
+    sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 7 * 1000,
   });
@@ -48,7 +48,7 @@ export const setBetterAuthSessionCookie = (res: Response, token: string) => {
   setCookie(res, "better-auth.session_token", token, {
     httpOnly: true,
     secure: true,
-    sameSite: true,
+    sameSite: "lax",
     path: "/",
     maxAge: 60 * 60  * 24 * 1000,
   });

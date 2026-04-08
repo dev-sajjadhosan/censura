@@ -10,15 +10,15 @@ const footerLinks = {
   ],
   Company: [
     { label: "About", href: "/about" },
-    { label: "Contact", href: "/contact" },
+    { label: "Contact Us", href: "/contact-us" },
+    { label: "Help / Support", href: "/help" },
     { label: "Blog", href: "/blog" },
-    { label: "Careers", href: "/careers" },
   ],
   Legal: [
     { label: "Privacy Policy", href: "/privacy" },
-    { label: "Terms of Service", href: "/terms" },
-    { label: "Cookie Policy", href: "/cookies" },
-    { label: "DMCA", href: "/dmca" },
+    { label: "Terms of Service", href: "/privacy" },
+    { label: "Cookie Policy", href: "/privacy" },
+    { label: "DMCA", href: "/privacy" },
   ],
 };
 
